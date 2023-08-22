@@ -68,3 +68,21 @@ function midi(ccIndex, options = {}) {
     }
   };
 }
+
+const saw = ({
+	min = 0,
+	max = 1,
+	x = 1,
+	t
+} = {}) => ({
+	time
+}) => {
+	const spb = 60 / bpm * x;
+	const p = (time % spb) / spb * (max - min) + min;
+
+	if (t) {
+		return t(p);
+	} else {
+		return p;
+	}
+}
