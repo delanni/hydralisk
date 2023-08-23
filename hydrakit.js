@@ -22,12 +22,36 @@
   window.cc = Array(128).fill(0.5);
   window.ccc = Array(16).fill(1).map(() => Array(128).fill(0.5));
   window.ccbind = [];
+
+  /**
+   * TODO: lepegetes
+   * TODO: sorban legyenek
+   * TODO: kivalogatni ami kell/nem kell
+
+   * Midi received on cc#87 value:0, channel: 5 RANDOM
+hydrakit.js:31 Midi received on cc#88 value:0.7890625, channel: 5 FEL
+hydrakit.js:31 Midi received on cc#86 value:0.7890625, channel: 5  LE
+   */
   
   getMIDIMessage = function(midiMessage) {
     const [kind, ccIndex, value] = midiMessage.data;
     const channel = kind & 0b00001111;
     var valNormalized = (value > 64 ? value + 1 : value) / 128.0;
     if (ccIndex !== undefined) {
+
+      if (valNormalized !== 0) {
+        if (ccIndex === 87) {
+          window.xemitter.emit("editor:randomize", {});
+        }
+        if (ccIndex === 88) {
+          window.xemitter.emit("gallery:nextSketch", {});
+        }
+
+        if (ccIndex === 86) {
+          window.xemitter.emit("gallery:nextSketch", {backwards:true});
+        }
+      }
+
       console.log(
         'Midi received on cc#' + ccIndex + ' value:' + valNormalized +
         ', channel: ' + channel);    // uncomment to monitor incoming Midi
