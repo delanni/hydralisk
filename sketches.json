@@ -222,16 +222,9 @@
     "midi": false
   },
   {
-    "name": "macska midi",
-    "type": "code",
-    "code": "\nbpm = 140 / 4\n\ns0.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\nsrc(s0).colorama( midi(\"b0\", {min: -0.001, max: 1}) ).modulate(noise( midi(\"b1\", {min: 0, max: 6}) )).out(o0)\n\n",
-    "bpm": "140",
-    "midi": true
-  },
-  {
     "name": "rotacats midi",
     "type": "code",
-    "code": "\nbpm = 140\n\ns0.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\n\ns1.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\n\nsrc(s0).colorama( midi(\"green\", {min: -0.001, max: 1}) ).modulate(noise( midi(\"blue\", {min: 0, max: 6}) )).out(o0)\n\n\nsrc(s1).scale([0.7, 1.1].fast(2).smooth()).rotate(midi(\"red\", {min: 0, max:Math.PI*4})).out(o1)\n\nsrc(o0).mult(o1, midi(\"yellow\")).out(o2);\n\nsrc(o2).blend(src(o3).scale([1,1.06]),  midi(65, {min: 0.2, max:0.95})).out(o3)\n\nrender();\n\n",
+    "code": "\nbpm = 140\n\nconst rx =  Math.random()\ns0.initImage(\"https://cataas.com/cat/says/MEOW?a=x\" + rx)\n\ns1.initImage(\"https://cataas.com/cat/says/MEOW?a=x\" + rx)\n\nsrc(s0).colorama( midi(\"green\", {min: -0.001, max: 1}) ).modulate(noise( midi(\"blue\", {min: 0, max: 6}) )).out(o0)\n\n\nsrc(s1).scale([0.7, 1.1].fast(2).smooth()).rotate(midi(\"red\", {min: 0, max:Math.PI*4})).out(o1)\n\nsrc(o0).mult(o1, midi(\"yellow\")).out(o2);\n\nsrc(o2).blend(src(o3).scale([1,1.06]),  midi(65, {min: 0.2, max:0.95})).out(o3)\n\nrender(o3);\n\n",
     "bpm": "140",
     "midi": true
   },
