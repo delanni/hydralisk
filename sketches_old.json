@@ -1,0 +1,654 @@
+[
+  {
+    "name": "Eye of the nigh",
+    "type": "code",
+    "code": "\nvar hori = osc(1,1,1)\n\t.scale([1, 1.5])\nvar verti = osc(1)\n\t.rotate([Math.PI / 2, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 4 * -3])\n\nhori.blend(verti, [0.1, 0.9].fast(6 / 8)\n\t\t.smooth())\n\t.out(o0)\n\nsrc(o0)\n\t.modulate(hori.blend(verti, [-1, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 10)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [3, 1, -1, 3, -6])\n\t.blend(src(o3)\n\t\t.scale(1.2).rotate(() => mouse.x / 100))\n\t.sub(src(o3).scale(1.1).mask(shape([10, 100].smooth()).scale(() => 3*Math.sin(time/4))))\n\t.brightness(() => mouse.y/1000)\n\t.saturate(1.2)\n\t.hue(() => 1)\n\t.out(o3)\n\nrender(o3)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Eye of the nigh 4d",
+    "type": "code",
+    "code": "\nvar hori = osc(1,1,1)\n\t.scale([1, 1.5])\nvar verti = osc(1)\n\t.rotate([Math.PI / 2, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 4 * -3])\n\nhori.blend(verti, [0.1, 0.9].fast(6 / 8)\n\t\t.smooth())\n\t.out(o0)\n\nsrc(o0)\n\t.modulate(hori.blend(verti, [-1, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 10)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [3, 1, -1, 3, -6])\n\t.blend(src(o3)\n           .kaleid(5)\n\t\t.scale(1.2).rotate(() => mouse.x / 100))\n\t.sub(src(o3).scale(1.1).mask(shape([10, 100].smooth()).scale(() => 9*Math.sin(time/8))),0.7)\n\t.sub(src(o3).scale(1.13).mask(shape([5, 10].smooth()).scale(() => 7*Math.sin(time/7))),0.3)\n\t.brightness(() => mouse.y/1000)\n\t.saturate(1.2)\n\t.hue(() => Math.sin(time))\n\t.blend(src(o3), 0.9)\n\t.out(o3)\n\nrender(o3)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Eye of the nigh 43d",
+    "type": "code",
+    "code": "\nvar hori = osc(2, 2, 5)\n\t.scale([1, 1.5]);\nvar verti = osc(1.95, 2,2)\n\t.rotate([Math.PI / 2.104, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 6.636 * -1.758]);\nhori.blend(verti, [0.014, 1.013].fast(6 / 0.441)\n\t\t.smooth())\n\t.out(o0);\nsrc(o0)\n\t.modulate(hori.blend(verti, [-0.14, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1);\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 6.66)))\n\t.out(o2);\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [5.21, 1, -1.565, 3, -1.233])\n\t.blend(src(o3)\n\t\t.kaleid(Math.random() * 5 + 3)\n\t\t.scale(0.549)\n\t\t.rotate(() => mouse.x / 134.588))\n\t.sub(src(o3)\n\t\t.scale(1.028)\n\t\t.mask(shape([10, 58.096].smooth())\n\t\t\t.scale(() => 9 * Math.sin(time / 15.154))), 0.7)\n\t.sub(src(o3)\n\t\t.scale(0.158)\n\t\t.mask(shape([5, 18.356].smooth())\n\t\t\t.scale(() => 7 * Math.sin(time / 12.192))), 0.35)\n\t.brightness(() => mouse.y / 1000)\n\t.saturate(1.626)\n\t.hue(() => Math.sin(time))\n\t.blend(src(o3), 0.9)\n\t.out(o3);\nrender(o3);",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Glitch crystals",
+    "type": "code",
+    "code": "\nconst COORDS = [\n\t[-1, -1],\n\t[0, -1],\n\t[1, -1],\n\t[-1, 0],\n\t[0, 0],\n\t[1, 0],\n\t[-1, 1],\n\t[0, 1],\n\t[1, 1]\n]\n\nvar c = (r = Math.random() * Math.PI - Math.PI / 2) => shape(Math.random() * 4 + 3)\n\t.scale(1, 2)\n\t.rotate(r, 0.1 * r)\n\t.color(() => Math.sin(time * r), 1 - r, (r + Math.random()) % 1)\n\t.hue(() => time * r / 10)\n\nc(Math.random())\n\t.blend(c())\n\t.blend(c())\n\t.out(o0)\n\nvar zy = (i) => src(o0)\n\t.scale(1 / 3)\n\t.rotate(0, Math.random() * i - 3)\n\t.mask(shape(4)\n\t\t.scale(1.093))\n\t.scrollX(1 / 3 * COORDS[i][0])\n\t.scrollY(1 / 3 * COORDS[i][1])\n\t.scrollX(0, 0.2)\n\nzy(0)\n\t.add(zy(1))\n\t.add(zy(2))\n\t.add(zy(3))\n\t.add(zy(4))\n\t.add(zy(5))\n\t.add(zy(6))\n\t.add(zy(7))\n\t.add(zy(8))\n\t.out(o1)\n\nsrc(o0)\n\t.mult(o1, 0.8)\n\t.diff(src(o2)\n\t\t.blend(src(o2)\n\t\t\t.scale(0.7)), [1, 0, -2].fast(1 / 10)\n\t\t.smooth())\n\t.out(o2)\n\nsrc(o2)\n\t.scale(-1.01)\n\t.scrollX(0, 0.1)\n\t.brightness(0.3)\n\t.diff(o2)\n\t.mult(src(o0)\n\t\t.brightness(0.3))\n\t.add(o2)\n\t.out(o3)\n\nrender(o3)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Alley crystals",
+    "type": "code",
+    "code": "const COORDS = [\n\t[-0.495, -0.082],\n\t[0, -1.828],\n\t[0.14, -1],\n\t[-0.526, 0],\n\t[0.721, 0.745],\n\t[0.94, 0.59],\n\t[-1, 1.002],\n\t[0.513, 1],\n\t[1.383, 1.603]\n];\nvar c = (r = Math.random() * Math.PI - Math.PI / 1.566) => shape(Math.random() * 4 + 3)\n\t.scale(1.832, 3.921)\n\t.rotate(r, 0.128 * r)\n\t.color(() => Math.sin(time * r), 1 - r, (r + Math.random()) % 1.817)\n\t.hue(() => time * r / 7.517);\nc(Math.random())\n\t.blend(c())\n\t.blend(c())\n\t.out(o0);\nvar zy = i => src(o0)\n\t.scale(0.514 / 4.27)\n\t.rotate(0.123, Math.random() * i - 3)\n\t.mask(shape(4)\n\t\t.scale(0.613))\n\t.scrollX(0.742 / 0.097 * COORDS[i][0])\n\t.scrollY(0.139 / 3 * COORDS[i][1])\n\t.scrollX(0.973, 0.059);\nzy(0)\n\t.add(zy(1))\n\t.add(zy(2))\n\t.add(zy(3))\n\t.add(zy(4))\n\t.add(zy(5))\n\t.add(zy(6))\n\t.add(zy(7))\n\t.add(zy(8))\n\t.out(o1);\nsrc(o0)\n\t.mult(o1, 0.96)\n\t.diff(src(o2)\n\t\t.blend(src(o2)\n\t\t\t.scale(1.201)), [1.771, 0.59, -2].fast(1.613 / 15.721)\n\t\t.smooth())\n\t.out(o2);\nsrc(o2)\n\t.scale(-0.639)\n\t.scrollX(0.865, 0.022)\n\t.brightness(0.3)\n\t.diff(o2)\n\t.mult(src(o0)\n\t\t.brightness(0.251))\n\t.add(o2)\n\t.add(o1)\n\t.out(o3);\nrender(o3);",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Zumicubi",
+    "type": "code",
+    "code": "\nvar c1 = shape(4)\n\t.scale(() => Math.sin(time /60 * Math.tan(time/69))*3)\n\t.mult(osc(1, 1, 1)\n\t\t.rotate(Math.PI / 2))\n\nc1.out(o0)\n\nsrc(o0)\n\t.diff(src(o0)\n\t\t.scale(1.1))\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o1)\n\t\t.scale(0.1, 3), 0.91)\n\t.blend(src(o2), 0.8)\n\t.blend(src(o2)\n\t\t.rotate(Math.PI / 2))\n\t.diff(src(o2)\n\t\t.mult(osc(1, 1, 2)))\n\t.add(src(o1))\n\t.sub(src(o0))\n\t.out(o2)\n\nsrc(o2)\n\t.add(src(o3)\n\t\t.scale(0.9)\n         .scrollX(() => Math.sin(time))\n         \n         .scrollY(() => Math.cos(time*.9))\n\t\t.rotate(0.0, Math.random() * 0.1 - 0.05), [-1, 1].fast(0.4)\n\t\t.smooth(0.9))\n.add(src(o2))\n\t.out(o3)\n\nrender(o3)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Welcome to the yungle",
+    "type": "code",
+    "code": "\nosc(1.1, -1, 4)\n\t.rotate(0, 0.2)\n\t.out(o0)\n\nsrc(o0)\n\t.repeat(10, 10)\n\t.diff(o0)\n\t.out(o1)\n\nsrc(o1)\n\t.scale(() => Math.sin(time / 10) * 100)\n\t.out(o2)\n\nsrc(o1)\n\t.mult(src(o1)\n\t\t.rotate(Math.PI / 2))\n\t.add(o1)\n\t.rotate(0, -0.2)\n\t.out(o2)\n\n\nsrc(o2)\n\t.blend(src(o2)\n\t\t.scale(4), [0.1, 0.9].fast(0.1).smooth())\n\t.diff(src(o2)\n\t\t.scrollY(0, Math.PI / 10)\n\t\t.scale(0.3))\n\t.diff(src(o0)).diff(o1)\n\t.mult(src(o0)\n\t\t.rotate(0, 0.2))\n\t.diff(o1)\n\t.out(o3)\n\nrender()",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Burning squares",
+    "type": "code",
+    "code": "shape(4)\n\t.scale(1, height / width)\n\t.modulate(noise(4,2,4), [0,1].fast(0.1).smooth())\n\t.mult(osc(1,0.1,1).kaleid(10))\n\t.rotate(0,-0.15)\n\t.out(o0)\n\nsrc(o0)\n\t.blend(src(o0)\n\t\t.scale(0.8)\n\t\t.rotate(0.3, 0.4))\n\t.blend(src(o1)\n\t\t.scroll(0.2)\n\t\t.kaleid(4))\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o1)\n\t\t.scale(0.9))\n\t.add(src(o1)\n\t\t.scale(0.8))\n\t.add(src(o1)\n\t\t.scale(0.7))\n\t.rotate(0, -0.2)\n\t.diff(src(o1)\n\t\t.scale(() => Math.log(Math.min(3000, Math.max(0.4, Math.tan(time / 10)*Math.cos(time/10/2))))))\n\t.out(o2)\n\nsrc(o2).diff(src(o3).repeat(3,3).kaleid(4).rotate(0.1,0.1)).out(o3)\n\nrender(o3)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Golyok",
+    "type": "code",
+    "code": "\nfunction generateFMWave(time, periodLength) {\n  // Calculate the angular frequency (2 * pi / periodLength)\n  const angularFrequency = (2 * Math.PI + periodLength) / periodLength;\n\n  // Calculate the frequency modulation factor (sin(time))\n  const modulationFactor = Math.sin(time*2+periodLength)/60;\n\n  // Calculate the instantaneous frequency\n  const instantaneousFrequency = angularFrequency * modulationFactor;\n\n  // Calculate the value of the sinusoid at the current time\n  const amplitude = 1; // You can adjust the amplitude as needed\n  const waveValue = amplitude * Math.sin(instantaneousFrequency * time);\n\n  return waveValue;\n}\n\nconst o = (periodLength) => ({time}) => generateFMWave(time/5, periodLength) / 4;\n\nshape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10))\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n  \n  \n  .out(o0)\n\n\nrender(o0)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Golyok 2",
+    "type": "code",
+    "code": "\nfunction generateFMWave(time, periodLength) {\n\t// Calculate the angular frequency (2 * pi / periodLength)\n\tconst angularFrequency = (2 * Math.PI + periodLength) / periodLength;\n\n\t// Calculate the frequency modulation factor (sin(time))\n\tconst modulationFactor = Math.sin(time * 2 + periodLength) / 60;\n\n\t// Calculate the instantaneous frequency\n\tconst instantaneousFrequency = angularFrequency * modulationFactor;\n\n\t// Calculate the value of the sinusoid at the current time\n\tconst amplitude = 1; // You can adjust the amplitude as needed\n\tconst waveValue = amplitude * Math.sin(instantaneousFrequency * time);\n\n\treturn waveValue;\n}\n\nconst o = (periodLength, r = 1) => ({\n\ttime\n}) => generateFMWave(time / 5, periodLength) / 4 * r;\n\nshape(60)\n\t.scale([0.4 * Math.random(), 0.7])\n\t.scrollX(o(Math.random() * 10, Math.random() + 1))\n\t.scrollY(o(Math.random() * 10, Math.random() + 1))\n\t.add(shape(60)\n\t\t.scale(0.4)\n\t\t.scrollX(o(Math.random() * 10, Math.random()))\n\t\t.scrollY(o(Math.random() * 10, Math.random())))\n\n\t.add(shape(60)\n\t\t.scale(0.4 * Math.random())\n\t\t.scrollX(o(Math.random() * 10))\n\t\t.scrollY(o(Math.random() * 10)))\n\n\t.add(shape(60)\n\t\t.scale(0.4 * Math.random())\n\t\t.scrollX(o(Math.random() * 10))\n\t\t.scrollY(o(Math.random() * 10)))\n\n\t.out(o0)\n\nsrc(o0)\n\t.scale([0.5, 1, 0.8, 1, 0.7].smooth())\n\t.blend(src(o0))\n\t.blend(src(o1)\n\t\t.color(0.8, 0.6, 0.3)\n\t\t.hue(() => mouse.y / height))\n\t.add(o1, () => mouse.x / width - 0.2)\n\t.blend(shape(3)\n\t\t.kaleid(5), () => mouse.y / height - 1)\n\t.out(o1)\n\nsrc(o1)\n\t.scale([0.9, 0.99].smooth())\n\t.blend(src(o2)\n\t\t.rotate([0.1, -0.3].smooth(), 0.01))\n\t.out(o2)\n\nsrc(o1)\n\t.mult(src(o2)\n\t\t.scale(1.1), 0.1)\n\t.diff(src(o2)\n\t\t//.kaleid(4)\n    )\n\t.out(o2)\n\nsrc(o2)\n\t.invert()\n\t.diff(src(o2)\n\t\t.scale(1.1)\n\t\t.rotate(0.2, 0.1))\n\t.invert()\n\t.blend(o3)\n\t.scale([1, 1.1])\n\t.out(o3)\n\nrender(o3)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "windyred",
+    "type": "code",
+    "code": "\nbpm = 140\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\n\n\nshape(4)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t//.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.diff(src(o0)\n\t\t.scale([0.8, 1].fast(0.2)\n\t\t\t.smooth()))\n\t.scroll(() => -mouse.x / width*2, () => -mouse.y / height + 0.5)\n\t.diff(shape(4)\n\t\t.scale([0.3, 0.7].smooth(2)))\n\t.sub(shape(4)\n\t\t.scale(saw({\n\t\t\tmin: 0.7,\n\t\t\tmax: 1.1\n\t\t})), [0, 1].smooth())\n\t.out(o0)\n\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.mult(osc(1, 1, 1)\n\t\t\t.kaleid(10)), () => mouse.x / width)\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o2), 0.1)\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2)\n\t\t.kaleid(6))\n\t.diff(o0)\n\t.out(o3)\n\nrender(o3)",
+    "bpm": "140",
+    "midi": null
+  },
+  {
+    "name": "django x pigeon",
+    "type": "code",
+    "code": "\nbpm = 140\n\nbpm = bpm/4\n\ns0.initImage(\"https://cataas.com/cat/says/DJANGO%20x%20PIGEON?a=x\")\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\n\n\nshape(4)\n\t.scale(1.5)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.out(o0)\n\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.mult(osc([10,5,2,-1, 15], [10, 1, 4,0], 2)\n\t\t\t.kaleid(10)))\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.add(src(s0).scale(0.3).mask(shape(4)).scale(1.5).rotate(-0.2), 0.8)\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n  .out(o1)\n\n\nrender(o1)",
+    "bpm": "140",
+    "midi": null
+  },
+  {
+    "name": "catshit",
+    "type": "code",
+    "code": "\nbpm = 140 / 4\n\ns0.initImage(\"https://cataas.com/cat/says/DJANGO%20x%20PIGEON?a=x\")\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\n\n\nshape(rand([3,4,5,6]))\n\t.scale(1.5)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.out(o0)\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.diff(osc([10,5,2,-1, 15], [10, 1, 4,0], 2).saturate(0.4)\n\t\t\t.kaleid(10)).brightness(0.1), 0.8)\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.blend(o0,0.1)\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n\t.add(src(s0).scale(0.3).mask(shape(4)).scale(1.9, 0.9).rotate(-0.2, [Math.random()/10, Math.random()/10].fast(0.25)), 0.99)\n  .out(o1)\n\n\nrender(o1)",
+    "bpm": "140",
+    "midi": null
+  },
+  {
+    "name": "freezenoize",
+    "type": "code",
+    "code": "\nbpm = 140\n\nnoise([4,10].fast(0.01).smooth(), 1, 4)\n\t.diff(src(o0)\n\t\t.mult(osc(1, 1, 0.9)\n\t\t\t.kaleid(10)))\n\t.out(o0)\n\nsrc(o0)\n\t.diff(src(o0)\n\t\t.rotate(1, 1))\n\t.mult(osc(1, 1, 0.4)\n\t\t.kaleid(10).brightness(0.8))\n\t.modulate(noise(4, 4, 4))\n\t.scale(0.6)\n\t.out(o1)\n\nsrc(o1)\n\t.rotate(0, -1)\n\t.diff(src(o1)\n\t\t.pixelate(()=> Math.sin(time/5) * width / 20, ()=> Math.sin(time/6) * height / 20))\n\t.out(o2)\n\nsrc(o2)\n\t.diff(src(o2).rotate(1,1))\n\t.mult(src(o0).invert([0,1].fast(0.25).smooth()), -1)\n\t.blend(o3, () => Math.sin(time/2)/2 + 0.5)\n\t.blend(o0, () => (mouse.x/width-0.5) % 1)\n  .out(o3)\n\nrender(o3)",
+    "bpm": "140",
+    "midi": null
+  },
+  {
+    "name": "zomething else",
+    "type": "code",
+    "code": "\nbpm = 140\n\nnoise([4, 10].fast(0.01)\n\t\t.smooth(), 1, 4)\n\t.diff(src(o0)\n\t\t.mult(osc(1, [-1, 1].smooth(), 0.9)))\n\t.blend(src(o0)\n\t\t.rotate(() => a.fft[0]))\n\t.mask(shape(100)\n\t\t.scale(2.4))\n\t.out(o0)\n\nsrc(o0)\n\t.scale(-1)\n\t.modulate(src(o1)\n\t\t.scale([1, 1.1])\n\t\t.rotate([0, Math.PI].fast(0.25)))\n\t.out(o1)\n\nsrc(o1)\n\t.repeat(4, 4)\n\t.scale(1.5)\n\t.scroll(() => Math.sin(time * 0.4), () => Math.cos(time * 0.33))\n\t.diff(src(o0)\n\t\t.mask(shape(4)\n\t\t\t.scale(1.2, 0.6)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(o3, 0.9)\n\t\t.add(src(o0)\n\t\t.mask(shape(4)\n\t\t\t.scale(1.2, 0.6)), 0.8)\n\t.diff(o2)\n\t.out(o3)\n\nrender(o3)",
+    "bpm": "140",
+    "midi": null
+  },
+  {
+    "name": "colors and rotating rhombuses",
+    "type": "code",
+    "code": "\nbpm = 170\n\nshape(4).mult(osc(8,() => Math.sin(time/10)/10,2)).out(o0)\n\nsrc(o0).scale(() => Math.sin(time) + 1).out(o1)\n\nsrc(o0).diff(src(o1).scale(() => Math.sin(time/4) + 1).rotate(1.1, 0.9)).out(o2)\n\nsrc(o2).blend(src(o3), 0.9).scale([0.5,2]).add(o2, 0.1).scrollX(0,0.2).layer(o2).out(o3)\n\nrender(o3)",
+    "bpm": "170",
+    "midi": null
+  },
+  {
+    "name": "Random 54961",
+    "type": "code",
+    "code": "noise(4, 0.2)\n\t.color(0.8, 0.7, 0.2)\n\t.invert()\n\t.colorama(2, 3)\n\t.mult(osc(1, 1, 1)\n\t\t.kaleid(10))\n\t.kaleid(4)\n\t.modulateHue(noise(10, 0.2))\n\t.out(o0)\n\nrender(o0)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Hosszasan valtozo",
+    "type": "code",
+    "code": "\nbpm=140\n\nconst s = osc([10,100].fast(0.125).ease(\"easeInOutCubic\"), -0.1, 1)\n\t.g()\n\t.color(1, [0, 0.5, 0, 0].fast(0.125)\n\t\t.smooth(), [0, 0, 0.5].smooth())\n\nconst ripples = s.kaleid([1,5,2,9,3,30].fast(0.125)).invert()\n\nconst noize = voronoi([10, 40].fast(0.125)\n\t\t.smooth(), 10, 1).modulate(shape([3,4,5]))\n\t.scale([3, 4])\n\t.scrollY(0, -0.5)\n\t.kaleid()\n\t.rotate(0, 0.1)\n\t.brightness(0.1)\n\nnoize.out(o1)\n\nripples.out(o0)\n\nnoize.mult(ripples,0.3)\n\t.out(o3)\n\nsrc(o0)\n\t.diff(src(o3)\n\t\t.scale([0.5, 1.5].fast(0.25).ease(\"easeInOut\"))\n\t\t.modulateRotate(src(o1)\n\t\t\t.rotate(0, -0.2)\n\t\t\t.scale([0.2, 3].fast(0.125).smooth())), 0.1)\n\t\t.diff(src(o2).brightness([0,0.4].fast(0.01).smooth()), 1)\n  .contrast([0.9,1].ease(\"easeInCubic\"))\n\t.scale(1)\n  .out(o2)\n\nrender(o2)",
+    "bpm": 0,
+    "midi": null
+  },
+  {
+    "name": "Glitchy Pentagon",
+    "midi": true,
+    "bpm": 135,
+    "type": "url",
+    "url": "https://hydra.ojack.xyz/?code=JTJGJTJGJTIwcmVnaXN0ZXIlMjBXZWJNSURJJTBBbmF2aWdhdG9yLnJlcXVlc3RNSURJQWNjZXNzKCklMEElMjAlMjAlMjAlMjAudGhlbihvbk1JRElTdWNjZXNzJTJDJTIwb25NSURJRmFpbHVyZSklM0IlMEElMEFmdW5jdGlvbiUyMG9uTUlESVN1Y2Nlc3MobWlkaUFjY2VzcyklMjAlN0IlMEElMjAlMjAlMjAlMjBjb25zb2xlLmxvZyhtaWRpQWNjZXNzKSUzQiUwQSUyMCUyMCUyMCUyMHZhciUyMGlucHV0cyUyMCUzRCUyMG1pZGlBY2Nlc3MuaW5wdXRzJTNCJTBBJTIwJTIwJTIwJTIwdmFyJTIwb3V0cHV0cyUyMCUzRCUyMG1pZGlBY2Nlc3Mub3V0cHV0cyUzQiUwQSUyMCUyMCUyMCUyMGZvciUyMCh2YXIlMjBpbnB1dCUyMG9mJTIwbWlkaUFjY2Vzcy5pbnB1dHMudmFsdWVzKCkpJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwaW5wdXQub25taWRpbWVzc2FnZSUyMCUzRCUyMGdldE1JRElNZXNzYWdlJTNCJTBBJTIwJTIwJTIwJTIwJTdEJTBBJTdEJTBBJTBBZnVuY3Rpb24lMjBvbk1JRElGYWlsdXJlKCklMjAlN0IlMEElMjAlMjAlMjAlMjBjb25zb2xlLmxvZygnQ291bGQlMjBub3QlMjBhY2Nlc3MlMjB5b3VyJTIwTUlESSUyMGRldmljZXMuJyklM0IlMEElN0QlMEElMEElMkYlMkZjcmVhdGUlMjBhbiUyMGFycmF5JTIwdG8lMjBob2xkJTIwb3VyJTIwY2MlMjB2YWx1ZXMlMjBhbmQlMjBpbml0JTIwdG8lMjBhJTIwbm9ybWFsaXplZCUyMHZhbHVlJTBBdmFyJTIwY2MlM0RBcnJheSgxMjgpLmZpbGwoMC41KSUwQSUwQWdldE1JRElNZXNzYWdlJTIwJTNEJTIwZnVuY3Rpb24obWlkaU1lc3NhZ2UpJTIwJTdCJTBBJTIwJTIwJTIwJTIwdmFyJTIwYXJyJTIwJTNEJTIwbWlkaU1lc3NhZ2UuZGF0YSUyMCUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMHZhciUyMGluZGV4JTIwJTNEJTIwYXJyJTVCMSU1RCUwQSUyMCUyMCUyMCUyMCUyRiUyRmNvbnNvbGUubG9nKCdNaWRpJTIwcmVjZWl2ZWQlMjBvbiUyMGNjJTIzJyUyMCUyQiUyMGluZGV4JTIwJTJCJTIwJyUyMHZhbHVlJTNBJyUyMCUyQiUyMGFyciU1QjIlNUQpJTIwJTIwJTIwJTIwJTJGJTJGJTIwdW5jb21tZW50JTIwdG8lMjBtb25pdG9yJTIwaW5jb21pbmclMjBNaWRpJTBBJTIwJTIwJTIwJTIwdmFyJTIwdmFsJTIwJTNEJTIwKGFyciU1QjIlNUQlMkIxKSUyRjEyOC4wJTIwJTIwJTJGJTJGJTIwbm9ybWFsaXplJTIwQ0MlMjB2YWx1ZXMlMjB0byUyMDAuMCUyMC0lMjAxLjAlMEElMjAlMjAlMjAlMjBjYyU1QmluZGV4JTVEJTNEdmFsJTBBJTdEJTBBJTBBYnBtJTIwJTNEJTIwMTM1JTBBJTBBc2hhcGUoNCklMEElMDkuc2Nyb2xsWCgwJTJDJTIwMC4yMzIzOSklMEElMDkuc2Nyb2xsWSgwJTJDJTIwMC4zKSUwQSUwOS5rYWxlaWQoNSklMEElMDkuZGlmZihzaGFwZSg1KSUwQSUwOSUwOS5zY3JvbGxYKDAlMkMlMjAtMC4xMTExKSUwQSUwOSUwOS5zY3JvbGxZKDAlMkMlMjAtTWF0aC5yYW5kb20oKSUyMCUyRiUyMDEwKSUwQSUwOSUwOS5rYWxlaWQoNykpJTBBJTA5LnJvdGF0ZSgwLjMlMkMlMjAwLjAxKSUwQSUwOS5yZXBlYXQoMiUyQyUyMDEpJTBBJTA5Lm91dChvMCklMEElMEFzcmMobzApJTBBJTA5LmJsZW5kKG8xJTJDJTIwMC45OSklMEElMDkucm90YXRlKDAlMkMlMjAlNUIwLjAwMSUyQyUyMC0wLjAwMSU1RC5mYXN0KDAuMDA0KSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkuYWRkKG8wJTJDJTIwMC4xKSUwQSUwOS5vdXQobzEpJTBBJTBBb3glMjAlM0QlMjBvc2MoNiUyQyUyMC0wLjElMkMlMjAlNUIwJTJDJTIwMiU1RC5mYXN0KDAuMDEpJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwOS5icmlnaHRuZXNzKDAuMSklMEElMEFzcmMobzEpJTBBJTA5Lm11bHQob3guc2F0dXJhdGUoMC4yKSklMEElMDkuZGlmZihzaGFwZSg1KSUwQSUwOSUwOS5zY2FsZSgoJTdCJTBBJTA5JTA5JTA5dGltZSUwQSUwOSUwOSU3RCklMjAlM0QlM0UlMjAyJTIwKiUyMCh0aW1lJTIwJTI1JTIwKDYwJTIwJTJGJTIwYnBtKSkpKSUwQSUwOS5vdXQobzIpJTBBJTBBJTBBc3JjKG8yKSUwQSUwOS5ibGVuZChzcmMobzIpJTBBJTA5JTA5LnNjYWxlKCgpJTIwJTNEJTNFJTIwY2MlNUIwJTVEJTJGMTAwKSUwQSUwOSUwOS5kaWZmKG8xKSUwQSUwOSUwOS5kaWZmKG94LmthbGVpZCgxMCkpJTJDJTIwJTVCMCUyQyUyMDElNUQuZmFzdCgwLjEpJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwOS5vdXQobzMpJTBBJTBBcmVuZGVyKG8zKQ%3D%3D"
+  },
+  {
+    "name": "Fura Fire",
+    "midi": false,
+    "bpm": 130,
+    "type": "url",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTNEMTMwJTBBc2hhcGUoNS44OSklMEElMDkuc2Nyb2xsKDAuMTEzJTJDJTIwLTAuMyklMEElMDkucm90YXRlKC0yLjYpJTBBJTA5Lm11bHQob3NjKDMwJTJDJTIwLTAuMDUlMkMlMjAwLjczNCkua2FsZWlkKDEwKSUwQSUwOSUwOS5yb3RhdGUoTWF0aC5QSSUyMCUyRiUyMDIuMjYzKSklMEElMDkua2FsZWlkKC42NykuYmxlbmQoc3JjKG8wKS5zY2FsZSgwLjkpKSUwQSUwOS5zY2FsZSgwLjc1OSklMEElMDkucm90YXRlKDAuMDA5JTJDJTIwMC4yMDYpJTBBJTA5Lm1vZHVsYXRlKG8yJTJDMC4wNCklMEElMDkub3V0KG8wKSUzQiUwQXNyYyhvMCklMEElMDkuc2NhbGUoMC4wMjEpJTBBJTA5Lm91dChvMSklM0IlMEFzb2xpZCgpJTBBJTA5LmFkZChub2lzZSglNUIzJTJDNCU1RC5zbW9vdGgoMiklMkMlMjAwLjExNyklMEElMDklMDkucmVwZWF0KDQlMkM0KSUwQSUwOSUwOS5yb3RhdGUoTWF0aC5QSSUyMCUyRiUyMDIpKSUwQSUwOS5vdXQobzIpJTNCJTBBc3JjKG8xKSUwQSUwOS5tb2R1bGF0ZShvMiUyQzEpJTBBJTA5LmJsZW5kKHNyYyhvMykuc2NhbGUoMS4wMDEpJTJDMC45KSUwQSUwOS5hZGQobzAlMkMlNUIwLjElMkMuMyU1RC5mYXN0KDAuMSkuc21vb3RoKCkpJTBBJTA5Lm91dChvMyklM0IlMEElMEFyZW5kZXIobzMpJTNC"
+  },
+  {
+    "type": "url",
+    "name": "Random 54477",
+    "url": "https://hydra.ojack.xyz/?code=JTJGJTJGJTIwcmVnaXN0ZXIlMjBXZWJNSURJJTBBbmF2aWdhdG9yLnJlcXVlc3RNSURJQWNjZXNzKCklMEElMjAlMjAlMjAlMjAudGhlbihvbk1JRElTdWNjZXNzJTJDJTIwb25NSURJRmFpbHVyZSklM0IlMEElMEFmdW5jdGlvbiUyMG9uTUlESVN1Y2Nlc3MobWlkaUFjY2VzcyklMjAlN0IlMEElMjAlMjAlMjAlMjBjb25zb2xlLmxvZyhtaWRpQWNjZXNzKSUzQiUwQSUyMCUyMCUyMCUyMHZhciUyMGlucHV0cyUyMCUzRCUyMG1pZGlBY2Nlc3MuaW5wdXRzJTNCJTBBJTIwJTIwJTIwJTIwdmFyJTIwb3V0cHV0cyUyMCUzRCUyMG1pZGlBY2Nlc3Mub3V0cHV0cyUzQiUwQSUyMCUyMCUyMCUyMGZvciUyMCh2YXIlMjBpbnB1dCUyMG9mJTIwbWlkaUFjY2Vzcy5pbnB1dHMudmFsdWVzKCkpJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwaW5wdXQub25taWRpbWVzc2FnZSUyMCUzRCUyMGdldE1JRElNZXNzYWdlJTNCJTBBJTIwJTIwJTIwJTIwJTdEJTBBJTdEJTBBJTBBZnVuY3Rpb24lMjBvbk1JRElGYWlsdXJlKCklMjAlN0IlMEElMjAlMjAlMjAlMjBjb25zb2xlLmxvZygnQ291bGQlMjBub3QlMjBhY2Nlc3MlMjB5b3VyJTIwTUlESSUyMGRldmljZXMuJyklM0IlMEElN0QlMEElMEElMkYlMkZjcmVhdGUlMjBhbiUyMGFycmF5JTIwdG8lMjBob2xkJTIwb3VyJTIwY2MlMjB2YWx1ZXMlMjBhbmQlMjBpbml0JTIwdG8lMjBhJTIwbm9ybWFsaXplZCUyMHZhbHVlJTBBdmFyJTIwY2MlM0RBcnJheSgxMjgpLmZpbGwoMC41KSUwQSUwQWdldE1JRElNZXNzYWdlJTIwJTNEJTIwZnVuY3Rpb24obWlkaU1lc3NhZ2UpJTIwJTdCJTBBJTIwJTIwJTIwJTIwdmFyJTIwYXJyJTIwJTNEJTIwbWlkaU1lc3NhZ2UuZGF0YSUyMCUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMHZhciUyMGluZGV4JTIwJTNEJTIwYXJyJTVCMSU1RCUwQSUyMCUyMCUyMCUyMCUyRiUyRmNvbnNvbGUubG9nKCdNaWRpJTIwcmVjZWl2ZWQlMjBvbiUyMGNjJTIzJyUyMCUyQiUyMGluZGV4JTIwJTJCJTIwJyUyMHZhbHVlJTNBJyUyMCUyQiUyMGFyciU1QjIlNUQpJTIwJTIwJTIwJTIwJTJGJTJGJTIwdW5jb21tZW50JTIwdG8lMjBtb25pdG9yJTIwaW5jb21pbmclMjBNaWRpJTBBJTIwJTIwJTIwJTIwdmFyJTIwdmFsJTIwJTNEJTIwKGFyciU1QjIlNUQlMkIxKSUyRjEyOC4wJTIwJTIwJTJGJTJGJTIwbm9ybWFsaXplJTIwQ0MlMjB2YWx1ZXMlMjB0byUyMDAuMCUyMC0lMjAxLjAlMEElMjAlMjAlMjAlMjBjYyU1QmluZGV4JTVEJTNEdmFsJTBBJTdEJTBBJTBBYnBtJTIwJTNEJTIwMTM1JTBBJTBBc2hhcGUoNCklMEElMDkuc2Nyb2xsWCgwJTJDJTIwMC4yMzIzOSklMEElMDkuc2Nyb2xsWSgwJTJDJTIwMC4zKSUwQSUwOS5rYWxlaWQoNSklMEElMDkuZGlmZihzaGFwZSg1KSUwQSUwOSUwOS5zY3JvbGxYKDAlMkMlMjAtMC4xMTExKSUwQSUwOSUwOS5zY3JvbGxZKDAlMkMlMjAtTWF0aC5yYW5kb20oKSUyMCUyRiUyMDEwKSUwQSUwOSUwOS5rYWxlaWQoNykpJTBBJTA5LnJvdGF0ZSgwLjMlMkMlMjAwLjAxKSUwQSUwOS5yZXBlYXQoMiUyQyUyMDEpJTBBJTA5Lm91dChvMCklMEElMEFzcmMobzApJTBBJTA5LmJsZW5kKG8xJTJDJTIwMC45OSklMEElMDkucm90YXRlKDAlMkMlMjAlNUIwLjAwMSUyQyUyMC0wLjAwMSU1RC5mYXN0KDAuMDA0KSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkuYWRkKG8wJTJDJTIwMC4xKSUwQSUwOS5vdXQobzEpJTBBJTBBb3glMjAlM0QlMjBvc2MoNiUyQyUyMC0wLjElMkMlMjAlNUIwJTJDJTIwMiU1RC5mYXN0KDAuMDEpJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwOS5icmlnaHRuZXNzKDAuMSklMEElMEFzcmMobzEpJTBBJTA5Lm11bHQob3guc2F0dXJhdGUoMC4yKSklMEElMDkuZGlmZihzaGFwZSg1KSUwQSUwOSUwOS5zY2FsZSgoJTdCJTBBJTA5JTA5JTA5dGltZSUwQSUwOSUwOSU3RCklMjAlM0QlM0UlMjAyJTIwKiUyMCh0aW1lJTIwJTI1JTIwKDYwJTIwJTJGJTIwYnBtKSkpKSUwQSUwOS5vdXQobzIpJTBBJTBBJTBBc3JjKG8yKSUwQSUwOS5ibGVuZChzcmMobzIpJTBBJTA5JTA5LnNjYWxlKCgpJTIwJTNEJTNFJTIwY2MlNUIwJTVEJTJGMTAwKSUwQSUwOSUwOS5kaWZmKG8xKSUwQSUwOSUwOS5kaWZmKG94LmthbGVpZCgxMCkpJTJDJTIwJTVCMCUyQyUyMDElNUQuZmFzdCgwLjEpJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwOS5vdXQobzMpJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "bpm": 135,
+    "midi": true
+  },
+  {
+    "type": "url",
+    "name": "Random 16122",
+    "url": "https://hydra.ojack.xyz/?code=Y29uc3QlMjBzY2FsZXIlMjAlM0QlMjBNYXRoLm1heChNYXRoLnJhbmRvbSgpJTJDJTIwMC44KSUzQiUwQWNvbnN0JTIwa2FsZW9pZHMlMjAlM0QlMjBNYXRoLmZsb29yKE1hdGgucmFuZG9tKCklMjAqJTIwMTApJTIwJTJCJTIwMyUzQiUwQSUwQW9zYygxMCUyQyUyMDElMkMlMjAwLjUpJTBBJTA5LmthbGVpZCg0KSUwQSUwOS5zY2FsZShzY2FsZXIpJTBBJTA5LmthbGVpZChrYWxlb2lkcyklMEElMDkuc2NhbGUoc2NhbGVyKSUwQSUwOS5rYWxlaWQoa2FsZW9pZHMpJTBBJTA5LnNjYWxlKHNjYWxlciklMEElMDkua2FsZWlkKGthbGVvaWRzKSUwQSUwOS5zY2FsZShzY2FsZXIpJTBBJTA5LmthbGVpZChrYWxlb2lkcyklMEElMDkuc2NhbGUoc2NhbGVyKSUwQSUwOS5rYWxlaWQoa2FsZW9pZHMpJTBBJTA5LnNjYWxlKHNjYWxlciklMEElMDkua2FsZWlkKGthbGVvaWRzKSUwQSUwOS5zY2FsZShzY2FsZXIpJTBBJTA5LmthbGVpZChrYWxlb2lkcyklMEElMDkuc2NhbGUoc2NhbGVyJTIwJTJGJTIwMiklMEElMDkuZGlmZihzcmMobzApJTBBJTA5JTA5Lmh1ZShNYXRoLnJhbmRvbSgpKSklMEElMDkub3V0KG8wKSUwQSUwQXNyYyhvMCklMEElMDkuYmxlbmQoc3JjKG8xKSUwQSUwOSUwOS5yb3RhdGUoMCUyQyUyMDAuMSklMkMlMjAoKSUyMCUzRCUzRSUyME1hdGguc2luKHRpbWUpJTIwJTJGJTIwMiUyMCUyQiUyMDAuNSklMEElMDkub3V0KG8xKSUwQSUwQXNyYyhvMSklMEElMDkuYWRkKHNyYyhvMiklMEElMDklMDkubWFzayhzaGFwZSgxMDApLm11bHQob3NjKDElMkMxJTJDMSkpKSUwQSUwOSUwOS5zY2FsZSh0JTIwJTNEJTNFJTIwTWF0aC50YW4odGltZSUyMCUyNSUyMChNYXRoLlBJJTIwJTJGJTIwMikpKSUwQSUwOSUwOS5zYXR1cmF0ZSh0JTNEJTNFTWF0aC5zaW4odGltZSkpJTJDJTIwMC41KSUwQSUwOS5tdWx0KG8wJTJDLTAuNCklMEElMDkub3V0KG8yKSUwQSUwQXJlbmRlcihvMik%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Fure",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTNEMTMwJTBBc2hhcGUoNS44OSklMEElMDkuc2Nyb2xsKDAuMTEzJTJDJTIwLTAuMyklMEElMDkucm90YXRlKC0yLjYpJTBBJTA5Lm11bHQob3NjKDMwJTJDJTIwLTAuMDUlMkMlMjAwLjczNCkua2FsZWlkKDEwKSUwQSUwOSUwOS5yb3RhdGUoTWF0aC5QSSUyMCUyRiUyMDIuMjYzKSklMEElMDkua2FsZWlkKC42NykuYmxlbmQoc3JjKG8wKS5zY2FsZSgwLjkpKSUwQSUwOS5zY2FsZSgwLjc1OSklMEElMDkucm90YXRlKDAuMDA5JTJDJTIwMC4yMDYpJTBBJTA5Lm1vZHVsYXRlKG8yJTJDMC4wNCklMEElMDkub3V0KG8wKSUzQiUwQXNyYyhvMCklMEElMDkuc2NhbGUoMC4wMjEpJTBBJTA5Lm91dChvMSklM0IlMEFzb2xpZCgpJTBBJTA5LmFkZChub2lzZSglNUIzJTJDNCU1RC5zbW9vdGgoMiklMkMlMjAwLjExNyklMEElMDklMDkucmVwZWF0KDQlMkM0KSUwQSUwOSUwOS5yb3RhdGUoTWF0aC5QSSUyMCUyRiUyMDIpKSUwQSUwOS5vdXQobzIpJTNCJTBBc3JjKG8xKSUwQSUwOS5tb2R1bGF0ZShvMiUyQzEpJTBBJTA5LmJsZW5kKHNyYyhvMykuc2NhbGUoMS4wMDEpJTJDMC45KSUwQSUwOS5hZGQobzAlMkMlNUIwLjElMkMuMyU1RC5mYXN0KDAuMSkuc21vb3RoKCkpJTBBJTA5Lm91dChvMyklM0IlMEFyZW5kZXIoKSUzQg%3D%3D",
+    "bpm": 130,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Random 7773",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTNEMTMwJTBBc2hhcGUoNS44OSklMEElMDkuc2Nyb2xsKDAuMTEzJTJDJTIwLTAuMyklMEElMDkucm90YXRlKC0yLjYpJTBBJTA5Lm11bHQob3NjKDE0JTJDJTIwLTAuMDUlMkMlMjAwLjczNCkuaHVlKDApLmthbGVpZCgxMCklMEElMDklMDkucm90YXRlKE1hdGguUEklMjAlMkYlMjAyLjI2MykpJTBBJTA5LmthbGVpZCguNjcpLmJsZW5kKHNyYyhvMCkuc2NhbGUoMC45KSklMEElMDkuc2NhbGUoMC43NTkpJTBBJTA5LnJvdGF0ZSgwLjAwOSUyQyUyMDAuMjA2KSUwQSUwOS5tb2R1bGF0ZShvMiUyQzAuMDQpJTBBJTA5Lm91dChvMCklM0IlMEFzcmMobzApJTBBJTA5LnNjYWxlKDAuMDIxKSUwQSUwOS5vdXQobzEpJTNCJTBBc29saWQoKSUwQSUwOS5hZGQobm9pc2UoNCUyQyUyMDAuMTE3KSUwQSUwOSUwOS5yZXBlYXQoNCUyQzQpJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwLnNjYWxlKCU1QjAuNSUyQzAuMSU1RC5mYXN0KDIpLnNtb290aCgxMCkpJTBBJTA5JTA5LnJvdGF0ZShNYXRoLlBJJTIwJTJGJTIwMiklMkMlMjAxKSUwQSUwOS5vdXQobzIpJTNCJTBBc3JjKG8xKSUwQSUwOS5tb2R1bGF0ZShvMiUyQzEpJTBBJTA5LmJsZW5kKHNyYyhvMykuc2NhbGUoMS4wMDEpJTJDMC45KSUwQSUwOS5hZGQobzAlMkMlNUIwLjElMkMuMyU1RC5mYXN0KDAuMSkuc21vb3RoKCkpJTBBJTA5Lm91dChvMyklM0IlMEFyZW5kZXIobzMpJTNC",
+    "bpm": 130,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Bubik",
+    "url": "https://hydra.ojack.xyz/?code=c2hhcGUoMTAwKSUwQSUwOS5kaWZmKHNoYXBlKDEwMCklMEElMDklMDkuc2NhbGUoMC45KSklMEElMDkuc2NhbGUoMSUyQyUyMDAuNyklMEElMDkuc2NhbGUoKCU3QiUwQSUwOSUwOXRpbWUlMEElMDklN0QpJTIwJTNEJTNFJTIwMSUyMCUyQiUyMCh0aW1lJTIwJTI1JTIwc3BiKSUyMCUyRiUyMHNwYiklMEElMDkub3V0KG8wKSUwQSUwQWJwbSUyMCUzRCUyMDEyOSUwQXNwYiUyMCUzRCUyMDYwJTIwJTJGJTIwYnBtJTBBJTBBc3JjKG8wKSUwQSUwOS5zY3JvbGwoKCklMjAlM0QlM0UlMjBNYXRoLnNpbih0aW1lJTIwJTJCJTIwTWF0aC5QSSklMjAlMkYlMjAyJTIwJTJCJTIwMC41JTJDJTIwKCklMjAlM0QlM0UlMjBNYXRoLmNvcyh0aW1lKSUyMCUyRiUyMDIlMjAlMkIlMjAwLjUlMkMlMjBNYXRoLnJhbmRvbSgpJTJDJTIwTWF0aC5yYW5kb20oKSklMEElMDkuc2NhbGUoMC4yKSUwQSUwOS5yb3RhdGUoMCUyQyUyME1hdGgucmFuZG9tKCklMjAlMkYlMjAxMCklMEElMDkuZGlmZihvMCklMEElMDkub3V0KG8xKSUwQSUwQXNyYyhvMSklMEElMDkuYmxlbmQoc3JjKG8xKSUwQSUwOSUwOS5zY2FsZSglNUIwJTJDJTIwMC4wNSUyQyUyMDAuNSUyQyUyMDAuNSU1RC5mYXN0KDAuMSklMEElMDklMDklMDkuc21vb3RoKCkpKSUwQSUwOS5vdXQobzIpJTBBJTBBc3JjKG8yKSUwQSUwOS5kaWZmKHNyYyhvMiklMEElMDklMDkucm90YXRlKC0wLjAxJTJDJTIwLTAuMSklMEElMDklMDkuc2NhbGUoMC4xKSUwQSUwOSUwOS5tdWx0KG9zYygxJTJDJTIwMSUyQyUyMDEpKS5tb2R1bGF0ZShub2lzZSgyJTJDMSklMkMlMjAwLjEpLmludmVydCgpKSUwQSUwOS5ibGVuZChzcmMobzIpLmthbGVpZCgzKSUyQyUyMDAuMSklMEElMDkuYWRkKG8wKSUwQSUwOS5kaWZmKHNyYyhvMykuY29udHJhc3QoJTVCLTElMkMxJTVELmZhc3QoMC4xKS5zbW9vdGgoKSkpJTBBJTA5Lm91dChvMyklMEElMEFyZW5kZXIobzMp",
+    "bpm": 129,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Feketefeher ugralo akarmi ",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTMwJTBBJTBBY29uc3QlMjB4byUyMCUzRCUyMCU1QjElMkMxJTJDMSUyQzElMkMxJTJDMiUyQzMlMkM1JTVEJTBBY29uc3QlMjBibGVuZHklMjAlM0QlMjAlNUIwLjElMkMlMjAwLjElMkMlMjAwLjElMkMlMjAwLjUlMkMlMjAwLjklMkMlMjAwLjk5JTVEJTBBY29uc3QlMjBrYWxlaWRzJTIwJTNEJTIwJTVCNCUyQyUyMDYlMkMlMjA1JTJDJTIwNyUyQyUyMDYlMkMlMjA4JTJDJTIwOSU1RCUwQSUwQXNoYXBlKDQpLnNjYWxlKCU1QjAuNSUyQyUyMDMlNUQuZmFzdCgyKS5lYXNlKCdlYXNlSW5DdWJpYycpKS5pbnZlcnQoJTVCMCUyQzElNUQpLm91dChvMCklMEElMEFzcmMobzApLnJlcGVhdCh4byUyQyUyMHhvKS5tdWx0KHNyYyhvMCkucm90YXRlKHhvJTJDJTIwMC40KS5rYWxlaWQoa2FsZWlkcyklMkMlMjAwLjkpLmJsZW5kKHNyYyhvMSkucm90YXRlKCU1QjAuMDElMkMtMC4wMSU1RC5mYXN0KDAuMSkpJTJDJTIwYmxlbmR5LnNtb290aCgpKS5vdXQobzEpJTBBJTBBcmVuZGVyKG8xKQ%3D%3D",
+    "bpm": 130,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Szurke pulzalo kaleidoszkop",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTQwJTBBJTBBY29uc3QlMjB4byUyMCUzRCUyMCU1QjElMkMxJTJDMSUyQzElMkMxJTJDMiUyQzMlMkM1JTVEJTBBJTJGJTJGY29uc3QlMjBiJTIwJTNEJTIwc2hhcGUoeG8uZml0KDQlMkMlMjA4KSkucm90YXRlKDElMkMlMjAxLjEpJTBBY29uc3QlMjBiJTIwJTNEJTIwb3NjKDMlMkMlMjAxJTJDJTIwMC4xKS5yb3RhdGUoeG8pLmthbGVpZCglNUIzJTJDMTAlNUQuZmFzdCgwLjEpKS5waXhlbGF0ZSgzJTJDMykubW9kdWxhdGVLYWxlaWQobzApJTBBJTBBYi5zY2FsZSglNUIwLjUlMkMlMjAxJTVELmZhc3QoMikuZWFzZSgnZWFzZUluQ3ViaWMnKSkuaW52ZXJ0KCU1QjAlMkMxJTVEKS5vdXQobzApJTBBJTBBc3JjKG8wKS5yZXBlYXQoeG8lMkMlMjB4bykubW9kdWxhdGVSb3RhdGUobzApLm91dChvMSklMEElMEFyZW5kZXIobzEp",
+    "bpm": 140,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Pszichedelikus kaleidoszkop 1.",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTQwJTJGMiUwQWNvbnN0JTIwYyUyMCUzRCUyMCU1QjAuNyUyQyUyMDAuOSUyQyUyMDElNUQlMEFjb25zdCUyMGVhc2UlMjAlM0QlMjAlNUItMC4xMDExJTJDJTIwMC4xJTVELmVhc2UoJTIyZWFzZUluT3V0Q3ViaWMlMjIpJTBBY29uc3QlMjBlYXNlMiUyMCUzRCUyMCU1Qi0wLjElMkMlMjAwLjElNUQuZmFzdCgxLjApLnNtb290aCgpLmVhc2UoJTIyZWFzZUluT3V0Q3ViaWMlMjIpJTBBJTBBbm9pc2UoJTVCNCUyQyUyMDEyJTVELmZhc3QoMC4xKSUwQSUwOSUwOS5zbW9vdGgoKSUyQyUyMDIpJTBBJTA5LmthbGVpZCgzJTJDJTIwNSUyQyUyMDkpJTBBJTA5LmJsZW5kKG9zYygzJTJDJTIwMC4xJTJDJTIwLTAuOCkpJTBBJTA5Lm1vZHVsYXRlSHVlKG9zYygxMCUyQyUyMDExJTJDJTIwMSkpJTBBJTA5LnNjYWxlKCU1QjAuMSUyQyUyMDEuNSU1RC5mYXN0KDAuMDQpJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwOS5yb3RhdGUoMCUyQyUyMDEpJTBBJTA5LnNjcm9sbChlYXNlJTJDJTIwZWFzZTIpJTBBJTA5LmNvbG9yKGMub2Zmc2V0KDIpJTJDJTIwYy5zbW9vdGgoKSUyQyUyMGMub2Zmc2V0KDMpJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwOS5ibGVuZChzcmMobzApJTBBJTA5JTA5LnNjYWxlKCU1QjEuMDAxJTJDJTIwMS4wMSU1RC5mYXN0KDAuMDEpJTBBJTA5JTA5JTA5LmVhc2UoJTIyZWFzZUluT3V0Q3ViaWMlMjIpKSUyQyUyMCU1QjAuOCUyQzAuOTklNUQuZmFzdCgwLjEpLnNtb290aCgpKSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMDEpJTBBJTA5LnNjYWxlKCU1QjEuMDElMkMlMjAwLjgxJTVELmZhc3QoMC4xKSUwQSUwOSUwOS5zbW9vdGgoKSkua2FsZWlkKDYpJTBBJTA5LnJvdGF0ZSgwJTJDMC4xKSUwQSUwOS5vdXQoKQ%3D%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Pszichedelikus kaleidoszkop 2, szines",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTQwJTJGMiUwQWNvbnN0JTIwYyUyMCUzRCUyMCU1QjAuNyUyQyUyMDAuOSUyQyUyMDElNUQlMEFjb25zdCUyMGVhc2UlMjAlM0QlMjAlNUItMC4xMDExJTJDJTIwMC4xJTVELmVhc2UoJTIyZWFzZUluT3V0Q3ViaWMlMjIpJTBBY29uc3QlMjBlYXNlMiUyMCUzRCUyMCU1Qi0wLjElMkMlMjAwLjElNUQuZmFzdCgxLjApLnNtb290aCgpLmVhc2UoJTIyZWFzZUluT3V0Q3ViaWMlMjIpJTBBJTBBbm9pc2UoJTVCNCUyQyUyMDEyJTVELmZhc3QoMC4xKSUwQSUwOSUwOS5zbW9vdGgoKSUyQyUyMDIpJTBBJTA5LmthbGVpZCgzJTJDJTIwNSUyQyUyMDkpJTBBJTA5LmJsZW5kKG9zYygzJTJDJTIwMC4xJTJDJTIwLTAuOCkpJTBBJTA5Lm1vZHVsYXRlSHVlKG9zYygxMCUyQyUyMDExJTJDJTIwMSkpJTBBJTA5LnNjYWxlKCU1QjAuMDElMkMlMjAxJTVELmZhc3QoMC4xKSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkucm90YXRlKDAlMkMlMjAxKSUwQSUwOS5zY3JvbGwoZWFzZSUyQyUyMGVhc2UyKSUwQSUwOS5jb2xvcihjLm9mZnNldCgyKSUyQyUyMGMuc21vb3RoKCklMkMlMjBjLm9mZnNldCgzKSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkuZGlmZihzcmMobzApJTBBJTA5JTA5LnNjYWxlKCU1QjEuMDAxJTJDJTIwMS4wMSU1RC5mYXN0KDAuMDEpJTBBJTA5JTA5JTA5LmVhc2UoJTIyZWFzZUluT3V0Q3ViaWMlMjIpKSUyQyUyMDAuMDkpJTBBJTA5LnJvdGF0ZSgwJTJDJTIwMC4wMSklMEElMDkuc2NhbGUoJTVCMS4wMSUyQyUyMDAuMDQlNUQuZmFzdCgwLjEpJTBBJTA5JTA5LnNtb290aCgpKS5rYWxlaWQoMTApJTBBJTA5Lm91dCgp",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Kaleidoszkop szines 3",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTQwJTJGMiUwQWNvbnN0JTIwYyUyMCUzRCUyMCU1QjAuNyUyQyUyMDAuOSUyQyUyMDElNUQlMEFjb25zdCUyMGVhc2UlMjAlM0QlMjAlNUItMC4xMDExJTJDJTIwMC4xJTVELmZhc3QoMC41KS5lYXNlKCUyMmVhc2VJbk91dEN1YmljJTIyKSUwQWNvbnN0JTIwZWFzZTIlMjAlM0QlMjAlNUItMC4xJTJDJTIwMC4xJTVELmZhc3QoMC41KS5zbW9vdGgoKS5lYXNlKCUyMmVhc2VJbk91dEN1YmljJTIyKSUwQSUwQW5vaXNlKCU1QjQlMkMlMjAxMiU1RC5mYXN0KDAuMSklMEElMDklMDkuc21vb3RoKCklMkMlMjAyKSUwQSUwOS5rYWxlaWQoMyUyQyUyMDUlMkMlMjA5KSUwQSUwOS5ibGVuZChvc2MoMyUyQyUyMDAuMSUyQyUyMC0wLjgpKSUwQSUwOS5tb2R1bGF0ZUh1ZShvc2MoMTAlMkMlMjAxMSUyQyUyMDEpKSUwQSUwOS5zY2FsZSglNUIwLjAxJTJDJTIwMSU1RC5mYXN0KDAuMSklMEElMDklMDkuc21vb3RoKCkpJTBBJTA5LnJvdGF0ZSgwJTJDJTIwMSklMEElMDkuc2Nyb2xsKGVhc2UlMkMlMjBlYXNlMiklMEElMDkuY29sb3IoYy5vZmZzZXQoMiklMkMlMjBjLnNtb290aCgpJTJDJTIwYy5vZmZzZXQoMyklMEElMDklMDkuc21vb3RoKCkpJTBBJTA5LmRpZmYoc3JjKG8wKSUwQSUwOSUwOS5zY2FsZSglNUIxLjAwMSUyQyUyMDEuMDElNUQuZmFzdCgwLjAxKSUwQSUwOSUwOSUwOS5lYXNlKCUyMmVhc2VJbk91dEN1YmljJTIyKSklMkMlMjAwLjA5KSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMDEpJTBBJTA5LnNjYWxlKCU1QjEuMDElMkMlMjAwLjA0JTVELmZhc3QoMC4xKSUwQSUwOSUwOS5zbW9vdGgoKSkuc2Nyb2xsWSgwJTJDMC4xKSUwQSUwOS5zY2FsZSglNUIwLjA1JTJDJTIwMC4yJTJDJTIwMC41JTJDJTIwMSUyQyUyMDIlNUQuZmFzdCgwLjA1KS5zbW9vdGgoKSklMEEua2FsZWlkKCU1QjUlMkM5JTVELmZhc3QoMC4yKS5zbW9vdGgoKSkucm90YXRlKDAlMkMlMjAwLjMpJTBBJTA5Lm91dCgp",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Hosszan valtozo:",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTNEMTQwJTBBJTBBY29uc3QlMjBzJTIwJTNEJTIwb3NjKCU1QjEwJTJDMTAwJTVELmZhc3QoMC4xMjUpLmVhc2UoJTIyZWFzZUluT3V0Q3ViaWMlMjIpJTJDJTIwLTAuMSUyQyUyMDEpJTBBJTA5LmcoKSUwQSUwOS5jb2xvcigxJTJDJTIwJTVCMCUyQyUyMDAuNSUyQyUyMDAlMkMlMjAwJTVELmZhc3QoMC4xMjUpJTBBJTA5JTA5LnNtb290aCgpJTJDJTIwJTVCMCUyQyUyMDAlMkMlMjAwLjUlNUQuc21vb3RoKCkpJTBBJTBBY29uc3QlMjByaXBwbGVzJTIwJTNEJTIwcy5rYWxlaWQoJTVCMSUyQzUlMkMyJTJDOSUyQzMlMkMzMCU1RC5mYXN0KDAuMTI1KSkuaW52ZXJ0KCklMEElMEFjb25zdCUyMG5vaXplJTIwJTNEJTIwdm9yb25vaSglNUIxMCUyQyUyMDQwJTVELmZhc3QoMC4xMjUpJTBBJTA5JTA5LnNtb290aCgpJTJDJTIwMTAlMkMlMjAxKS5tb2R1bGF0ZShzaGFwZSglNUIzJTJDNCUyQzUlNUQpKSUwQSUwOS5zY2FsZSglNUIzJTJDJTIwNCU1RCklMEElMDkuc2Nyb2xsWSgwJTJDJTIwLTAuNSklMEElMDkua2FsZWlkKCklMEElMDkucm90YXRlKDAlMkMlMjAwLjEpJTBBJTA5LmJyaWdodG5lc3MoMC4xKSUwQSUwQW5vaXplLm91dChvMSklMEElMEFyaXBwbGVzLm91dChvMCklMEElMEFub2l6ZS5tdWx0KHJpcHBsZXMlMkMwLjMpJTBBJTA5Lm91dChvMyklMEElMEFzcmMobzApJTBBJTA5LmRpZmYoc3JjKG8zKSUwQSUwOSUwOS5zY2FsZSglNUIwLjUlMkMlMjAxLjUlNUQuZmFzdCgwLjI1KS5lYXNlKCUyMmVhc2VJbk91dCUyMikpJTBBJTA5JTA5Lm1vZHVsYXRlUm90YXRlKHNyYyhvMSklMEElMDklMDklMDkucm90YXRlKDAlMkMlMjAtMC4yKSUwQSUwOSUwOSUwOS5zY2FsZSglNUIwLjIlMkMlMjAzJTVELmZhc3QoMC4xMjUpLnNtb290aCgpKSklMkMlMjAwLjEpJTBBJTA5JTA5LmRpZmYoc3JjKG8yKS5icmlnaHRuZXNzKCU1QjAlMkMwLjQlNUQuZmFzdCgwLjAxKS5zbW9vdGgoKSklMkMlMjAxKSUwQSUyMCUyMC5jb250cmFzdCglNUIwLjklMkMxJTVELmVhc2UoJTIyZWFzZUluQ3ViaWMlMjIpKSUwQSUwOS5zY2FsZSgxKSUwQSUyMCUyMC5vdXQobzIpJTBBJTBBcmVuZGVyKG8yKQ%3D%3D&fbclid=IwAR2w4KYXkz7P_gGr2OwowEd9mkqW_Uf14zf28ElpYBLZ31EgsH_LKmzDNUY"
+  },
+  {
+    "type": "url",
+    "name": "Bubbles:",
+    "url": "https://hydra.ojack.xyz/?code=dmFyJTIweCUyMCUzRCUyMDAlM0IlMEF2YXIlMjB5JTIwJTNEJTIwMCUzQiUwQSUwQWJwbSUyMCUzRCUyMDE0MCUwQSUwQW4xJTIwJTNEJTIwbm9pc2UoMTQlMkMlMjAyJTJDMTApLmNvbnRyYXN0KDUpLmludmVydCglNUIwJTJDMC4xJTJDMCUyQzAuMiU1RC5mYXN0KDAuMiklMEElMDklMDkuZWFzZSglMjJlYXNlSW5PdXRRdWFydCUyMikpJTBBJTA5LnNjYWxlKCU1QjElMkMlMjAxLjIlMkMlMjAxJTJDJTIwMS40JTVELmZhc3QoMiklMEElMDklMDkuZWFzZSglMjJlYXNlSW5PdXRDdWJpYyUyMikpLmthbGVpZCgzKS5yb3RhdGUoMy4xNCUyRjglMkMwLjEpJTBBJTA5JTBBbjIlMjAlM0QlMjBub2lzZSg3JTJDJTIwMiUyQzEwKS5pbnZlcnQoJTVCMCUyQzAuMSUyQzAlMkMwLjYlNUQuZmFzdCgwLjIpJTBBJTA5JTA5LmVhc2UoJTIyZWFzZUluT3V0UXVhcnQlMjIpKSUwQSUwOS5zY2FsZSglNUIxJTJDJTIwMS4yJTVELmZhc3QoMiklMEElMDklMDkuZWFzZSglMjJlYXNlSW5PdXRDdWJpYyUyMikpLnJvdGF0ZSgtMy4xNCUyRjglMkMtMC4xMiklMEElMEFuMS5ibGVuZChuMiUyQyUyMCU1QjAlMkMxJTVELmZhc3QoMioqLTUpLnNtb290aCgpKS5vdXQobzApJTBBJTBBdm9yb25vaSgxMCUyQyUyMDAuNSUyQyUyMCU1QjElMkMlMjAyJTJDJTIwMyUyQzUlMkMxMCU1RC5mYXN0KDAuMTI1KSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkubXVsdChvc2MoMSUyQzAuMSUyQzEpKSUwQSUwOS5zYXR1cmF0ZSglNUIwLjElMkMlMjAwLjklNUQuZmFzdCgwLjIpLnNtb290aCgpKSUwQSUwOS5icmlnaHRuZXNzKDAuNCklMEElMDkuYmxlbmQoc3JjKG8xKSUyQyUyMCU1QjAuOTUlMkMlMjAwLjk5JTVELmZhc3QoMC4xMjUpLnNtb290aCgpKSUwQSUwOS5vdXQobzEpJTBBJTBBc3JjKG8wKSUwQSUwOS5tb2R1bGF0ZVNjYWxlKHNyYyhvMSkpJTBBJTA5Lm1vZHVsYXRlUm90YXRlKHNyYyhvMSklMEElMDklMDkucm90YXRlKDAuMSUyQyUyMDAuMSkpJTBBJTA5LmFkZChzcmMobzIpJTJDJTIwMC41KSUwQSUwOS5tdWx0KHNyYyhvMSkpJTBBJTA5Lm91dChvMiklMEElMEFzcmMobzIpLnJvdGF0ZSgwJTJDJTIwMC4xKS5zY2FsZSgoJTdCdGltZSU3RCklMjAlM0QlM0UlMjBNYXRoLnNpbih0aW1lJTI1MTAlMkYxMCkpLmFkZChzcmMobzIpJTJDJTIwMC45KS5vdXQobzMpJTBBJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "bpm": 140,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Bekanyal",
+    "url": "https://hydra.ojack.xyz/?code=Y29uc3QlMjBub2lzZUMlMjAlM0QlMjAxMCUyQihNYXRoLnJhbmRvbSgpJTIwKiUyMDEwKSUwQWNvbnN0JTIwbW92ZVNwZWVkJTIwJTNEJTIwMSUwQSUwQWNvbnN0JTIwYSUyMCUzRCUyME1hdGgucmFuZG9tKCklMjAlMkYlMjAyJTNCJTBBY29uc3QlMjBiJTIwJTNEJTIwMC41LWElM0IlMEElMEFicG0lMjAlM0QlMjAxNDAlMEElMEFuMSUyMCUzRCUyMG5vaXNlKG5vaXNlQyUyQyUyMG1vdmVTcGVlZCklMEElMDkuY29sb3IoMSUyQyUyMGElMkMlMjBiKSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMyklMEFuMiUyMCUzRCUyMG5vaXNlKG5vaXNlQyUyQyUyMG1vdmVTcGVlZCklMEElMDkuY29sb3IoYSUyQyUyMDElMkMlMjBiKSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMiklMEFuMyUyMCUzRCUyMG5vaXNlKG5vaXNlQyUyQyUyMG1vdmVTcGVlZCklMEElMDkuY29sb3IoYSUyQyUyMDElMkMlMjBiKSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMSklMEElMEFub2lzZShub2lzZUMlMkMlMjBtb3ZlU3BlZWQpJTBBJTA5LmNvbG9yKDAlMkMlMjAwJTJDJTIwMSklMEElMDkucm90YXRlKDAlMkMlMjAwLjEpJTBBJTA5Lm91dChvMiklMEElMEFjeCUyMCUzRCUyMHNvbGlkKCklMEElMDkuY29sb3IoMCUyQyUyMDAlMkMlMjAwKSUwQSUwOS5ibGVuZChuMSUyQyUyMCU1QjAlMkMlMjAxJTJDJTIwMSU1RC5vZmZzZXQoMCklMEElMDklMDkuc21vb3RoKCkpJTBBJTA5LmJsZW5kKG4yJTJDJTIwJTVCMSUyQyUyMDAlMkMlMjAxJTVELm9mZnNldCgxKSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkuYmxlbmQobjMlMkMlMjAlNUIxJTJDJTIwMSUyQyUyMDAlNUQub2Zmc2V0KDIpJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwQXNvbGlkKCklMEElMDkuYWRkKG4xJTJDJTIwMC42KSUwQSUwOS5hZGQobjIlMkMlMjAwLjQpJTBBJTA5LmFkZChuMyUyQyUyMDAuNSklMEElMDkuYmxlbmQoc3JjKG8zKSUwQSUwOSUwOS5zY2FsZSglNUIwLjklMkMlMjAzJTVELmZhc3QoMioqLTQpJTBBJTA5JTA5JTA5LnNtb290aCgpJTJDJTIwMC45KSklMEElMDklMDkub3V0KG8zKSUwQSUwQSUwQSUwOSUwOXJlbmRlcihvMyk%3D",
+    "bpm": 140,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "BKK uleshuzat",
+    "url": "https://hydra.ojack.xyz/?code=Y29uc3QlMjBub2lzZUMlMjAlM0QlMjAxMCUyMCUyQiUyMChNYXRoLnJhbmRvbSgpJTIwKiUyMDEwKSUwQWNvbnN0JTIwbW92ZVNwZWVkJTIwJTNEJTIwMSUwQSUwQWNvbnN0JTIwYSUyMCUzRCUyME1hdGgucmFuZG9tKCklMjAlMkYlMjAyJTNCJTBBY29uc3QlMjBiJTIwJTNEJTIwMC44JTIwLSUyMGElM0IlMEElMEFicG0lMjAlM0QlMjAxNDAlMEElMEFuMSUyMCUzRCUyMG5vaXNlKG5vaXNlQyUyQyUyMG1vdmVTcGVlZCklMEElMDkuY29sb3IoMSUyQyUyMGElMkMlMjBiKSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMyklMEFuMiUyMCUzRCUyMG5vaXNlKG5vaXNlQyUyQyUyMG1vdmVTcGVlZCklMEElMDkuY29sb3IoYSUyQyUyMDElMkMlMjBiKSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMiklMEFuMyUyMCUzRCUyMG5vaXNlKG5vaXNlQyUyQyUyMG1vdmVTcGVlZCklMEElMDkuY29sb3IoYSUyQyUyMGIlMkMlMjAxKSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMSklMEElMEFub2lzZShub2lzZUMlMkMlMjBtb3ZlU3BlZWQpJTBBJTA5LmNvbG9yKDAlMkMlMjAwJTJDJTIwMSklMEElMDkucm90YXRlKDAlMkMlMjAwLjEpJTBBJTA5Lm91dChvMiklMEElMEFjeCUyMCUzRCUyMHNvbGlkKCklMEElMDkuYmxlbmQobjElMkMlMjAlNUIxJTJDJTIwMSUyQyUyMDAlMkMlMjAxJTJDJTIwMSUyQyUyMDAlNUQub2Zmc2V0KDApJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwOS5ibGVuZChuMiUyQyUyMCU1QjAlMkMlMjAxJTJDJTIwMSUyQyUyMDAlMkMlMjAxJTJDJTIwMSU1RC5vZmZzZXQoMSklMEElMDklMDkuc21vb3RoKCkpJTBBJTA5LmJsZW5kKG4zJTJDJTIwJTVCMSUyQyUyMDAlMkMlMjAxJTJDJTIwMCUyQyUyMDElNUQub2Zmc2V0KDIpJTBBJTA5JTA5LnNtb290aCgpKSUwQSUwQXNvbGlkKCklMEElMDkuYWRkKGN4KSUwQSUwOS5ibGVuZChzcmMobzMpJTBBJTA5JTA5LnNjYWxlKCU1QjAuOSUyQyUyMDMlNUQuZmFzdCgyJTIwKiolMjAtNCklMEElMDklMDklMDkuc21vb3RoKCklMkMlMjAwLjkpKSUwQSUwOS5zYXR1cmF0ZSgxLjEpJTBBJTA5LmNvbG9yYW1hKCklMEElMDkuZGlmZihzcmMobzMpLmJsZW5kKG8yJTJDJTIwJTVCMCUyQzElNUQuZmFzdCgwLjEpLnNtb290aCgpKSklMEElMDkuaW52ZXJ0KCgpJTIwJTNEJTNFJTIwTWF0aC5zaW4odGltZSUyRjIwKSklMEElMDkub3V0KG8zKSUwQSUwQSUwQXJlbmRlcihvMyk",
+    "bpm": 140,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Random 19567",
+    "url": "https://hydra.ojack.xyz/?code=c2hhcGUoMyklMEElMDkuc2NhbGUoMC41KSUwQSUwOS5zY3JvbGwoLTMwKSUwQSUwOS5ibGVuZChzaGFwZSgxMDApJTBBJTA5JTA5LnNjcm9sbFkoMTApKSUwQSUwOS5zY2FsZSgwLjQpJTBBJTA5LnJlcGVhdCgxMCUyQyUyMDEwKSUwQSUwOS5tdWx0KG9zYygxJTJDMSUyQzEpKSUwQSUwOS5ibGVuZChzaGFwZSgzKS5zY3JvbGwoMCkpJTBBJTA5LnJvdGF0ZSgwJTJDJTIwMC4xKSUwQSUwOS5rYWxlaWQoNSklMEElMDkucm90YXRlKDAlMkMlMjAwLjEpJTBBJTA5LmFkZChzcmMobzApJTJDJTIwMC45OSklMEElMDkub3V0KG8wKSUwQSUwQXJlbmRlcihvMCk%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Deep vortex",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTNEMTUwJTBBc2hhcGUoMyklMEElMDkuc2NhbGUoJTVCMC41JTVEKSUwQSUwOS5zY3JvbGwoLTMwKSUwQSUwOS5ibGVuZChzaGFwZSgxMDguMjQxKSUwQSUwOSUwOS5zY3JvbGxZKDE1LjM3NykpJTBBJTA5LnNjYWxlKCgpJTNEJTNFbW91c2UueSUyRmhlaWdodCklMEElMDkucmVwZWF0KDE4Ljk3OSUyQyUyMDE2Ljc0KSUwQSUwOS5tdWx0KG9zYygxLjIyNyUyQyUyMDElMkMlMjAxLjUwMykpJTBBJTA5LmJsZW5kKHNoYXBlKDQuOTUyKSUwQSUwOSUwOS5zY3JvbGwoMCkpJTBBJTA5LnJvdGF0ZSgwJTJDJTIwMC4xKSUwQSUwOS5rYWxlaWQoNTQpJTBBJTA5LnJvdGF0ZSgwLjE1OCUyQyUyMDAuMDU0KSUwQSUwOS5hZGQoc3JjKG8wKSUyQyUyMDAuOTcpJTBBJTA5Lm91dChvMCklM0IlMEElMEFzaGFwZSgxMDApJTBBJTA5LnN1YihzaGFwZSgzKSUwQSUwOSUwOS5zY2FsZSgwLjQpKSUwQSUwOS5icmlnaHRuZXNzKCU1QjAlMkMlMjAwLjElNUQuc21vb3RoKCkpJTBBJTA5LmJsZW5kKHNyYyhvMSklMEElMDklMDkuc2NhbGUoMS4wMSklMEElMDklMDkucm90YXRlKDAuMDEpJTJDJTIwMC45OSklMEElMDkub3V0KG8xKSUwQSUwQXNyYyhvMCklMEElMDkubW9kdWxhdGVSb3RhdGUobzEpJTBBJTA5LmRpZmYobzEpJTBBJTA5Lm91dChvMiklM0IlMEElMEFzcmMobzIpLmJsZW5kKG8zJTJDKCklM0QlM0Vtb3VzZS54JTJGd2lkdGglMjAqJTIwMC45OSkub3V0KG8zKSUwQSUwQXJlbmRlcihvMyk%3D",
+    "bpm": 150,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Random 20236",
+    "url": "https://hydra.ojack.xyz/?code=c2hhcGUoMykucm90YXRlKDAlMkMzKS5kaWZmKHNoYXBlKDMpLnNjYWxlKDAuMykucm90YXRlKDAlMkMtMikpLm91dChvMCklMEElMjAlMjAlMEElMEFjb25zdCUyMHNhdyUyMCUzRCUyMChwZXJpb2QlMkMlMjBtaW4lMkMlMjBtYXgpJTIwJTNEJTNFJTIwKCU3QnRpbWUlN0QpJTIwJTNEJTNFJTIwJTdCJTdEJTBBJTBBc3JjKG8wKS5ibGVuZChzcmMobzEpLnNjYWxlKDEpJTJDJTIwMC45KS5kaWZmKHNyYyhvMCkuc2NhbGUoMS40KSkuYWRkKG8xJTJDMCkub3V0KG8xKSUwQSUwQXJlbmRlcihvMSk%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Random 32883",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTMwJTBBJTBBY29uc3QlMjBzcGIlMjAlM0QlMjAoKSUyMCUzRCUzRSUyMDYwJTIwJTJGJTIwYnBtJTBBY29uc3QlMjBsaW5lYXIlMjAlM0QlMjAobWluJTJDJTIwbWF4KSUyMCUzRCUzRSUyMHYlMjAlM0QlM0UlMjBtaW4lMjAlMkIlMjAobWF4JTIwLSUyMG1pbiklMjAqJTIwdiUzQiUwQWNvbnN0JTIwZXhwb25lbnRpYWwlMjAlM0QlMjAobWluJTJDJTIwbWF4KSUyMCUzRCUzRSUyMHYlMjAlM0QlM0UlMjBtaW4lMjAlMkIlMjAobWF4JTIwLSUyMG1pbiklMjAqKiUyMHYlM0IlMEFjb25zdCUyMHNhdyUyMCUzRCUyMChwZXJpb2QlMkMlMjBmbiklMjAlM0QlM0UlMjAoJTdCJTBBJTA5dGltZSUwQSU3RCklMjAlM0QlM0UlMjAlN0IlMEElMDlyZXR1cm4lMjBmbigodGltZSUyMCUyNSUyMHBlcmlvZCklMjAlMkYlMjBwZXJpb2QpJTBBJTdEJTBBJTBBc2hhcGUoMyklMEElMDkucm90YXRlKDAlMkMlMjAzKSUwQSUwOS5kaWZmKHNoYXBlKDMpJTBBJTA5JTA5JTJGJTJGLmludmVydCglNUIxJTJDJTIwMC41JTVELnNtb290aCgpKSUwQSUwOSUwOSUyRiUyRi5zY2FsZShzYXcoc3BiKCklMkMlMjBsaW5lYXIoMC4zJTJDJTIwMC41KSkpJTBBJTA5JTA5LnJvdGF0ZSgwJTJDJTIwLTEpKSUwQSUwOS5vdXQobzApJTBBJTBBJTBBc3JjKG8wKSUwQSUwOS5ibGVuZChzcmMobzEpJTBBJTA5JTA5LnNjYWxlKHNhdyhzcGIoKSoxNiUyQyUyMGV4cG9uZW50aWFsKC0yJTJDJTIwMC4xKSkpJTJDJTIwJTIwMC45KSUwQSUwOS5kaWZmKHNyYyhvMCklMEElMDklMDkuc2NhbGUoMS40KSklMEElMDkuYWRkKG8xJTJDJTIwJTVCMC43JTJDJTIwMC45JTVELmZhc3QoMC4yKSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkuaW52ZXJ0KCU1QjAuNSUyQzElNUQuc21vb3RoKCkpJTBBJTA5Lm91dChvMSklMEElMEFyZW5kZXIobzEp",
+    "bpm": 130,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Colorful glitches",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTMwJTBBJTBBY29uc3QlMjBiZWF0cyUyMCUzRCUyMChiKSUyMCUzRCUzRSUyMDYwJTIwJTJGJTIwYnBtJTIwKiUyMGIlMEFjb25zdCUyMGxpbmVhciUyMCUzRCUyMChtaW4lMkMlMjBtYXgpJTIwJTNEJTNFJTIwdiUyMCUzRCUzRSUyMG1pbiUyMCUyQiUyMChtYXglMjAtJTIwbWluKSUyMColMjB2JTNCJTBBY29uc3QlMjBleHBvbmVudGlhbCUyMCUzRCUyMChtaW4lMkMlMjBtYXgpJTIwJTNEJTNFJTIwdiUyMCUzRCUzRSUyMG1pbiUyMCUyQiUyMChtYXglMjAtJTIwbWluKSUyMCoqJTIwdiUzQiUwQWNvbnN0JTIwc2F3JTIwJTNEJTIwKHBlcmlvZCUyQyUyMGZuKSUyMCUzRCUzRSUyMCglN0IlMEElMDl0aW1lJTBBJTdEKSUyMCUzRCUzRSUyMCU3QiUwQSUwOXJldHVybiUyMGZuKCh0aW1lJTIwJTI1JTIwcGVyaW9kKSUyMCUyRiUyMHBlcmlvZCklMEElN0QlMEElMEElMEFzaGFwZSgxMDApJTBBLmRpZmYoc2hhcGUoMykucm90YXRlKDAlMkMwLjEpLnNjYWxlKHNhdyhiZWF0cygzMiklMkMlMjBsaW5lYXIoMCUyQzAuOSkpKSklMEElMDkuc2NhbGUoMC4zKSUwQSUwOS5ibGVuZChzcmMobzApJTBBJTA5JTA5LnNjYWxlKDEuMDQpJTJDJTIwJTVCMC45MyUyQyUyMDAuOTY4JTJDJTIwMC45OCU1RC5zbW9vdGgoKSklMEElMDkub3V0KG8wKSUwQSUwQXNyYyhvMCklMEElMDkubXVsdChvc2MoNCUyQyUyMDElMkMlMjAxMCkpJTBBJTA5Lm1vZHVsYXRlUm90YXRlKHNyYyhvMSklMEElMDklMDkuc2NhbGUoJTVCMC4xJTJDJTIwLjQlNUQuZmFzdCgwLjEpJTBBJTA5JTA5JTA5LnNtb290aCgpKSUwQSUwOSUwOS5yb3RhdGUoMC4xJTJDJTIwMC4yKSUwQSUwOSUwOS5pbnZlcnQoKSklMEElMDkub3V0KG8xKSUwQSUwQXNyYyhvMSklMEElMDkuc2NhbGUoJTVCLS4yJTJDJTIwMC4xJTVELmZhc3QoMC4wNSklMEElMDklMDkuc21vb3RoKCkpJTBBJTA5LnJvdGF0ZSgwLjElMkMlMjAwLjEpJTBBJTA5Lm1vZHVsYXRlKG5vaXNlKDQwJTJDJTIwMC4zKSklMEElMDkuYWRkKG8xJTJDJTIwLTAuMiklMEElMDkuZGlmZihzcmMobzIpLnNjYWxlKC0wLjMpKSUwQSUwOS5vdXQobzIpJTBBJTBBc3JjKG8xKS5hZGQobzIlMkMlMjAwLjcpLm91dChvMyklMEElMEFyZW5kZXIobzMp",
+    "bpm": 130,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "I am wathing",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMjQyLjIyNCUzQiUwQWNvbnN0JTIwYmVhdHMlMjAlM0QlMjBiJTIwJTNEJTNFJTIwMTEuNzg2JTIwJTJGJTIwYnBtJTIwKiUyMGIlM0IlMEFjb25zdCUyMGxpbmVhciUyMCUzRCUyMChtaW4lMkMlMjBtYXgpJTIwJTNEJTNFJTIwdiUyMCUzRCUzRSUyMG1pbiUyMCUyQiUyMChtYXglMjAtJTIwbWluKSUyMColMjB2JTNCJTBBY29uc3QlMjBleHBvbmVudGlhbCUyMCUzRCUyMChtaW4lMkMlMjBtYXgpJTIwJTNEJTNFJTIwdiUyMCUzRCUzRSUyMG1pbiUyMCUyQiUyMChtYXglMjAtJTIwbWluKSUyMCoqJTIwdiUzQiUwQWNvbnN0JTIwc2F3JTIwJTNEJTIwKHBlcmlvZCUyQyUyMGZuKSUyMCUzRCUzRSUyMCglN0IlMEElMDl0aW1lJTBBJTdEKSUyMCUzRCUzRSUyMCU3QiUwQSUwOXJldHVybiUyMGZuKHRpbWUlMjAlMjUlMjBwZXJpb2QlMjAlMkYlMjBwZXJpb2QpJTNCJTBBJTdEJTNCJTBBJTBBc2hhcGUoMTIxLjc3NyklMEElMDkuZGlmZihzaGFwZSgwLjQxNiklMEElMDklMDkucm90YXRlKDAuMzQ5JTJDJTIwMC4wNzIpJTBBJTA5JTA5LnNjYWxlKHNhdyhiZWF0cyg2MS41MjUpJTJDJTIwbGluZWFyKDAuNDE5JTJDJTIwMS41NzUpKSkpJTBBJTA5LnNjYWxlKDAuMjU1KSUwQSUwOS5ibGVuZChzcmMobzApJTBBJTA5JTA5LnNjYWxlKDIuMDQyKSUyQyUyMCU1QjAuNzg3JTJDJTIwMC41MzclMkMlMjAwLjcyOCU1RC5zbW9vdGgoKSklMEElMDkub3V0KG8wKSUzQiUwQXNyYyhvMCklMEElMDkubXVsdChvc2MoMC45MzElMkMlMjAwLjEyOCUyQyUyMDUuMTg0KSklMEElMDkubW9kdWxhdGVSb3RhdGUoc3JjKG8xKSUwQSUwOSUwOS5zY2FsZSglNUIwLjElMkMlMjAuNCU1RC5mYXN0KDAuMDQzKSUwQSUwOSUwOSUwOS5zbW9vdGgoKSklMEElMDklMDkucm90YXRlKDAuMTI5JTJDJTIwMC4wMyklMEElMDklMDkuaW52ZXJ0KCkpJTBBJTA5Lm91dChvMSklM0IlMEFzaGFwZSg0MCkubW9kdWxhdGUobm9pc2UoMzAlMkMxKSkuZGlmZihvMiklMEElMDkub3V0KG8yKSUzQiUwQSUwQXNyYyhvMSklMEElMDkubW9kdWxhdGUobzIpJTBBJTA5Lm11bHQobzIlMkMlMjAwLjcpJTBBJTA5Lm91dChvMyklM0IlMEElMEFyZW5kZXIoKSUzQg%3D%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "szinesgeci",
+    "url": "https://hydra.ojack.xyz/?code=bm9pc2UoNCUyQzAuMSkubW9kdWxhdGUobm9pc2UoNCUyQzAuMSkpLm1vZHVsYXRlKG5vaXNlKCgpJTIwJTNEJTNFJTIwbW91c2UueSUyRmhlaWdodCo2JTJCNCUyQzEpLnJvdGF0ZSgwJTJDMC4xKSkuY29udHJhc3QoKCklMjAlM0QlM0UlMjBtb3VzZS55JTJGaGVpZ2h0KjYpLm91dChvMCklMEElMEFzcmMobzApLmRpZmYoc3JjKG8wKS5rYWxlaWQoNSkpLmRpZmYoc3JjKG8wKS5rYWxlaWQoMTApKS5vdXQobzEpJTBBJTBBc3JjKG8xKS5tdWx0KG9zYygoKSUyMCUzRCUzRSUyMG1vdXNlLnglMkZ3aWR0aCoyJTJDKCklMjAlM0QlM0UlMjBtb3VzZS54JTJGd2lkdGglMkMoKSUyMCUzRCUzRSUyMG1vdXNlLnglMkZ3aWR0aCkpLnNhdHVyYXRlKDQpLmJsZW5kKHNyYyhvMikucm90YXRlKCgpJTIwJTNEJTNFJTIwbW91c2UueSUyRmhlaWdodCkpLm91dChvMiklMEElMEFzcmMobzIpLmRpZmYoc3JjKG8yKS5zY2FsZSgtMSkpLmRpZmYoc3JjKG8xKSkuYmxlbmQobzMlMkMwLjk1KS5vdXQobzMpJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "pumping colorful",
+    "url": "https://hydra.ojack.xyz/?code=bGV0JTIwcnglMjAlM0QlMjAzJTNCJTBBbGV0JTIwcnklMjAlM0QlMjAzJTNCJTBBJTBBb3NjKDMlMkMlMjAwLjMlMkMlMjAwKSUwQSUwOS5vdXQobzApJTBBJTBBYnBtJTIwJTNEJTIwMTQwJTBBJTBBc3JjKG8wKSUwQSUwOS5rYWxlaWQoNCklMEElMDkuc2NhbGUoJTVCMC4yNSUyQyUyMDAuMiU1RC5mYXN0KDAuMiklMEElMDklMDkuZWFzZSglMjJlYXNlSW5PdXRDdWJpYyUyMikpJTBBJTA5LmRpZmYoc2hhcGUoMTAwKSUwQSUwOSUwOS5zY2FsZSglNUIwLjElMkMlMjAyJTVELmZhc3QoMiklMEElMDklMDklMDkuc21vb3RoKCkpJTBBJTA5JTA5Lm1vZHVsYXRlKG5vaXNlKDQlMkMlMjAyKSklMEElMDklMDkucm90YXRlKDAlMkMlMjAwLjIpKSUwQSUwOS5yb3RhdGUoMCUyQyUyMC0uMyklMEElMDkub3V0KG8xKSUzQiUwQSUwQXNyYyhvMSklMEElMDkuYmxlbmQoc3JjKG8yKSUwQSUwOSUwOS5yb3RhdGUoKCklMjAlM0QlM0UlMjBNYXRoLnJhbmRvbSgpJTIwKiUyMDAuMDEpJTJDJTIwKCU3QiUwQSUwOSUwOSUwOXRpbWUlMEElMDklMDklN0QpJTIwJTNEJTNFJTIwKE1hdGguc2luKHRpbWUpJTIwJTJCJTIwMSklMjAlMkYlMjAyJTIwKiUyMDAuMSUyMCUyQiUyMDAuOSklMEElMDkub3V0KG8yKSUwQSUwQW9zYyg2JTJDJTIwMC4yJTJDJTIwKCklMjAlM0QlM0UlMjBtb3VzZS54JTJGd2lkdGgpJTBBJTA5LmRpZmYoc3JjKG8zKS5zY2FsZSgwLjkpKSUwQSUwOS5zY2FsZSgoJTdCdGltZSU3RCklMjAlM0QlM0UlMjBNYXRoLnNpbih0aW1lJTJGMTApKSUwQSUwOS5tb2R1bGF0ZUthbGVpZChvMiklMEElMDkua2FsZWlkKDEwKSUwQSUwOS5tdWx0KG8yKSUwQSUwOS5vdXQobzMpJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "bpm": 140,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Midget spinner",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTQwJTBBJTBBc2hhcGUoMyklMEElMDkucm90YXRlKDAlMkMlMjAlNUIwLjMlMkMlMjAtMC4zJTVELmZhc3QoMC4wMSkuc21vb3RoKCkpJTBBJTA5LmRpZmYoc2hhcGUoMyklMEElMDklMDkuc2NhbGUoJTVCMC40JTJDMC42JTVELmZhc3QoMikuc21vb3RoKCkpJTBBJTA5JTA5LnJvdGF0ZSgwJTJDJTIwLTIpKSUwQSUwOS5tdWx0KG9zYygyJTJDJTIwMC4xJTJDJTIwMSklMEElMDklMDkua2FsZWlkKDEwKSklMEElMDkub3V0KG8wKSUwQSUwQSUwQWNvbnN0JTIwc2F3JTIwJTNEJTIwKHBlcmlvZCUyQyUyMG1pbiUyQyUyMG1heCklMjAlM0QlM0UlMjAoJTdCJTBBJTA5dGltZSUwQSU3RCklMjAlM0QlM0UlMjAlN0IlN0QlMEElMEFzcmMobzApJTBBJTA5LmJsZW5kKHNyYyhvMSklMEElMDklMDkuc2NhbGUoMSklMkMlMjAwLjkpJTBBJTA5LmRpZmYoc3JjKG8wKSUwQSUwOSUwOS5zY2FsZSgxLjQpKSUwQSUwOS5hZGQobzElMkMlMjAwLjEpJTBBJTA5Lm91dChvMSklMEElMEFzcmMobzEpJTBBJTA5LmJsZW5kKHNyYyhvMiklMEElMDklMDkuc2NhbGUoJTVCMS4wMSUyQzAuOTklNUQuZWFzZSglMjJlYXNlSW5PdXRDdWJpYyUyMikpJTJDJTIwMC45OSklMEElMDkuZGlmZihzcmMobzEpJTBBJTA5JTA5LmJsZW5kKHNvbGlkKCklMEElMDklMDklMDkuYnJpZ2h0bmVzcygwKSUyQyUyMCU1QjAuMCUyQyUyMDAuMyU1RC5mYXN0KDAuMSklMEElMDklMDklMDkuc21vb3RoKCkpKSUwQSUwOS5vdXQobzIpJTBBJTBBc3JjKG8yKS5hZGQoc3JjKG8xKSkuZGlmZihvMCkuYmxlbmQoc3JjKG8zKS5zY2FsZSgwLjk5KSUyQyU1QjAuOSUyQzAuOTklNUQuZmFzdCgwLjEpLnNtb290aCgpKS5yb3RhdGUoMCUyQyU1QjAlMkMlMjAwLjAxJTVELmZhc3QoMC4wMSkuc21vb3RoKCkpLm91dChvMyklMEElMEFyZW5kZXIobzMp",
+    "bpm": 140,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Midget spinner, CC-vel",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTcwJTBBJTBBdmFyJTIwY2MlMjAlM0QlMjBBcnJheSgxMjgpLmZpbGwoMC41KSUzQiUwQSUwQW5hdmlnYXRvci5yZXF1ZXN0TUlESUFjY2VzcygpLnRoZW4oJTBBJTIwJTIwKG0pJTIwJTNEJTNFJTIwJTdCJTBBJTIwJTIwJTIwJTIwZm9yJTIwKHZhciUyMGklMjBvZiUyMG0uaW5wdXRzLnZhbHVlcygpKSUyMCU3QiUwQSUyMCUyMCUyMCUyMCUyMCUyMGkub25taWRpbWVzc2FnZSUyMCUzRCUyMCglN0IlMjBkYXRhJTIwJTdEKSUyMCUzRCUzRSUyMCU3QiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMHZhciUyMCU1Ql8lMkMlMjBrJTJDdiU1RCUyMCUzRCUyMGRhdGElMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjBjYyU1QmslNUQlMjAlM0QlMjAodiUyMCUyQiUyMDEpJTIwJTJGJTIwMTI4LjAlM0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjBrJTIwJTI2JTI2JTIwY29uc29sZS5sb2coJTYwY2MlNUIlMjQlN0JrJTdEJTVEJTNEJTI0JTdCY2MlNUJrJTVEJTdEJTYwKSUwQSUyMCUyMCUyMCUyMCUyMCUyMCU3RCUzQiUwQSUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCU3RCUyQyUwQSUyMCUyMChlKSUyMCUzRCUzRSUyMCU3QiUwQSUyMCUyMCUyMCUyMGNvbnNvbGUubG9nKCUyMk5vJTIwbWlkaSUzQSUyMCUyMiUyQyUyMGUpJTNCJTBBJTIwJTIwJTdEJTBBKSUzQiUwQSUwQXNoYXBlKCgpJTIwJTNEJTNFJTIwTWF0aC5mbG9vcihjYyU1QjMlNUQlMjAqJTIwNyUyMCUyQiUyMDMpKSUwQSUwOS5yb3RhdGUoMCUyQyUyMCU1QjAuMyUyQyUyMC0wLjMlNUQuZmFzdCgwLjAxKS5zbW9vdGgoKSklMEElMDkuZGlmZihzaGFwZSgzKSUwQSUwOSUwOS5zY2FsZSglNUIwLjQlMkMwLjYlNUQuZmFzdCgyKS5zbW9vdGgoKSklMEElMDklMDkucm90YXRlKDAlMkMlMjAtMikpJTBBJTA5Lm11bHQob3NjKDIlMkMlMjAwLjElMkMlMjAxKSUwQSUwOSUwOS5rYWxlaWQoMTApKSUwQSUwOS5zY2FsZSgoKSUyMCUzRCUzRSUyMGNjJTVCNCU1RCoyKSUwQSUwOS5vdXQobzApJTBBJTBBJTBBY29uc3QlMjBzYXclMjAlM0QlMjAocGVyaW9kJTJDJTIwbWluJTJDJTIwbWF4KSUyMCUzRCUzRSUyMCglN0IlMEElMDl0aW1lJTBBJTdEKSUyMCUzRCUzRSUyMCU3QiU3RCUwQSUwQXNyYyhvMCklMEElMDkuYmxlbmQoc3JjKG8xKSUwQSUwOSUwOS5zY2FsZSgxKSUyQyUyMDAuOSklMEElMDkuZGlmZihzcmMobzApJTBBJTA5JTA5LnNjYWxlKDEuNCkpJTBBJTA5LmFkZChvMSUyQyUyMDAuMSklMEElMDkuaW52ZXJ0KCgpJTIwJTNEJTNFJTIwY2MlNUI2NSU1RCUzRTAuNSUyMCUzRiUyMDElM0ElMjAwKSUwQSUwOS5vdXQobzEpJTBBJTBBc3JjKG8xKSUwQSUwOS5ibGVuZChzcmMobzIpJTBBJTA5JTA5LnNjYWxlKCU1QjEuMDElMkMwLjk5JTVELmVhc2UoJTIyZWFzZUluT3V0Q3ViaWMlMjIpKSUyQyUyMDAuOTkpJTBBJTA5LmRpZmYoc3JjKG8xKSUwQSUwOSUwOS5ibGVuZChzb2xpZCgpJTBBJTA5JTA5JTA5LmJyaWdodG5lc3MoMCklMkMlMjAlNUIwLjAlMkMlMjAwLjMlNUQuZmFzdCgwLjEpJTBBJTA5JTA5JTA5LnNtb290aCgpKSklMEElMDkub3V0KG8yKSUwQSUwQXNyYyhvMikuYWRkKHNyYyhvMSkpLmRpZmYobzApLmJsZW5kKHNyYyhvMykuc2NhbGUoMC45OSklMkMlNUIwLjklMkMwLjk5JTVELmZhc3QoMC4xKS5zbW9vdGgoKSkucm90YXRlKDAlMkMlNUIwJTJDJTIwMC4wMSU1RC5mYXN0KDAuMDEpLnNtb290aCgpKS5vdXQobzMpJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "bpm": 170,
+    "midi": true
+  },
+  {
+    "type": "url",
+    "name": "Random 54961",
+    "url": "https://hydra.ojack.xyz/?code=bm9pc2UoNCUyQyUyMDAuMiklMEElMDkuY29sb3IoMC44JTJDJTIwMC43JTJDJTIwMC4yKSUwQSUwOS5pbnZlcnQoKSUwQSUwOS5jb2xvcmFtYSgyJTJDJTIwMyklMEElMDkubXVsdChvc2MoMSUyQyUyMDElMkMlMjAxKSUwQSUwOSUwOS5rYWxlaWQoMTApKSUwQSUwOS5rYWxlaWQoNCklMEElMDkubW9kdWxhdGVIdWUobm9pc2UoMTAlMkMlMjAwLjIpKSUwQSUwOS5vdXQobzApJTBBJTBBcmVuZGVyKCk%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "-- Random colors",
+    "url": "https://hydra.ojack.xyz/?code=c3BlZWQlMjAlM0QlMjAxJTBBY29uc3QlMjByZWQlMjAlM0QlMjBvc2MoNSUyQyUyMDAuMiUyQyUyMDApJTBBJTA5Lm11bHQoc29saWQoMSUyQyUyMDElMkMlMjAxKSUwQSUwOSUwOS5jb2xvciglNUIxJTJDJTIwMiU1RC5mYXN0KDAuMSklMEElMDklMDklMDkuc21vb3RoKCklMkMlMjAwJTJDJTIwMCkpJTBBY29uc3QlMjBncmVlbiUyMCUzRCUyMG9zYyg2JTJDJTIwMC4yNiUyQyUyMDApJTBBJTA5Lm11bHQoc29saWQoMSUyQyUyMDElMkMlMjAxKSUwQSUwOSUwOS5jb2xvcigwJTJDJTIwJTVCMSUyQyUyMDIlNUQuZmFzdCgwLjEpJTBBJTA5JTA5JTA5LnNtb290aCgpJTJDJTIwMCkpJTBBJTA5LnJvdGF0ZShNYXRoLlBJJTIwJTJGJTIwMyklMEFjb25zdCUyMGJsdWUlMjAlM0QlMjBub2lzZSgzJTJDJTIwMC4xKSUwQSUwOS5tdWx0KHNvbGlkKDElMkMlMjAxJTJDJTIwMSklMEElMDklMDkuY29sb3IoMCUyQyUyMDAlMkMlMjAlNUIxJTJDJTIwMiU1RC5mYXN0KDAuMSklMEElMDklMDklMDkuc21vb3RoKCkpKSUwQSUwQXNvbGlkKCklMEElMDkuYWRkKHJlZCUyQyUyMDAuMyklMEElMDkuYWRkKGdyZWVuJTJDJTIwMC4yKSUwQSUwOS5hZGQoYmx1ZSUyQyUyMDAuNiklMEElMDkuc2F0dXJhdGUoJTVCMSUyQyUyMDElMkMlMjAxJTJDJTIwMiUyQyUyMDElMkMlMjAxJTJDJTIwMiUyQyUyMDUlNUQpJTBBJTA5Lm91dChvMCklMEElMEFzcmMobzApJTBBJTA5Lm1hc2sodm9yb25vaShNYXRoLnJhbmRvbSgpJTIwKiUyMDUwJTJDJTIwNCUyQyUyMDUpJTBBJTA5JTA5LnJvdGF0ZSgwJTJDJTIwJTVCLTAuMTUlMkMlMjAtMC4wNSUyQyUyMDAuMSUyQyUyMDAuMjUlNUQuZmFzdCgwLjEpJTBBJTA5JTA5JTA5LnNtb290aCgpKSklMEElMDkub3V0KG8xKSUwQSUwQWNvbnN0JTIwcnQlMjAlM0QlMjAoKSUyMCUzRCUzRSUyMCU1Qm8xJTJDJTIwbzIlMkMlMjBvMyU1RCU1Qk1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSUyMColMjAzKSU1RCUwQSUwQXNyYyhvMSklMEElMDkuc2NhbGUoJTVCLTEuNSUyQyUyMC0wLjAlNUQuZmFzdChNYXRoLnJhbmRvbSgpKSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkucm90YXRlKDAuMDEpJTBBJTA5LmFkZChydCgpJTJDJTIwMC45OTkpJTBBJTA5LmRpZmYocnQoKSklMEElMDkub3V0KG8yKSUwQSUwQXNyYyhvMSklMEElMDkuYWRkKHJ0KCklMkMlMjAwLjk5KSUwQSUwOS5vdXQobzMpJTBBJTBBcmVuZGVyKG8yKQ%3D%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Kartyak",
+    "url": "https://hydra.ojack.xyz/?code=c3BlZWQlMjAlM0QlMjAxJTBBY29uc3QlMjBob3Jpem9udGFsJTIwJTNEJTIwc2hhcGUoNCklMEElMDkuc2Nyb2xsWCgxMDAlMkMlMjAwLjExMTEyKSUwQWNvbnN0JTIwdmVydGljYWwlMjAlM0QlMjBzaGFwZSg0KSUwQSUwOS5yb3RhdGUoMCUyQyUyMDAuMyklMEElMDkuc2Nyb2xsWSgxMDAlMkMlMjAwLjgpJTBBJTBBaG9yaXpvbnRhbC5ibGVuZCh2ZXJ0aWNhbCUyQyUyMCglN0IlMEElMDklMDl0aW1lJTBBJTA5JTdEKSUyMCUzRCUzRSUyME1hdGguc3FydChNYXRoLnNpbih0aW1lKSUyMCUyQiUyMDEpJTIwJTJGJTIwMiklMEElMDkuYmxlbmQobzAlMkMlMjAwLjkpJTBBJTA5Lm91dChvMCklMEElMEFzaGFwZSg0KSUwQSUwOS5yb3RhdGUoTWF0aC5QSSUyMCUyRiUyMDgpJTBBJTA5LnJlcGVhdCglNUI0JTJDJTIwNiU1RC5mYXN0KDAuMDEpJTBBJTA5JTA5LnNtb290aCgpJTJDJTIwJTVCNiUyQyUyMDQlNUQuZmFzdCgwLjAxKSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkuc2Nyb2xsWCgwJTJDJTIwMC4yNSklMEElMDkuYWRkKCUwQSUwOSUwOXNoYXBlKDQpJTBBJTA5JTA5LnJlcGVhdCg0JTJDJTIwNCklMEElMDklMDkucm90YXRlKE1hdGguUEklMjAlMkYlMjA0KSUwQSUwOSUwOS5zY3JvbGxZKDAlMkMlMjAwLjUpKSUwQSUwOS5vdXQobzEpJTBBJTBBc3JjKG8xKSUwQSUwOS5kaWZmKHNyYyhvMSklMEElMDklMDkuc2NhbGUoKCU3QiUwQSUwOSUwOSUwOXRpbWUlMEElMDklMDklN0QpJTIwJTNEJTNFJTIwKDElMjAlMkYlMjBNYXRoLnNpbih0aW1lJTIwJTJGJTIwMTApKSklMEElMDklMDkucm90YXRlKCglN0IlMEElMDklMDklMDl0aW1lJTBBJTA5JTA5JTdEKSUyMCUzRCUzRSUyMHRpbWUlMjAlMkYlMjAxMDAwMCUyMCUyNSUyME1hdGguUEkpKSUwQSUwOS5waXhlbGF0ZSgoKSUyMCUzRCUzRSUyMG1vdXNlLnklMkZoZWlnaHQlMjAqJTIwMTAwMCUyQyUyMCgpJTIwJTNEJTNFJTIwbW91c2UueSUyRmhlaWdodCUyMColMjAxMDAwKSUwQSUwOS5vdXQobzIpJTBBJTBBc3JjKG8wKSUwQSUwOS5tb2R1bGF0ZUthbGVpZChvMyklMEElMDkuYWRkKG8yKSUwQSUwOS5kaWZmKG8xKSUwQSUwOS5ibGVuZChvMyUyQygpJTIwJTNEJTNFJTIwbW91c2UueCUyRndpZHRoKSUwQSUwOS5vdXQobzMpJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Pumpin 5",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTcwJTBBJTBBc2hhcGUoNCkuc2Nyb2xsWCgwJTJDMC4yMzIzOSkuc2Nyb2xsWSgwJTJDMC4zKS5rYWxlaWQoNSklMEElMjAlMjAuZGlmZihzaGFwZSg1KS5zY3JvbGxYKDAlMkMlMjAtMC4xMTExKS5zY3JvbGxZKDAlMkMtTWF0aC5yYW5kb20oKSUyRjEwKS5rYWxlaWQoNykpJTBBJTIwJTIwLnJvdGF0ZSgwLjMlMkMlMjAwLjAxKSUwQSUyMCUyMC5yZXBlYXQoMiUyQzEpJTBBJTIwJTIwLm91dChvMCklMEElMEFzcmMobzApLmJsZW5kKG8xJTJDMC45OSkucm90YXRlKDAlMkMlNUIwLjAwMSUyQyUyMC0wLjAwMSU1RC5mYXN0KDAuMDA0KS5zbW9vdGgoKSkuYWRkKG8wJTJDMC4xKS5vdXQobzEpJTBBJTBBb3glMjAlM0QlMjBvc2MoNiUyQy0wLjElMkMlNUIwJTJDMiU1RC5mYXN0KDAuMDEpLnNtb290aCgpKS5icmlnaHRuZXNzKDAuMSklMEElMEFzcmMobzEpJTBBJTIwJTIwLm11bHQob3guc2F0dXJhdGUoMC4yKSklMEElMjAlMjAuZGlmZihzaGFwZSg1KS5zY2FsZSgoJTdCdGltZSU3RCklM0QlM0UlMjAyKih0aW1lJTI1KDYwJTJGYnBtKSkpKSUwQSUyMCUyMC5vdXQobzIpJTBBJTBBJTBBc3JjKG8yKS5ibGVuZChzcmMobzIpLnNjYWxlKDAuOTkpLmRpZmYobzEpLmRpZmYob3gua2FsZWlkKDEwKSklMkMlMjAlNUIwJTJDMSU1RC5mYXN0KDAuMSkuc21vb3RoKCkpLm91dChvMyklMjAlMEElMEFyZW5kZXIobzMp",
+    "bpm": 170,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "LSD tunnel ",
+    "url": "https://hydra.ojack.xyz/?code=Y29uc3QlMjByb2xsaW5nJTIwJTNEJTIwJTVCJTVEJTNCJTBBJTBBY29uc3QlMjByYW5kb21BcnIlMjAlM0QlMjBuZXclMjBBcnJheSg3KS5maWxsKDEpLm1hcCgoKSUyMCUzRCUzRSUyME1hdGgucmFuZG9tKCklMjAqJTIwNTApJTBBJTBBb3NjKHJhbmRvbUFyci5mYXN0KDAuMjUpJTJDJTIwMC4xJTJDJTIwMSklMEElMDkuYmxlbmQoc3JjKG8wKSUwQSUwOSUwOS5yb3RhdGUoTWF0aC5QSSUyMCUyRiUyMDIlMkMlMjAwLjAxKSklMEElMDkuc2Nyb2xsWCgwJTJDJTIwMC4xKSUwQSUwOS5vdXQobzApJTBBJTBBc3JjKG8wKSUwQSUwOS5rYWxlaWQoOCklMEElMDkucmVwZWF0KDMlMkMlMjAzKSUwQSUwOS5vdXQobzEpJTBBJTBBc3JjKG8xKSUwQSUwOS5zY2FsZSgxLjQpJTBBJTA5Lm1hc2soc2hhcGUoNCklMEElMDklMDkuc2NhbGUoMS41NCklMEElMDklMDkucm90YXRlKE1hdGguUEklMjAlMkYlMjA0KSklMEElMDkub3V0KG8yKSUwQSUwQWNvbnN0JTIwZGlmZmVyJTIwJTNEJTIwJTVCbzAlMkNvMSUyQ28yJTJDbzMlNUQlNUJNYXRoLmZsb29yKE1hdGgucmFuZG9tKCkqNCklNUQlMEElMEFzcmMobzEpJTBBJTA5LmRpZmYobzIpJTBBJTA5Lm11bHQoc2hhcGUoMTAwKSUwQSUwOSUwOS5tdWx0KG9zYygxJTJDJTIwLTElMkMlMjAxKSklMEElMDklMDkuaW52ZXJ0KCkpJTBBJTA5LmRpZmYoc3JjKGRpZmZlcikuc2NhbGUoKCklMjAlM0QlM0UlMjAobW91c2UueCUyRndpZHRoLTAuNSkqMikpJTBBJTA5LnNhdHVyYXRlKCgpJTIwJTNEJTNFJTIwbW91c2UueSUyRmhlaWdodCklMEElMDkub3V0KG8zKSUwQSUwQXJlbmRlcihvMyk%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "V2",
+    "url": "https://hydra.ojack.xyz/?code=Y29uc3QlMjByb2xsaW5nJTIwJTNEJTIwJTVCJTVEJTNCJTBBb3NjKCU1QjElMkMlMjAxLjQ5OCUyQyUyMDMlMkMlMjA1MCUyQyUyMDMwJTJDJTIwMjAlNUQuZmFzdCgwLjI0OCklMkMlMjAwLjA0OSUyQyUyMDEuMzEyKSUwQSUwOS5ibGVuZChzcmMobzApJTBBJTA5JTA5LnJvdGF0ZShNYXRoLlBJJTIwJTJGJTIwMiUyQyUyMDAuMDA0KSklMEElMDkuc2Nyb2xsWCgwLjQxNiUyQyUyMDAuMDIzKSUwQSUwOS5vdXQobzApJTNCJTBBc3JjKG8wKSUwQSUwOS5rYWxlaWQoMS40MjYpJTBBJTA5LnJlcGVhdCgyLjA2JTJDJTIwMS40MTQpJTBBJTA5Lm91dChvMSklM0IlMEFzcmMobzEpJTBBJTA5LnNjYWxlKDEuNCklMEElMDkubWFzayhzaGFwZSgzLjk4OCklMEElMDklMDkuc2NhbGUoMi4zMTYpJTBBJTA5JTA5LnJvdGF0ZShNYXRoLlBJJTIwJTJGJTIwNCkpJTBBJTA5Lm91dChvMiklM0IlMEFjb25zdCUyMGRpZmZlciUyMCUzRCUyMCU1Qm8wJTJDJTIwbzElMkMlMjBvMiUyQyUyMG8zJTVEJTVCTWF0aC5mbG9vcihNYXRoLnJhbmRvbSgpJTIwKiUyMDQpJTVEJTNCJTBBc3JjKG8xKSUwQSUwOS5kaWZmKG8yKSUwQSUwOS5tdWx0KHNoYXBlKDEwMCklMEElMDklMDkubXVsdChvc2MoMC45MSUyQyUyMC0xJTJDJTIwMS44MzkpKSUwQSUwOSUwOS5pbnZlcnQoKSklMEElMDkuZGlmZihzcmMoZGlmZmVyKSUwQSUwOSUwOS5zY2FsZSgoKSUyMCUzRCUzRSUyMChtb3VzZS54JTIwJTJGJTIwd2lkdGglMjAtJTIwMC45NTQpJTIwKiUyMDIpKSUwQSUwOS5zYXR1cmF0ZSgoKSUyMCUzRCUzRSUyMG1vdXNlLnklMjAlMkYlMjBoZWlnaHQpJTBBJTA5Lm91dChvMyklM0IlMEFyZW5kZXIobzMpJTNC",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Shattered world:",
+    "url": "https://hydra.ojack.xyz/?code=b3NjKDAuMSUyQyUyMDElMkMlMjAlNUIwLjMlMkMlMjAwLjclMkMlMjAxLjUlNUQuc21vb3RoKCkpJTBBJTA5LnJvdGF0ZSgwJTJDJTIwMC4zKSUwQSUwOS5zY2FsZSgwLjAxKSUwQSUwOS5yZXBlYXQoNCUyQyUyMDQpJTBBJTA5Lm1vZHVsYXRlU2NhbGUoc3JjKG8wKSUwQSUwOSUwOS5zY2FsZSgtMSklMEElMDklMDkuZGlmZihvMCklMEElMDklMDkuc2NhbGUoMTApKSUwQSUwOS5vdXQobzApJTBBJTBBc3JjKG8wKSUwQSUwOS5rYWxlaWQoNCklMEElMDkucm90YXRlKCU1QjAlMkMlMjBNYXRoLlBJJTIwJTJGJTIwMiUyQyUyME1hdGguUEklMkMlMjBNYXRoLlBJJTIwJTJGJTIwMiUyMColMjAzJTVEKSUwQSUwOS5zY2FsZSgtMC4yNSklMEElMDkub3V0KG8xKSUwQSUwQXNjJTIwJTNEJTIwJTVCNCUyQyUyMDYlMkMlMjA4JTJDJTIwMTAlNUQlMEFidWJibGVzJTIwJTNEJTIwc2hhcGUoc2MpJTBBJTA5LnNjYWxlKCU1QjAlMkMlMjA1JTVELmZhc3QoMC4xKSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkucmVwZWF0KDMlMkMlMjAzKSUwQSUwOS5kaWZmKHNoYXBlKHNjKSUwQSUwOSUwOS5zY2FsZSgwLjI1KSklMEElMDkucm90YXRlKDAlMkMlMjAwLjEpJTBBJTBBem9vbXMlMjAlM0QlMjAlNUIxJTJDJTIwMiUyQyUyMDMlMkMlMjA0JTVELmZhc3QoMiUyMCoqJTIwLTQpJTBBc3JjKG8xKSUwQSUwOS5kaWZmKGJ1YmJsZXMpJTBBJTA5Lm1vZHVsYXRlS2FsZWlkKGJ1YmJsZXMpJTBBJTA5LnJlcGVhdCh6b29tcyUyQyUyMHpvb21zKSUwQSUwOS5vdXQobzIpJTBBJTBBc3JjKG8yKSUwQSUwOS5kaWZmKHNyYyhvMiklMEElMDklMDkuc2NhbGUoJTVCMCUyQyUyMDEwJTVELmZhc3QoMC4wNSklMEElMDklMDklMDkuc21vb3RoKCkpJTBBJTA5KSUwQSUwOSUyRiUyRi5tb2R1bGF0ZShub2lzZSgxJTJDJTIwMC4wNCkpJTBBJTA5Lm91dChvMyklMEElMEFyZW5kZXIobzMp",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Random 94354",
+    "url": "https://hydra.ojack.xyz/?code=JTJGJTJGJTIwbGljZW5zZWQlMjB3aXRoJTIwQ0MlMjBCWS1OQy1TQSUyMDQuMCUyMGh0dHBzJTNBJTJGJTJGY3JlYXRpdmVjb21tb25zLm9yZyUyRmxpY2Vuc2VzJTJGYnktbmMtc2ElMkY0LjAlMkYlMEElMkYlMkYlMjBieSUyME9saXZpYSUyMEphY2slMEElMkYlMkYlMjBodHRwcyUzQSUyRiUyRm9qYWNrLmdpdGh1Yi5pbyUwQSUwQWJwbSUyMCUzRCUyMDEyMCUwQW9zYygxMDAlMkMlMjAwLjElMkMlMjAxKSUwQSUwOS5odWUoMC41KSUwQSUwOS5icmlnaHRuZXNzKC0wLjIpJTBBJTA5Lm91dChvMCklMEElMEFzcmMobzApJTBBJTA5LmFkZChzcmMobzApJTBBJTA5JTA5LnNjYWxlKC0xLjEpJTJDJTIwMC45OSklMEElMDkub3V0KG8xKSUwQSUwQXNyYyhvMSklMEElMDkuZGlmZihzcmMobzApJTBBJTA5JTA5LmNvbnRyYXN0KCU1Qi0wLjklMkMlMjAwLjklNUQuZmFzdCgwLjMpJTBBJTA5JTA5JTA5LnNtb290aCgpKSUwQSUwOSUwOS5yb3RhdGUoTWF0aC5QSSUyMCUyRiUyMDIlMkMlMjAwLjAxKSklMEElMDkub3V0KG8yKSUwQSUwQXNoYXBlKDMpJTBBJTA5LnNjYWxlKDElMkMlMjAwLjcpJTBBJTA5LnNjcm9sbCgwJTJDJTIwMCUyQyUyME1hdGgucmFuZG9tKCklMkMlMjBNYXRoLnJhbmRvbSgpKSUwQSUwOS5yZXBlYXQoMyUyQyUyMDMpJTBBJTA5LnNjYWxlKCU1Qi0wLjUlMkMlMjAwLjIlNUQuZmFzdCgwLjAxKSUwQSUwOSUwOS5zbW9vdGgoKSklMEElMDkuYWRkKHNoYXBlKDQpJTBBJTA5JTA5LnNjYWxlKDElMkMlMjAlNUIwLjYlMkMlMjAxLjElNUQuc21vb3RoKCkpJTBBJTA5JTA5LnJvdGF0ZSgwJTJDJTIwMC4xKSUwQSUwOSUwOS5zY3JvbGwoMCUyQyUyMDAlMkMlMjBNYXRoLnJhbmRvbSgpJTJDJTIwTWF0aC5yYW5kb20oKSklMEElMDklMDkua2FsZWlkKDQpJTBBJTA5JTA5LnJlcGVhdCgyJTJDJTIwMiklMEElMDklMDkuc2NhbGUoLTAuOCkpJTBBJTA5LmthbGVpZCg4KSUwQSUwOS5kaWZmKHNyYyhvMiklMEElMDklMDkucm90YXRlKDAuNCkpJTBBJTA5LmJsZW5kKG8zJTJDJTIwJTVCMC4yJTJDMC41JTJDMC45OSUyQyUyMDAuOCUyQyU1RC5mYXN0KDAuMTI1KSklMEElMDkubW9kdWxhdGUobm9pc2UoMiUyQzAuMSklMkMlNUIwJTJDMC4wNSUyQzAlMkMwLjElNUQpLmthbGVpZCg0KSUwQSUwOS5vdXQobzMpJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "bpm": 120,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Vadim ",
+    "url": "https://hydra.ojack.xyz/?code=c3BlZWQlMjAlM0QlMjAxJTBBY29uc3QlMjBwZXJjZW50JTIwJTNEJTIwKG4lMkMlMjBmbiklMjAlM0QlM0UlMjAlN0IlMEElMDlsZXQlMjBzdG9yZSUyMCUzRCUyMGZuKCklMEElMDlyZXR1cm4lMjAoKSUyMCUzRCUzRSUyMCU3QiUwQSUwOSUwOWlmJTIwKE1hdGgucmFuZG9tKCklMjAqJTIwMTAwJTIwJTNDJTIwbiklMjBzdG9yZSUyMCUzRCUyMGZuKCklM0IlMEElMDklMDlyZXR1cm4lMjBzdG9yZSUzQiUwQSUwOSU3RCUwQSU3RCUwQWNvbnN0JTIwcnglMjAlM0QlMjAoKSUyMCUzRCUzRSUyME1hdGgucmFuZG9tKCklMjAtJTIwMC41JTNCJTBBJTBBZTElMjAlM0QlMjBzaGFwZShwZXJjZW50KDMlMkMlMjAoKSUyMCUzRCUzRSUyME1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSUyMColMjA1JTIwJTJCJTIwMykpKSUwQSUwOS5zY3JvbGwocGVyY2VudCgzJTJDJTIwcngpJTJDJTIwcGVyY2VudCgxJTJDJTIwcngpKSUwQSUwOS5tdWx0KG9zYygxJTJDJTIwMSUyQyUyMDEpKSUzQiUwQWUyJTIwJTNEJTIwc2hhcGUocGVyY2VudCgxJTJDJTIwKCklMjAlM0QlM0UlMjBNYXRoLmZsb29yKE1hdGgucmFuZG9tKCklMjAqJTIwNSUyMCUyQiUyMDMpKSklMEElMDkuc2Nyb2xsKHBlcmNlbnQoMSUyQyUyMHJ4KSUyQyUyMHBlcmNlbnQoMSUyQyUyMHJ4KSklMEElMDkubXVsdChvc2MoMC4yJTJDJTIwMiUyQyUyMDAuMykpJTNCJTBBZTMlMjAlM0QlMjBzaGFwZShwZXJjZW50KDElMkMlMjAoKSUyMCUzRCUzRSUyME1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSUyMColMjA1JTIwJTJCJTIwMykpKSUwQSUwOS5zY3JvbGwocGVyY2VudCgxJTJDJTIwcngpJTJDJTIwcGVyY2VudCgxJTJDJTIwcngpKSUwQSUwOS5tdWx0KG9zYygxJTJDJTIwLTAuNCUyQyUyMDEuMykpJTNCJTBBZTQlMjAlM0QlMjBzaGFwZShwZXJjZW50KDElMkMlMjAoKSUyMCUzRCUzRSUyME1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSUyMColMjA1JTIwJTJCJTIwMykpKSUwQSUwOS5zY3JvbGwocGVyY2VudCgxJTJDJTIwcngpJTJDJTIwcGVyY2VudCgxJTJDJTIwcngpKSUzQiUwQSUwQXNvbGlkKDEpLmh1ZSglNUItMSUyQzAlMkMxJTVELnNtb290aCgpKSUwQSUwOS5hZGQoZTElMkMlMjAwLjgpJTBBJTA5LmFkZChlMiUyQyUyMDAuOCklMEElMDkuc3ViKGUzJTJDJTIwMC41KSUwQSUwOS5zdWIoZTQlMkMlMjAwLjUpJTBBJTA5Lm91dChvMCklMEElMEFzcmMobzApJTBBJTA5LnJvdGF0ZSgwLjElMkMlMjAwLjEpJTBBJTA5LmthbGVpZCgoKSUyMCUzRCUzRSUyMG1vdXNlLnklMkZoZWlnaHQqMTAwKSUwQSUwOS5vdXQobzEpJTBBJTBBc3JjKG8xKSUwQSUwOS5yZXBlYXQoMiUyQyUyMDIpJTBBJTA5LmRpZmYoc3JjKG8xKSUwQSUwOSUwOS5zY2FsZSgtMC41KSklMEElMDkuc2F0dXJhdGUoMiklMEElMDkub3V0KG8yKSUwQSUwQXNyYyhvMiklMEElMDkuYWRkKHNoYXBlKDMpJTBBJTA5JTA5LnNjYWxlKCU1QjAuMSUyQyUyMDAuMyU1RC5zbW9vdGgoKSkpJTBBJTA5LmJsZW5kKHNyYyhvMyklMEElMDklMDkuc2NhbGUoKCklMjAlM0QlM0UlMjAxLjAlMjAlMkIlMjAobW91c2UueCUyRndpZHRoJTIwJTJGJTIwMjApKSUyQyUyMDAuOSklMEElMDkub3V0KG8zKSUwQSUwQXJlbmRlcihvMyk%3D",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Random 63050",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTI4JTBBb3NjKDElMkMwLjElMkMwLjQpJTBBJTA5LmFkZCglMEElMDklMDlzaGFwZSg0KSUwQSUwOSklMEElMDkuYWRkKCUwQSUwOSUwOXNoYXBlKDQpJTBBJTA5JTA5LnJvdGF0ZShNYXRoLlBJJTIwJTJGJTIwNCklMEElMDklMDkuc2Nyb2xsWCgwLjMpJTBBJTA5KSUwQSUwOS5yb3RhdGUoTWF0aC5QSSUyMCUyRiUyMDIlMkMlMjAwLjEpJTBBJTA5LnNjYWxlKDAuNCklMEElMDkuc2Nyb2xsKDAuMyUyQyUyMDAuMyklMEElMDkub3V0KG8wKSUwQSUwQXNyYyhvMCklMEElMDkua2FsZWlkKDIpJTBBJTA5LmJsZW5kKG8wKSUwQSUwOS5rYWxlaWQoNCklMEElMDkucmVwZWF0KDMlMkMlMjAzKSUwQSUwOS5zY3JvbGwoMCUyQyUyMDAlMkMlMjAwJTJDJTIwMC40KSUwQSUwOS5rYWxlaWQoJTVCMSUyQyUyMDIlMkMlMjAxJTJDJTIwMiUyQyUyMDElMkMlMjA0JTJDJTIwNSUyQyUyMDclNUQuZmFzdCgyJTIwKiolMjAtMykpJTBBJTA5Lm91dChvMSklMEElMEFzcmMobzEpJTBBJTA5Lm11bHQob3NjKDEwJTJDJTIwMS4xJTJDJTIwMSklMEElMDklMDkubXVsdChvc2MoMy4yJTJDJTIwLTElMkMlMjAwLjMpKSUwQSUwOSUwOS5zY2FsZSgoKSUyMCUzRCUzRSUyME1hdGguc2luKHRpbWUlMjAlMkYlMjAxMCkpJTBBJTA5JTA5LnJvdGF0ZSgwJTJDJTIwMC4xKSUyQyUyMDIpJTBBJTA5Lm1hc2soc3JjKG8xKSUwQSUwOSUwOS5jb250cmFzdCgoKSUyMCUzRCUzRSUyMGEuZmZ0JTVCMCU1RCUyMColMjA1KSUwQSUwOSUwOS5odWUoJTVCLTElMkMlMjAxJTVELnNtb290aCgpKSklMEElMDkuYWRkKG5vaXNlKDIlMkMxKS5jb250cmFzdCgxKSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMC5hZGQoc2hhcGUoNCkucm90YXRlKDAlMkMtTWF0aC5QSSkpJTBBJTA5JTA5LnNjYWxlKDAuOCklMEElMDklMDkucm90YXRlKDAlMkMlMjAlNUJNYXRoLlBJJTJDJTIwLU1hdGguUEklMjAlMkYlMjAyJTJDJTIwTWF0aC5QSSUyQyUyMC04JTVEKSklMEElMDkub3V0KG8yKSUwQSUwQXNyYyhvMiklMEElMDkuYmxlbmQoc3JjKG8zKSUwQSUwOSUwOS5zY2FsZSgoKSUyMCUzRCUzRSUyMCU3QiUwQSUwOSUwOSUwOWNvbnNvbGUubG9nKGEuZmZ0JTVCMCU1RCklM0IlMEElMDklMDklMDlyZXR1cm4lMjAxJTIwLSUyMChhLmZmdCU1QjElNUQlMjAtJTIwMC41KSUyMCUyRiUyMDEwJTBBJTA5JTA5JTdEKSUyQyUyMCgpJTIwJTNEJTNFJTIwMSUyMC0lMjBhLmZmdCU1QjAlNUQpJTBBJTA5JTJGJTJGLmRpZmYobzEpJTBBJTA5Lm91dChvMyklMEElMEFyZW5kZXIobzMp",
+    "bpm": 128,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Fura bines cucc",
+    "url": "https://hydra.ojack.xyz/?code=dmFyJTIwYmlucyUyMCUzRCUyMDUlMEElMEFhLnNldEJpbnMoYmlucyklM0IlMEF2YXIlMjBzd28lMjAlM0QlMjBuJTIwJTNEJTNFJTIwKCklMjAlM0QlM0UlMjBNYXRoLnNpbih0aW1lJTIwJTJGMTAlMkIlMjBuKioyKSUyMCUyRiUyMDIlMjAlMkIlMjAwLjMlMEElMEF2YXIlMjBvbWclMjAlM0QlMjBzb2xpZCgwJTJDJTIwMCUyQyUyMDApJTNCJTBBdmFyJTIwc3glMjAlM0QlMjAlNUIlNUQlM0IlMEFmb3IlMjAodmFyJTIwbiUyMCUzRCUyMDAlM0IlMjBuJTIwJTNDJTIwYmlucyUzQiUyMG4lMkIlMkIpJTIwJTdCJTBBJTA5bGV0JTIwbm4lMjAlM0QlMjBuJTNCJTBBJTA5b21nJTIwJTNEJTIwb21nLmFkZChzaGFwZSg0JTJDJTIwMC4wNSklMEElMDklMDkuc2NhbGUoKCklMjAlM0QlM0UlMjAxJTIwJTJCJTIwTWF0aC5zcXJ0KGEuZmZ0JTVCbm4lNUQpJTIwKiUyMGJpbnMpJTBBJTA5JTA5LnNjcm9sbFgoKDElMjAlMkYlMjBiaW5zJTIwKiUyMG5uJTIwLSUyMDAuNSkpJTBBJTA5JTA5LnNjYWxlKDAuOCklMEElMDklMDkubXVsdChzb2xpZChzd28obiklMkMlMjBzd28obiUyMColMjAxLjElMjAlMkIlMjAwLjIpJTJDJTIwc3dvKG4lMjAqJTIwLTAuOSUyMCUyQiUyMDQpKSklMEElMEElMDkpJTNCJTBBJTdEJTBBJTBBb21nLnNjcm9sbFkoMC42KSUwQSUwOS5vdXQobzApJTNCJTBBJTBBc3JjKG8wKSUwQSUwOS5ibGVuZChzcmMobzEpJTBBJTA5JTA5LnNjcm9sbFkoMC4wMSklMkMlMjAwLjkzKSUwQSUwOS5hZGQobzApJTBBJTA5Lm91dChvMSklMEElMEFzcmMobzEpJTBBJTA5LmRpZmYoc3JjKG8xKSUwQSUwOSUwOS5zY2FsZSgtMS4xKSUwQSUwOSUwOS5zY3JvbGxYKCgpJTIwJTNEJTNFJTIwTWF0aC5zaW4odGltZSklMjAlMkYlMjAxMCkpJTBBJTA5LmFkZChzcmMobzApJTBBJTA5JTA5LnNjcm9sbFkoLTAuNikpJTBBJTA5Lm91dChvMiklMEElMEElMkYlMkZzcmMobzIpLnNjYWxlKDAuNykucm90YXRlKE1hdGguUEklMkY0JTJDMC4wMSkua2FsZWlkKDQpLmRpZmYoc3JjKG8zKS5icmlnaHRuZXNzKC0wLjAxKSkub3V0KG8zKSUwQWNvbnN0JTIwc3RkRGV2JTIwJTNEJTIwKHgpJTIwJTNEJTNFJTIwJTdCJTBBJTA5dmFyJTIwYXZnJTIwJTNEJTIweC5yZWR1Y2UoKGElMkMlMjBiKSUyMCUzRCUzRSUyMGElMjAlMkIlMjBiJTJDJTIwMCklMjAlMkYlMjB4Lmxlbmd0aCUzQiUwQSUwOXZhciUyMGRldiUyMCUzRCUyMHgucmVkdWNlKChhJTJDJTIwYiklMjAlM0QlM0UlMjBhJTIwJTJCJTIwTWF0aC5wb3coYXZnJTIwLSUyMGIlMkMlMjAyKSUyQyUyMDApJTNCJTBBJTA5cmV0dXJuJTIwTWF0aC5zcXJ0KGRldiklMEElN0QlMEElMEFzcmMobzIpJTBBJTA5LnNjYWxlKC0wLjcpJTBBJTA5LmthbGVpZCg0KSUwQSUwOS5kaWZmKHNyYyhvMykuaW52ZXJ0KCgpJTIwJTNEJTNFJTIwc3RkRGV2KGEuZmZ0KSkuc2F0dXJhdGUoMSkpLm91dChvMyklMEElMEElMDklMDlyZW5kZXIobzMpJTNC",
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Fraktal",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTI5JTBBc2hhcGUoNCklMEElMDkuc2NhbGUoMS43KSUwQSUwOS5kaWZmKHNoYXBlKDQpJTBBJTA5JTA5LnNjYWxlKDEuNSkpJTBBJTA5Lm91dChvMCklMEElMEFzcmMobzEpJTBBJTA5LmFkZChzcmMobzEpJTBBJTA5JTA5LnJlcGVhdCgzJTJDJTIwMyklMEElMDklMDkuc2NhbGUoMC41NCklMkMlMjAuMiklMEElMDkuYWRkKG8wKSUwQSUwOS5tYXNrKHNoYXBlKDQpJTBBJTA5JTA5LnNjYWxlKDEuNykpJTBBJTA5Lm91dChvMSklMEElMEFzcmMobzEpLm11bHQobm9pc2UoNCUyQzEpLm11bHQob3NjKDElMkMxJTJDMSkpKS5zY2FsZSgoKSUyMCUzRCUzRSUyMCU3QiUwQSUwOSUwOXZhciUyMHYlMjAlM0QlMjAodGltZSUyMCUyNSUyMHAlMjAlMkYlMjBwKSUzQiUwQSUwOSUwOXJldHVybiUyME1hdGguc2luKHYpJTIwKiUyMDQuNyUyMCUyQiUyMDElMEElMDklN0QpLnJvdGF0ZSglNUJNYXRoLlBJJTJDMCU1RC5mYXN0KDAuMykuc21vb3RoKCkpLnNhdHVyYXRlKDQpLm91dChvMiklMEElMEF2YXIlMjBwJTIwJTNEJTIwNjAlMjAlMkYlMjBicG0lMjAqJTIwMiUzQiUwQXNyYyhvMSkubXVsdChub2lzZSg1JTJDMSkubXVsdChvc2MoMyUyQzEuMSUyQzEuMSkuYnJpZ2h0bmVzcygwLjEpKSklMEElMDkuc2NhbGUoKCklMjAlM0QlM0UlMjAlN0IlMEElMDklMDl2YXIlMjB2JTIwJTNEJTIwKHRpbWUlMjAlMjUlMjBwJTIwJTJGJTIwcCklM0IlMEElMDklMDlyZXR1cm4lMjBNYXRoLnNpbih2KSUyMColMjA0LjclMjAlMkIlMjAxJTBBJTA5JTdEKSUwQSUwOS5hZGQobzMlMkMlMjAwLjkpJTBBJTA5Lm11bHQoc3JjKG8yKS5pbnZlcnQoKS5icmlnaHRuZXNzKDAuMDEpKSUwQSUwOSUyRiUyRi5kaWZmKHNyYyhvMCkuc2NhbGUoJTVCMCUyQzElNUQuc21vb3RoKCkpKSUwQSUwOS5vdXQobzMpJTBBJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "bpm": 129,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Triangle shit ",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTIwJTBBY29uc3QlMjBjeWNsZVRpbWUlMjAlM0QlMjA2MCUyRmJwbSUwQSUwQXZhciUyMG5vaXolMjAlM0QlMjBub2lzZSgzJTJDJTIwMiklMEF2YXIlMjBvc2NpJTIwJTNEJTIwb3NjKDUwJTJDJTIwMC4xJTJDJTIwMSklMEElMEFvc2NpLmRpZmYobm9peiklMEElMDkub3V0KG8wKSUwQSUwQSUwQWNvbnN0JTIwY2lyY2xlJTIwJTNEJTIwc2hhcGUoMTAwKSUwQSUwOS5zY2FsZSgxJTJDJTIwd2luZG93LmlubmVySGVpZ2h0JTIwJTJGJTIwd2luZG93LmlubmVyV2lkdGgpJTBBJTA5LnNjYWxlKCU1QjElMkMlMjAxLjUlMkMlMjAxLjIlMkMlMjAxLjglNUQuZmFzdCg0KS5zbW9vdGgoKSklMEElMEFjb25zdCUyMHRyaWFuZ2xlJTIwJTNEJTIwc2hhcGUoMyklMEElMDkuc2NhbGUoMSUyQyUyMHdpbmRvdy5pbm5lckhlaWdodCUyMCUyRiUyMHdpbmRvdy5pbm5lcldpZHRoKSUwQSUwOS5zY2FsZSgoKSUyMCUzRCUzRSUyMCU3QiUwQSUyMCUyMCUyMCUyMCUyMCUyMHJldHVybiUyMCh0aW1lJTIwJTI1JTIwY3ljbGVUaW1lKSUyRmN5Y2xlVGltZSUwQSUyMCUyMCUyMCUyMCU3RCklMEElMEFzcmMobzApLnBpeGVsYXRlKDEwMCUyQzEwMCklMEElMDkubXVsdChjaXJjbGUlMkMlMjAwLjUpJTBBJTA5LmRpZmYodHJpYW5nbGUpJTBBJTA5Lm91dChvMSklMEElMEFzcmMobzEpLmJsZW5kKHNyYyhvMikuc2NhbGUoMS4wNSkucm90YXRlKCgpJTNEJTNFJTIwKChtb3VzZS54JTJGd2lkdGgpLTAuNSklMkY1MCklMkMlMjAoKSUyMCUzRCUzRSUyMDAuNiUyMCUyQiUyMG1vdXNlLnklMkZoZWlnaHQqMC40KS5vdXQobzIpJTBBJTBBc3JjKG8yKS5kaWZmKG8zKS5vdXQobzMpJTBBJTBBcmVuZGVyKG8zKQ%3D%3D",
+    "bpm": 120,
+    "midi": false
+  },
+  {
+    "type": "url",
+    "name": "Random 63941",
+    "url": "https://hydra.ojack.xyz/?code=YnBtJTIwJTNEJTIwMTIwJTBBY29uc3QlMjBjeWNsZVRpbWUlMjAlM0QlMjA2MCUyMCUyRiUyMGJwbSUwQWNvbnN0JTIwcmF0aW8lMjAlM0QlMjB3aW5kb3cuaW5uZXJIZWlnaHQlMjAlMkYlMjB3aW5kb3cuaW5uZXJXaWR0aCUwQSUwQXNoYXBlKDQpJTBBJTA5LnNjYWxlKDElMkMlMjByYXRpbyklMEElMDkuc2NhbGUoKCklMjAlM0QlM0UlMjBNYXRoLnNpbih0aW1lJTIwJTJGJTIwMTApJTJGMyklMEElMDkucmVwZWF0KDUlMkMlMjA1KSUwQSUwOS5zY3JvbGwoMC41JTJDJTIwMCUyQyUyMDAuMTMlMkMlMjAwLjMzMDEzOTIxMTI4OTMxKSUwQSUwOS5rYWxlaWQoJTVCNSUyQyUyMDUlMkMlMjA1JTJDJTIwNyUyQyUyMDUlMkMlMjA1JTJDJTIwNSUyQyUyMDklNUQpJTBBJTA5LnNjcm9sbCgwJTJDMCUyQzAuMSklMEElMDkuYWRkKG5vaXNlKDQlMkMlMjAyKSUwQSUwOSUwOS5tYXNrKHNoYXBlKDQpJTBBJTA5JTA5JTA5LnJvdGF0ZSgwJTJDJTIwMC4xKSUwQSUwOSUwOSUwOS5zY2FsZSgxJTJDJTIwcmF0aW8pKSklMEElMDkub3V0KG8wKSUwQSUwQXNyYyhvMCklMEElMDkubXVsdChvc2MoMTAlMkMlMjAtMC4xJTJDJTIwMC44KSUwQSUwOSUwOS5rYWxlaWQoMjApKSUwQSUwOS5ibGVuZChvMSUyQzAuOSklMEElMDkub3V0KG8xKSUwQSUwQXNyYyhvMSklMEElMDkuYWRkKHNyYyhvMSklMEElMDklMDkuc2Nyb2xsKCU1Qi0xJTJDJTIwMiU1RC5mYXN0KDAuMSklMEElMDklMDklMDkuc21vb3RoKCkpJTBBJTA5JTA5LnJvdGF0ZSgwJTJDJTIwMC4xKSUwQSUwOSUwOS5yZXBlYXQoMyUyQyUyMDMpJTBBJTA5JTA5LnNjYWxlKC0wLjA1KS5yb3RhdGUoMCUyQzAuMSkpJTBBJTA5Lm91dChvMiklMEElMEFzcmMobzIpJTBBJTA5LmthbGVpZCg0KSUwQSUwOS5hZGQoc3JjKG8yKS5yb3RhdGUoMCUyQzAuMikpJTBBJTA5Lm1vZHVsYXRlUm90YXRlKG5vaXNlKDQlMkMlMjAwLjIpLmthbGVpZCg0KSUyQyUyMC0wLjEpJTBBJTA5LmJsZW5kKG8yJTJDJTIwMC43KSUwQSUwOS5rYWxlaWQoMTApJTBBJTA5LnNhdHVyYXRlKDUpJTBBJTBBJTA5Lm91dChvMyklMEElMEFyZW5kZXIobzMp",
+    "bpm": 120,
+    "midi": false
+  },
+    {
+        "name": "Eye of the nigh",
+        "type": "code",
+        "code": "\nvar hori = osc(1,1,1)\n\t.scale([1, 1.5])\nvar verti = osc(1)\n\t.rotate([Math.PI / 2, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 4 * -3])\n\nhori.blend(verti, [0.1, 0.9].fast(6 / 8)\n\t\t.smooth())\n\t.out(o0)\n\nsrc(o0)\n\t.modulate(hori.blend(verti, [-1, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 10)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [3, 1, -1, 3, -6])\n\t.blend(src(o3)\n\t\t.scale(1.2).rotate(() => mouse.x / 100))\n\t.sub(src(o3).scale(1.1).mask(shape([10, 100].smooth()).scale(() => 3*Math.sin(time/4))))\n\t.brightness(() => mouse.y/1000)\n\t.saturate(1.2)\n\t.hue(() => 1)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Eye of the nigh 4d",
+        "type": "code",
+        "code": "\nvar hori = osc(1,1,1)\n\t.scale([1, 1.5])\nvar verti = osc(1)\n\t.rotate([Math.PI / 2, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 4 * -3])\n\nhori.blend(verti, [0.1, 0.9].fast(6 / 8)\n\t\t.smooth())\n\t.out(o0)\n\nsrc(o0)\n\t.modulate(hori.blend(verti, [-1, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 10)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [3, 1, -1, 3, -6])\n\t.blend(src(o3)\n           .kaleid(5)\n\t\t.scale(1.2).rotate(() => mouse.x / 100))\n\t.sub(src(o3).scale(1.1).mask(shape([10, 100].smooth()).scale(() => 9*Math.sin(time/8))),0.7)\n\t.sub(src(o3).scale(1.13).mask(shape([5, 10].smooth()).scale(() => 7*Math.sin(time/7))),0.3)\n\t.brightness(() => mouse.y/1000)\n\t.saturate(1.2)\n\t.hue(() => Math.sin(time))\n\t.blend(src(o3), 0.9)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Eye of the nigh 43d",
+        "type": "code",
+        "code": "\nvar hori = osc(2, 2, 5)\n\t.scale([1, 1.5]);\nvar verti = osc(1.95, 2,2)\n\t.rotate([Math.PI / 2.104, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 6.636 * -1.758]);\nhori.blend(verti, [0.014, 1.013].fast(6 / 0.441)\n\t\t.smooth())\n\t.out(o0);\nsrc(o0)\n\t.modulate(hori.blend(verti, [-0.14, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1);\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 6.66)))\n\t.out(o2);\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [5.21, 1, -1.565, 3, -1.233])\n\t.blend(src(o3)\n\t\t.kaleid(Math.random() * 5 + 3)\n\t\t.scale(0.549)\n\t\t.rotate(() => mouse.x / 134.588))\n\t.sub(src(o3)\n\t\t.scale(1.028)\n\t\t.mask(shape([10, 58.096].smooth())\n\t\t\t.scale(() => 9 * Math.sin(time / 15.154))), 0.7)\n\t.sub(src(o3)\n\t\t.scale(0.158)\n\t\t.mask(shape([5, 18.356].smooth())\n\t\t\t.scale(() => 7 * Math.sin(time / 12.192))), 0.35)\n\t.brightness(() => mouse.y / 1000)\n\t.saturate(1.626)\n\t.hue(() => Math.sin(time))\n\t.blend(src(o3), 0.9)\n\t.out(o3);\nrender(o3);",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Glitch crystals",
+        "type": "code",
+        "code": "\nconst COORDS = [\n\t[-1, -1],\n\t[0, -1],\n\t[1, -1],\n\t[-1, 0],\n\t[0, 0],\n\t[1, 0],\n\t[-1, 1],\n\t[0, 1],\n\t[1, 1]\n]\n\nvar c = (r = Math.random() * Math.PI - Math.PI / 2) => shape(Math.random() * 4 + 3)\n\t.scale(1, 2)\n\t.rotate(r, 0.1 * r)\n\t.color(() => Math.sin(time * r), 1 - r, (r + Math.random()) % 1)\n\t.hue(() => time * r / 10)\n\nc(Math.random())\n\t.blend(c())\n\t.blend(c())\n\t.out(o0)\n\nvar zy = (i) => src(o0)\n\t.scale(1 / 3)\n\t.rotate(0, Math.random() * i - 3)\n\t.mask(shape(4)\n\t\t.scale(1.093))\n\t.scrollX(1 / 3 * COORDS[i][0])\n\t.scrollY(1 / 3 * COORDS[i][1])\n\t.scrollX(0, 0.2)\n\nzy(0)\n\t.add(zy(1))\n\t.add(zy(2))\n\t.add(zy(3))\n\t.add(zy(4))\n\t.add(zy(5))\n\t.add(zy(6))\n\t.add(zy(7))\n\t.add(zy(8))\n\t.out(o1)\n\nsrc(o0)\n\t.mult(o1, 0.8)\n\t.diff(src(o2)\n\t\t.blend(src(o2)\n\t\t\t.scale(0.7)), [1, 0, -2].fast(1 / 10)\n\t\t.smooth())\n\t.out(o2)\n\nsrc(o2)\n\t.scale(-1.01)\n\t.scrollX(0, 0.1)\n\t.brightness(0.3)\n\t.diff(o2)\n\t.mult(src(o0)\n\t\t.brightness(0.3))\n\t.add(o2)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Alley crystals",
+        "type": "code",
+        "code": "const r = () => Math.random() * 5 - 2.5;\nconst COORDS = [\n\t[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],\n];\nvar c = (r = Math.random() * Math.PI - Math.PI / 1.566) => shape(Math.random() * 4 + 3)\n\t.scale(1.832, 3.921)\n\t.rotate(r, 0.128 * r)\n\t.color(() => Math.sin(time * r), 1 - r, (r + Math.random()) % 1.817)\n\t.hue(() => time * r / 7.517);\nc(Math.random())\n\t.blend(c())\n\t.blend(c())\n\t.out(o0);\nvar zy = i => src(o0)\n\t.scale(0.514 / 4.27)\n\t.rotate(0.123, Math.random() * i - 3)\n\t.mask(shape(4)\n\t\t.scale(0.613))\n\t.scrollX(0.742 / 0.097 * COORDS[i][0])\n\t.scrollY(0.139 / 3 * COORDS[i][1])\n\t.scrollX(0.973, 0.059);\nzy(0)\n\t.add(zy(1))\n\t.add(zy(2))\n\t.add(zy(3))\n\t.add(zy(4))\n\t.add(zy(5))\n\t.add(zy(6))\n\t.add(zy(7))\n\t.add(zy(8))\n\t.out(o1);\nsrc(o0)\n\t.mult(o1, 0.96)\n\t.diff(src(o2)\n\t\t.blend(src(o2)\n\t\t\t.scale(1.201)), [1.771, 0.59, -2].fast(1.613 / 15.721)\n\t\t.smooth())\n\t.out(o2);\nsrc(o2)\n\t.scale(-0.639)\n\t.scrollX(0.865, 0.022)\n\t.brightness(0.3)\n\t.diff(o2)\n\t.mult(src(o0)\n\t\t.brightness(0.251))\n\t.add(o2)\n\t.add(o1)\n\t.out(o3);\nrender(o3);",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Zumicubi",
+        "type": "code",
+        "code": "\nvar c1 = shape(4)\n\t.scale(() => Math.sin(time /60 * Math.tan(time/69))*3)\n\t.mult(osc(1, 1, 1)\n\t\t.rotate(Math.PI / 2))\n\nc1.out(o0)\n\nsrc(o0)\n\t.diff(src(o0)\n\t\t.scale(1.1))\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o1)\n\t\t.scale(0.1, 3), 0.91)\n\t.blend(src(o2), 0.8)\n\t.blend(src(o2)\n\t\t.rotate(Math.PI / 2))\n\t.diff(src(o2)\n\t\t.mult(osc(1, 1, 2)))\n\t.add(src(o1))\n\t.sub(src(o0))\n\t.out(o2)\n\nsrc(o2)\n\t.add(src(o3)\n\t\t.scale(0.9)\n         .scrollX(() => Math.sin(time))\n         \n         .scrollY(() => Math.cos(time*.9))\n\t\t.rotate(0.0, Math.random() * 0.1 - 0.05), [-1, 1].fast(0.4)\n\t\t.smooth(0.9))\n.add(src(o2))\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Welcome to the yungle",
+        "type": "code",
+        "code": "\nosc(1.1, -1, 4)\n\t.rotate(0, 0.2)\n\t.out(o0)\n\nsrc(o0)\n\t.repeat(10, 10)\n\t.diff(o0)\n\t.out(o1)\n\nsrc(o1)\n\t.scale(() => Math.sin(time / 10) * 100)\n\t.out(o2)\n\nsrc(o1)\n\t.mult(src(o1)\n\t\t.rotate(Math.PI / 2))\n\t.add(o1)\n\t.rotate(0, -0.2)\n\t.out(o2)\n\n\nsrc(o2)\n\t.blend(src(o2)\n\t\t.scale(4), [0.1, 0.9].fast(0.1).smooth())\n\t.diff(src(o2)\n\t\t.scrollY(0, Math.PI / 10)\n\t\t.scale(0.3))\n\t.diff(src(o0)).diff(o1)\n\t.mult(src(o0)\n\t\t.rotate(0, 0.2))\n\t.diff(o1)\n\t.out(o3)\n\nrender()",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Burning squares",
+        "type": "code",
+        "code": "shape(4)\n\t.scale(1, height / width)\n\t.modulate(noise(4,2,4), [0,1].fast(0.1).smooth())\n\t.mult(osc(1,0.1,1).kaleid(10))\n\t.rotate(0,-0.15)\n\t.out(o0)\n\nsrc(o0)\n\t.blend(src(o0)\n\t\t.scale(0.8)\n\t\t.rotate(0.3, 0.4))\n\t.blend(src(o1)\n\t\t.scroll(0.2)\n\t\t.kaleid(4))\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o1)\n\t\t.scale(0.9))\n\t.add(src(o1)\n\t\t.scale(0.8))\n\t.add(src(o1)\n\t\t.scale(0.7))\n\t.rotate(0, -0.2)\n\t.diff(src(o1)\n\t\t.scale(() => Math.log(Math.min(3000, Math.max(0.4, Math.tan(time / 10)*Math.cos(time/10/2))))))\n\t.out(o2)\n\nsrc(o2).diff(src(o3).repeat(3,3).kaleid(4).rotate(0.1,0.1)).out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Golyok",
+        "type": "code",
+        "code": "\nfunction generateFMWave(time, periodLength) {\n  // Calculate the angular frequency (2 * pi / periodLength)\n  const angularFrequency = (2 * Math.PI + periodLength) / periodLength;\n\n  // Calculate the frequency modulation factor (sin(time))\n  const modulationFactor = Math.sin(time*2+periodLength)/60;\n\n  // Calculate the instantaneous frequency\n  const instantaneousFrequency = angularFrequency * modulationFactor;\n\n  // Calculate the value of the sinusoid at the current time\n  const amplitude = 1; // You can adjust the amplitude as needed\n  const waveValue = amplitude * Math.sin(instantaneousFrequency * time);\n\n  return waveValue;\n}\n\nconst o = (periodLength) => ({time}) => generateFMWave(time/5, periodLength) / 4;\n\nshape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10))\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n  \n  \n  .out(o0)\n\n\nrender(o0)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Golyok 2",
+        "type": "code",
+        "code": "\nfunction generateFMWave(time, periodLength) {\n\t// Calculate the angular frequency (2 * pi / periodLength)\n\tconst angularFrequency = (2 * Math.PI + periodLength) / periodLength;\n\n\t// Calculate the frequency modulation factor (sin(time))\n\tconst modulationFactor = Math.sin(time * 2 + periodLength) / 60;\n\n\t// Calculate the instantaneous frequency\n\tconst instantaneousFrequency = angularFrequency * modulationFactor;\n\n\t// Calculate the value of the sinusoid at the current time\n\tconst amplitude = 1; // You can adjust the amplitude as needed\n\tconst waveValue = amplitude * Math.sin(instantaneousFrequency * time);\n\n\treturn waveValue;\n}\n\nconst o = (periodLength, r = 1) => ({\n\ttime\n}) => generateFMWave(time / 5, periodLength) / 4 * r;\n\nshape(60)\n\t.scale([0.4 * Math.random(), 0.7])\n\t.scrollX(o(Math.random() * 10, Math.random() + 1))\n\t.scrollY(o(Math.random() * 10, Math.random() + 1))\n\t.add(shape(60)\n\t\t.scale(0.4)\n\t\t.scrollX(o(Math.random() * 10, Math.random()))\n\t\t.scrollY(o(Math.random() * 10, Math.random())))\n\n\t.add(shape(60)\n\t\t.scale(0.4 * Math.random())\n\t\t.scrollX(o(Math.random() * 10))\n\t\t.scrollY(o(Math.random() * 10)))\n\n\t.add(shape(60)\n\t\t.scale(0.4 * Math.random())\n\t\t.scrollX(o(Math.random() * 10))\n\t\t.scrollY(o(Math.random() * 10)))\n\n\t.out(o0)\n\nsrc(o0)\n\t.scale([0.5, 1, 0.8, 1, 0.7].smooth())\n\t.blend(src(o0))\n\t.blend(src(o1)\n\t\t.color(0.8, 0.6, 0.3)\n\t\t.hue(() => mouse.y / height))\n\t.add(o1, () => mouse.x / width - 0.2)\n\t.blend(shape(3)\n\t\t.kaleid(5), () => mouse.y / height - 1)\n\t.out(o1)\n\nsrc(o1)\n\t.scale([0.9, 0.99].smooth())\n\t.blend(src(o2)\n\t\t.rotate([0.1, -0.3].smooth(), 0.01))\n\t.out(o2)\n\nsrc(o1)\n\t.mult(src(o2)\n\t\t.scale(1.1), 0.1)\n\t.diff(src(o2)\n\t\t//.kaleid(4)\n    )\n\t.out(o2)\n\nsrc(o2)\n\t.invert()\n\t.diff(src(o2)\n\t\t.scale(1.1)\n\t\t.rotate(0.2, 0.1))\n\t.invert()\n\t.blend(o3)\n\t.scale([1, 1.1])\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "windyred",
+        "type": "code",
+        "code": "\nbpm = 140\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\n\n\nshape(4)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t//.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.diff(src(o0)\n\t\t.scale([0.8, 1].fast(0.2)\n\t\t\t.smooth()))\n\t.scroll(() => -mouse.x / width*2, () => -mouse.y / height + 0.5)\n\t.diff(shape(4)\n\t\t.scale([0.3, 0.7].smooth(2)))\n\t.sub(shape(4)\n\t\t.scale(saw({\n\t\t\tmin: 0.7,\n\t\t\tmax: 1.1\n\t\t})), [0, 1].smooth())\n\t.out(o0)\n\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.mult(osc(1, 1, 1)\n\t\t\t.kaleid(10)), () => mouse.x / width)\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o2), 0.1)\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2)\n\t\t.kaleid(6))\n\t.diff(o0)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "django x pigeon",
+        "type": "code",
+        "code": "\nbpm = 140\n\nbpm = bpm/4\n\ns0.initImage(\"https://cataas.com/cat/says/DJANGO%20x%20PIGEON?a=x\")\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\n\n\nshape(4)\n\t.scale(1.5)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.out(o0)\n\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.mult(osc([10,5,2,-1, 15], [10, 1, 4,0], 2)\n\t\t\t.kaleid(10)))\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.add(src(s0).scale(0.3).mask(shape(4)).scale(1.5).rotate(-0.2), 0.8)\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n  .out(o1)\n\n\nrender(o1)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "catshit",
+        "type": "code",
+        "code": "\nbpm = 140 / 4\n\ns0.initImage(\"https://cataas.com/cat/says/DJANGO%20x%20PIGEON?a=x\")\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\n\n\nshape(rand([3,4,5,6]))\n\t.scale(1.5)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.out(o0)\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.diff(osc([10,5,2,-1, 15], [10, 1, 4,0], 2).saturate(0.4)\n\t\t\t.kaleid(10)).brightness(0.1), 0.8)\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.blend(o0,0.1)\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n\t.add(src(s0).scale(0.3).mask(shape(4)).scale(1.9, 0.9).rotate(-0.2, [Math.random()/10, Math.random()/10].fast(0.25)), 0.99)\n  .out(o1)\n\n\nrender(o1)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "freezenoize",
+        "type": "code",
+        "code": "\nbpm = 140\n\nnoise([4,10].fast(0.01).smooth(), 1, 4)\n\t.diff(src(o0)\n\t\t.mult(osc(1, 1, 0.9)\n\t\t\t.kaleid(10)))\n\t.out(o0)\n\nsrc(o0)\n\t.diff(src(o0)\n\t\t.rotate(1, 1))\n\t.mult(osc(1, 1, 0.4)\n\t\t.kaleid(10).brightness(0.8))\n\t.modulate(noise(4, 4, 4))\n\t.scale(0.6)\n\t.out(o1)\n\nsrc(o1)\n\t.rotate(0, -1)\n\t.diff(src(o1)\n\t\t.pixelate(()=> Math.sin(time/5) * width / 20, ()=> Math.sin(time/6) * height / 20))\n\t.out(o2)\n\nsrc(o2)\n\t.diff(src(o2).rotate(1,1))\n\t.mult(src(o0).invert([0,1].fast(0.25).smooth()), -1)\n\t.blend(o3, () => Math.sin(time/2)/2 + 0.5)\n\t.blend(o0, () => (mouse.x/width-0.5) % 1)\n  .out(o3)\n\nrender(o3)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "zomething else",
+        "type": "code",
+        "code": "\nbpm = 140\n\nnoise([4, 10].fast(0.01)\n\t\t.smooth(), 1, 4)\n\t.diff(src(o0)\n\t\t.mult(osc(1, [-1, 1].smooth(), 0.9)))\n\t.blend(src(o0)\n\t\t.rotate(() => a.fft[0]))\n\t.mask(shape(100)\n\t\t.scale(2.4))\n\t.out(o0)\n\nsrc(o0)\n\t.scale(-1)\n\t.modulate(src(o1)\n\t\t.scale([1, 1.1])\n\t\t.rotate([0, Math.PI].fast(0.25)))\n\t.out(o1)\n\nsrc(o1)\n\t.repeat(4, 4)\n\t.scale(1.5)\n\t.scroll(() => Math.sin(time * 0.4), () => Math.cos(time * 0.33))\n\t.diff(src(o0)\n\t\t.mask(shape(4)\n\t\t\t.scale(1.2, 0.6)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(o3, 0.9)\n\t\t.add(src(o0)\n\t\t.mask(shape(4)\n\t\t\t.scale(1.2, 0.6)), 0.8)\n\t.diff(o2)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "colors and rotating rhombuses",
+        "type": "code",
+        "code": "\nbpm = 170\n\nshape(4).mult(osc(8,() => Math.sin(time/10)/10,2)).out(o0)\n\nsrc(o0).scale(() => Math.sin(time) + 1).out(o1)\n\nsrc(o0).diff(src(o1).scale(() => Math.sin(time/4) + 1).rotate(1.1, 0.9)).out(o2)\n\nsrc(o2).blend(src(o3), 0.9).scale([0.5,2]).add(o2, 0.1).scrollX(0,0.2).layer(o2).out(o3)\n\nrender(o3)",
+        "bpm": "170",
+        "midi": null
+    },
+    {
+        "name": "Random 54961",
+        "type": "code",
+        "code": "noise(4, 0.2)\n\t.color(0.8, 0.7, 0.2)\n\t.invert()\n\t.colorama(2, 3)\n\t.mult(osc(1, 1, 1)\n\t\t.kaleid(10))\n\t.kaleid(4)\n\t.modulateHue(noise(10, 0.2))\n\t.out(o0)\n\nrender(o0)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Hosszasan valtozo",
+        "type": "code",
+        "code": "\nbpm=140\n\nconst s = osc([10,100].fast(0.125).ease(\"easeInOutCubic\"), -0.1, 1)\n\t.g()\n\t.color(1, [0, 0.5, 0, 0].fast(0.125)\n\t\t.smooth(), [0, 0, 0.5].smooth())\n\nconst ripples = s.kaleid([1,5,2,9,3,30].fast(0.125)).invert()\n\nconst noize = voronoi([10, 40].fast(0.125)\n\t\t.smooth(), 10, 1).modulate(shape([3,4,5]))\n\t.scale([3, 4])\n\t.scrollY(0, -0.5)\n\t.kaleid()\n\t.rotate(0, 0.1)\n\t.brightness(0.1)\n\nnoize.out(o1)\n\nripples.out(o0)\n\nnoize.mult(ripples,0.3)\n\t.out(o3)\n\nsrc(o0)\n\t.diff(src(o3)\n\t\t.scale([0.5, 1.5].fast(0.25).ease(\"easeInOut\"))\n\t\t.modulateRotate(src(o1)\n\t\t\t.rotate(0, -0.2)\n\t\t\t.scale([0.2, 3].fast(0.125).smooth())), 0.1)\n\t\t.diff(src(o2).brightness([0,0.4].fast(0.01).smooth()), 1)\n  .contrast([0.9,1].ease(\"easeInCubic\"))\n\t.scale(1)\n  .out(o2)\n\nrender(o2)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "macska midi",
+        "type": "code",
+        "code": "\nbpm = 140 / 4\n\ns0.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\nsrc(s0).colorama( midi(\"b0\", {min: -0.001, max: 1}) ).modulate(noise( midi(\"b1\", {min: 0, max: 6}) )).out(o0)\n\n",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "rotacats midi",
+        "type": "code",
+        "code": "\nbpm = 140\n\ns0.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\n\ns1.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\n\nsrc(s0).colorama( midi(\"green\", {min: -0.001, max: 1}) ).modulate(noise( midi(\"blue\", {min: 0, max: 6}) )).out(o0)\n\n\nsrc(s1).scale([0.7, 1.1].fast(2).smooth()).rotate(midi(\"red\", {min: 0, max:Math.PI*4})).out(o1)\n\nsrc(o0).mult(o1, midi(\"yellow\")).out(o2);\n\nsrc(o2).blend(src(o3).scale([1,1.06]),  midi(65, {min: 0.2, max:0.95})).out(o3)\n\nrender();\n\n",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "piros pokol midi",
+        "type": "code",
+        "code": "voronoi(1, 2)\n\t.color(-1, 200, 300)\n\t.rotate(1, -0.5)\n\t.pixelate(8)\n\t.out(o0)\n\nosc(5, 0.01, 3)\n\t.rotate(2, 3)\n\t.kaleid(2)\n\t.repeat(6)\n\t.pixelate(midi(\"green\", {min: 10, max: 100}))\n\t.out(o1)\n\nnoise(2)\n\t.color(-29, 1)\n\t.colorama()\n\t.out(o3)\n\nsrc(o0)\n\t.modulateRotate(o3, midi(\"red\", {min: 1, max: 10}))\n\t.diff(o0)\n\t.mult(src(o1).color(100,0,0), midi(65, {max: 1/0.76}))\n\t.blend(src(o1).color(3,0,0), midi(66, {max: 1/0.76}))\n\t.diff(shape(100).mult(src(o1)).scale(midi(\"green\", {min: 0.001, max: 6})))\n  .out(o2)\n\nrender(o2)",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Eye of the nigh 43d midi",
+        "type": "code",
+        "code": "\nvar hori = osc(2, 2, 5)\n\t.scale([1, 1.5]);\nvar verti = osc(1.95, 2, 2)\n\t.rotate([Math.PI / 2.104, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 6.636 * -1.758]);\nhori.blend(verti, [0.014, 1.013].fast(6 / 0.441)\n\t\t.smooth())\n\t.out(o0);\nsrc(o0)\n\t.modulate(hori.blend(verti, [-0.14, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1);\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 6.66)))\n\t.out(o2);\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [5.21, 1, -1.565, 3, -1.233])\n\t.blend(src(o3)\n\t\t.kaleid(midi('yellow', {min: 1, max: 8}))\n        .kaleid(2)\n\t\t.scale(0.549))\n\t.sub(src(o3)\n\t\t.scale(1.028)\n\t\t.mask(shape([10, 58.096].smooth())\n\t\t\t.scale(() => 9 * Math.sin(time / 15.154))), 0.7)\n\t.sub(src(o3)\n\t\t.scale(0.158)\n\t\t.mask(shape([5, 18.356].smooth())\n\t\t\t.scale(() => 7 * Math.sin(time / 12.192))), 0.35)\n\t.brightness(midi(\"red\", {min: -0.1, max: 1}))\n\t.saturate(1.626)\n\t.hue(() => Math.sin(time))\n\t.blend(src(o3), 0.9)\n\t.out(o3);\nrender(o3);",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "BKK uleshuzat midi",
+        "type": "code",
+        "code": "const noiseC = 10 + (Math.random() * 10)\nconst moveSpeed = 1\n\nconst a = Math.random() / 2;\nconst b = 0.8 - a;\n\nbpm = 140\n\nn1 = noise(noiseC, moveSpeed)\n\t.color(1, a, b)\n\t.rotate(0, 0.3)\nn2 = noise(noiseC, moveSpeed)\n\t.color(a, 1, b)\n\t.rotate(0, 0.2)\nn3 = noise(noiseC, moveSpeed)\n\t.color(a, b, 1)\n\t.rotate(0, 0.1)\n\nnoise(noiseC, moveSpeed)\n\t.color(0, 0, 1)\n\t.rotate(0, 0.1)\n\t.out(o2)\n\ncx = solid()\n\t.blend(n1, [1, 1, 0, 1, 1, 0].offset(0)\n\t\t.smooth())\n\t.blend(n2, [0, 1, 1, 0, 1, 1].offset(1)\n\t\t.smooth())\n\t.blend(n3, [1, 0, 1, 0, 1].offset(2)\n\t\t.smooth())\n\nsolid()\n\t.add(cx)\n\t.blend(src(o3)\n\t\t.scale([0.9, 3].fast(2 ** -4)\n\t\t\t.smooth(), 0.9))\n\t.saturate(1.1)\n\t.colorama()\n\t.diff(src(o3).blend(o2, [0,1].fast(0.1).smooth()))\n\t.invert(() => Math.sin(time/20))\n\t.blend(src(o3).scale(1.1).rotate(midi(\"red\", {min:-0.1, max:0.2})), midi(65, {min: 0.0, max:0.9}))\n\t.out(o3)\n\n\nrender(o3)",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "BKK uleshuzat",
+        "type": "code",
+        "code": "const noiseC = 10 + (Math.random() * 10)\nconst moveSpeed = 1\n\nconst a = Math.random() / 2;\nconst b = 0.8 - a;\n\nbpm = 140\n\nn1 = noise(noiseC, moveSpeed)\n\t.color(1, a, b)\n\t.rotate(0, 0.3)\nn2 = noise(noiseC, moveSpeed)\n\t.color(a, 1, b)\n\t.rotate(0, 0.2)\nn3 = noise(noiseC, moveSpeed)\n\t.color(a, b, 1)\n\t.rotate(0, 0.1)\n\nnoise(noiseC, moveSpeed)\n\t.color(0, 0, 1)\n\t.rotate(0, 0.1)\n\t.out(o2)\n\ncx = solid()\n\t.blend(n1, [1, 1, 0, 1, 1, 0].offset(0)\n\t\t.smooth())\n\t.blend(n2, [0, 1, 1, 0, 1, 1].offset(1)\n\t\t.smooth())\n\t.blend(n3, [1, 0, 1, 0, 1].offset(2)\n\t\t.smooth())\n\nsolid()\n\t.add(cx)\n\t.blend(src(o3)\n\t\t.scale([0.9, 3].fast(2 ** -4)\n\t\t\t.smooth(), 0.9))\n\t.saturate(1.1)\n\t.colorama()\n\t.diff(src(o3).blend(o2, [0,1].fast(0.1).smooth()))\n\t.invert(() => Math.sin(time/20))\n\t.blend(src(o3).scale(1.1).rotate(midi(\"red\", {min:-0.1, max:0.2})), midi(65, {min: 0.0, max:0.9}))\n\t.out(o3)\n\n\nrender(o3)",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "django x pigeon midi",
+        "type": "code",
+        "code": "\nbpm = 140\nbpm = bpm / 4\n\ns0.initImage(\"https://cataas.com/cat/says/DJANGO%20x%20PIGEON?afx=\" + Math.random())\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\n\n\nshape(4)\n\t.scale(1.5)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t.hue([0, 2].fast(0.05)\n\t\t.smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.out(o0)\n\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.mult(osc([10, 5, 2, -1, 15], [10, 1, 4, 0], 2)\n\t\t\t.kaleid(10)))\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.add(src(s0)\n\t\t.scale(0.3)\n\t\t.mask(shape(4))\n\t\t.scale(midi(\"red\", {\n\t\t\tmin: 1,\n\t\t\tmax: 3,\n\t\t\ttransform: a => 1.5 ** a\n\t\t}))\n\t\t.rotate(-0.2), 0.8)\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n\t.rotate(midi(\"yellow\", {min: -10, max: 10}))\n\t.out(o1)\n\n\nrender(o1)",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Kartyak szines, midi",
+        "type": "code",
+        "code": "speed = 1\nconst horizontal = shape(4)\n\t.scrollX(100, 0.11112)\nconst vertical = shape(4)\n\t.rotate(0, 0.3)\n\t.scrollY(100, 0.8)\n\nhorizontal.blend(vertical, ({\n\t\ttime\n\t}) => Math.sqrt(Math.sin(time) + 1) / 2)\n\t.blend(o0, 0.9)\n\t.out(o0)\n\nshape(4)\n\t.rotate(Math.PI / 8)\n\t.repeat([4, 6].fast(0.01)\n\t\t.smooth(), [6, 4].fast(0.01)\n\t\t.smooth())\n\t.scrollX(0, 0.25)\n\t.add(\n\t\tshape(4)\n\t\t.repeat(4, 4)\n\t\t.rotate(Math.PI / 4)\n\t\t.scrollY(0, 0.5))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o1)\n\t\t.scale(({\n\t\t\ttime\n\t\t}) => (1 / Math.sin(time / 10)))\n\t\t.rotate(({\n\t\t\ttime\n\t\t}) => time / 10000 % Math.PI))\n\t.pixelate(midi(\"red\", {min:3, max:400}), midi(\"red\", {min: 3, max: 400}))\n\t.mult(shape(4).scale(30).color(1,0.4,0.1).colorama(midi(\"yellow\", {min: 0, max: 1})), midi(\"yellow\", {min: 0, max: 1}))\n\t.out(o2)\n\nsrc(o0)\n\t.modulateKaleid(o3)\n\t.add(o2)\n\t.diff(o1)\n\t.blend(o3,midi(65, {max: 1.2}))\n\t.out(o3)\n\nrender()",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Bubbles midi",
+        "type": "code",
+        "code": "/*Bubbles:*/\nvar x = 0;\nvar y = 0;\nbpm = 140;\nn1 = noise(14, 2, 10)\n\t.contrast(5)\n\t.invert([0, 0.1, 0, 0.2].fast(0.2)\n\t\t.ease(\"easeInOutQuart\"))\n\t.scale([1.542, 1.2, 1, 0.37].fast(2)\n\t\t.ease(\"easeInOutCubic\"))\n\t.kaleid(3)\n\t.rotate(3.14 / 8, 0.1);\nn2 = noise(7, 2, 10)\n\t.invert([0, 0.1, 0, 0.6].fast(0.008)\n\t\t.ease(\"easeInOutQuart\"))\n\t.scale([1, 1.2].fast(2)\n\t\t.ease(\"easeInOutCubic\"))\n\t.rotate(-3.14 / 8, -0.12);\nn1.blend(n2, [0.855, 1].fast(1.204 ** -5)\n\t\t.smooth())\n\t.out(o0);\nvoronoi(15.386, 2, [1, 2, 3, 5, 10].fast(0.125)\n\t\t.smooth())\n\t.mult(osc(1, 0.084, 1))\n\t.saturate([0.1, 0.9].fast(0.2)\n\t\t.smooth())\n\t.brightness(0.4)\n\t.blend(src(o1), [0.95, 0.99].fast(0.125)\n\t\t.smooth())\n\t.out(o1);\nsrc(o0)\n\t.modulateScale(src(o1))\n\t.modulateRotate(src(o1)\n\t\t.rotate(0.1, 0.1))\n\t.add(src(o2), 0.5)\n\t.mult(src(o1))\n\t.out(o2);\nsrc(o2)\n\t.rotate(0, 0.1)\n\t.scale(midi(\"red\", {min:0, max: 3, transform: Math.sin}))\n\t.add(src(o2), 0.453)\n\t.out(o3);\nrender(o3);",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Eye of the night midi",
+        "type": "code",
+        "code": "\nvar hori = osc(1,1,1)\n\t.scale([1, 1.5])\nvar verti = osc(1)\n\t.rotate([Math.PI / 2, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 4 * -3])\n\nhori.blend(verti, [0.1, 0.9].fast(6 / 8)\n\t\t.smooth())\n\t.out(o0)\n\nsrc(o0)\n\t.modulate(hori.blend(verti, [-1, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 10)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [3, 1, -1, 3, -6])\n\t.blend(src(o3)\n\t\t.scale(1.2).rotate(midi(\"red\", {min: -Math.PI+0.1, max: Math.PI-0.1})))\n\t.sub(src(o3).scale(1.1).mask(shape([10, 100].smooth()).scale(() => 3*Math.sin(time/4))))\n\t.brightness(midi(\"yellow\", {min: -0.001, max: 1}))\n\t.saturate(1.2)\n\t.hue(() => 1)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Random 54961 nemko",
+        "type": "code",
+        "code": "noise(4, 0.2)\n\t.color(0.8, 0.7, 0.2)\n\t.invert()\n\t.colorama(2, 3)\n\t.mult(osc(1, 1, 1)\n\t\t.kaleid(10))\n\t.kaleid(4)\n\t.modulateHue(noise(10, 0.2))\n\t.out(o0)\n\nrender(o0)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "csik midi",
+        "type": "code",
+        "code": "a.setCutoff(4)\nosc()\n\t.modulate(noise(3), () => a.fft[0])\n\t.out(o0)\nshape(1, 1)\n\t.mult(voronoi(1000, 2)\n\t\t.blend(o0)\n\t\t.luma())\n\t.add(shape(2, 0.125)\n\t\t.rotate(1, 1)\n\t\t.mult(voronoi(1000, 1)\n\t\t\t.luma())\n\t\t.rotate(1.5))\n\t.scrollX([0.1, -0.0625, 0.005, 0.00001], 0)\n\t.scrollY([0.1, -0.0625, 0.005, 0.00001], 0)\n\t.modulate(noise(5), () => a.fft[0])\n\t.modulateHue(src(o0)\n\t\t.scale(1.04), 1)\n\t.layer(osc(8, midi(\"yellow\", {min: 0, max: 3}), 10)\n\t\t.mask(shape(midi(\"blue\", {min: 2, max: 8}), midi(\"green\", {min: 0.05, max: 1}) , 0.1)))\n\t.modulate(noise(0.5), () => a.fft[0])\n\t.out()",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "sargazsolt midi",
+        "type": "code",
+        "code": "await s0.initImage(\"https://mir-s3-cdn-cf.behance.net/project_modules/max_3840/41cb4d174834185.64a933ad1680c.png\")\n\nvar cc = Array(128)\n\t.fill(0.5);\n\ncol=0.1\npressed=0\n\nsrc(s0)\n\t.scale(midi(\"red\", {min:0.1, max:2}))\n\t.color(-1, 200, 300)\n\t.rotate(1, -0.5)\n\t.pixelate(midi(\"blue\", {min: 10, max:800}))\n\t.colorama(0.1)\n\t.out(o0)\n\nosc(5, 0.01, 3)\n\t.rotate(2, 3)\n\t.kaleid(2)\n\t.repeat(midi(\"yellow\", {min: 1, max:6}))\n\t.pixelate(10)\n\t.colorama(0.0003)\n\t.diff(shape(4)\n\t\t.rotate(2, -2, ))\n\t.out(o1)\n\nsrc(o0)\n\t.modulateRotate(o1, 5)\n\t.blend(o2,() =>cc[4] )\n\t.modulate(shape(4)\n\t\t.rotate(2, -2))\n\t.out(o2)\n\nrender(o2)\n",
+        "bpm": 0,
+        "midi": [
+            "cc["
+        ]
+    },
+    {
+        "name": "Midget spinner, CC-vel",
+        "type": "code",
+        "code": "bpm = 170\n\nshape(midi(\"yellow\", {min: 3, max: 10, transform: Math.floor}))\n\t.rotate(0, [0.3, -0.3].fast(0.01).smooth())\n\t.diff(shape(3)\n\t\t.scale([0.4,0.6].fast(2).smooth())\n\t\t.rotate(0, -2))\n\t.mult(osc(2, 0.1, 1)\n\t\t.kaleid(10))\n\t.scale(midi(\"red\", {min:0, max: 3}))\n\t.out(o0)\n\n\nconst saw = (period, min, max) => ({\n\ttime\n}) => {}\n\nsrc(o0)\n\t.blend(src(o1)\n\t\t.scale(1), 0.9)\n\t.diff(src(o0)\n\t\t.scale(1.4))\n\t.add(o1, 0.1)\n\t.invert(() => cc[65]>0.5 ? 1: 0)\n\t.out(o1)\n\nsrc(o1)\n\t.blend(src(o2)\n\t\t.scale([1.01,0.99].ease(\"easeInOutCubic\")), 0.99)\n\t.diff(src(o1)\n\t\t.blend(solid()\n\t\t\t.brightness(0), [0.0, 0.3].fast(0.1)\n\t\t\t.smooth()))\n\t.out(o2)\n\nsrc(o2).add(src(o1)).diff(o0).blend(src(o3).scale(0.99),[0.9,0.99].fast(0.1).smooth()).rotate(0,[0, 0.01].fast(0.01).smooth()).out(o3)\n\nrender(o3)",
+        "bpm": "170",
+        "midi": [
+            "cc["
+        ]
+    },
+    {
+        "name": "Pumpin 5",
+        "type": "code",
+        "code": "bpm = 170\n\nshape(4).scrollX(0,0.23239).scrollY(0,0.3).kaleid(5)\n  .diff(shape(5).scrollX(0, -0.1111).scrollY(0,-Math.random()/10).kaleid(7))\n  .rotate(0.3, 0.01)\n  .repeat(2,1)\n  .out(o0)\n\nsrc(o0).blend(o1,0.99).rotate(0,[0.001, -0.001].fast(0.004).smooth()).add(o0,0.1).out(o1)\n\nox = osc(6,-0.1,[0,2].fast(0.01).smooth()).brightness(0.1)\n\nsrc(o1)\n  .mult(ox.saturate(0.2))\n  .diff(shape(2).scale(({time})=> 2*(time%(60/bpm))))\n  .out(o2)\n\n\nsrc(o2).blend(src(o2).scale(0.99).diff(o1).diff(ox.kaleid(10)), [0,1].fast(0.1).smooth()).out(o3) \n\nrender(o3)",
+        "bpm": "170",
+        "midi": null
+    },
+    {
+        "name": "Fraktal",
+        "type": "code",
+        "code": "\nsetResolution(2000, 1600)\nbpm = 129\nshape(4)\n\t.scale(1.7)\n\t.diff(shape(4)\n\t\t.scale(1.5))\n\t.out(o0)\n\nsrc(o1)\n\t.add(src(o1)\n\t\t.repeat(3, 3)\n\t\t.scale(0.54), .2)\n\t.add(o0)\n\t.mask(shape(4)\n\t\t.scale(1.7))\n\t.out(o1)\n\nsrc(o1).mult(noise(4,1).mult(osc(1,1,1))).scale(() => {\n\t\tvar v = (time % p / p);\n\t\treturn Math.sin(v) * 4.7 + 1\n\t}).rotate([Math.PI,0].fast(0.3).smooth()).saturate(4).out(o2)\n\nvar p = 60 / bpm * 2;\nsrc(o1).mult(noise(5,1).mult(osc(3,1.1,1.1).brightness(0.1)))\n\t.scale(() => {\n\t\tvar v = (time % p / p);\n\t\treturn Math.sin(v) * 4.7 + 1\n\t})\n\t.add(o3, 0.9)\n\t.mult(src(o2).invert().brightness(0.01))\n\t//.diff(src(o0).scale([0,1].smooth()))\n\t.out(o3)\n\n\nrender(o3)",
+        "bpm": "129",
+        "midi": null
+    }
+]
