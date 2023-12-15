@@ -10,7 +10,8 @@ if (lines[0].startsWith('/* generated */')) {
   const versionJSON = lines[0].split('const version = ')[1];
   const version = JSON.parse(versionJSON);
   if (version.commit === lastCommitMessage) {
-    return;
+    console.log("version.js is up to date");
+    process.exit(0);
   }
 
   lines[0] = `/* generated */ const version = { "date": "${new Date().toISOString()}", "commit": "${lastCommitMessage}" }`;

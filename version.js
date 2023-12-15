@@ -1,3 +1,3 @@
-/* generated */ const version = { "date": "2023-12-15T22:51:30.868Z", "commit": "Merge branch 'gh-pages' of github.com:delanni/hydralisk into gh-pages" }
+/* generated */ const version = { "date": "2023-12-15T22:54:05.391Z", "commit": "try fixing the pre-push hook2" }
 
 console.log("VERSION", version);
