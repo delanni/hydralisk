@@ -17,8 +17,10 @@ if (lines[0].startsWith('/* generated */')) {
   fs.writeFileSync('version.js', lines.join('\n'));
   // amend the commit
   cp.execSync('git add version.js');
-  cp.execSync('git commit --amend --no-edit');
+  cp.execSync('git commit --amend -C HEAD --no-edit');
   console.log("Updated version.js");
 } else {
-  console.warn("version.js doesn't look not generated, review the pre-push script or the version.js file")
+  console.warn("version.js doesn't look not generated, review the pre-push script or the version.js file");
 }
+
+process.exit(0);
