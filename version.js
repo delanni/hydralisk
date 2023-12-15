@@ -1,3 +1,3 @@
-/* generated */ const version = { date: "2023-12-15T22:25:11.403Z", commit: "fix conflicts, fix pre-push" }
+/* generated */ const version = { "date": "2023-12-15T22:28:36.355Z", "commit": "don't edit the version.js if there's no new commit" }
 
 console.log("VERSION", version);

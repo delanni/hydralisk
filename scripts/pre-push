@@ -7,11 +7,18 @@ const lines = fs.readFileSync('version.js').toString().split('\n');
 
 if (lines[0].startsWith('/* generated */')) {
   const lastCommitMessage = cp.execSync('git log -1 --pretty=%B').toString().trim();
-  lines[0] = `/* generated */ const version = { date: "${new Date().toISOString()}", commit: "${lastCommitMessage}" }`;
+  const versionJSON = lines[0].split('const version = ')[1];
+  const version = JSON.parse(versionJSON);
+  if (version.commit === lastCommitMessage) {
+    return;
+  }
+
+  lines[0] = `/* generated */ const version = { "date": "${new Date().toISOString()}", "commit": "${lastCommitMessage}" }`;
   fs.writeFileSync('version.js', lines.join('\n'));
   // amend the commit
   cp.execSync('git add version.js');
   cp.execSync('git commit --amend --no-edit');
+  console.log("Updated version.js");
 } else {
   console.warn("version.js doesn't look not generated, review the pre-push script or the version.js file")
 }
