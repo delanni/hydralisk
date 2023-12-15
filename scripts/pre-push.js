@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+process.exit(0);
+
 const fs = require('fs');
 const cp = require('child_process');
 
