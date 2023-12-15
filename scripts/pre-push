@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const cp = require('child_process');
+
+const lines = fs.readFileSync('version.js').toString().split('\n');
+
+if (lines[0].startsWith('/* generated */')) {
+  const hash = cp.execSync('git rev-parse HEAD').toString().trim();
+  const lastCommitMessage = cp.execSync('git log -1 --pretty=%B').toString().trim();
+  lines[0] = `/* generated */ const version = { date: "${new Date().toISOString()}", hash: "${hash}", commit: "${lastCommitMessage}" }`;
+  fs.writeFileSync('version.js', lines.join('\n'));
+  // amend the commit
+  cp.execSync('git add version.js');
+  cp.execSync('git commit --amend --no-edit');
+} else {
+  console.warn("version.js doesn't look not generated, review the pre-push script or the version.js file")
+}
