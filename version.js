@@ -1,3 +1,3 @@
-/* generated */ const version = { date: "2023-12-15T22:19:22.484Z", hash: "52ded697f1e03b74ed10f0a5662a41ab0cf37b32", commit: "feat: add version update as a pre-push script" }
+/* generated */ const version = { date: "2023-12-15T22:20:37.053Z", hash: "576de076a2bf328e11ab09b4476aa27a79397f3a", commit: "feat: load version.js" }
 
 console.log("VERSION", version);
