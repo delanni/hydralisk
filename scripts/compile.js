@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 /*
 This script compiles individual sketch files from the sketches folder to a single sketches.json file.
@@ -9,18 +9,25 @@ This script compiles individual sketch files from the sketches folder to a singl
 
 async function main() {
   const sketches = [];
-  const sketchesFolder = path.join(__dirname, '../sketches');
+  const sketchesFolder = path.join(__dirname, "../sketches");
+  const sketchesJsonPath = path.join(__dirname, "../sketches.json");
   const sketchesFiles = fs.readdirSync(sketchesFolder);
+
   for (let sketchFile of sketchesFiles) {
     const sketchFilePath = path.join(sketchesFolder, sketchFile);
-    const sketchFileContent = fs.readFileSync(sketchFilePath, 'utf8');
-    const sketchFileLines = sketchFileContent.split('\n');
-    const sketchName = sketchFileLines[0].replace('/*', '').replace('*/', '').trim();
-    const sketchCode = sketchFileLines.slice(1, -1).join('\n');
+    const sketchFileContent = fs.readFileSync(sketchFilePath, "utf8");
+    const sketchFileLines = sketchFileContent.split("\n");
+    const sketchName = sketchFileLines[0]
+      .replace("/*", "")
+      .replace("*/", "")
+      .trim();
+    const sketchCode = sketchFileLines.slice(1, -1).join("\n");
 
     let sketchMetaData = {};
     try {
-      sketchMetadata = JSON.parse(sketchFileLines[sketchFileLines.length - 1].replace('metadata = ', ''));
+      sketchMetadata = JSON.parse(
+        sketchFileLines[sketchFileLines.length - 1].replace("metadata = ", "")
+      );
     } catch (err) {
       sketchMetaData = {
         bpm: sketchCode.match(/bpm\s*=(\d+)/)?.[1] || 120,
@@ -29,14 +36,14 @@ async function main() {
     }
     sketches.push({
       name: sketchName,
-      type: 'code',
+      type: "code",
       code: sketchFileContent,
-      index: sketchMetadata.index ?? (10000 + sketches.length),
+      index: sketchMetadata.index ?? 10000 + sketches.length,
       bpm: sketchMetadata.bpm,
       midi: sketchMetadata.midi,
       local: false,
       heat: sketchMetadata.heat || 0,
-      author: sketchMetadata.author || 'Anony Mouse',
+      author: sketchMetadata.author || "Anony Mouse",
     });
     sketches.sort((a, b) => a.index - b.index);
 
@@ -45,10 +52,11 @@ async function main() {
       sketches[i].index = i;
     }
   }
-  fs.writeFileSync(path.join(__dirname, '../sketches.json'), JSON.stringify(sketches, null, 2));
+
+  fs.writeFileSync(sketchesJsonPath, JSON.stringify(sketches, null, 2));
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
