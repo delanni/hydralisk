@@ -1,3 +1,3 @@
-/* generated */ const version = { "date": "2023-12-15T23:10:50.971Z", "commit": "try pre-push from a shell script" }
+/* generated */ const version = { "date": "2023-12-15T23:14:34.907Z", "commit": "try running node from sh, to see if it's respecting the pre-push" }
 
 console.log("VERSION", version);
