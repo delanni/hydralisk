@@ -1,3 +1,3 @@
-/* generated */ const version = { "date": "2023-12-15T22:28:36.355Z", "commit": "don't edit the version.js if there's no new commit" }
+/* generated */ const version = { "date": "2023-12-15T22:35:58.309Z", "commit": "fix: use object values instead of entries" }
 
 console.log("VERSION", version);
