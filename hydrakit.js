@@ -75,7 +75,7 @@ hydrakit.js:31 Midi received on cc#86 value:0.7890625, channel: 5  LE
 
 function midi(ccIndex, options = {}) {
   const colorToMidi = {
-    "green": 0,
+    "green": 1,
     "blue": 2,
     "yellow": 3,
     "red":4,
