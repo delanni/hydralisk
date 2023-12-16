@@ -1,0 +1,41 @@
+/* rosy */
+shape(40, 0.4, 0.4)
+	.contrast(1)
+	.add(src(o1)
+		.repeat(2, 2)
+		.scale([0.3, 0.9, 1.3].smooth(0.1))
+		.scale(() => Math.sin(time / 1000)), 0.6)
+	.out(o1)
+
+shape(6)
+	.diff(src(o1)
+		.scale(0.5)
+		.mask(shape(6)))
+	.diff(src(o1)
+		.scale(0.9))
+	.invert()
+	.mult(gradient(0)
+		.invert()
+		.hue([0.2, 0.4, 0.6, 0.8])
+		.hue(() => (time % 3.14) / 100)
+		.kaleid(10))
+	.out(o0)
+
+src(o0)
+	.diff(src(o2)
+		.mask(shape(6, 0.6))
+		.scale([0.4, 0.9, 0.4, 0.9, 0.4, 0.9, 0.7, 1.2].smooth(0.1)))
+	.rotate([0, Math.PI/4, 2 * Math.PI/4, Math.PI/4 * 3, Math.PI])
+	.out(o2)
+
+src(o2)
+	.repeat(3, 3)
+	//.mult(src(o2).scroll(0,0,0.1).kaleid(4),.8)
+	//.add(src(o2).scroll(0,0,0.1).kaleid(2),.4)
+	//.diff(src(o2).scroll(0,0,0.1).kaleid(2),.4)
+	.blend(src(o2),0.7)
+	.out(o3)
+
+render(o3)
+
+metadata = {"index":51,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}

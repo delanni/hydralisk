@@ -44,6 +44,6 @@ src(o0)
 	.blend(o3,midi(65, {max: 1.2}))
 	.out(o3)
 
-render()
+render(o3)
 
-metadata = {"index":38,"type":"code","bpm":0,"midi":true,"heat":5,"author":"Alex Szabo"}
+metadata = {"index":27,"type":"code","bpm":0,"midi":true,"heat":5,"author":"Alex Szabo"}

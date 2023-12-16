@@ -11,7 +11,7 @@ async function main() {
   const sketches = [];
   const sketchesFolder = path.join(__dirname, "../sketches");
   const sketchesJsonPath = path.join(__dirname, "../sketches.json");
-  const sketchesFiles = fs.readdirSync(sketchesFolder);
+  const sketchesFiles = fs.readdirSync(sketchesFolder).filter(e=>e.endsWith(".js"));
 
   for (let sketchFile of sketchesFiles) {
     const sketchFilePath = path.join(sketchesFolder, sketchFile);
@@ -30,7 +30,7 @@ async function main() {
       );
     } catch (err) {
       sketchMetaData = {
-        bpm: sketchCode.match(/bpm\s*=(\d+)/)?.[1] || 120,
+        bpm: Number(sketchCode.match(/bpm\s*=(\d+)/)?.[1] || 120),
         midi: !!(sketchCode.match(/cc\[/) || sketchCode.match(/midi\(/)),
       };
     }

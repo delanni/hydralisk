@@ -1,0 +1,43 @@
+/* Sandor */
+shape(100)
+	.scale(width, [1 / height, 0.5 / height].fast(10)
+		.smooth())
+	.mult(osc(10, 1, 0.1))
+	.rotate(0, 1)
+	.diff(src(o0)
+		.repeat(2, 2))
+	.out(o0)
+
+shape(4)
+	.diff(shape(4)
+		.scale([0.8, 1.1, 0.9, 1.05, 1.01].smooth(0.1)))
+	.scale([2,1,1.5,2,1,3].fast(1/4).smooth(0.1/4), height / width)
+	.mult(src(o0))
+	.add(src(o1)
+		.scroll(0.15, 0.1, 0.01, () => Math.sin(time / 100) / 100)
+		.rotate(0, -0.01)
+		.contrast(1)
+		.hue(0.2), [0.8, 0.1].smooth())
+	.add(src(o1)
+		.scroll(0.15, 0.1, 0.01, () => Math.sin(time / 100) / 100)
+		.rotate(0, 0.01)
+		.contrast(1), [0.1, 0.8].smooth())
+	.rotate(0)
+	.out(o1)
+
+voronoi([1, 3, 5].smooth(), 20, [1, 10].smooth())
+	.scroll(0, 0, 0.1)
+	.mult(gradient())
+	.brightness(1.1)
+	.rotate([Math.PI * Math.random(), Math.PI * Math.random(), Math.PI * Math.random()].fast(1/8))
+	.scale([1.2, 1.6,0.7,1].fast(1/4))
+	.mult(src(o2).rotate(Math.PI/4))
+	.invert(1.1)
+	.blend(o2,0.98)
+	.out(o2)
+
+src(o2).diff(o1).diff(src(o1).scale(-0.4).scroll(0.5).modulate(o0,0.5)).out(o3)
+
+render(o3)
+
+metadata = {"index":0,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}

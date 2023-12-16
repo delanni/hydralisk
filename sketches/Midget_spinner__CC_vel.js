@@ -38,4 +38,4 @@ src(o2).add(src(o1)).diff(o0).blend(src(o3).scale(0.99),[0.9,0.99].fast(0.1).smo
 
 render(o3)
 
-metadata = {"index":23,"type":"code","bpm":"170","midi":true,"heat":5,"author":"Alex Szabo"}
+metadata = {"index":33,"type":"code","bpm":"170","midi":true,"heat":5,"author":"Alex Szabo"}

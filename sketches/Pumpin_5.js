@@ -21,4 +21,4 @@ src(o2).blend(src(o2).scale(0.99).diff(o1).diff(ox.kaleid(10)), [0,1].fast(0.1).
 
 render(o3)
 
-metadata = {"index":24,"type":"code","bpm":"170","midi":false,"heat":5,"author":"Alex Szabo"}
+metadata = {"index":34,"type":"code","bpm":"170","midi":false,"heat":5,"author":"Alex Szabo"}

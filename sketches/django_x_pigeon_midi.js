@@ -3,7 +3,7 @@
 bpm = 140
 bpm = bpm / 4
 
-s0.initImage("https://cataas.com/cat/says/DJANGO%20x%20PIGEON?afx=" + Math.random())
+s0.initImage("https://cataas.com/cat/says/DJANGO x PIGEON?afx=" + Math.random())
 
 const saw = ({
 	min = 0,
@@ -74,4 +74,4 @@ src(o0)
 
 render(o1)
 
-metadata = {"index":37,"type":"code","bpm":"140","midi":true,"heat":5,"author":"Alex Szabo"}
+metadata = {"index":26,"type":"code","bpm":"140","midi":true,"heat":5,"author":"Alex Szabo"}

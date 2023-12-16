@@ -40,7 +40,7 @@ async function main() {
     const metadata = {
       index: i,
       type: "code",
-      bpm: sketch.bpm,
+      bpm: sketch.bpm || 0,
       midi: sketch.midi || !!(code && (code.match(/cc\[/) || code.match(/midi\(/))),
       local: sketch.local,
       heat: sketch.heat || 5,
@@ -50,7 +50,7 @@ async function main() {
     const sketchFile = `/* ${name} */
 ${code}
 
-metadata = ${JSON.stringify(metadata)}`;
+/* metadata = ${JSON.stringify(metadata)} */`;
 
     fs.writeFileSync(path.join(sketchesDir, `${fileName}.js`), sketchFile);
   }

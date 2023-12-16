@@ -1,4 +1,4 @@
-/* Random 19567 */
+/* Starfish */
 shape(3)
 	.scale(0.5)
 	.scroll(-30)

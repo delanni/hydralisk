@@ -31,4 +31,4 @@ src(o2).diff(src(o3).repeat(3,3).kaleid(4).rotate(0.1,0.1)).out(o3)
 
 render(o3)
 
-metadata = {"index":2,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+metadata = {"index":9,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
