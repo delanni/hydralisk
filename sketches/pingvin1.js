@@ -16,4 +16,4 @@ src(o2).blend(src(o3).scale([1,1.06]),  midi(65, {min: 0.2, max:0.95})).out(o3)
 
 render(o3);
 
-metadata = {"index":82,"type":"code","bpm":"155","midi":true,"heat":5,"author":"Zsolt Liber"}
+/* metadata = {"index":65,"type":"code","bpm":"155","midi":true,"local":false,"heat":5,"author":"Zsolt Liber"} */

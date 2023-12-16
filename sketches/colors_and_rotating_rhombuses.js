@@ -12,4 +12,4 @@ src(o2).blend(src(o3), 0.9).scale([0.5,2]).add(o2, 0.1).scrollX(0,0.2).layer(o2)
 
 render(o3)
 
-metadata = {"index":17,"type":"code","bpm":"170","midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":22,"type":"code","bpm":"170","midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

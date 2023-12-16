@@ -40,4 +40,4 @@ src(o1).add(o2, 0.7).out(o3)
 
 render(o3)
 
-metadata = {"index":20,"type":"code","bpm":130,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":7,"type":"code","bpm":130,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

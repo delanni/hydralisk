@@ -34,4 +34,4 @@ src(o2).blend(o3,()=>mouse.x/width * 0.99).out(o3)
 
 render(o3)
 
-metadata = {"index":18,"type":"code","bpm":150,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":12,"type":"code","bpm":150,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

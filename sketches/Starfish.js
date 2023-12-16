@@ -16,4 +16,4 @@ shape(3)
 
 render(o0)
 
-metadata = {"index":17,"type":"code","midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":31,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

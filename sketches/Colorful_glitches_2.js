@@ -38,4 +38,4 @@ src(o1)
 	.out(o3);
 render(o3);
 
-metadata = {"index":36,"type":"code","bpm":"135","midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":10,"type":"code","bpm":"135","midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

@@ -9,4 +9,4 @@ src(o2).diff(src(o2).scale(-1)).diff(src(o1)).blend(o3,0.95).out(o3)
 
 render(o3)
 
-metadata = {"index":21,"type":"code","midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":25,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

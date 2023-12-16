@@ -12,4 +12,4 @@ shape(6, [0.3, 1].smooth(0.1), [0.9, 0.8, 0.7, 0.6])
 
 render(o0)
 
-metadata = {"index":47,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":48,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

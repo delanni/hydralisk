@@ -25,4 +25,4 @@ src(o1).add(gradient(0.17,0.65,0.49).hue(()=>time/100).rotate(0,0.1).mask(src(o0
 
 render(o2)
 
-metadata = {"index":72,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":72,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

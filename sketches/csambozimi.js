@@ -24,4 +24,4 @@ osc([10, 3, 15, 9].fast(1 / 16)
 
 render(o2)
 
-metadata = {"index":69,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":47,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

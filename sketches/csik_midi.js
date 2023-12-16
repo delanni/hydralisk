@@ -22,4 +22,4 @@ shape(1, 1)
 	.modulate(noise(0.5), () => a.fft[0])
 	.out()
 
-metadata = {"index":31,"type":"code","bpm":0,"midi":true,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":42,"type":"code","bpm":0,"midi":true,"local":false,"heat":5,"author":"Alex Szabo"} */

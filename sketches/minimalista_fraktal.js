@@ -17,4 +17,4 @@ src(o0).repeat(3).kaleid(4).out(o1);
 
 render(o1);
 
-metadata = {"index":50,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":59,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

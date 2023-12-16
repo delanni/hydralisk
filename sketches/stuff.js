@@ -26,4 +26,4 @@ src(o1).add(src(o2).scale(0.9)).scale(1.1).rotate(0,1).scroll(0,0,-1).kaleid(2).
 
 render(o3)
 
-metadata = {"index":59,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":64,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

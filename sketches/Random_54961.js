@@ -11,4 +11,4 @@ noise(4, 0.2)
 
 render(o0)
 
-metadata = {"index":18,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":34,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

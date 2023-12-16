@@ -23,13 +23,12 @@ async function main() {
       .trim();
     const sketchCode = sketchFileLines.slice(1, -1).join("\n");
 
-    let sketchMetaData = {};
+    let sketchMetadata = {};
     try {
-      sketchMetadata = JSON.parse(
-        sketchFileLines[sketchFileLines.length - 1].replace("metadata = ", "")
-      );
+      const metaJson = sketchFileLines[sketchFileLines.length - 1].match("metadata = (.*)\\*/")[1];
+      sketchMetadata = JSON.parse(metaJson);
     } catch (err) {
-      sketchMetaData = {
+      sketchMetadata = {
         bpm: Number(sketchCode.match(/bpm\s*=(\d+)/)?.[1] || 120),
         midi: !!(sketchCode.match(/cc\[/) || sketchCode.match(/midi\(/)),
       };
@@ -39,7 +38,7 @@ async function main() {
       type: "code",
       code: sketchFileContent,
       index: sketchMetadata.index ?? 10000 + sketches.length,
-      bpm: sketchMetadata.bpm,
+      bpm: Number(sketchMetadata.bpm),
       midi: sketchMetadata.midi,
       local: false,
       heat: sketchMetadata.heat || 0,

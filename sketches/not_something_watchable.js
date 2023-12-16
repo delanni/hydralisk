@@ -31,4 +31,4 @@ src(o2).modulateHue(noise(3,3)).scroll(0,0,0.01).diff(src(o3).scale(-1)).out(o3)
 
 render(o3)
 
-metadata = {"index":40,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":50,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

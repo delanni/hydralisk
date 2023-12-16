@@ -36,4 +36,4 @@ src(o1).mult(noise(5,1).mult(osc(3,1.1,1.1).brightness(0.1)))
 
 render(o3)
 
-metadata = {"index":35,"type":"code","bpm":"129","midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":21,"type":"code","bpm":"129","midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

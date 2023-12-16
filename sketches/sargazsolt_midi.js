@@ -35,4 +35,4 @@ src(o0)
 render(o2)
 
 
-metadata = {"index":32,"type":"code","bpm":0,"midi":true,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":37,"type":"code","bpm":0,"midi":true,"local":false,"heat":5,"author":"Alex Szabo"} */

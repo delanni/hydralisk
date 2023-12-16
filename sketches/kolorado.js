@@ -35,4 +35,4 @@ noise([4,8].fast(1/8).smooth(0.1), 1)
 
 render(o3)
 
-metadata = {"index":62,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":55,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

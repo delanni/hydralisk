@@ -11,4 +11,4 @@ src(o0).repeat(xo, xo).mult(src(o0).rotate(xo, 0.4).kaleid(kaleids), 0.9).blend(
 
 render(o1)
 
-metadata = {"index":13,"type":"code","bpm":130,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":16,"type":"code","bpm":130,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

@@ -30,4 +30,4 @@ src(o2).scroll(0,0,rd(),rd()).rotate(rd()/10).scale(({t}) => t/10%3).diff(o2).ad
 
 render(o3)
 
-metadata = {"index":43,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":53,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

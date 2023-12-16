@@ -25,4 +25,4 @@ noise([4, 12].fast(0.1)
 .kaleid([5,9].fast(0.2).smooth()).rotate(0, 0.3)
 	.out()
 
-metadata = {"index":16,"type":"code","midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":27,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

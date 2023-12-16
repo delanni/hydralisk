@@ -40,4 +40,4 @@ src(o2).diff(o1).diff(src(o1).scale(-0.4).scroll(0.5).modulate(o0,0.5)).out(o3)
 
 render(o3)
 
-metadata = {"index":0,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":1,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

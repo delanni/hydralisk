@@ -11,4 +11,4 @@ src(o0).repeat(xo, xo).modulateRotate(o0).out(o1)
 
 render(o1)
 
-metadata = {"index":14,"type":"code","bpm":140,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":23,"type":"code","bpm":140,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

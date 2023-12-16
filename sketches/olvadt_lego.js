@@ -10,4 +10,4 @@ src(o0)
 		.color(1, 4, 10, [0,1].fast(2)))
 	.out();
 
-metadata = {"index":81,"type":"code","bpm":"150","midi":true,"heat":5,"author":"Zsolt Liber"}
+/* metadata = {"index":61,"type":"code","bpm":"150","midi":true,"local":false,"heat":5,"author":"Zsolt Liber"} */

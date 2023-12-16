@@ -16,4 +16,4 @@ src(o3).diff(o0, 0.1).add(src(o2).mask(shape(6,0.8, [-0.3, 0.5].smooth(0.1)))).c
 render(o3)
   
 
-metadata = {"index":53,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":52,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

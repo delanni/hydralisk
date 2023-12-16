@@ -36,4 +36,4 @@ osc(6, 0.2, () => mouse.x/width)
 
 render(o3)
 
-metadata = {"index":22,"type":"code","bpm":140,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":28,"type":"code","bpm":140,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

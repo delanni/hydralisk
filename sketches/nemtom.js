@@ -13,4 +13,4 @@ src(o2).repeat(3,3).diff(o1).diff(o0).out(o3)
 
 render(o3)
 
-metadata = {"index":39,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":49,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */

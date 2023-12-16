@@ -47,8 +47,15 @@ async function main() {
       author: sketch.author || "Anony Mouse",
     };
 
-    const sketchFile = `/* ${name} */
-${code}
+    const preamble = `/* ${name} */\n`;
+
+    if (!code.startsWith(preamble)) {
+      code = preamble + code;
+    }
+
+    code = code.split("\n").slice(0,-2).join("\n");
+
+    const sketchFile = `${code}
 
 /* metadata = ${JSON.stringify(metadata)} */`;
 

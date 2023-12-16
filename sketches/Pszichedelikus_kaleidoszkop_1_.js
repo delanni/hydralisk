@@ -24,4 +24,4 @@ noise([4, 12].fast(0.1)
 	.rotate(0,0.1)
 	.out()
 
-metadata = {"index":15,"type":"code","midi":false,"heat":5,"author":"Alex Szabo"}
+/* metadata = {"index":30,"type":"code","bpm":0,"midi":false,"local":false,"heat":5,"author":"Alex Szabo"} */
