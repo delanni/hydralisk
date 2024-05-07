@@ -183,3 +183,4 @@ function randInt(from, to) {
   return Math.floor(Math.random() * (to - from + 1) + from);
 }
 
+const f = (...args) => new Function('return ' + String.raw(...args))
