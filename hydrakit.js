@@ -193,3 +193,18 @@ const xxx = target => {
 		return current;
 	};
 };
+
+const beatPattern = (length, hits, map = e=>e) => {
+  hits = Math.min(length,hits);
+	const a = new Array(length).fill(0);
+  	while(Math.floor(hits)>0) {
+      const r = Math.floor(Math.random()*length);
+      if (a[r]) {
+        continue;
+      } else {
+      	a[r] = 1;
+      	hits--;
+      }
+    }
+  return a.map(map);
+}
