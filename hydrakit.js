@@ -184,3 +184,12 @@ function randInt(from, to) {
 }
 
 const f = (...args) => new Function('return ' + String.raw(...args))
+
+const xxx = target => {
+	return () => {
+		if (Math.abs(target - current) > 0.002) {
+			current = current + (target - current) / 10;
+		}
+		return current;
+	};
+};
