@@ -185,11 +185,21 @@ function randInt(from, to) {
 
 const f = (...args) => new Function('return ' + String.raw(...args))
 
+const _xxxStorage = {};
 const xxx = target => {
+  const callLine = new Error().stack.split("\n")[2];
+  const key = callLine.match(/<anonymous>:(\d+:\d+)/)[1];
+  if (!_xxxStorage[key]) {
+    _xxxStorage[key] = target;
+  }
+  let current = _xxxStorage[key];
 	return () => {
-		if (Math.abs(target - current) > 0.002) {
-			current = current + (target - current) / 10;
-		}
+		if (Math.abs(target - current) >= 1/30) {
+      current += (target - current) / 30;
+      _xxxStorage[key] = current;
+    } else {
+      _xxxStorage[key] = target;
+    }
 		return current;
 	};
 };
