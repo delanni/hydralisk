@@ -4,12 +4,7 @@
 
 const metadataDefaults = {
     "author": "Unknown",
-    "date": new Date().toISOString(),
-    "index": -1,
-    "type": "code",
-    "bpm": 120,
     "midi": false,
-    "local": false,
     "heat": 5,
     "tags": []
 }
@@ -81,6 +76,7 @@ class Amakit {
                     console.error("Error: ", err);
                     reject(err);
                 } else {
+                    this.isAuthenticated = true;
                     console.log("Logged in as: ", credentials.name);
                     resolve(credentials);
                 }
