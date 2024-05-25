@@ -52,15 +52,17 @@ class Amakit {
 
         const credentials = { name, machineId, accessKeyId, secretAccessKey };
         localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+
+        return credentials;
     }
 
     login = (prompt = true) => {
-        const credentials = this.getCredentials();
+        let credentials = this.getCredentials();
         if (!credentials) {
             if (!prompt) {
                 return Promise.reject("No credentials found");
             } else {
-                this.saveCredentials();
+                credentials = this.saveCredentials();
             }
         }
 
