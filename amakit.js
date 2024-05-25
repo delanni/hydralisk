@@ -34,7 +34,11 @@ class Amakit {
 
     getCredentials = () => {
         const credentials = JSON.parse(localStorage.getItem("awsCredentials") || "null");
-        return credentials;
+        if (!credentials || !credentials.accessKeyId || !credentials.secretAccessKey) {
+            return null;
+        } else {
+            return credentials;
+        }
     }
 
     saveCredentials = (name, accessKeyId, secretAccessKey) => {
@@ -74,6 +78,7 @@ class Amakit {
             this.AWS.config.credentials.get((err) => {
                 if (err) {
                     console.error("Error: ", err);
+                    localStorage.removeItem("awsCredentials");
                     reject(err);
                 } else {
                     this.isAuthenticated = true;
