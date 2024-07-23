@@ -16,20 +16,23 @@ class Amakit {
     constructor() {
         this.table = "hydralisk-drafts";
         this.AWS = window.AWS;
-        this.AWS.config.update({ region: 'eu-west-1' });
-        this.docClient = new this.AWS.DynamoDB.DocumentClient({
-            apiVersion: '2012-08-10',
-            region: 'eu-west-1'
-        });
+        if (this.AWS) {
+            this.AWS.config.update({ region: 'eu-west-1' });
+            this.docClient = new this.AWS.DynamoDB.DocumentClient({
+                apiVersion: '2012-08-10',
+                region: 'eu-west-1'
+            });
+        }
     }
 
-    loadDrafts = () => {
-        return this.getAllDrafts().then((drafts) => {
+    loadDrafts = async () => {
+        try {
+            const drafts = await this.getAllDrafts();
             this.draftCache = drafts;
             return drafts;
-        }).catch((err) => {
+        } catch (err) {
             console.error("Error loading drafts: ", err);
-        });
+        }
     }
 
     getCredentials = () => {
