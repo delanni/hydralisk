@@ -158,7 +158,7 @@ function createLFO({
     }
 
     if (trans) {
-      return trans(value*amplitude);
+      return trans(value * amplitude);
     }
     return value * amplitude;
   };
@@ -193,28 +193,28 @@ const xxx = target => {
     _xxxStorage[key] = target;
   }
   let current = _xxxStorage[key];
-	return () => {
-		if (Math.abs(target - current) >= 1/30) {
+  return () => {
+    if (Math.abs(target - current) >= 1 / 30) {
       current += (target - current) / 30;
       _xxxStorage[key] = current;
     } else {
       _xxxStorage[key] = target;
     }
-		return current;
-	};
+    return current;
+  };
 };
 
-const beatPattern = (length, hits, map = e=>e) => {
-  hits = Math.min(length,hits);
-	const a = new Array(length).fill(0);
-  	while(Math.floor(hits)>0) {
-      const r = Math.floor(Math.random()*length);
-      if (a[r]) {
-        continue;
-      } else {
-      	a[r] = 1;
-      	hits--;
-      }
+const beatPattern = (length, hits, map = e => e) => {
+  hits = Math.floor(Math.min(length, hits));
+  const a = new Array(Math.floor(length)).fill(0);
+  while (Math.floor(hits) > 0) {
+    const r = Math.floor(Math.random() * length);
+    if (a[r]) {
+      continue;
+    } else {
+      a[r] = 1;
+      hits--;
     }
+  }
   return a.map(map);
 }
