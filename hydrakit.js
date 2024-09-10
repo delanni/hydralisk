@@ -218,3 +218,23 @@ const beatPattern = (length, hits, map = e => e) => {
   }
   return a.map(map);
 }
+
+
+function hexToRgb(hex) {
+  if (hex[0] === '#') {
+    hex = hex.slice(1)
+  }
+  const r = (parseInt(`${hex[0]}${hex[1]}`, 16) / 255).toPrecision(4)
+  const g = (parseInt(`${hex[2]}${hex[3]}`, 16) / 255).toPrecision(4)
+  const b = (parseInt(`${hex[4]}${hex[5]}`, 16) / 255).toPrecision(4)
+  return { r, g, b }
+}
+/** solid, but with #rrggbb color */
+function color(...args) {
+  if (args.length === 1) {
+    const { r, g, b } = hexToRgb(args[0]);
+    return eval(`solid(${r},${g},${b})`);
+  } else {
+    return eval(`solid(${args[0]},${args[1]},${args[2]})`);
+  }
+}
