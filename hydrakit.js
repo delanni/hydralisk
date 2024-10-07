@@ -127,14 +127,17 @@ function createLFO({
   waveform = 'sine', // 'sine', 'square', 'sawtooth', 'triangle'
   bpm = undefined,
   trans = undefined,
+  t = undefined
 } = {}) {
+  const transform = trans || t;
+
   if (bpm) {
     frequency = bpm / 60 * frequency;
   }
   const omega = 2 * Math.PI * frequency; // Angular frequency
 
-  return ({ time: t }) => {
-    let theta = omega * t + phase; // Phase of the oscillator at time t
+  return ({ time }) => {
+    let theta = omega * time + phase; // Phase of the oscillator at time t
     let value;
 
     switch (waveform) {
@@ -164,23 +167,21 @@ function createLFO({
   };
 }
 
-function cull(value, cullRate, x = 1) {
-  const v = typeof value === "function" ? value() : value;
-  const arr = new Array(cullRate).fill(0);
-  for (let i = 0; i < x;) {
-    const randomIndex = Math.floor(Math.random() * cullRate);
-    if (arr[randomIndex] === v) {
-      continue;
-    } else {
-      arr[randomIndex] = v;
-      i++;
-    }
-  }
-  return arr;
-}
-
+/**
+ * @param {number} from 
+ * @param {number} to 
+ * @returns random number between from and to
+ */
 function randInt(from, to) {
   return Math.floor(Math.random() * (to - from + 1) + from);
+}
+
+/**
+ * Balanced random between -0.5 and 0.5
+ * @returns random number between -0.5 and 0.5
+ */
+function rx() {
+  return Math.random() - 0.5;
 }
 
 const f = (...args) => new Function('return ' + String.raw(...args))
@@ -204,6 +205,13 @@ const xxx = target => {
   };
 };
 
+/**
+ * Generate an array of length with a count of hits with values of 1. 
+ * @param {number} length The length of the array
+ * @param {number} hits This amount of hits will be placed in the array
+ * @param {function} map Transform the value of the array
+ * @returns {Array} The array with the hits 
+ */
 const beatPattern = (length, hits, map = e => e) => {
   hits = Math.floor(Math.min(length, hits));
   const a = new Array(Math.floor(length)).fill(0);
@@ -219,18 +227,17 @@ const beatPattern = (length, hits, map = e => e) => {
   return a.map(map);
 }
 
-
-function hexToRgb(hex) {
-  if (hex[0] === '#') {
-    hex = hex.slice(1)
-  }
-  const r = (parseInt(`${hex[0]}${hex[1]}`, 16) / 255).toPrecision(4)
-  const g = (parseInt(`${hex[2]}${hex[3]}`, 16) / 255).toPrecision(4)
-  const b = (parseInt(`${hex[4]}${hex[5]}`, 16) / 255).toPrecision(4)
-  return { r, g, b }
-}
 /** solid, but with #rrggbb color */
 function color(...args) {
+  function hexToRgb(hex) {
+    if (hex[0] === '#') {
+      hex = hex.slice(1)
+    }
+    const r = (parseInt(`${hex[0]}${hex[1]}`, 16) / 255).toPrecision(4)
+    const g = (parseInt(`${hex[2]}${hex[3]}`, 16) / 255).toPrecision(4)
+    const b = (parseInt(`${hex[4]}${hex[5]}`, 16) / 255).toPrecision(4)
+    return { r, g, b }
+  }
   if (args.length === 1) {
     const { r, g, b } = hexToRgb(args[0]);
     return eval(`solid(${r},${g},${b})`);
@@ -238,3 +245,4 @@ function color(...args) {
     return eval(`solid(${args[0]},${args[1]},${args[2]})`);
   }
 }
+
