@@ -3,6 +3,8 @@ A customized build of Olivia Jack's Hydra
 
 The code is on the [gh-pages](https://github.com/delanni/hydralisk/tree/gh-pages) branch, it's hosted at: https://delanni.github.io/hydralisk
 
+Click the "Import from remote" button to get a big set of projects
+
 Extra features:
  - tap tempo: ALT + Space (at least 4 beats, but keep tapping :) )
  - auto-mutate: CTRL + (1,2,3,4,5, 0) - for (every beat, every other beat, every 4 beats..., 0 => stop automutate)
