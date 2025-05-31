@@ -78,4 +78,7 @@ export default class SketchStorage {
         const sketches = this.getSketches();
         return sketches.filter(sketch => sketch.metadata[fieldName] === value);
     }
+    deleteAll() {
+        this.localStorage.removeItem(this.storageKey);
+    }
 }

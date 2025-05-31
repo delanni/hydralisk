@@ -8,7 +8,7 @@ export default function SketchesList({
     onEdit,
     onDelete,
     onRowClick,
-    onKeepFiltered
+    actions = [] // <-- Accept an array of action button configs
 }) {
     // Split tag filter input by space, comma, or semicolon, and filter out empty strings
     const tagFilterList = tagFilter
@@ -54,23 +54,15 @@ export default function SketchesList({
                 />
             </div>
             <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-                <button
-                    onClick={() => {
-                        if (window.confirm('Erase all sketches not in the current filtered list? This cannot be undone.')) {
-                            onKeepFiltered(filtered);
-                        }
-                    }}
-                    disabled={!isFiltering}
-                >
-                    Keep these
-                </button>
-                <button
-                    onClick={() => {
-                        // TODO: Placeholder action
-                    }}
-                >
-                    Placeholder
-                </button>
+                {actions.map((action, i) => (
+                    <button
+                        key={i}
+                        onClick={() => action.onClick(filtered, isFiltering)}
+                        disabled={action.disabled ? action.disabled(filtered, isFiltering) : false}
+                    >
+                        {action.label}
+                    </button>
+                ))}
             </div>
             <ul className="sketch-list">
                 {filtered.length === 0 && (
@@ -107,7 +99,7 @@ export default function SketchesList({
                                 <button
                                     title="Delete sketch"
                                     style={{ color: 'red' }}
-                                    onClick={() => onDelete(sketch.name, idx)}
+                                    onClick={() => onDelete(sketch.name)}
                                 >
                                     ✕
                                 </button>

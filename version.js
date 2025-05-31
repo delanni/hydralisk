@@ -1,3 +1,3 @@
-/* generated */ const version = { "date": "2025-05-31T02:00:45.089Z", "commit": "re-instate pre-push", "sha": "b0a778a47fc19928fd9df2733d04aefd9e1a66a5" };
+/* generated */ const version = { "date": "2025-05-31T18:45:22.646Z", "commit": "keep only filters locally", "sha": "baf6a97519146efbaf3bd26570a688aad25621d2" };
 
 console.log("VERSION", version);

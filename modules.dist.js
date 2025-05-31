@@ -111,6 +111,9 @@
       const sketches = this.getSketches();
       return sketches.filter(sketch => sketch.metadata[fieldName] === value);
     }
+    deleteAll() {
+      this.localStorage.removeItem(this.storageKey);
+    }
   }
 
   // --- SketchFieldsEditor: Fixed fields (non-metadata) ---
@@ -227,7 +230,7 @@
     onEdit,
     onDelete,
     onRowClick,
-    onKeepFiltered
+    actions = [] // <-- Accept an array of action button configs
   }) {
     // Split tag filter input by space, comma, or semicolon, and filter out empty strings
     const tagFilterList = tagFilter.split(/[\s,;]+/).map(t => t.trim().toLowerCase()).filter(Boolean);
@@ -274,18 +277,11 @@
         gap: 8,
         marginBottom: 8
       }
-    }, /*#__PURE__*/React.createElement("button", {
-      onClick: () => {
-        if (window.confirm('Erase all sketches not in the current filtered list? This cannot be undone.')) {
-          onKeepFiltered(filtered);
-        }
-      },
-      disabled: !isFiltering
-    }, "Keep these"), /*#__PURE__*/React.createElement("button", {
-      onClick: () => {
-        // TODO: Placeholder action
-      }
-    }, "Placeholder")), /*#__PURE__*/React.createElement("ul", {
+    }, actions.map((action, i) => /*#__PURE__*/React.createElement("button", {
+      key: i,
+      onClick: () => action.onClick(filtered, isFiltering),
+      disabled: action.disabled ? action.disabled(filtered, isFiltering) : false
+    }, action.label))), /*#__PURE__*/React.createElement("ul", {
       className: "sketch-list"
     }, filtered.length === 0 && /*#__PURE__*/React.createElement("li", {
       style: {
@@ -325,7 +321,7 @@
         style: {
           color: 'red'
         },
-        onClick: () => onDelete(sketch.name, idx)
+        onClick: () => onDelete(sketch.name)
       }, "\u2715")));
     })));
   }
@@ -516,11 +512,8 @@
       });
     };
     handleKeepFiltered = filteredSketches => {
-      // Replace sketches with filtered ones and update storage
-      this.sketchStorage.localStorage.setItem(this.sketchStorage.storageKey, JSON.stringify(filteredSketches));
-      this.setState({
-        sketches: filteredSketches
-      });
+      // only update the sketches set locally
+      window.xemitter.emit('gallery:updateLocalSketches', filteredSketches);
     };
     renderTabs() {
       const tabs = ['This', 'Sketches', 'Import/Export'];
@@ -557,6 +550,24 @@
       }, "Save"));
     }
     renderSketchesList() {
+      const actions = [{
+        label: "Keep these",
+        onClick: (filtered, isFiltering) => {
+          this.handleKeepFiltered(filtered);
+        },
+        disabled: (filtered, isFiltering) => filtered.length === 0
+      }, {
+        label: "Clear all local!",
+        onClick: () => {
+          if (window.confirm("Are you sure you want to clear all local sketches? This cannot be undone.")) {
+            this.sketchStorage.deleteAll();
+            this.setState({
+              sketches: []
+            });
+            window.xemitter.emit('gallery:updateLocalSketches', []);
+          }
+        }
+      }];
       return /*#__PURE__*/React.createElement(SketchesList, {
         sketches: this.state.sketches,
         filter: this.state.sketchFilter,
@@ -568,7 +579,7 @@
         onRowClick: sketchInfo => {
           window.xemitter.emit('gallery:loadSketch', sketchInfo);
         },
-        onKeepFiltered: this.handleKeepFiltered
+        actions: actions
       });
     }
     renderImportExport() {
@@ -627,9 +638,9 @@
       };
     }
     toggleModal = () => {
-      if (this.state.isModalVisible) {
-        window.xemitter.emit('gallery:updateLocalSketches', this.sketchStorage.getSketches());
-      }
+      // if (this.state.isModalVisible) {
+      //     window.xemitter.emit('gallery:updateLocalSketches', this.sketchStorage.getSketches());
+      // }
       this.setState(prevState => ({
         isModalVisible: !prevState.isModalVisible
       }));

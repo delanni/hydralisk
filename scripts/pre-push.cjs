@@ -14,7 +14,7 @@ if (changedFiles.length >= 1 && !process.argv.includes('--force') && !process.ar
 
 if (lines[0].startsWith('/* generated */')) {
   const lastCommitMessage = cp.execSync('git log -1 --pretty=%B').toString().trim();
-  const versionJSON = lines[0].split('const version = ')[1];
+  const versionJSON = lines[0].split('const version = ')[1]?.trim().replace(/;$/, '');
   const version = JSON.parse(versionJSON);
   if (version.commit === lastCommitMessage) {
     console.log("version.js is up to date");

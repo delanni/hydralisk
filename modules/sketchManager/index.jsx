@@ -164,14 +164,8 @@ class SketchModal extends React.Component {
     };
 
     handleKeepFiltered = (filteredSketches) => {
-        // Replace sketches with filtered ones and update storage
-        this.sketchStorage.localStorage.setItem(
-            this.sketchStorage.storageKey,
-            JSON.stringify(filteredSketches)
-        );
-        this.setState({
-            sketches: filteredSketches
-        });
+        // only update the sketches set locally
+        window.xemitter.emit('gallery:updateLocalSketches', filteredSketches);
     };
 
     renderTabs() {
@@ -229,6 +223,25 @@ class SketchModal extends React.Component {
     }
 
     renderSketchesList() {
+        const actions = [
+            {
+                label: "Keep these",
+                onClick: (filtered, isFiltering) => {
+                    this.handleKeepFiltered(filtered);
+                },
+                disabled: (filtered, isFiltering) => filtered.length === 0
+            },
+            {
+                label: "Clear all local!",
+                onClick: () => {
+                    if (window.confirm("Are you sure you want to clear all local sketches? This cannot be undone.")) {
+                        this.sketchStorage.deleteAll();
+                        this.setState({ sketches: [] });
+                        window.xemitter.emit('gallery:updateLocalSketches', []);
+                    }
+                }
+            }
+        ];
         return (
             <SketchesList
                 sketches={this.state.sketches}
@@ -241,7 +254,7 @@ class SketchModal extends React.Component {
                 onRowClick={(sketchInfo) => {
                     window.xemitter.emit('gallery:loadSketch', sketchInfo);
                 }}
-                onKeepFiltered={this.handleKeepFiltered}
+                actions={actions}
             />
         );
     }
@@ -296,9 +309,9 @@ class SketchApp extends React.Component {
     }
 
     toggleModal = () => {
-        if (this.state.isModalVisible) {
-            window.xemitter.emit('gallery:updateLocalSketches', this.sketchStorage.getSketches());
-        }
+        // if (this.state.isModalVisible) {
+        //     window.xemitter.emit('gallery:updateLocalSketches', this.sketchStorage.getSketches());
+        // }
         this.setState((prevState) => ({
             isModalVisible: !prevState.isModalVisible,
         }));
