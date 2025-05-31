@@ -2,257 +2,272 @@
  * Kit for connecting to Amazon DynamoDB
  */
 
+const userName = localStorage.getItem('awsCredentials')
+  ? JSON.parse(localStorage.getItem('awsCredentials')).name
+  : "Unknown";
+
 const metadataDefaults = {
-    "author": "Unknown",
-    "midi": false,
-    "heat": 5,
-    "tags": []
-}
+  author: userName,
+  midi: false,
+  heat: 5,
+  tags: [],
+};
 
 class Amakit {
-    isAuthenticated = false;
-    draftCache = [];
+  isAuthenticated = false;
+  draftCache = [];
 
-    constructor() {
-        this.table = "hydralisk-drafts";
-        this.AWS = window.AWS;
-        if (this.AWS) {
-            this.AWS.config.update({ region: 'eu-west-1' });
-            this.docClient = new this.AWS.DynamoDB.DocumentClient({
-                apiVersion: '2012-08-10',
-                region: 'eu-west-1'
-            });
-        }
+  constructor() {
+    this.table = "hydralisk-drafts";
+    this.AWS = window.AWS;
+    if (this.AWS) {
+      this.AWS.config.update({ region: "eu-west-1" });
+      this.docClient = new this.AWS.DynamoDB.DocumentClient({
+        apiVersion: "2012-08-10",
+        region: "eu-west-1",
+      });
+    }
+  }
+
+  loadDrafts = async () => {
+    try {
+      const drafts = await this.getAllDrafts();
+      this.draftCache = drafts;
+      return drafts;
+    } catch (err) {
+      console.error("Error loading drafts: ", err);
+    }
+  };
+
+  getCredentials = () => {
+    const credentials = JSON.parse(
+      localStorage.getItem("awsCredentials") || "null"
+    );
+    if (
+      !credentials ||
+      !credentials.accessKeyId ||
+      !credentials.secretAccessKey
+    ) {
+      return null;
+    } else {
+      return credentials;
+    }
+  };
+
+  saveCredentials = (name, accessKeyId, secretAccessKey) => {
+    let machineId =
+      localStorage.getItem("machineId") ||
+      prompt("What is the name of this machine?") ||
+      "unknown";
+    localStorage.setItem("machineId", machineId);
+
+    name = name || prompt("What is your name?");
+    accessKeyId = accessKeyId || prompt("What is your AWS Access Key ID?");
+    secretAccessKey =
+      secretAccessKey || prompt("What is your AWS Secret Access Key?");
+
+    const credentials = { name, machineId, accessKeyId, secretAccessKey };
+    localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+
+    return credentials;
+  };
+
+  login = (prompt = true) => {
+    let credentials = this.getCredentials();
+    if (!credentials) {
+      if (!prompt) {
+        return Promise.reject("No credentials found");
+      } else {
+        credentials = this.saveCredentials();
+      }
     }
 
-    loadDrafts = async () => {
-        try {
-            const drafts = await this.getAllDrafts();
-            this.draftCache = drafts;
-            return drafts;
-        } catch (err) {
-            console.error("Error loading drafts: ", err);
-        }
-    }
+    this.AWS.config.update({
+      accessKeyId: credentials.accessKeyId,
+      secretAccessKey: credentials.secretAccessKey,
+    });
+    this.docClient.configure({
+      credentials: this.AWS.config.credentials,
+    });
 
-    getCredentials = () => {
-        const credentials = JSON.parse(localStorage.getItem("awsCredentials") || "null");
-        if (!credentials || !credentials.accessKeyId || !credentials.secretAccessKey) {
-            return null;
+    // Try the credentials, authenticate
+    return new Promise((resolve, reject) => {
+      this.AWS.config.credentials.get((err) => {
+        if (err) {
+          console.error("Error: ", err);
+          localStorage.removeItem("awsCredentials");
+          reject(err);
         } else {
-            return credentials;
+          this.isAuthenticated = true;
+          console.log("Logged in as: ", credentials.name);
+          resolve(credentials);
         }
-    }
+      });
+    });
+  };
 
-    saveCredentials = (name, accessKeyId, secretAccessKey) => {
-        let machineId = localStorage.getItem("machineId") || prompt("What is the name of this machine?") || "unknown";
-        localStorage.setItem("machineId", machineId);
-
-        name = name || prompt("What is your name?");
-        accessKeyId = accessKeyId || prompt("What is your AWS Access Key ID?");
-        secretAccessKey = secretAccessKey || prompt("What is your AWS Secret Access Key?");
-
-        const credentials = { name, machineId, accessKeyId, secretAccessKey };
-        localStorage.setItem("awsCredentials", JSON.stringify(credentials));
-
-        return credentials;
-    }
-
-    login = (prompt = true) => {
-        let credentials = this.getCredentials();
-        if (!credentials) {
-            if (!prompt) {
-                return Promise.reject("No credentials found");
-            } else {
-                credentials = this.saveCredentials();
-            }
-        }
-
-        this.AWS.config.update({
-            accessKeyId: credentials.accessKeyId,
-            secretAccessKey: credentials.secretAccessKey
-        });
-        this.docClient.configure({
-            credentials: this.AWS.config.credentials
-        });
-
-        // Try the credentials, authenticate
-        return new Promise((resolve, reject) => {
-            this.AWS.config.credentials.get((err) => {
-                if (err) {
-                    console.error("Error: ", err);
-                    localStorage.removeItem("awsCredentials");
-                    reject(err);
-                } else {
-                    this.isAuthenticated = true;
-                    console.log("Logged in as: ", credentials.name);
-                    resolve(credentials);
-                }
-            });
-        });
-    }
-
-    getDraft = ({ id, name }) => {
-        const params = {
-            TableName: this.table,
-            Key: id ? { id } : { name }
-        };
-        return new Promise((resolve, reject) => {
-            this.docClient.get(params, (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data.Item);
-                }
-            });
-        });
-    }
-
-    getAllDrafts = () => {
-        const params = { TableName: this.table };
-        return new Promise((resolve, reject) => {
-            this.docClient.scan(params, (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    this.allDrafts = data.Items;
-                    resolve(data.Items);
-                }
-            });
-        });
-    }
-
-    processDraftString = (draftString) => {
-        let lines = draftString.split('\n');
-        let name = '';
-        if (lines[0].trim().startsWith('/*') && lines[0].trim().endsWith('*/')) {
-            name = this.getCommentValue(lines[0]);
-            lines = lines.slice(1);
+  getDraft = ({ id, name }) => {
+    const params = {
+      TableName: this.table,
+      Key: id ? { id } : { name },
+    };
+    return new Promise((resolve, reject) => {
+      this.docClient.get(params, (err, data) => {
+        if (err) {
+          reject(err);
         } else {
-            name = `Random ${Math.floor(Math.random() * 1000)}`;
+          resolve(data.Item);
         }
+      });
+    });
+  };
 
-        let metadata = {};
-        try {
-            if (lines[lines.length - 1].trim().startsWith('/*') && lines[lines.length - 1].trim().endsWith('*/')) {
-                metadata = JSON.parse(this.getCommentValue(lines[lines.length - 1]));
-                lines = lines.slice(0, lines.length - 1);
-            }
-        } catch (e) {
-            console.error("Cannot parse metadata: ", e);
-        }
-        metadata = {
-            ...metadataDefaults,
-            ...metadata
-        }
-
-        return {
-            name,
-            metadata,
-            code: lines.join('\n')
-        }
-    }
-
-    addDraft = (draftOrString) => {
-        let draft = null;
-
-        if (typeof draftOrString === 'string') {
-            const { name, metadata, code } = this.processDraftString(draftOrString);
-            draft = this.shapeDraft({
-                name,
-                metadata,
-                code,
-                fullDraft: btoa(draftOrString)
-            });
+  getAllDrafts = () => {
+    const params = { TableName: this.table };
+    return new Promise((resolve, reject) => {
+      this.docClient.scan(params, (err, data) => {
+        if (err) {
+          reject(err);
         } else {
-            draft = this.shapeDraft(draftOrString);
+          this.allDrafts = data.Items;
+          resolve(data.Items);
         }
+      });
+    });
+  };
 
-        const params = {
-            TableName: this.table,
-            Item: draft,
-        };
-
-        return new Promise((resolve, reject) => {
-            this.docClient.put(params, (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data);
-                }
-            });
-        });
+  processDraftString = (draftString) => {
+    let lines = draftString.split("\n");
+    let name = "";
+    if (lines[0].trim().startsWith("/*") && lines[0].trim().endsWith("*/")) {
+      name = this.getCommentValue(lines[0]);
+      lines = lines.slice(1);
+    } else {
+      name = `Random ${Math.floor(Math.random() * 1000)}`;
     }
 
-    uploadDraftObj = (draft) => {
-        const params = {
-            TableName: this.table,
-            Item: draft
-        };
-        return new Promise((resolve, reject) => {
-            this.docClient.put(params, (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data);
-                }
-            });
-        });
+    let metadata = {};
+    try {
+      const metadataLine = lines.find((line) =>
+        line.trim().startsWith("/* metadata = ")
+      );
+      metadata = JSON.parse(
+        this.getCommentValue(metadataLine).replace("metadata = ", "")
+      );
+    } catch (e) {
+      console.error("Cannot parse metadata: ", e);
+    }
+    metadata = {
+      ...metadataDefaults,
+      ...metadata,
+    };
+
+    return {
+      name,
+      metadata,
+      code: lines.join("\n"),
+    };
+  };
+
+  addDraft = (draftOrString) => {
+    let draft = null;
+
+    if (typeof draftOrString === "string") {
+      const { name, metadata, code } = this.processDraftString(draftOrString);
+      draft = this.shapeDraft({
+        name,
+        metadata,
+        code,
+        fullDraft: btoa(draftOrString),
+      });
+    } else {
+      draft = this.shapeDraft(draftOrString);
     }
 
-    // Drop by id or name
-    dropDraft = ({ id, name }) => {
-        const params = {
-            TableName:
-                this.table,
-            Key: id ? { id } : { name }
-        };
-        return new Promise((resolve, reject) => {
-            this.docClient.delete(params, (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data);
-                }
-            });
-        });
-    }
+    const params = {
+      TableName: this.table,
+      Item: draft,
+    };
 
-    generateId = () => {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-            const r = Math.floor(Math.random() * 16);
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
-
-    getCommentValue = (comment) => {
-        const start = comment.indexOf('/*') + 2;
-        const end = comment.indexOf('*/');
-        return comment.substring(start, end).trim();
-    }
-
-    shapeDraft = (draft) => {
-        const id = draft.id || this.generateId();
-        const name = draft.name || `Random ${Math.floor(Math.random() * 1000)}`;
-        const metadata = {
-            ...(draft.metadata || {}),
-            ...metadataDefaults
+    return new Promise((resolve, reject) => {
+      this.docClient.put(params, (err, response) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(draft);
         }
-        const fullDraft = draft.fullDraft || btoa(
-            `/* ${name} */\n${draft.code}\n/* metadata = ${JSON.stringify(draft.metadata)}*/`
-        );
+      });
+    });
+  };
 
-        return {
-            id,
-            name,
-            metadata,
-            fullDraft,
-            code: draft.code
+  uploadDraftObj = (draft) => {
+    const params = {
+      TableName: this.table,
+      Item: draft,
+    };
+    return new Promise((resolve, reject) => {
+      this.docClient.put(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
         }
-    }
+      });
+    });
+  };
 
+  // Drop by id or name
+  dropDraft = ({ id, name }) => {
+    const params = {
+      TableName: this.table,
+      Key: id ? { id } : { name },
+    };
+    return new Promise((resolve, reject) => {
+      this.docClient.delete(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  };
+
+  generateId = () => {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = Math.floor(Math.random() * 16);
+      const v = c === "x" ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  };
+
+  getCommentValue = (comment) => {
+    const start = comment.indexOf("/*") + 2;
+    const end = comment.indexOf("*/");
+    return comment.substring(start, end).trim();
+  };
+
+  shapeDraft = (draft) => {
+    const id = draft.id || this.generateId();
+    const name = draft.name || `Random ${Math.floor(Math.random() * 1000)}`;
+    const metadata = {
+        ...metadataDefaults,
+      ...(draft.metadata || {}),
+    };
+    const code = draft.code.replace(/^\/\* metadata.*$/m, '').trim();
+    const fullDraft =
+      btoa(
+        `/* ${name} */\n${code}\n/* metadata = ${JSON.stringify(metadata)}*/`
+      );
+
+    return {
+      id,
+      name,
+      metadata,
+      fullDraft,
+      code,
+    };
+  };
 }
 
 window.amakit = new Amakit();
-
