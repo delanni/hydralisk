@@ -3,8 +3,6 @@
 const fs = require('fs');
 const cp = require('child_process');
 
-process.exit(0);
-
 const lines = fs.readFileSync('version.js').toString().split('\n');
 
 const changedFiles = cp.execSync('git status --porcelain').toString().split('\n').filter(Boolean);
@@ -23,7 +21,7 @@ if (lines[0].startsWith('/* generated */')) {
     process.exit(0);
   }
 
-  lines[0] = `/* generated */ const version = { "date": "${new Date().toISOString()}", "commit": "${lastCommitMessage}" }`;
+  lines[0] = `/* generated */ const version = { "date": "${new Date().toISOString()}", "commit": "${lastCommitMessage}", "sha": "${cp.execSync('git rev-parse HEAD').toString().trim()}" };`;
   fs.writeFileSync('version.js', lines.join('\n'));
   // amend the commit
   cp.execSync('git add version.js');
