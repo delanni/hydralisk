@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-process.exit(0);
-
 const fs = require('fs');
 const cp = require('child_process');
+
+process.exit(0);
 
 const lines = fs.readFileSync('version.js').toString().split('\n');
 
 const changedFiles = cp.execSync('git status --porcelain').toString().split('\n').filter(Boolean);
 
-if (changedFiles.length >= 1) {
+if (changedFiles.length >= 1 && !process.argv.includes('--force') && !process.argv.includes('--no-verify')) {
   console.warn("There are uncommitted changes, please commit/stash them before pushing");
   process.exit(1);
 }

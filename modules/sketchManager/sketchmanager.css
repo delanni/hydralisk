@@ -1,0 +1,168 @@
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 500;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 0;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #101010;
+    width: 480px;           /* Set a fixed width */
+    height: 520px;          /* Set a fixed height */
+    max-width: 95vw;
+    max-height: 95vh;
+}
+
+.modal textarea {
+    background: lightblue;
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    text-align: left;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    flex: 0 0 auto;
+    padding: 20px 20px 0 20px;
+    background: white;
+    z-index: 1;
+}
+
+.modal-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.modal-tabs button {
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.modal-tabs .active {
+    border-bottom: 2px solid #007bff;
+    color: #007bff;
+}
+.modal-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 20px;
+    min-height: 100px;
+    background: white;
+}
+
+.close-button {
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.sketch-tag {
+    background: #e0e7ff;
+    color: #2d3a5a;
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 12px;
+    margin-left: 2px;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sketch-list-item {
+    transition: background 0.15s;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background: white;
+}
+.sketch-list-item:hover {
+    background: #f0f4ff;
+    cursor: pointer;
+}
+
+.sketch-fields-label {
+    width: 120px;
+    margin-right: 8px;
+    font-weight: 500;
+}
+
+.sketch-fields-input,
+.metadata-fields-input {
+    flex: 1;
+    min-height: 32px;
+    font-family: monospace;
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.metadata-key-input {
+    width: 120px;
+    margin-right: 8px;
+    background: #f5f5f5;
+    color: #888;
+}
+
+.sketch-fields-section {
+    margin-bottom: 16px;
+}
+
+.sketch-fields-title,
+.metadata-fields-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.metadata-add-row {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.save-sketch-btn {
+    font-weight: bold;
+    padding: 8px 20px;
+    margin-top: 20px;
+}
+
+.sketch-filter {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom:4px;
+}
+
+.sketch-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 8px;
+    padding-inline-start: 0;
+}
+
+.sketch-list-item {
+    padding: 8px 12px;
+}
