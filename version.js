@@ -1,3 +1,3 @@
-/* generated */ const version = { "date": "2025-05-31T18:54:13.830Z", "commit": "update sketches.json - fix sketch loading", "sha": "2973fe98426575a9ff9c1543a6494a6c4f41040f" };
+/* generated */ const version = { "date": "2025-10-10T10:45:08.570Z", "commit": "fix: reload page won't restart sketches from the beginning, cmd-backslash will navigate backwards", "sha": "25512f5aaf2de23f3c2aca60b0dd0616119f0bb1" };
 
 console.log("VERSION", version);
