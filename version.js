@@ -1,3 +1,3 @@
-/* generated */ const version = { "date": "2026-02-25T09:44:50.070Z", "commit": "auto-load sketches if they're empty", "sha": "99c01639ffc9b68e2acf13a5f6847c8f5075cacb" };
+/* generated */ const version = { "date": "2026-02-25T13:23:59.294Z", "commit": "create midi mapping module", "sha": "2aa5920aa42d7b3b35e3b94df57e18f3fcc10436" };
 
 console.log("VERSION", version);
