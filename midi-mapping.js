@@ -27,13 +27,25 @@
       action: "editor:randomize",
       label: "Randomize",
     },
-    "editor:clearAll": {
-      action: "editor:clearAll",
-      label: "Clear all",
+    "editor:jumpBack1": {
+      action: "editor:jumpBack1",
+      label: "Jump back 1",
     },
-    "editor:evalAll": {
-      action: "editor:evalAll",
-      label: "Eval all",
+    "editor:jumpBack2": {
+      action: "editor:jumpBack2",
+      label: "Jump back 2",
+    },
+    "gfx:speedReverse": {
+      action: "gfx:speedReverse",
+      label: "Speed reverse",
+    },
+    "editor:quickSave": {
+      action: "editor:quickSave",
+      label: "Quick save",
+    },
+    "editor:quickLoad": {
+      action: "editor:quickLoad",
+      label: "Quick load",
     },
     "editor:toggleAutomutate|off": {
       action: "editor:toggleAutomutate",
