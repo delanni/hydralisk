@@ -1,3 +1,3 @@
-/* generated */ const version = { "date": "2025-10-10T10:45:08.570Z", "commit": "fix: reload page won't restart sketches from the beginning, cmd-backslash will navigate backwards", "sha": "25512f5aaf2de23f3c2aca60b0dd0616119f0bb1" };
+/* generated */ const version = { "date": "2026-02-25T09:44:50.070Z", "commit": "auto-load sketches if they're empty", "sha": "99c01639ffc9b68e2acf13a5f6847c8f5075cacb" };
 
 console.log("VERSION", version);
