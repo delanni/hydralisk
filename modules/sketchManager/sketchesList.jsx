@@ -3,10 +3,12 @@ export default function SketchesList({
     sketches,
     filter,
     tagFilter,
+    remoteDraftNames = new Set(),
     onFilterChange,
     onTagFilterChange,
     onEdit,
     onDelete,
+    onUpload,
     onRowClick,
     actions = [] // <-- Accept an array of action button configs
 }) {
@@ -70,10 +72,11 @@ export default function SketchesList({
                 )}
                 {filtered.map((sketch, idx) => {
                     const tags = Array.isArray(sketch.metadata?.tags) ? sketch.metadata.tags : [];
+                    const isOnRemote = remoteDraftNames.has(sketch.name);
                     return (
                         <li
                             key={sketch.name}
-                            className="sketch-list-item"
+                            className={`sketch-list-item${isOnRemote ? ' sketch-list-item--remote' : ''}`}
                             onClick={() => onRowClick(sketch, idx)}
                         >
                             <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -89,6 +92,15 @@ export default function SketchesList({
                             <span
                                 onClick={e => e.stopPropagation()}
                             >
+                                {onUpload && (
+                                    <button
+                                        title="Upload to remote"
+                                        style={{ marginRight: 8 }}
+                                        onClick={() => onUpload(sketch, idx)}
+                                    >
+                                        ↑
+                                    </button>
+                                )}
                                 <button
                                     title="Edit sketch"
                                     style={{ marginRight: 8 }}

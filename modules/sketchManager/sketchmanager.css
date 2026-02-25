@@ -103,6 +103,13 @@
     cursor: pointer;
 }
 
+.sketch-list-item--remote {
+    background: #e8f5e9;
+}
+.sketch-list-item--remote:hover {
+    background: #c8e6c9;
+}
+
 .sketch-fields-label {
     width: 120px;
     margin-right: 8px;

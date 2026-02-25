@@ -3,16 +3,19 @@
 // React and ReactDOM are globally defined
 import './sketchManager.css';
 import SketchStorage from './sketchstorage.js';
+import CollectionStorage, { filterSketchesByCollection } from './collectionStorage.js';
 import SketchFieldsEditor from './sketchFieldsEditor.jsx';
 import MetadataEditor from './metadataEditor.jsx';
 import SketchesList from './sketchesList.jsx';
 import ImportExportPanel from './importExportPanel.jsx';
+import CollectionsPanel from './collectionsPanel.jsx';
 
 // --- Main Modal Component ---
 class SketchModal extends React.Component {
     constructor(props) {
         super(props);
         this.sketchStorage = props.sketchStorage;
+        this.collectionStorage = props.collectionStorage;
         this.state = {
             activeTab: 'This',
             thisSketchMeta: {
@@ -22,8 +25,10 @@ class SketchModal extends React.Component {
             newField: { key: '', value: '' },
             sketches: [],
             sketchFilter: "",
-            sketchTagFilter: "", // <-- add tag filter state
-            editingSketchIdx: null
+            sketchTagFilter: "",
+            editingSketchIdx: null,
+            collectionVersion: 0,
+            remoteDraftNames: new Set()
         };
     }
 
@@ -123,14 +128,32 @@ class SketchModal extends React.Component {
         });
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.visible && !prevProps.visible) {
+            this.loadRemoteDraftNames();
+        }
+    }
+
+    loadRemoteDraftNames = () => {
+        const amakit = window.amakit;
+        if (!amakit) return;
+        amakit.loadDrafts()
+            .then((drafts) => {
+                const names = new Set((drafts || amakit.draftCache || []).map((d) => d.name));
+                this.setState({ remoteDraftNames: names });
+            })
+            .catch(() => {
+                const names = new Set((amakit.draftCache || []).map((d) => d.name));
+                this.setState({ remoteDraftNames: names });
+            });
+    };
+
     handleDeleteSketch = (name) => {
         if (window.confirm(`Delete "${name}"?`)) {
             this.sketchStorage.deleteSketchByName(name);
             const sketches = this.sketchStorage.getSketches();
-            this.setState({
-                sketches,
-            });
-            window.xemitter.emit('gallery:updateLocalSketches', sketches);
+            this.setState({ sketches });
+            this.props.onApplyCollection?.();
         }
     };
 
@@ -168,8 +191,35 @@ class SketchModal extends React.Component {
         window.xemitter.emit('gallery:updateLocalSketches', filteredSketches);
     };
 
+    handleUploadSketch = (sketch) => {
+        const amakit = window.amakit;
+        if (!amakit?.isAuthenticated) {
+            window.xemitter?.emit('remote:login');
+            return;
+        }
+        amakit.addDraft(sketch)
+            .then(() => {
+                this.loadRemoteDraftNames();
+            })
+            .catch((err) => console.error('Upload failed:', err));
+    };
+
+    handleUploadThisSketch = () => {
+        const { thisSketchMeta } = this.state;
+        const amakit = window.amakit;
+        if (!amakit?.isAuthenticated) {
+            window.xemitter?.emit('remote:login');
+            return;
+        }
+        amakit.addDraft(thisSketchMeta)
+            .then(() => {
+                this.loadRemoteDraftNames();
+            })
+            .catch((err) => console.error('Upload failed:', err));
+    };
+
     renderTabs() {
-        const tabs = ['This', 'Sketches', 'Import/Export'];
+        const tabs = ['This', 'Sketches', 'Collections', 'Import/Export'];
         return (
             <div className="modal-tabs">
                 {tabs.map((tab) => (
@@ -214,9 +264,14 @@ class SketchModal extends React.Component {
                     onAddField={this.handleAddMetadataField}
                 />
                 {editingSketchIdx !== null && (
-                    <button onClick={this.handleSaveSketch} className="save-sketch-btn">
-                        Save
-                    </button>
+                    <span style={{ display: 'flex', gap: 8, marginTop: 20 }}>
+                        <button onClick={this.handleSaveSketch} className="save-sketch-btn">
+                            Save
+                        </button>
+                        <button onClick={this.handleUploadThisSketch} className="save-sketch-btn">
+                            Upload
+                        </button>
+                    </span>
                 )}
             </div>
         );
@@ -247,11 +302,14 @@ class SketchModal extends React.Component {
                 sketches={this.state.sketches}
                 filter={this.state.sketchFilter}
                 tagFilter={this.state.sketchTagFilter}
+                remoteDraftNames={this.state.remoteDraftNames}
                 onFilterChange={this.handleSketchFilterChange}
                 onTagFilterChange={this.handleTagFilterChange}
                 onEdit={this.handleEditSketch}
                 onDelete={this.handleDeleteSketch}
+                onUpload={this.handleUploadSketch}
                 onRowClick={(sketchInfo) => {
+                    window.xemitter.emit('gallery:updateLocalSketches', this.state.sketches);
                     window.xemitter.emit('gallery:loadSketch', sketchInfo);
                 }}
                 actions={actions}
@@ -263,12 +321,33 @@ class SketchModal extends React.Component {
         return <ImportExportPanel />;
     }
 
+    handleCollectionChange = () => {
+        this.props.onApplyCollection?.();
+        this.setState((s) => ({ collectionVersion: (s.collectionVersion || 0) + 1 }));
+    };
+
+    renderCollectionsPanel() {
+        if (!this.collectionStorage) return null;
+        const { activeId } = this.collectionStorage.getCollections();
+        return (
+            <CollectionsPanel
+                collectionStorage={this.collectionStorage}
+                sketches={this.state.sketches}
+                activeId={activeId}
+                onActiveChange={this.handleCollectionChange}
+                onCollectionsChange={this.handleCollectionChange}
+            />
+        );
+    }
+
     renderTabContent() {
         switch (this.state.activeTab) {
             case 'This':
                 return this.renderJsonEditor();
             case 'Sketches':
                 return this.renderSketchesList();
+            case 'Collections':
+                return this.renderCollectionsPanel();
             case 'Import/Export':
                 return this.renderImportExport();
             default:
@@ -305,8 +384,20 @@ class SketchApp extends React.Component {
     constructor(props) {
         super(props);
         this.sketchStorage = new SketchStorage(window.localStorage);
+        this.collectionStorage = new CollectionStorage(window.localStorage);
         this.state = { isModalVisible: false };
     }
+
+    applyCollectionFilter = () => {
+        const sketches = this.sketchStorage.getSketches();
+        const active = this.collectionStorage.getActiveCollection();
+        const filtered = active
+            ? filterSketchesByCollection(sketches, active.sketchIds)
+            : sketches;
+        if (window.xemitter) {
+            window.xemitter.emit('gallery:updateLocalSketches', filtered);
+        }
+    };
 
     toggleModal = () => {
         // if (this.state.isModalVisible) {
@@ -317,13 +408,19 @@ class SketchApp extends React.Component {
         }));
     };
 
+    componentDidMount() {
+        this.applyCollectionFilter();
+    }
+
     render() {
         return (
             <div>
                 <SketchModal
                     sketchStorage={this.sketchStorage}
+                    collectionStorage={this.collectionStorage}
                     visible={this.state.isModalVisible}
                     onClose={this.toggleModal}
+                    onApplyCollection={this.applyCollectionFilter}
                 />
             </div>
         );
