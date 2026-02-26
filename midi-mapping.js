@@ -81,6 +81,18 @@
       payload: { lastCombo: "Shift-Ctrl-5" },
       label: "Automutate 16x",
     },
+    "taptempo": {
+      action: "taptempo",
+      label: "Tap tempo"
+    },
+    "fullscreen": {
+      action:"fullscreen",
+      label: "Toggle Fullscreen"
+    },
+    "hideAll": {
+      action: "hideAll",
+      label: "Hide/Show UI"
+    },
     // Example CC bind - callback receives normalized value (0-1)
     speed: {
       callback: (value) => {
