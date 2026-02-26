@@ -23,6 +23,10 @@
       payload: { backwards: true },
       label: "Prev sketch",
     },
+    "gallery:randomSketch": {
+      action: "gallery:randomSketch",
+      label: "Random Sketch",
+    },
     "editor:randomize": {
       action: "editor:randomize",
       label: "Randomize",
@@ -31,9 +35,9 @@
       action: "editor:jumpBack1",
       label: "Jump back 1",
     },
-    "editor:jumpBack2": {
-      action: "editor:jumpBack2",
-      label: "Jump back 2",
+    "editor:jumpBack5": {
+      action: "editor:jumpBack5",
+      label: "Jump back 5",
     },
     "gfx:speedReverse": {
       action: "gfx:speedReverse",
@@ -128,14 +132,15 @@
 
   function findActionForMessage(channel, type, controlOrNote) {
     const full = getFullMapping();
+    const hits = [];
     for (const [action, m] of Object.entries(full)) {
       if (!m) continue;
       if (m.type === type && m.channel === channel) {
-        if (type === "cc" && m.control === controlOrNote) return action;
-        if (type === "note" && m.note === controlOrNote) return action;
+        if (type === "cc" && m.control === controlOrNote) hits.push(action);
+        if (type === "note" && m.note === controlOrNote) hits.push(action);
       }
     }
-    return null;
+    return hits;
   }
 
   function createMIDIHandler() {
@@ -186,27 +191,31 @@
       // Check mapping for action trigger or CC bind
       const status = kind & 0xf0;
       if (status === 0xb0) {
-        const actionId = findActionForMessage(channel, "cc", byte1);
-        if (actionId) {
-          const config = MAPPABLE_ACTIONS[actionId];
-          if (config) {
-            if (typeof config.callback === "function") {
-              config.callback(valNormalized);
-            } else if (
-              config.action &&
-              valNormalized > CC_TRIGGER_THRESHOLD &&
-              window.xemitter
-            ) {
-              window.xemitter.emit(config.action, config.payload || {});
+        const actions = findActionForMessage(channel, "cc", byte1);
+        for (const actionId of actions) {
+          if (actionId) {
+            const config = MAPPABLE_ACTIONS[actionId];
+            if (config) {
+              if (typeof config.callback === "function") {
+                config.callback(valNormalized);
+              } else if (
+                config.action &&
+                valNormalized > CC_TRIGGER_THRESHOLD &&
+                window.xemitter
+              ) {
+                window.xemitter.emit(config.action, config.payload || {});
+              }
             }
           }
-        }
+       }
       } else if (status === 0x90 && byte2 > 0) {
-        const actionId = findActionForMessage(channel, "note", byte1);
-        if (actionId) {
-          const config = MAPPABLE_ACTIONS[actionId];
-          if (config && window.xemitter) {
-            window.xemitter.emit(config.action, config.payload || {});
+        const actions = findActionForMessage(channel, "note", byte1);
+        for (const actionId of actions) {
+          if (actionId) {
+            const config = MAPPABLE_ACTIONS[actionId];
+            if (config && window.xemitter) {
+              window.xemitter.emit(config.action, config.payload || {});
+            }
           }
         }
       }
