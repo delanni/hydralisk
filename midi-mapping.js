@@ -106,6 +106,19 @@
       },
       label: "Speed (CC bind)",
     },
+    ...(["A", "B", "C", "D"].map(midiShortcut => {
+      return {
+        ['midi' + midiShortcut]: {
+          callback: (value) => {
+            // Example of a CC bind that uses the global cc['A'] / cc['B'] / cc['C'] / cc['D'] value
+            console.log(`MIDI ${midiShortcut} value:`, value);
+            // reusable as `midi('A', { min: 0, max: 10, transform: v => Math.round(v * 10) })` for example
+            window.cc[midiShortcut] = value;
+          },
+          label: `midi('${midiShortcut}', {min, max, transform}) cc bind`
+        }
+      }
+    }).reduce((acc, curr) => ({ ...acc, ...curr }), {})),
   };
 
   let mapping = {};

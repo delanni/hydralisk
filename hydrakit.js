@@ -63,22 +63,30 @@
 })(window.hydrakitReady);
 
 function midi(ccIndex, options = {}) {
-  const colorToMidi = {
-    green: 1,
-    blue: 2,
-    yellow: 3,
-    red: 4,
-  };
   const { min = 0, max = 1, channel, transform } = options;
 
   return () => {
     let localIndex = ccIndex;
-    if (typeof ccIndex === "string" && ccIndex.match(/b\d/)) {
+    if (typeof ccIndex === "string" && ccIndex.match(/^[ABCD]$/)) {
+      // A,B,C,D should be bindable values
+      // try to fetch them from the global cc['A'] / cc['B'] / cc['C'] / cc['D']
+      // tries to find a number for cc based on A,B,C,D
+      const localValue = window.cc[ccIndex];
+      if (localValue === undefined) return min;
+      const value = localValue * (max - min) + min;
+      if (transform) {
+        return transform(value);
+      } else {
+        return value;
+      }
+
+    } else if (typeof ccIndex === "string" && ccIndex.match(/b\d/)) {
+      // tries to find a number for cc
       localIndex = ccbind[Number(ccIndex[1])];
 
       if (localIndex === undefined) return min;
     } else if (typeof ccIndex === "string") {
-      localIndex = colorToMidi[ccIndex];
+      // tries to find a number for cc based on color
     }
 
     const ccArr = channel !== undefined ? ccc[channel] : cc;
