@@ -179,15 +179,6 @@
       const byte2 = data[2];
       const valNormalized = (byte2 > 64 ? byte2 + 1 : byte2) / 128.0;
 
-      // Update cc/ccc arrays (for CC messages)
-      if ((kind & 0xf0) === 0xb0 && window.cc && window.ccc) {
-        window.cc[byte1] = valNormalized;
-        window.ccc[channel][byte1] = valNormalized;
-        if (window.ccbind && !window.ccbind.includes(byte1)) {
-          window.ccbind.push(byte1);
-        }
-      }
-
       // Check if we're in assignment waiting mode
       if (waitingForAction) {
         const config = MAPPABLE_ACTIONS[waitingForAction];
@@ -195,7 +186,7 @@
         let assignment = null;
         if ((kind & 0xf0) === 0xb0) {
           assignment = { type: "cc", channel, control: byte1 };
-        } else if (!isBind && (kind & 0xf0) === 0x90 && byte2 > 0) {
+        } else if ((kind & 0xf0) === 0x90 && byte2 > 0) {
           assignment = { type: "note", channel, note: byte1 };
         }
         if (assignment) {
@@ -239,7 +230,11 @@
           if (actionId) {
             const config = MAPPABLE_ACTIONS[actionId];
             if (config && window.xemitter) {
-              window.xemitter.emit(config.action, config.payload || {});
+              if (typeof config.callback === "function") {
+                config.callback(valNormalized);
+              } else {
+                window.xemitter.emit(config.action, config.payload || {});
+              }
             }
           }
         }

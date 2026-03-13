@@ -11,6 +11,9 @@
     console.log(midiAccess);
     for (var input of midiAccess.inputs.values()) {
       input.onmidimessage = getMIDIMessage;
+      input.onstatechange = (e) => {
+        console.log(`${e.target.name}'s connection is ${e.target.connection}`);
+      };
     }
   }
 
@@ -79,7 +82,6 @@ function midi(ccIndex, options = {}) {
       } else {
         return value;
       }
-
     } else if (typeof ccIndex === "string" && ccIndex.match(/b\d/)) {
       // tries to find a number for cc
       localIndex = ccbind[Number(ccIndex[1])];
