@@ -10,9 +10,9 @@ const PBKDF2_ITERATIONS = 310000;
 if (typeof window !== "undefined") {
   window.awsCredentialsEncoded = {
     encoded: true,
-    credentialsCiphertext: "/xNOReuzABxK582qiZliMXNNK/ceW/+Sa6Y2h1m7noCu5cM/D2KJBir7CYBd/VqkP3zPxqDZYXohiPBWhoEdrw2+G/D6T9JCOP1HXAJrh4ek1Qs0AtR4mPl83C4SqgUesd3Qns0Y6PFjrz7OQx3GS3YHfw==",
-    salt: "Tfgd8nlulNvZtAHsElyk6w==",
-    iv: "+9FZN1a7yfUBKL02",
+    credentialsCiphertext: "uWzwhV//QeaoDcds1FvdCCWY6EptwC2pyCqlJDYRBXKIqVriyrx5vUgmvjBbintIAzJQYcAmWAN8VBXGawuYrkJdvIyU221g90kyHZkvtJ5pDqk6RrrxN72NHqAad+KM8f2rOky1Mu5ANL78w0TF3JT5bg==",
+    salt: "u9XNXhZ8/WLxr8A1PoBYug==",
+    iv: "EnftfLKbFvPBhVLi",
   };
 }
 const IV_LEN = 12;
