@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hydralisk Visual Player</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A premium, simplified visual player and synthesiser client for live-coded Hydra sketches." />
+    <meta property="og:title" content="Hydralisk Visual Player" />
+    <meta property="og:description" content="Play, inspect, and map MIDI inputs to live Hydra sketches without a bulky editor." />
+    <meta property="og:image" content="./hydralisk.png" />
+    
+    <link rel="shortcut icon" type="image/png" href="./hydralisk.png" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/fontawesome.css" />
+    <link rel="stylesheet" href="./css/midi-mapping.css" />
+    <link rel="stylesheet" href="./css/player.css" />
+
+    <!-- Define SimpleEvent emitter before other modules load so they can hook into it -->
+    <script>
+      class SimpleEmitter {
+        constructor() {
+          this.events = {};
+        }
+        on(event, listener) {
+          if (!this.events[event]) {
+            this.events[event] = [];
+          }
+          this.events[event].push(listener);
+        }
+        emit(event, data) {
+          if (this.events[event]) {
+            this.events[event].forEach(listener => listener(data));
+          }
+        }
+      }
+      window.xemitter = new SimpleEmitter();
+    </script>
+
+    <!-- Library dependencies -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.111.0.min.js"></script>
+    <script src="./three.module.js" defer></script>
+    <script src="./p5.min.js" defer></script>
+    <!-- Grab ojack's hydra player engine -->
+    <script src="https://unpkg.com/hydra-synth"></script>
+    
+    <!-- Local app kits -->
+    <script src="./amakit.js" defer></script>
+    <script src="./hydrakit.js" defer></script>
+    <script src="./midi-mapping.js" defer></script>
+    <script src="./hyper-hydra.convolutions.js" defer></script>
+    
+    <!-- Main player controller -->
+    <script src="./player.js" defer></script>
+  </head>
+  <body>
+    <!-- Splash Screen (unlocks browser AudioContext & WebMIDI via gesture) -->
+    <div id="splash-screen" class="splash-screen">
+      <div class="splash-card">
+        <h1 class="splash-logo">HYDRALISK</h1>
+        <p class="splash-description">
+          A dedicated presentation player for live-coded Hydra visuals. Feed scripts directly to the canvas, map physical MIDI controls, and run audio-reactive synthesizers in fullscreen.
+        </p>
+        <button id="start-experience-btn" class="start-btn" onclick="startExperience()">
+          Launch Player & Engine
+        </button>
+        <div class="splash-footer">
+          Requires microphone access for audio-reactive visuals.
+        </div>
+      </div>
+    </div>
+
+    <!-- Background Fullscreen Hydra Canvas -->
+    <canvas id="hydra-canvas"></canvas>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Floating Expand Button (visible when sidebar is collapsed) -->
+    <div id="expand-trigger" class="expand-trigger" onclick="toggleCollapse()" title="Show Controls">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </div>
+    <div id="floating-hud-actions" class="floating-hud-actions">
+      <button id="hud-toggle-floating-btn" class="floating-hud-btn" onclick="toggleUI()" title="Toggle HUD">
+        HUD
+      </button>
+      <button id="touch-actions-floating-btn" class="floating-hud-btn" onclick="toggleTouchActions()" title="Toggle Touch Actions">
+        TOUCH
+      </button>
+    </div>
+
+    <!-- Floating Controls Panel Drawer -->
+    <div id="sidebar-panel" class="sidebar-panel">
+      <!-- Header -->
+      <div class="panel-header">
+        <h2 class="panel-title">HYDRALISK</h2>
+        <div class="header-status">
+          <div id="audio-indicator-dot" class="status-dot" title="Audio Reactive Ready"></div>
+          <div id="midi-indicator-dot" class="status-dot" title="MIDI Access Active"></div>
+          <button class="collapse-btn" onclick="toggleCollapse()" title="Hide Sidebar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="panel-tabs">
+        <button class="tab-btn active" data-tab="library">Library</button>
+        <button class="tab-btn" data-tab="editor">Editor</button>
+        <button class="tab-btn" data-tab="performance">Performance</button>
+      </div>
+
+      <!-- Tab Body Contents -->
+      <div class="panel-body">
+        <!-- 1. LIBRARY TAB -->
+        <div id="library-tab" class="tab-content active">
+          <!-- Search Bar -->
+          <div class="search-wrapper">
+            <input 
+              type="text" 
+              id="sketch-search-input" 
+              class="search-input" 
+              placeholder="Search sketches or authors..." 
+            />
+          </div>
+
+          <!-- Tag Filters -->
+          <div id="tag-filters-list" class="tag-filters">
+            <!-- Dynamically populated tags -->
+          </div>
+
+          <!-- Sketches Scrollable List -->
+          <div id="sketches-list-container" class="sketches-list">
+            <!-- Dynamically populated list -->
+          </div>
+        </div>
+
+        <!-- 2. EDITOR TAB (View/Update Code without heavy workspace) -->
+        <div id="editor-tab" class="tab-content">
+          <div class="code-container">
+            <textarea 
+              id="editor-textarea" 
+              class="code-textarea" 
+              spellcheck="false" 
+              placeholder="// Write or modify Hydra synth code here..."
+            ></textarea>
+            <div class="code-actions">
+              <button class="action-btn" onclick="resetCustomCode()">Reset</button>
+              <button class="action-btn accent" onclick="runCustomCode()">Run Code</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PERFORMANCE TAB -->
+        <div id="performance-tab" class="tab-content">
+          <!-- Global BPM Control -->
+          <div class="slider-group">
+            <div class="slider-header" style="align-items: center;">
+              <span>Tempo (BPM)</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <input 
+                  type="number" 
+                  id="bpm-number-input" 
+                  class="search-input" 
+                  style="width: 70px; padding: 4px 6px; text-align: center; font-family: var(--font-mono); font-size: 0.9rem; font-weight: 600;" 
+                  min="20" 
+                  max="240" 
+                  value="120" 
+                />
+                <button id="tap-tempo-btn" class="filter-tag" style="margin: 0; padding: 4px 10px; font-weight: bold;" onclick="handleTapTempo()">
+                  TAP
+                </button>
+              </div>
+            </div>
+            
+            <!-- Pitch Bend Fader -->
+            <div style="margin-top: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">
+                <span>-15%</span>
+                <span>PITCH CORRECTION (FADER)</span>
+                <span>+15%</span>
+              </div>
+              <input 
+                type="range" 
+                id="bpm-bend-slider" 
+                class="slider-input" 
+                min="-15" 
+                max="15" 
+                step="0.1" 
+                value="0" 
+                style="background: linear-gradient(to right, rgba(255,255,255,0.05) 48%, var(--color-accent) 49%, var(--color-accent) 51%, rgba(255,255,255,0.05) 52%);"
+              />
+            </div>
+          </div>
+
+          <!-- Global Speed Control -->
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Visual Speed Rate</span>
+              <span id="speed-val">1.0x</span>
+            </div>
+            <input 
+              type="range" 
+              id="speed-slider" 
+              class="slider-input" 
+              min="0" 
+              max="4" 
+              step="0.1" 
+              value="1.0" 
+            />
+          </div>
+
+          <!-- Automutate & Randomization Card -->
+          <div class="info-card" style="gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="info-label" style="font-weight: 600;">Automutate / Mutation Modes</span>
+              <span id="mutation-status-label" class="sketch-tag" style="color: var(--text-muted);">OFF</span>
+            </div>
+            
+            <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+              Automatically modify visual parameters and functions over time.
+            </p>
+            
+            <!-- Interval Speed Selector -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">AUTO-MUTATE INTERVAL</span>
+              <div class="tag-filters" style="gap: 4px;">
+                <div class="filter-tag active" data-mutate-mode="off" onclick="setAutomutateMode('off')">Off</div>
+                <div class="filter-tag" data-mutate-mode="1" onclick="setAutomutateMode('1')" title="1x per beat">1b</div>
+                <div class="filter-tag" data-mutate-mode="2" onclick="setAutomutateMode('2')" title="1x per 1/2 bar (2 beats)">2b</div>
+                <div class="filter-tag" data-mutate-mode="4" onclick="setAutomutateMode('4')" title="1x per 1 bar (4 beats)">4b</div>
+                <div class="filter-tag" data-mutate-mode="8" onclick="setAutomutateMode('8')" title="1x per 2 bars (8 beats)">8b</div>
+                <div class="filter-tag" data-mutate-mode="16" onclick="setAutomutateMode('16')" title="1x per 4 bars (16 beats)">16b</div>
+              </div>
+            </div>
+            
+            <!-- Manual Trigger Actions -->
+            <div class="code-actions" style="gap: 8px;">
+              <button class="action-btn" id="mutation-undo-btn" onclick="undoMutation()" disabled style="padding: 8px;">Undo</button>
+              <button class="action-btn accent" onclick="triggerMutation()" style="padding: 8px; flex: 2;">Mutate Now</button>
+              <button class="action-btn" id="mutation-redo-btn" onclick="redoMutation()" disabled style="padding: 8px;">Redo</button>
+            </div>
+          </div>
+
+          <!-- Now Playing Info Card -->
+          <div class="info-card">
+            <div class="info-row">
+              <span class="info-label">Active Sketch</span>
+              <span id="playing-sketch-name" class="info-value">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Author</span>
+              <span id="playing-sketch-author" class="info-value">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Base Tempo</span>
+              <span id="playing-sketch-bpm" class="info-value">—</span>
+            </div>
+            <div class="info-row" style="flex-direction: column; gap: 6px;">
+              <span class="info-label">Tags</span>
+              <div id="playing-sketch-tags" class="sketch-tags">
+                <!-- Dynamically populated tags -->
+              </div>
+            </div>
+          </div>
+
+          <!-- MIDI Mapping settings -->
+          <!-- Cloud Synchronization Card -->
+          <div class="info-card" style="gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="info-label" style="font-weight: 600;">Cloud Synchronization</span>
+              <div id="cloud-status-dot" class="status-dot" title="Not connected to Cloud"></div>
+            </div>
+            <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+              Access your saved sketches from the cloud database.
+            </p>
+            <button id="cloud-login-btn" class="action-btn" onclick="handleCloudLogin()">
+              Login to Cloud
+            </button>
+          </div>
+
+          <!-- MIDI Mapping settings -->
+          <div class="info-card" style="gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="info-label" style="font-weight: 600;">MIDI Mapping System</span>
+              <div id="midi-status-dot" class="status-dot" title="Sketch requires MIDI mapping"></div>
+            </div>
+            <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+              Map physical MIDI dials/keys directly to speed, sketches, or custom LFO parameters.
+            </p>
+            <button class="action-btn" onclick="window.midiMapping && window.midiMapping.open()">
+              Configure MIDI Keys
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Playback Controls Footer -->
+      <div class="playback-controls">
+        <div class="controls-row">
+          <!-- Previous Button -->
+          <button class="control-icon-btn" onclick="playPrevSketch()" title="Previous Sketch (Left Arrow)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+            </svg>
+          </button>
+          
+          <!-- Play/Pause Button -->
+          <button id="play-pause-btn" class="control-icon-btn play-pause" onclick="togglePlayPause()" title="Pause (Space)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+          
+          <!-- Next Button -->
+          <button class="control-icon-btn" onclick="playNextSketch()" title="Next Sketch (Right Arrow)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+            </svg>
+          </button>
+          
+          <!-- Shuffle Button -->
+          <button class="control-icon-btn" onclick="playRandomSketch()" title="Shuffle/Random Sketch (R)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="touch-toggle-row">
+          <button id="touch-actions-hud-btn" class="action-btn touch-actions-hud-btn" onclick="toggleTouchActions()">
+            Touch Actions Overlay
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Keyboard Shortcuts Guide -->
+    <div id="shortcuts-panel" class="shortcuts-panel">
+      <span><span class="shortcut-key">Space</span> Play/Pause</span>
+      <span><span class="shortcut-key">←</span> <span class="shortcut-key">→</span> Navigate</span>
+      <span><span class="shortcut-key">R</span> Shuffle</span>
+      <span><span class="shortcut-key">H</span> Toggle HUD</span>
+      <span><span class="shortcut-key">T</span> Touch Actions</span>
+      <span><span class="shortcut-key">F</span> Fullscreen</span>
+    </div>
+
+    <div id="touch-actions-overlay" class="touch-actions-overlay">
+      <div class="touch-actions-card">
+        <div class="touch-actions-title">Touch Actions</div>
+        <div class="touch-actions-grid">
+          <button class="touch-action-btn" onclick="playPrevSketch()">Prev</button>
+          <button class="touch-action-btn" onclick="togglePlayPause()">Play</button>
+          <button class="touch-action-btn" onclick="playNextSketch()">Next</button>
+          <button class="touch-action-btn" onclick="playRandomSketch()">Random</button>
+          <button class="touch-action-btn" onclick="nudgeTempo(-2)">BPM -</button>
+          <button class="touch-action-btn" onclick="nudgeTempo(2)">BPM +</button>
+          <button class="touch-action-btn" onclick="nudgeSpeed(-0.1)">Speed -</button>
+          <button class="touch-action-btn" onclick="nudgeSpeed(0.1)">Speed +</button>
+          <button class="touch-action-btn touch-action-wide" onclick="toggleUI()">Show HUD</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
