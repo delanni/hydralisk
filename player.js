@@ -25,14 +25,14 @@ let mutationHistoryIndex = -1;
 function showToast(message, isError = false) {
   const container = document.getElementById('toast-container');
   if (!container) return;
-  
+
   const toast = document.createElement('div');
   toast.className = `toast ${isError ? 'error' : ''}`;
   toast.innerHTML = `
     <span>${message}</span>
   `;
   container.appendChild(toast);
-  
+
   // Slide out and remove
   setTimeout(() => {
     toast.style.animation = 'slide-out-toast 0.3s ease forwards';
@@ -61,12 +61,12 @@ function resizeCanvas() {
 async function startExperience() {
   const splash = document.getElementById('splash-screen');
   const canvas = document.getElementById('hydra-canvas');
-  
+
   try {
     // Force canvas dimensions to fit window/screen resolution exactly
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
+
     // Initialise audio context & Hydra
     // The user gesture (click start) is required for audio/midi
     if (typeof Hydra !== 'undefined') {
@@ -77,10 +77,10 @@ async function startExperience() {
         width: window.innerWidth,
         height: window.innerHeight
       });
-      
+
       // Listen for window resize to dynamically update resolution
       window.addEventListener('resize', resizeCanvas);
-      
+
       // Let's hide the canvas visualizer that hydra-synth creates inside document.body by default if any
       const hydraAudioCanvas = document.querySelector('body > canvas:not(#hydra-canvas)');
       if (hydraAudioCanvas) {
@@ -89,21 +89,21 @@ async function startExperience() {
     } else {
       throw new Error('Hydra player engine library not loaded. Check CDN link.');
     }
-    
+
     // Fade out splash
     splash.style.opacity = 0;
     setTimeout(() => {
       splash.style.display = 'none';
       isPlaying = true;
       updatePlayPauseButton();
-      
+
       // Start checking for volume reactivity
       startVolumeMeter();
     }, 500);
-    
+
     // Load sketches
     await loadAllSketches();
-    
+
     // Play default or first sketch
     if (sketchesList.length > 0) {
       playSketch(0);
@@ -111,7 +111,7 @@ async function startExperience() {
       // Play a simple backup visual if no sketches
       playBackupVisual();
     }
-    
+
     showToast("Visual engine initialized successfully");
   } catch (err) {
     console.error(err);
@@ -126,7 +126,7 @@ function playBackupVisual() {
     .color(0.2, 0.7, 0.9)
     .rotate(0.1, 0.05)
     .out(o0);
-  
+
   updateNowPlaying({
     name: "Default Oscillation",
     author: "System",
@@ -139,7 +139,7 @@ function playBackupVisual() {
 async function loadAllSketches() {
   sketchesList = [];
   let sourceSketches = [];
-  
+
   // 1. Fetch from Amakit (if authenticated)
   if (window.amakit && window.amakit.isAuthenticated) {
     try {
@@ -152,7 +152,7 @@ async function loadAllSketches() {
       showToast("Cloud sync failed. Loading backup.", true);
     }
   }
-  
+
   // 2. Fetch from sketches.json (if not authenticated, or amakit fetch failed/returned empty)
   if (sourceSketches.length === 0) {
     try {
@@ -164,7 +164,7 @@ async function loadAllSketches() {
       console.warn("Could not fetch sketches.json", e);
     }
   }
-  
+
   // 3. Load custom sketches from local storage (mySketches)
   let localSketches = [];
   try {
@@ -175,10 +175,10 @@ async function loadAllSketches() {
   } catch (e) {
     console.warn("Could not load mySketches from localStorage", e);
   }
-  
+
   // 4. Merge by name (Local overrides remote/built-in)
   const mergedMap = {};
-  
+
   sourceSketches.forEach(s => {
     s.isLocal = false;
     s.author = s.author || "Hydralisk Team";
@@ -187,7 +187,7 @@ async function loadAllSketches() {
     s.metadata.tags = s.metadata.tags || [];
     mergedMap[s.name] = s;
   });
-  
+
   localSketches.forEach(s => {
     const sketchCopy = { ...s };
     sketchCopy.isLocal = true;
@@ -195,7 +195,7 @@ async function loadAllSketches() {
     sketchCopy.bpm = sketchCopy.bpm || 120;
     sketchCopy.metadata = sketchCopy.metadata || { tags: ["local"] };
     sketchCopy.metadata.tags = sketchCopy.metadata.tags || ["local"];
-    
+
     // Handle code format
     if (!sketchCopy.code && sketchCopy.fullDraft) {
       try {
@@ -204,13 +204,13 @@ async function loadAllSketches() {
         sketchCopy.code = sketchCopy.fullDraft;
       }
     }
-    
+
     // Local creation overrides remote/built-in
     mergedMap[sketchCopy.name] = sketchCopy;
   });
-  
+
   sketchesList = Object.values(mergedMap);
-  
+
   // Fallback if empty
   if (sketchesList.length === 0) {
     sketchesList.push({
@@ -221,7 +221,7 @@ async function loadAllSketches() {
       metadata: { tags: ["glitch", "colorful"] }
     });
   }
-  
+
   filteredSketchesList = [...sketchesList];
   renderSketchesList();
   renderTagFilters();
@@ -231,7 +231,7 @@ async function loadAllSketches() {
 function renderTagFilters() {
   const container = document.getElementById('tag-filters-list');
   if (!container) return;
-  
+
   // Gather all unique tags
   const tags = new Set();
   sketchesList.forEach(s => {
@@ -239,9 +239,9 @@ function renderTagFilters() {
       s.metadata.tags.forEach(t => tags.add(t));
     }
   });
-  
+
   container.innerHTML = '';
-  
+
   // Add "All" tag
   const allTagBtn = document.createElement('div');
   allTagBtn.className = `filter-tag ${activeTags.size === 0 ? 'active' : ''}`;
@@ -252,7 +252,7 @@ function renderTagFilters() {
     renderTagFilters();
   };
   container.appendChild(allTagBtn);
-  
+
   // Add individual tags
   tags.forEach(tag => {
     const tagBtn = document.createElement('div');
@@ -274,18 +274,18 @@ function renderTagFilters() {
 // Filter sketches list based on search query and active tags
 function filterSketches() {
   const query = document.getElementById('sketch-search-input').value.toLowerCase();
-  
+
   filteredSketchesList = sketchesList.filter(s => {
     const nameMatch = s.name.toLowerCase().includes(query) || s.author.toLowerCase().includes(query);
-    
+
     let tagMatch = true;
     if (activeTags.size > 0) {
       tagMatch = s.metadata && s.metadata.tags && s.metadata.tags.some(t => activeTags.has(t));
     }
-    
+
     return nameMatch && tagMatch;
   });
-  
+
   renderSketchesList();
 }
 
@@ -293,36 +293,36 @@ function filterSketches() {
 function renderSketchesList() {
   const container = document.getElementById('sketches-list-container');
   if (!container) return;
-  
+
   container.innerHTML = '';
-  
+
   const builtIns = filteredSketchesList.filter(s => !s.isLocal);
   const locals = filteredSketchesList.filter(s => s.isLocal);
-  
+
   if (locals.length > 0) {
     const title = document.createElement('div');
     title.className = 'sketches-section-title';
     title.innerText = "Your Sketches (Local)";
     container.appendChild(title);
-    
+
     locals.forEach(s => {
       const idx = sketchesList.indexOf(s);
       container.appendChild(createSketchItemNode(s, idx));
     });
   }
-  
+
   if (builtIns.length > 0) {
     const title = document.createElement('div');
     title.className = 'sketches-section-title';
     title.innerText = "Built-in Library";
     container.appendChild(title);
-    
+
     builtIns.forEach(s => {
       const idx = sketchesList.indexOf(s);
       container.appendChild(createSketchItemNode(s, idx));
     });
   }
-  
+
   if (filteredSketchesList.length === 0) {
     container.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">No sketches found</div>';
   }
@@ -333,9 +333,9 @@ function createSketchItemNode(sketch, index) {
   const div = document.createElement('div');
   div.className = `sketch-item ${currentSketchIndex === index ? 'active' : ''}`;
   div.onclick = () => playSketch(index);
-  
+
   const tagsStr = (sketch.metadata && sketch.metadata.tags) ? sketch.metadata.tags.join(', ') : '';
-  
+
   div.innerHTML = `
     <div class="sketch-item-info">
       <span class="sketch-item-name">${sketch.name}</span>
@@ -349,10 +349,10 @@ function createSketchItemNode(sketch, index) {
 // Update the active BPM and controls
 function updateBPM(newBpm) {
   window.bpm = newBpm;
-  
+
   const numInput = document.getElementById('bpm-number-input');
   if (numInput) numInput.value = newBpm;
-  
+
   // Re-adjust automutate interval if it is running
   if (automutateMode !== 'off') {
     setAutomutateMode(automutateMode, true); // Keep quiet
@@ -366,7 +366,7 @@ function handleTapTempo() {
   if (tapTimes.length > 4) {
     tapTimes.shift();
   }
-  
+
   if (tapTimes.length >= 2) {
     let sum = 0;
     for (let i = 1; i < tapTimes.length; i++) {
@@ -375,11 +375,11 @@ function handleTapTempo() {
     const avgMs = sum / (tapTimes.length - 1);
     const calculatedBPM = Math.round(60000 / avgMs);
     const clampedBPM = Math.max(20, Math.min(240, calculatedBPM));
-    
+
     baseBpm = clampedBPM;
     updateBPM(clampedBPM);
   }
-  
+
   // Flash TAP button
   const btn = document.getElementById('tap-tempo-btn');
   if (btn) {
@@ -395,42 +395,42 @@ function handleTapTempo() {
 // Play a sketch by index
 function playSketch(index) {
   if (index < 0 || index >= sketchesList.length) return;
-  
+
   currentSketchIndex = index;
   const sketch = sketchesList[index];
-  
+
   // Update selected class in list
   const items = document.querySelectorAll('.sketch-item');
   items.forEach((item, i) => {
     item.classList.remove('active');
   });
   renderSketchesList(); // Redraw selection
-  
+
   // Set BPM and Speed defaults
   baseBpm = sketch.bpm || 120;
   updateBPM(baseBpm);
-  
+
   window.speed = 1.0;
   document.getElementById('speed-slider').value = 1.0;
   document.getElementById('speed-val').innerText = '1.0x';
-  
+
   // Reset mutation history
   mutationHistory = [sketch.code];
   mutationHistoryIndex = 0;
   updateMutationUndoRedoButtons();
-  
+
   // Clean up and evaluate sketch code
   hush();
-  
+
   try {
     // Evaluate inside IIFE to isolate scope variables
     // Source URL added for better DevTools experience
     const wrappedCode = `(() => {
       ${sketch.code}
     })()//# sourceURL=hydra-sketch-${sketch.name.replace(/\s+/g, '-').toLowerCase()}.js`;
-    
+
     eval(wrappedCode);
-    
+
     // Update dashboard metadata
     updateNowPlaying(sketch);
     showToast(`Loaded: ${sketch.name}`);
@@ -448,7 +448,7 @@ function updateNowPlaying(sketch) {
   document.getElementById('playing-sketch-name').innerText = sketch.name;
   document.getElementById('playing-sketch-author').innerText = sketch.author;
   document.getElementById('playing-sketch-bpm').innerText = sketch.bpm + " BPM";
-  
+
   // Update tags list
   const tagsContainer = document.getElementById('playing-sketch-tags');
   tagsContainer.innerHTML = '';
@@ -460,13 +460,13 @@ function updateNowPlaying(sketch) {
       tagsContainer.appendChild(span);
     });
   }
-  
+
   // Update code textarea
   const codeBox = document.getElementById('editor-textarea');
   if (codeBox) {
     codeBox.value = sketch.code;
   }
-  
+
   // Check if midi mapping is noted
   const midiDot = document.getElementById('midi-status-dot');
   if (sketch.midi) {
@@ -504,7 +504,7 @@ function updatePlayPauseButton() {
 function togglePlayPause() {
   if (!hydraInstance) return;
   isPlaying = !isPlaying;
-  
+
   if (isPlaying) {
     // Resume loop
     window.speed = parseFloat(document.getElementById('speed-slider').value) || 1.0;
@@ -543,19 +543,19 @@ function playRandomSketch() {
 function runCustomCode() {
   const code = document.getElementById('editor-textarea').value;
   hush();
-  
+
   try {
     const wrappedCode = `(() => {
       ${code}
     })()//# sourceURL=hydra-custom-sketch.js`;
-    
+
     eval(wrappedCode);
     showToast("Code updated & running");
-    
+
     // Update current sketch item meta to indicate custom edit
     document.getElementById('playing-sketch-name').innerText = "Custom Edit";
     document.getElementById('playing-sketch-author').innerText = "Developer Session";
-    
+
     // Save to history
     saveMutationToHistory(code);
   } catch (err) {
@@ -586,7 +586,7 @@ function mutateCode(code, changeTransform) {
       blends: ["add", "sub", "mult", "diff", "blend", "mask"],
       modulators: ["modulate", "modulateScale", "modulatePixelate", "modulateRotate", "modulateKaleid", "modulateScrollX", "modulateScrollY", "modulateHue"]
     };
-    
+
     const foundFuncs = [];
     for (const catName in categories) {
       categories[catName].forEach(func => {
@@ -601,7 +601,7 @@ function mutateCode(code, changeTransform) {
         }
       });
     }
-    
+
     if (foundFuncs.length > 0) {
       const selected = foundFuncs[Math.floor(Math.random() * foundFuncs.length)];
       const others = categories[selected.category].filter(f => f !== selected.name);
@@ -614,17 +614,17 @@ function mutateCode(code, changeTransform) {
       }
     }
   }
-  
+
   // Literal numerical mutation (fallback if transform mutation is disabled/not found)
   const numRegex = /(?<![\w'"`])(?:\b-?\d+(?:\.\d+)?\b)/g;
   const matches = [...code.matchAll(numRegex)];
-  
+
   if (matches.length > 0) {
     const selected = matches[Math.floor(Math.random() * matches.length)];
     const index = selected.index;
     const oldStr = selected[0];
     const oldVal = parseFloat(oldStr);
-    
+
     let newVal;
     if (oldVal === 0) {
       newVal = Math.random() > 0.5 ? 0.5 : -0.5;
@@ -632,25 +632,25 @@ function mutateCode(code, changeTransform) {
       // Scale number value between 0 and 2x its original size
       newVal = Math.round((Math.random() * oldVal * 2) * 1000) / 1000;
     }
-    
+
     const before = code.substring(0, index);
     const after = code.substring(index + oldStr.length);
     console.log(`Mutator: changing number ${oldStr} to ${newVal}`);
     return before + String(newVal) + after;
   }
-  
+
   return code;
 }
 
 // Set Auto-Mutate mode and setup intervals
 function setAutomutateMode(mode, quiet = false) {
   automutateMode = mode;
-  
+
   if (automutateIntervalId) {
     clearInterval(automutateIntervalId);
     automutateIntervalId = null;
   }
-  
+
   // Update buttons state in UI
   const buttons = document.querySelectorAll('[data-mutate-mode]');
   buttons.forEach(btn => {
@@ -660,18 +660,18 @@ function setAutomutateMode(mode, quiet = false) {
       btn.classList.remove('active');
     }
   });
-  
+
   const statusLabel = document.getElementById('mutation-status-label');
   if (statusLabel) {
     statusLabel.innerText = mode.toUpperCase() + (mode === 'off' ? '' : ' ACTIVE');
     statusLabel.style.color = mode === 'off' ? 'var(--text-muted)' : 'var(--color-accent)';
   }
-  
+
   if (mode === 'off') {
     if (!quiet) showToast("Auto-Mutate disabled");
     return;
   }
-  
+
   // Calculate timeout based on BPM
   // multiplier corresponds to beats: 1x (1 beat), 2x (2 beats), 4x (4 beats), 8x (8 beats), 16x (16 beats)
   const msPerBeat = 60000 / window.bpm;
@@ -683,12 +683,12 @@ function setAutomutateMode(mode, quiet = false) {
     case '8': multiplier = 8; break;
     case '16': multiplier = 16; break;
   }
-  
+
   const timeoutMs = msPerBeat * multiplier;
   if (!quiet) {
     showToast(`Auto-Mutate active (every ${multiplier === 1 ? 'beat' : multiplier + ' beats'})`);
   }
-  
+
   automutateIntervalId = setInterval(() => {
     triggerMutation();
   }, timeoutMs);
@@ -699,11 +699,11 @@ function triggerMutation() {
   const textarea = document.getElementById('editor-textarea');
   if (!textarea) return;
   const currentCode = textarea.value;
-  
+
   // 50% chance to mutate transform vs literal
   const changeTransform = Math.random() > 0.5;
   const newCode = mutateCode(currentCode, changeTransform);
-  
+
   if (newCode !== currentCode) {
     try {
       hush();
@@ -711,10 +711,10 @@ function triggerMutation() {
         ${newCode}
       })()//# sourceURL=hydra-mutated-sketch.js`;
       eval(wrappedCode);
-      
+
       textarea.value = newCode;
       saveMutationToHistory(newCode);
-      
+
       // Visual feedback in HUD sketch card
       const nameEl = document.getElementById('playing-sketch-name');
       if (nameEl) {
@@ -779,7 +779,7 @@ function updateMutationUndoRedoButtons() {
 // Tab switcher
 function switchTab(tabId) {
   currentTab = tabId;
-  
+
   // Toggle buttons
   const tabs = document.querySelectorAll('.tab-btn');
   tabs.forEach(btn => {
@@ -789,7 +789,7 @@ function switchTab(tabId) {
       btn.classList.remove('active');
     }
   });
-  
+
   // Toggle contents
   const contents = document.querySelectorAll('.tab-content');
   contents.forEach(content => {
@@ -806,7 +806,7 @@ function toggleCollapse() {
   isPanelCollapsed = !isPanelCollapsed;
   const panel = document.getElementById('sidebar-panel');
   const trigger = document.getElementById('expand-trigger');
-  
+
   if (isPanelCollapsed) {
     panel.classList.add('collapsed');
     trigger.classList.add('visible');
@@ -821,10 +821,10 @@ function toggleUI() {
   const panel = document.getElementById('sidebar-panel');
   const shortcuts = document.getElementById('shortcuts-panel');
   const trigger = document.getElementById('expand-trigger');
-  
+
   // Check if hidden (collapsed and shortcuts hidden)
   const isHidden = panel.classList.contains('collapsed') && shortcuts.classList.contains('hidden');
-  
+
   if (isHidden) {
     // Show back
     panel.classList.remove('collapsed');
@@ -859,7 +859,7 @@ function handleCloudLogin() {
     showToast("Amakit module not loaded", true);
     return;
   }
-  
+
   window.amakit.login(true)
     .then(() => {
       showToast("Successfully authenticated with Cloud!");
@@ -918,7 +918,7 @@ document.addEventListener('keydown', (e) => {
   if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') {
     return;
   }
-  
+
   switch (e.code) {
     case 'Space':
       e.preventDefault();
@@ -947,12 +947,12 @@ document.addEventListener('keydown', (e) => {
 // Sound intensity tracking loop
 function startVolumeMeter() {
   const audioIndicator = document.getElementById('audio-indicator-dot');
-  
+
   function updateMeter() {
     if (window.a && typeof window.a.vol !== 'undefined') {
       audioIndicator.classList.add('active');
       const vol = window.a.vol;
-      
+
       if (vol > 0.01) {
         audioIndicator.style.transform = `scale(${1 + vol * 0.15})`;
         audioIndicator.title = `Audio reactive active (Vol: ${vol.toFixed(2)})`;
@@ -964,7 +964,7 @@ function startVolumeMeter() {
     }
     requestAnimationFrame(updateMeter);
   }
-  
+
   updateMeter();
 }
 
@@ -975,7 +975,7 @@ document.addEventListener('DOMContentLoaded', () => {
   tabs.forEach(btn => {
     btn.onclick = () => switchTab(btn.getAttribute('data-tab'));
   });
-  
+
   // Wire BPM Number Input
   const bpmInput = document.getElementById('bpm-number-input');
   if (bpmInput) {
@@ -985,7 +985,7 @@ document.addEventListener('DOMContentLoaded', () => {
       updateBPM(val);
     };
   }
-  
+
   // Wire Pitch Bend Fader
   const bendSlider = document.getElementById('bpm-bend-slider');
   if (bendSlider) {
@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const bentBpm = Math.round(baseBpm * (1 + offsetPercent / 100));
       updateBPM(bentBpm);
     };
-    
+
     const resetBend = () => {
       baseBpm = window.bpm;
       bendSlider.value = 0;
@@ -1002,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bendSlider.onmouseup = resetBend;
     bendSlider.ontouchend = resetBend;
   }
-  
+
   // Wire Speed Slider
   const speedSlider = document.getElementById('speed-slider');
   const speedVal = document.getElementById('speed-val');
@@ -1013,19 +1013,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     speedVal.innerText = speed.toFixed(1) + 'x';
   };
-  
+
   // Wire sketch search and tags
   const searchInput = document.getElementById('sketch-search-input');
   searchInput.oninput = () => filterSketches();
-  
+
   // Show loaded notifications for midi
   if (navigator.requestMIDIAccess) {
     navigator.requestMIDIAccess().then(() => {
       const midiDot = document.getElementById('midi-indicator-dot');
       if (midiDot) midiDot.classList.add('active');
-    }).catch(() => {});
+    }).catch(() => { });
   }
-  
+
   // Try quiet login on startup if credentials exist
   if (window.amakit) {
     const creds = window.amakit.getCredentials();
