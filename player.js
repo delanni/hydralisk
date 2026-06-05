@@ -29,9 +29,9 @@ function showToast(message, isError = false) {
 
   const toast = document.createElement('div');
   toast.className = `toast ${isError ? 'error' : ''}`;
-  toast.innerHTML = `
-    <span>${message}</span>
-  `;
+  const messageSpan = document.createElement('span');
+  messageSpan.textContent = String(message);
+  toast.appendChild(messageSpan);
   container.appendChild(toast);
 
   // Slide out and remove
