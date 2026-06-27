@@ -10,16 +10,17 @@ const PBKDF2_ITERATIONS = 310000;
 if (typeof window !== "undefined") {
   window.awsCredentialsEncoded = {
     encoded: true,
-    credentialsCiphertext: "SrBPikx6OeUomwoBZTvKfYPc4G0cu6a/i1cdKxp29AKf/6C303ctrGURNxt7mwlkco8vpERnapPBxYNN1mwLZhQmO5oU6/jp85M6vIYqzXYKNYBKHkx/IvVjfdQddzTygBHockPHlbMghkPBzWuKqifi4Q==",
-    salt: "7DKpLCmnSdCKuBIFgLoczg==",
-    iv: "jIS0Q8s+qX4GnCZe",
+    credentialsCiphertext:
+      "uWzwhV//QeaoDcds1FvdCCWY6EptwC2pyCqlJDYRBXKIqVriyrx5vUgmvjBbintIAzJQYcAmWAN8VBXGawuYrkJdvIyU221g90kyHZkvtJ5pDqk6RrrxN72NHqAad+KM8f2rOky1Mu5ANL78w0TF3JT5bg==",
+    salt: "u9XNXhZ8/WLxr8A1PoBYug==",
+    iv: "EnftfLKbFvPBhVLi",
   };
 }
 const IV_LEN = 12;
 const AUTH_TAG_LEN = 16;
 
-const userName = localStorage.getItem('awsCredentials')
-  ? JSON.parse(localStorage.getItem('awsCredentials')).name
+const userName = localStorage.getItem("awsCredentials")
+  ? JSON.parse(localStorage.getItem("awsCredentials")).name
   : "Unknown";
 
 const metadataDefaults = {
@@ -57,14 +58,16 @@ class Amakit {
 
   getCredentials = () => {
     const fromStorage = JSON.parse(
-      localStorage.getItem("awsCredentials") || "null"
+      localStorage.getItem("awsCredentials") || "null",
     );
     const credentials =
       (typeof window !== "undefined" && window.awsCredentialsEncoded) ||
       fromStorage;
     if (!credentials) return null;
-    if (credentials.accessKeyId && credentials.secretAccessKey) return credentials;
-    if (credentials.encoded && credentials.credentialsCiphertext) return credentials;
+    if (credentials.accessKeyId && credentials.secretAccessKey)
+      return credentials;
+    if (credentials.encoded && credentials.credentialsCiphertext)
+      return credentials;
     return null;
   };
 
@@ -73,12 +76,7 @@ class Amakit {
    * Login will prompt for password to decrypt.
    */
   saveEncodedCredentials = (blob) => {
-    if (
-      !blob ||
-      !blob.credentialsCiphertext ||
-      !blob.salt ||
-      !blob.iv
-    ) {
+    if (!blob || !blob.credentialsCiphertext || !blob.salt || !blob.iv) {
       throw new Error("Invalid encoded credentials blob");
     }
     const machineId =
@@ -99,7 +97,7 @@ class Amakit {
     const salt = Uint8Array.from(atob(saltB64), (c) => c.charCodeAt(0));
     const iv = Uint8Array.from(atob(ivB64), (c) => c.charCodeAt(0));
     const ciphertext = Uint8Array.from(atob(ciphertextB64), (c) =>
-      c.charCodeAt(0)
+      c.charCodeAt(0),
     );
 
     const enc = new TextEncoder();
@@ -108,7 +106,7 @@ class Amakit {
       enc.encode(password),
       "PBKDF2",
       false,
-      ["deriveBits", "deriveKey"]
+      ["deriveBits", "deriveKey"],
     );
 
     const key = await crypto.subtle.deriveKey(
@@ -121,7 +119,7 @@ class Amakit {
       keyMaterial,
       { name: "AES-GCM", length: 256 },
       false,
-      ["decrypt"]
+      ["decrypt"],
     );
 
     const decrypted = await crypto.subtle.decrypt(
@@ -131,7 +129,7 @@ class Amakit {
         tagLength: AUTH_TAG_LEN * 8,
       },
       key,
-      ciphertext
+      ciphertext,
     );
 
     return new TextDecoder().decode(decrypted);
@@ -157,6 +155,11 @@ class Amakit {
 
   login = (doPrompt = true) => {
     let credentials = this.getCredentials();
+    // If stored credentials are not the plain key+id shape, drop and re-prompt
+    if (credentials && !(credentials.accessKeyId && credentials.secretAccessKey)) {
+      localStorage.removeItem("awsCredentials");
+      credentials = null;
+    }
     if (!credentials) {
       if (!doPrompt) {
         return Promise.reject("No credentials found");
@@ -182,39 +185,40 @@ class Amakit {
       });
     };
 
-    if (credentials.encoded && credentials.credentialsCiphertext) {
-      const stored = JSON.parse(localStorage.getItem("awsCredentials") || "null");
-      const defaultPassword = stored?.password || "";
-      const password =
-        doPrompt && typeof prompt === "function"
-          ? prompt("Password (to decrypt credentials):", defaultPassword)
-          : null;
-      if (!password) return Promise.reject("Password required for encoded credentials");
+    // TEMPORARILY DISABLED: encoded/password login — falling back to key+id
+    // if (credentials.encoded && credentials.credentialsCiphertext) {
+    //   const stored = JSON.parse(
+    //     localStorage.getItem("awsCredentials") || "null",
+    //   );
+    //   const defaultPassword = stored?.password || "";
+    //   const password =
+    //     doPrompt && typeof prompt === "function"
+    //       ? prompt("Password (to decrypt credentials):", defaultPassword)
+    //       : null;
+    //   if (!password)
+    //     return Promise.reject("Password required for encoded credentials");
+    //
+    //   return this._decryptSecret(
+    //     credentials.credentialsCiphertext,
+    //     credentials.salt,
+    //     credentials.iv,
+    //     password,
+    //   )
+    //     .then((json) => {
+    //       const { accessKeyId, secretAccessKey } = JSON.parse(json);
+    //       return applyAndVerify(accessKeyId, secretAccessKey).then((creds) => {
+    //         const toStore = { ...(stored || {}), ...credentials, password };
+    //         localStorage.setItem("awsCredentials", JSON.stringify(toStore));
+    //         return creds;
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       console.error("Decryption failed (wrong password?):", err);
+    //       return Promise.reject(err);
+    //     });
+    // }
 
-      return this._decryptSecret(
-        credentials.credentialsCiphertext,
-        credentials.salt,
-        credentials.iv,
-        password
-      )
-        .then((json) => {
-          const { accessKeyId, secretAccessKey } = JSON.parse(json);
-          return applyAndVerify(accessKeyId, secretAccessKey).then((creds) => {
-            const toStore = { ...(stored || {}), ...credentials, password };
-            localStorage.setItem("awsCredentials", JSON.stringify(toStore));
-            return creds;
-          });
-        })
-        .catch((err) => {
-          console.error("Decryption failed (wrong password?):", err);
-          return Promise.reject(err);
-        });
-    }
-
-    return applyAndVerify(
-      credentials.accessKeyId,
-      credentials.secretAccessKey
-    );
+    return applyAndVerify(credentials.accessKeyId, credentials.secretAccessKey);
   };
 
   getDraft = ({ id, name }) => {
@@ -260,10 +264,10 @@ class Amakit {
     let metadata = {};
     try {
       const metadataLine = lines.find((line) =>
-        line.trim().startsWith("/* metadata = ")
+        line.trim().startsWith("/* metadata = "),
       );
       metadata = JSON.parse(
-        this.getCommentValue(metadataLine).replace("metadata = ", "")
+        this.getCommentValue(metadataLine).replace("metadata = ", ""),
       );
     } catch (e) {
       console.error("Cannot parse metadata: ", e);
@@ -362,14 +366,13 @@ class Amakit {
     const id = draft.id || this.generateId();
     const name = draft.name || `Random ${Math.floor(Math.random() * 1000)}`;
     const metadata = {
-        ...metadataDefaults,
+      ...metadataDefaults,
       ...(draft.metadata || {}),
     };
-    const code = draft.code.replace(/^\/\* metadata.*$/m, '').trim();
-    const fullDraft =
-      btoa(
-        `/* ${name} */\n${code}\n/* metadata = ${JSON.stringify(metadata)}*/`
-      );
+    const code = draft.code.replace(/^\/\* metadata.*$/m, "").trim();
+    const fullDraft = btoa(
+      `/* ${name} */\n${code}\n/* metadata = ${JSON.stringify(metadata)}*/`,
+    );
 
     return {
       id,
