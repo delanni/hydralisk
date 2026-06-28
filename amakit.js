@@ -57,17 +57,17 @@ class Amakit {
   };
 
   getCredentials = () => {
-    const fromStorage = JSON.parse(
-      localStorage.getItem("awsCredentials") || "null",
-    );
-    const credentials =
-      (typeof window !== "undefined" && window.awsCredentialsEncoded) ||
-      fromStorage;
-    if (!credentials) return null;
-    if (credentials.accessKeyId && credentials.secretAccessKey)
-      return credentials;
-    if (credentials.encoded && credentials.credentialsCiphertext)
-      return credentials;
+    let fromStorage = null;
+    try {
+      fromStorage = JSON.parse(localStorage.getItem("awsCredentials") || "null");
+    } catch (err) {
+      console.error("Invalid awsCredentials in localStorage:", err);
+    }
+
+    if (fromStorage?.accessKeyId && fromStorage?.secretAccessKey) {
+      return fromStorage;
+    }
+
     return null;
   };
 
@@ -135,7 +135,7 @@ class Amakit {
     return new TextDecoder().decode(decrypted);
   };
 
-  saveCredentials = (name, accessKeyId, secretAccessKey) => {
+  saveCredentials = (name, accessKeyId, secretAccessKey, persist = true) => {
     let machineId =
       localStorage.getItem("machineId") ||
       prompt("What is the name of this machine?") ||
@@ -148,23 +148,20 @@ class Amakit {
       secretAccessKey || prompt("What is your AWS Secret Access Key?");
 
     const credentials = { name, machineId, accessKeyId, secretAccessKey };
-    localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+    if (persist) {
+      localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+    }
 
     return credentials;
   };
 
   login = (doPrompt = true) => {
     let credentials = this.getCredentials();
-    // If stored credentials are not the plain key+id shape, drop and re-prompt
-    if (credentials && !(credentials.accessKeyId && credentials.secretAccessKey)) {
-      localStorage.removeItem("awsCredentials");
-      credentials = null;
-    }
     if (!credentials) {
       if (!doPrompt) {
         return Promise.reject("No credentials found");
       }
-      credentials = this.saveCredentials();
+      credentials = this.saveCredentials(undefined, undefined, undefined, false);
     }
 
     const applyAndVerify = (accessKeyId, secretAccessKey) => {
@@ -174,49 +171,16 @@ class Amakit {
         this.AWS.config.credentials.get((err) => {
           if (err) {
             console.error("Error: ", err);
-            if (!credentials.encoded) localStorage.removeItem("awsCredentials");
             reject(err);
           } else {
             this.isAuthenticated = true;
             console.log("Logged in as: ", credentials.name);
+            localStorage.setItem("awsCredentials", JSON.stringify(credentials));
             resolve(credentials);
           }
         });
       });
     };
-
-    // TEMPORARILY DISABLED: encoded/password login — falling back to key+id
-    // if (credentials.encoded && credentials.credentialsCiphertext) {
-    //   const stored = JSON.parse(
-    //     localStorage.getItem("awsCredentials") || "null",
-    //   );
-    //   const defaultPassword = stored?.password || "";
-    //   const password =
-    //     doPrompt && typeof prompt === "function"
-    //       ? prompt("Password (to decrypt credentials):", defaultPassword)
-    //       : null;
-    //   if (!password)
-    //     return Promise.reject("Password required for encoded credentials");
-    //
-    //   return this._decryptSecret(
-    //     credentials.credentialsCiphertext,
-    //     credentials.salt,
-    //     credentials.iv,
-    //     password,
-    //   )
-    //     .then((json) => {
-    //       const { accessKeyId, secretAccessKey } = JSON.parse(json);
-    //       return applyAndVerify(accessKeyId, secretAccessKey).then((creds) => {
-    //         const toStore = { ...(stored || {}), ...credentials, password };
-    //         localStorage.setItem("awsCredentials", JSON.stringify(toStore));
-    //         return creds;
-    //       });
-    //     })
-    //     .catch((err) => {
-    //       console.error("Decryption failed (wrong password?):", err);
-    //       return Promise.reject(err);
-    //     });
-    // }
 
     return applyAndVerify(credentials.accessKeyId, credentials.secretAccessKey);
   };
