@@ -230,6 +230,25 @@ const beatPattern = (length, hits, map = (e) => e) => {
   return a.map(map);
 };
 
+/**
+ * Returns a function that calls `fn` only on the first invocation and caches
+ * the result. All subsequent calls return the cached value without calling `fn`
+ * again.
+ * @param {function} fn The function to call once
+ * @returns {function} A wrapper that invokes `fn` at most once
+ */
+function once(fn) {
+  let called = false;
+  let result;
+  return function (...args) {
+    if (!called) {
+      called = true;
+      result = fn.apply(this, args);
+    }
+    return result;
+  };
+}
+
 /** solid, but with #rrggbb color */
 function color(...args) {
   function hexToRgb(hex) {
