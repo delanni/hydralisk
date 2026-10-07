@@ -36,7 +36,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - [ ] **Mobile UI & Remote Playability Overlay**: a proper, fixed mobile interface with a dedicated performance/playability overlay. Designed to function both locally and remotely on secondary devices (message relaying protocol to be implemented later).
 - [ ] **three.js integration** (`three.objects.js` exists but isn't wired in).
 - [ ] **player.html as the main performance UI**.
-- [ ] **UI cleanup**: replace `prompt`/`alert`/`confirm` and the rudimentary buttons.
+- [ ] **UI cleanup & proper browser inputs**: replace raw `prompt()`, `alert()`, `confirm()`, and arbitrary text boxes (such as `gallery:import`'s `<textarea>`) with proper HTML browser controls (`<input type="file">` for opening local files/volumes, `<input type="range">` / `<input type="number">` for volume, tempo, and speed).
 - [ ] **Rebuild from real Hydra sources** to get away from the hacked bundle.
 - [ ] **Netlify deploys**: preview deploys from PRs plus production from `gh-pages`.
 
