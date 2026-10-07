@@ -52,7 +52,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 
 ## 6. Blockers, Gotchas & Known Issues
 
-- 2026-10-07 **MIDI handler clobbering:** `hydrakit.js` and `midi-mapping.js` both set `input.onmidimessage`, and whichever `requestMIDIAccess` resolves last wins. Likely midi-mapping wins, which leaves `cc[]`, `ccc`, `ccbind`, and `midi(n)` / `midi('bN')` stale. Neither layer re-attaches on hot-plug. *Fix:* use `addEventListener('midimessage')`, or have one dispatcher feed both layers. The developer now mostly uses the mapping plus `midi('A'..'D')`, so this has not been confirmed in practice. Older sketches using `cc[n]` or `midi(n)` may be silently affected.
+- 2026-10-08 **[RESOLVED] MIDI handler clobbering:** Refactored `modules/hydrakit.js` and `modules/midi-mapping.js` to use `input.addEventListener('midimessage', ...)` and `midiAccess.onstatechange` for hot-plugging. Both sketch helpers (`cc[]`, `midi()`) and action bindings run concurrently without overwriting each other.
 - 2026-10-07 **Automutate never swaps transforms from keys or MIDI:** `changeTransformChance = 1` unless `evt.metaKey`, and `Math.random() > 1` is never true. Only a Cmd-click on 💩 gives a 25% swap chance.
 - 2026-10-07 **Automutate interval is fixed at start.** Tap tempo during a run has no effect until it is re-triggered. (Although in practise, the beatsynced automation is used mostly, the time doesn't really matter.)
 - 2026-10-07 **Speed stuck at 0:** `Math.sign(0) = 0`, so slower/faster can't leave 0 (the MIDI speed bind can set 0). Also `getCurrentSpeedIdx` checks `undefined`, but `findIndex` returns `-1`.
@@ -70,6 +70,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 
 - 2026-10-07: `npm start` serves the site. `npm run build` rebuilds `modules.dist.js` after editing `modules/`. To find hack points in the bundle, search for event names or `BOOKMARK` (line numbers drift).
 - 2026-10-08: Explicit rule enforced: Never automatically commit or push code to git unless specifically requested by the user. Configured in project rule `.agents/AGENTS.md`.
-- 2026-10-08: Fixed `amakit.login()` bugs: added lazy `ensureAWS()` initialization for `window.AWS` & `docClient`, supported encrypted credentials password decryption prompt, and handled prompt cancellations gracefully without throwing `TypeError` when `accessKeyId`/`secretAccessKey` are null.
+- 2026-10-08: Modernized `modules/hydrakit.js`: encapsulated WebMIDI state in `MidiEngine` class, replaced `eval()` in `color()` helper, migrated tap tempo handler to `window.addEventListener('keydown')`, and updated all helpers to modern ES module exports.
+
 
 

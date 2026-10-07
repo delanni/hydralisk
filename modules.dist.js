@@ -1668,178 +1668,282 @@
     });
   }
 
-  var hydrakit = {};
+  /**
+   * Hydrakit — WebMIDI State Engine, Tap Tempo Module & Audio-Reactive Sketch Helpers
+   * Unified MIDI state management, rolling tap-tempo calculator, and sketch utilities for Hydralisk.
+   */
 
-  var hasRequiredHydrakit;
-  function requireHydrakit() {
-    if (hasRequiredHydrakit) return hydrakit;
-    hasRequiredHydrakit = 1;
-    // register WebMIDI
-    (alreadyInitialized => {
-      if (alreadyInitialized) {
-        console.log("Hydrakit already loaded");
-        return;
-      }
-      navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
-      function onMIDISuccess(midiAccess) {
-        console.log(midiAccess);
-        for (var input of midiAccess.inputs.values()) {
-          input.onmidimessage = getMIDIMessage;
-          input.onstatechange = e => {
-            console.log(`${e.target.name}'s connection is ${e.target.connection}`);
-          };
-        }
-      }
-      function onMIDIFailure() {
-        console.log("Could not access your MIDI devices.");
-      }
+  class MidiEngine {
+    constructor() {
+      this.cc = new Array(128).fill(0.5);
+      this.ccc = Array.from({
+        length: 16
+      }, () => new Array(128).fill(0.5));
+      this.ccbind = [];
+      this.isInitialized = false;
 
-      //create an array to hold our cc values and init to a normalized value
-      window.cc = Array(128).fill(0.5);
-      window.ccc = Array(16).fill(1).map(() => Array(128).fill(0.5));
-      window.ccbind = [];
-      function getMIDIMessage(midiMessage) {
-        const [kind, ccIndex, value] = midiMessage.data;
-        const channel = kind & 0b00001111;
-        var valNormalized = (value > 64 ? value + 1 : value) / 128.0;
-        if (ccIndex !== undefined) {
-          console.log("Midi received on cc#" + ccIndex + " value:" + valNormalized + ", channel: " + channel); // uncomment to monitor incoming Midi
-          cc[ccIndex] = valNormalized;
-          ccc[channel][ccIndex] = valNormalized;
-          if (!ccbind.includes(ccIndex)) {
-            console.log(`${ccIndex} bound to b${ccbind.length}`);
-            ccbind.push(ccIndex);
-          }
-        }
+      // Expose globals for sketch backward compatibility
+      if (typeof window !== "undefined") {
+        window.cc = this.cc;
+        window.ccc = this.ccc;
+        window.ccbind = this.ccbind;
       }
-      var kp = [];
-      window.onkeypress = a => {
-        "Space" == a.code && a.altKey && (a.preventDefault(), 4 === kp.push(a.timeStamp) && (window.bpm = Math.floor(6e4 / ((kp[3] - kp[0]) / 3)), kp.length = 0));
-      };
-      console.log("Hydrakit loaded");
-      window.hydrakitReady = true;
-    })(window.hydrakitReady);
-    function midi(ccIndex, options = {}) {
-      const {
-        min = 0,
-        max = 1,
-        channel,
-        transform
-      } = options;
-      return () => {
-        let localIndex = ccIndex;
-        if (typeof ccIndex === "string" && ccIndex.match(/^[ABCD]$/)) {
-          // A,B,C,D should be bindable values
-          // try to fetch them from the global cc['A'] / cc['B'] / cc['C'] / cc['D']
-          // tries to find a number for cc based on A,B,C,D
-          const localValue = window.cc[ccIndex];
-          if (localValue === undefined) return min;
-          const value = localValue * (max - min) + min;
-          if (transform) {
-            return transform(value);
-          } else {
-            return value;
-          }
-        } else if (typeof ccIndex === "string" && ccIndex.match(/b\d/)) {
-          // tries to find a number for cc
-          localIndex = ccbind[Number(ccIndex[1])];
-          if (localIndex === undefined) return min;
-        } else ;
-        const ccArr = channel !== undefined ? ccc[channel] : cc;
-        const value = ccArr[localIndex] * (max - min) + min;
-        if (transform) {
-          return transform(value);
-        } else {
-          return value;
+    }
+    init() {
+      if (this.isInitialized) return;
+      this.isInitialized = true;
+      if (typeof navigator !== "undefined" && navigator.requestMIDIAccess) {
+        navigator.requestMIDIAccess().then(access => this.handleMidiSuccess(access)).catch(err => console.warn("[Hydrakit] Could not access MIDI devices:", err));
+      }
+    }
+    handleMidiSuccess(midiAccess) {
+      console.log("[Hydrakit] WebMIDI access granted");
+      for (const input of midiAccess.inputs.values()) {
+        this.attachInput(input);
+      }
+      midiAccess.onstatechange = e => {
+        if (e.port && e.port.type === "input" && e.port.state === "connected") {
+          console.log(`[Hydrakit] Hot-plugged MIDI device: ${e.port.name}`);
+          this.attachInput(e.port);
         }
       };
     }
-    const saw = ({
-      min = 0,
-      max = 1,
-      x = 1,
-      t
-    } = {}) => ({
-      time
-    }) => {
-      const spb = 60 / bpm * x;
-      const p = time % spb / spb * (max - min) + min;
-      if (t) {
-        return t(p);
-      } else {
-        return p;
+    attachInput(input) {
+      if (!input) return;
+      input.removeEventListener("midimessage", this.onMidiMessage);
+      input.addEventListener("midimessage", this.onMidiMessage);
+    }
+    onMidiMessage = event => {
+      if (!event || !event.data) return;
+      const [kind, ccIndex, rawValue] = event.data;
+      if (ccIndex === undefined) return;
+      const channel = kind & 0b00001111;
+      const normalizedValue = (rawValue > 64 ? rawValue + 1 : rawValue) / 128.0;
+      this.cc[ccIndex] = normalizedValue;
+      this.ccc[channel][ccIndex] = normalizedValue;
+      if (!this.ccbind.includes(ccIndex)) {
+        console.log(`[Hydrakit] CC #${ccIndex} bound to b${this.ccbind.length}`);
+        this.ccbind.push(ccIndex);
       }
     };
-    function createLFO({
-      frequency = 1,
-      // Frequency in Hz
-      amplitude = 1,
-      // Amplitude of the oscillation
-      phase = 0,
-      // Phase offset in radians
-      waveform = "sine",
-      // 'sine', 'square', 'sawtooth', 'triangle'
-      bpm = undefined,
-      trans = undefined,
-      t = undefined
+    getValue(ccIndex, {
+      min = 0,
+      max = 1,
+      channel,
+      transform
     } = {}) {
-      if (bpm) {
-        frequency = bpm / 60 * frequency;
+      let localIndex = ccIndex;
+      if (typeof ccIndex === "string") {
+        if (/^[ABCD]$/.test(ccIndex)) {
+          const globalVal = window.cc ? window.cc[ccIndex] : undefined;
+          if (globalVal === undefined) return min;
+          const value = globalVal * (max - min) + min;
+          return transform ? transform(value) : value;
+        }
+        if (/^b\d+$/.test(ccIndex)) {
+          const bindIndex = parseInt(ccIndex.slice(1), 10);
+          localIndex = this.ccbind[bindIndex];
+          if (localIndex === undefined) return min;
+        }
       }
-      const omega = 2 * Math.PI * frequency; // Angular frequency
+      if (localIndex === undefined || localIndex === null) return min;
+      const ccArr = channel !== undefined ? this.ccc[channel] : this.cc;
+      const rawVal = ccArr[localIndex] !== undefined ? ccArr[localIndex] : 0.5;
+      const value = rawVal * (max - min) + min;
+      return transform ? transform(value) : value;
+    }
+  }
+  const midiEngine = new MidiEngine();
+  midiEngine.init();
 
-      return ({
-        time
-      }) => {
-        let theta = omega * time + phase; // Phase of the oscillator at time t
-        let value;
-        switch (waveform) {
-          case "sine":
-            value = Math.sin(theta);
-            break;
-          case "square":
-            value = Math.sign(Math.sin(theta));
-            break;
-          case "sawtooth":
-            value = 2 * (theta / (2 * Math.PI) - Math.floor(1 / 2 + theta / (2 * Math.PI)));
-            break;
-          case "triangle":
-            value = 2 * Math.abs(2 * (theta / (2 * Math.PI) - Math.floor(1 / 2 + theta / (2 * Math.PI)))) - 1;
-            break;
-          case "random":
-            value = Math.random() * 2 - 1; // Generates a random value between -1 and 1
-            break;
-          default:
-            throw new Error("Unsupported waveform");
+  // --- Tap Tempo Module ---
+
+  /**
+   * TapTempo — Rolling average BPM calculator & tap manager
+   */
+  class TapTempo {
+    constructor({
+      maxTaps = 16,
+      idleTimeoutMs = 5000,
+      minTaps = 4
+    } = {}) {
+      this.taps = [];
+      this.maxTaps = maxTaps;
+      this.idleTimeoutMs = idleTimeoutMs;
+      this.minTaps = minTaps;
+      this.resetTimer = null;
+      this.currentBpm = 120;
+      this.appContext = null;
+    }
+    setAppContext(app) {
+      this.appContext = app;
+    }
+    tap = (timestamp = Date.now()) => {
+      // Reset 5s idle timer
+      if (this.resetTimer) {
+        clearTimeout(this.resetTimer);
+      }
+      this.resetTimer = setTimeout(() => {
+        this.reset();
+      }, this.idleTimeoutMs);
+      this.taps.push(timestamp);
+
+      // Keep rolling history up to maxTaps
+      if (this.taps.length > this.maxTaps) {
+        this.taps.shift();
+      }
+
+      // Calculate rolling average BPM ONLY on every 4th tap (4, 8, 12, 16...)
+      if (this.taps.length >= 4 && this.taps.length % 4 === 0) {
+        const first = this.taps[0];
+        const last = this.taps[this.taps.length - 1];
+        const count = this.taps.length - 1;
+        const totalIntervalMs = last - first;
+        if (totalIntervalMs > 0 && count > 0) {
+          const avgIntervalMs = totalIntervalMs / count;
+          const calculatedBpm = Math.round(60000 / avgIntervalMs);
+          if (calculatedBpm >= 30 && calculatedBpm <= 300) {
+            this.currentBpm = calculatedBpm;
+            if (typeof window !== "undefined") {
+              window.bpm = calculatedBpm;
+            }
+            if (this.appContext) {
+              this.appContext.bpm = calculatedBpm;
+              this.appContext.emit("bpm:change", calculatedBpm);
+            } else if (typeof window !== "undefined" && window.xemitter) {
+              window.xemitter.emit("taptempo", {
+                bpm: calculatedBpm
+              });
+            }
+          }
         }
-        if (trans) {
-          return trans(value * amplitude);
-        }
-        return value * amplitude;
-      };
-    }
+      }
+      return this.currentBpm;
+    };
+    reset = () => {
+      this.taps = [];
+      if (this.resetTimer) {
+        clearTimeout(this.resetTimer);
+        this.resetTimer = null;
+      }
+    };
+    getBpm = () => {
+      return this.currentBpm;
+    };
+  }
+  const tapTempo = new TapTempo();
+  if (typeof window !== "undefined") {
+    window.tapTempo = tapTempo;
+    window.addEventListener("keydown", e => {
+      if (e.code === "Space" && e.altKey) {
+        e.preventDefault();
+        tapTempo.tap(e.timeStamp);
+      }
+    });
+  }
 
-    /**
-     * @param {number} from
-     * @param {number} to
-     * @returns random number between from and to
-     */
-    function randInt(from, to) {
-      return Math.floor(Math.random() * (to - from + 1) + from);
-    }
+  // --- Sketch Helper Functions ---
 
-    /**
-     * Balanced random between -0.5 and 0.5
-     * @returns random number between -0.5 and 0.5
-     */
-    function rx() {
-      return Math.random() - 0.5;
+  /**
+   * MIDI value getter for sketches
+   * Usage: midi(3, {min: 10, max: 60}), midi('b0'), midi('A')
+   */
+  function midi(ccIndex, options = {}) {
+    return () => midiEngine.getValue(ccIndex, options);
+  }
+
+  /**
+   * BPM-synced sawtooth ramp for Hydra arrays or properties
+   */
+  const saw = ({
+    min = 0,
+    max = 1,
+    x = 1,
+    t
+  } = {}) => ({
+    time
+  }) => {
+    const currentBpm = typeof window !== "undefined" && window.bpm ? window.bpm : 120;
+    const spb = 60 / currentBpm * x;
+    const p = time % spb / spb * (max - min) + min;
+    return t ? t(p) : p;
+  };
+
+  /**
+   * Low Frequency Oscillator (LFO) builder for Hydra params
+   */
+  function createLFO({
+    frequency = 1,
+    amplitude = 1,
+    phase = 0,
+    waveform = "sine",
+    bpm = undefined,
+    trans = undefined,
+    t = undefined
+  } = {}) {
+    const transform = trans || t;
+    if (bpm) {
+      frequency = bpm / 60 * frequency;
     }
-    const f = (...args) => new Function("return " + String.raw(...args));
-    const _xxxStorage = {};
-    const xxx = target => {
-      const callLine = new Error().stack.split("\n")[2];
-      const key = callLine.match(/<anonymous>:(\d+:\d+)/)[1];
+    const omega = 2 * Math.PI * frequency;
+    return ({
+      time
+    }) => {
+      const theta = omega * time + phase;
+      let value;
+      switch (waveform) {
+        case "sine":
+          value = Math.sin(theta);
+          break;
+        case "square":
+          value = Math.sign(Math.sin(theta));
+          break;
+        case "sawtooth":
+          value = 2 * (theta / (2 * Math.PI) - Math.floor(0.5 + theta / (2 * Math.PI)));
+          break;
+        case "triangle":
+          value = 2 * Math.abs(2 * (theta / (2 * Math.PI) - Math.floor(0.5 + theta / (2 * Math.PI)))) - 1;
+          break;
+        case "random":
+          value = Math.random() * 2 - 1;
+          break;
+        default:
+          throw new Error(`[Hydrakit] Unsupported LFO waveform: ${waveform}`);
+      }
+      const scaled = value * amplitude;
+      return transform ? transform(scaled) : scaled;
+    };
+  }
+
+  /**
+   * Returns random integer in range [from, to]
+   */
+  function randInt(from, to) {
+    return Math.floor(Math.random() * (to - from + 1) + from);
+  }
+
+  /**
+   * Balanced random float in range [-0.5, 0.5]
+   */
+  function rx() {
+    return Math.random() - 0.5;
+  }
+
+  /**
+   * Template string function evaluator: f`x => x * 2`
+   */
+  const f = (...args) => new Function("return " + String.raw(...args));
+
+  /**
+   * Call-site keyed target value smoothing/easing across frame re-evaluations
+   */
+  const _xxxStorage = {};
+  const xxx = target => {
+    try {
+      const stackLines = new Error().stack.split("\n");
+      const callLine = stackLines[2] || stackLines[1] || "";
+      const match = callLine.match(/<anonymous>:(\d+:\d+)/) || callLine.match(/:(\d+:\d+)/);
+      const key = match ? match[1] : "default";
       if (!_xxxStorage[key]) {
         _xxxStorage[key] = target;
       }
@@ -1853,97 +1957,108 @@
         }
         return current;
       };
+    } catch (e) {
+      return () => target;
+    }
+  };
+
+  /**
+   * Euclidean-style beat pattern generator
+   */
+  const beatPattern = (length, hits, map = e => e) => {
+    hits = Math.floor(Math.min(length, hits));
+    const arr = new Array(Math.floor(length)).fill(0);
+    while (hits > 0) {
+      const r = Math.floor(Math.random() * length);
+      if (!arr[r]) {
+        arr[r] = 1;
+        hits--;
+      }
+    }
+    return arr.map(map);
+  };
+
+  /**
+   * Single-invocation function wrapper
+   */
+  function once(fn) {
+    let called = false;
+    let result;
+    return function (...args) {
+      if (!called) {
+        called = true;
+        result = fn.apply(this, args);
+      }
+      return result;
     };
-
-    /**
-     * Generate an array of length with a count of hits with values of 1.
-     * @param {number} length The length of the array
-     * @param {number} hits This amount of hits will be placed in the array
-     * @param {function} map Transform the value of the array
-     * @returns {Array} The array with the hits
-     */
-    const beatPattern = (length, hits, map = e => e) => {
-      hits = Math.floor(Math.min(length, hits));
-      const a = new Array(Math.floor(length)).fill(0);
-      while (Math.floor(hits) > 0) {
-        const r = Math.floor(Math.random() * length);
-        if (a[r]) {
-          continue;
-        } else {
-          a[r] = 1;
-          hits--;
-        }
-      }
-      return a.map(map);
-    };
-
-    /**
-     * Returns a function that calls `fn` only on the first invocation and caches
-     * the result. All subsequent calls return the cached value without calling `fn`
-     * again.
-     * @param {function} fn The function to call once
-     * @returns {function} A wrapper that invokes `fn` at most once
-     */
-    function once(fn) {
-      let called = false;
-      let result;
-      return function (...args) {
-        if (!called) {
-          called = true;
-          result = fn.apply(this, args);
-        }
-        return result;
-      };
-    }
-
-    /** solid, but with #rrggbb color */
-    function color(...args) {
-      function hexToRgb(hex) {
-        if (hex[0] === "#") {
-          hex = hex.slice(1);
-        }
-        const r = (parseInt(`${hex[0]}${hex[1]}`, 16) / 255).toPrecision(4);
-        const g = (parseInt(`${hex[2]}${hex[3]}`, 16) / 255).toPrecision(4);
-        const b = (parseInt(`${hex[4]}${hex[5]}`, 16) / 255).toPrecision(4);
-        return {
-          r,
-          g,
-          b
-        };
-      }
-      if (args.length === 1) {
-        const {
-          r,
-          g,
-          b
-        } = hexToRgb(args[0]);
-        return eval(`solid(${r},${g},${b})`);
-      } else {
-        return eval(`solid(${args[0]},${args[1]},${args[2]})`);
-      }
-    }
-    if (typeof window !== "undefined" && window.HydraliskPlugins) {
-      window.HydraliskPlugins.register({
-        id: "hydrakit",
-        name: "Hydrakit Helpers & WebMIDI CC",
-        init(app) {
-          app.expose("midi", midi);
-          app.expose("saw", saw);
-          app.expose("createLFO", createLFO);
-          app.expose("randInt", randInt);
-          app.expose("rx", rx);
-          app.expose("f", f);
-          app.expose("xxx", xxx);
-          app.expose("beatPattern", beatPattern);
-          app.expose("once", once);
-          app.expose("color", color);
-        }
-      });
-    }
-    return hydrakit;
   }
 
-  requireHydrakit();
+  /**
+   * Hex or RGB color solid generator without eval
+   */
+  function color(...args) {
+    function hexToRgb(hex) {
+      if (hex.startsWith("#")) hex = hex.slice(1);
+      const r = (parseInt(hex.slice(0, 2), 16) / 255).toPrecision(4);
+      const g = (parseInt(hex.slice(2, 4), 16) / 255).toPrecision(4);
+      const b = (parseInt(hex.slice(4, 6), 16) / 255).toPrecision(4);
+      return {
+        r: Number(r),
+        g: Number(g),
+        b: Number(b)
+      };
+    }
+    let r = 0,
+      g = 0,
+      b = 0;
+    if (args.length === 1 && typeof args[0] === "string") {
+      const rgb = hexToRgb(args[0]);
+      r = rgb.r;
+      g = rgb.g;
+      b = rgb.b;
+    } else {
+      r = Number(args[0]) || 0;
+      g = Number(args[1]) || 0;
+      b = Number(args[2]) || 0;
+    }
+    if (typeof window !== "undefined" && typeof window.solid === "function") {
+      return window.solid(r, g, b);
+    }
+    return ({
+      time
+    }) => {
+      if (typeof window !== "undefined" && typeof window.solid === "function") {
+        return window.solid(r, g, b);
+      }
+    };
+  }
+
+  // --- Plugin System Registration ---
+  if (typeof window !== "undefined" && window.HydraliskPlugins) {
+    window.HydraliskPlugins.register({
+      id: "hydrakit",
+      name: "Hydrakit Helpers & WebMIDI CC Engine",
+      init(app) {
+        tapTempo.setAppContext(app);
+        if (app.on) {
+          app.on("taptempo", () => tapTempo.tap());
+          app.on("bpm:taptempo", () => tapTempo.tap());
+        }
+        app.expose("midiEngine", midiEngine);
+        app.expose("tapTempo", tapTempo);
+        app.expose("midi", midi);
+        app.expose("saw", saw);
+        app.expose("createLFO", createLFO);
+        app.expose("randInt", randInt);
+        app.expose("rx", rx);
+        app.expose("f", f);
+        app.expose("xxx", xxx);
+        app.expose("beatPattern", beatPattern);
+        app.expose("once", once);
+        app.expose("color", color);
+      }
+    });
+  }
 
   var midiMapping = {};
 
@@ -2206,14 +2321,25 @@
           }
         };
       }
+      function attachInput(input, handler) {
+        if (!input) return;
+        input.removeEventListener("midimessage", handler);
+        input.addEventListener("midimessage", handler);
+      }
       function setupMIDIHandler() {
-        if (!navigator.requestMIDIAccess) return;
+        if (typeof navigator === "undefined" || !navigator.requestMIDIAccess) return;
         navigator.requestMIDIAccess().then(function (midiAccess) {
           const handler = createMIDIHandler();
           for (const input of midiAccess.inputs.values()) {
-            input.onmidimessage = handler;
+            attachInput(input, handler);
           }
-          console.log("MIDI Mapping: handler installed");
+          midiAccess.onstatechange = e => {
+            if (e.port && e.port.type === "input" && e.port.state === "connected") {
+              console.log(`[midi-mapping] Hot-plugged MIDI device: ${e.port.name}`);
+              attachInput(e.port, handler);
+            }
+          };
+          console.log("MIDI Mapping: handler installed via addEventListener");
         }, function () {
           console.warn("MIDI Mapping: could not access MIDI devices");
         });

@@ -212,8 +212,7 @@ Keyboard dispatch: [editor.js extraKeys](file:///Users/web/Git/hydralisk/bundle.
 
 ### 6.3 Tempo and speed
 
-- **Tap tempo** (`taptempo` event): needs at least 4 taps, then gives a rolling BPM over the last 4 taps. Taps reset after 5 s idle. It writes `window.bpm`.
-- Legacy `Alt+Space` tap in hydrakit: 4 taps, then reset.
+- **Tap tempo (`TapTempo` module in `hydrakit`)**: updates BPM strictly on every 4th tap (`taps.length % 4 === 0`), computing a rolling average BPM across an ongoing buffer of tap timestamps (up to 16 taps). Automatically clears unfinished beats after 5 seconds of idle inactivity. Triggers on `Alt+Space`, MIDI `taptempo` actions, and programmatic `.tap()` calls. Emits `bpm:change` and updates `window.bpm`.
 - **Speed dial:** steps through `[0.01, 0.05, 0.1, 0.125, 0.25, 1/3, 0.5, 1, 2, 3, 4, 8, 10, 20, 100]` and keeps the sign. Reverse multiplies by -1.
 - MIDI `speed` CC bind: `2^(2v) − 1`, so 0 → 0, 0.5 → 1, 1 → 3. The comment in the code says 8, which is wrong.
 - hydra-synth integrates `time += dt * speed`, so negative speed runs time backwards.
@@ -263,7 +262,7 @@ There are two independent layers:
    (Before 2026-03 there were OP-Z color aliases, `midi('green')`, using `{green:0, blue:2, yellow:3, red:4}`. That code path is now an empty branch.)
 2. **midi-mapping.js (app control)** offers MIDI-learn: click **Assign**, then move a control (15 s timeout). Mappings are stored in `localStorage["hydra-midi-mapping"]` as `{actionId: {type:'cc'|'note', channel, control|note}}`. Trigger actions fire on CC > 0.5 or on Note On. Bind actions (`speed`, `midiA..D`) receive the value continuously. One control can drive several actions.
 
-⚠️ Both layers set `input.onmidimessage`, and the last assignment wins. See the notebook.
+Both layers register their listeners using `input.addEventListener('midimessage', ...)` and listen to `midiAccess.onstatechange` for hot-plugging, so both sketch helpers (`hydrakit`) and UI action bindings (`midi-mapping`) receive all incoming MIDI messages concurrently.
 
 ### 6.6 Sketch helper library ([hydrakit.js](file:///Users/web/Git/hydralisk/hydrakit.js))
 

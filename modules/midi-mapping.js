@@ -242,19 +242,31 @@
     };
   }
 
+  function attachInput(input, handler) {
+    if (!input) return;
+    input.removeEventListener("midimessage", handler);
+    input.addEventListener("midimessage", handler);
+  }
+
   function setupMIDIHandler() {
-    if (!navigator.requestMIDIAccess) return;
+    if (typeof navigator === "undefined" || !navigator.requestMIDIAccess) return;
     navigator.requestMIDIAccess().then(
       function (midiAccess) {
         const handler = createMIDIHandler();
         for (const input of midiAccess.inputs.values()) {
-          input.onmidimessage = handler;
+          attachInput(input, handler);
         }
-        console.log("MIDI Mapping: handler installed");
+        midiAccess.onstatechange = (e) => {
+          if (e.port && e.port.type === "input" && e.port.state === "connected") {
+            console.log(`[midi-mapping] Hot-plugged MIDI device: ${e.port.name}`);
+            attachInput(e.port, handler);
+          }
+        };
+        console.log("MIDI Mapping: handler installed via addEventListener");
       },
       function () {
         console.warn("MIDI Mapping: could not access MIDI devices");
-      },
+      }
     );
   }
 
