@@ -28,7 +28,7 @@
     .map(() => Array(128).fill(0.5));
   window.ccbind = [];
 
-  getMIDIMessage = function (midiMessage) {
+  function getMIDIMessage(midiMessage) {
     const [kind, ccIndex, value] = midiMessage.data;
     const channel = kind & 0b00001111;
     var valNormalized = (value > 64 ? value + 1 : value) / 128.0;
@@ -267,3 +267,23 @@ function color(...args) {
     return eval(`solid(${args[0]},${args[1]},${args[2]})`);
   }
 }
+
+if (typeof window !== "undefined" && window.HydraliskPlugins) {
+  window.HydraliskPlugins.register({
+    id: "hydrakit",
+    name: "Hydrakit Helpers & WebMIDI CC",
+    init(app) {
+      app.expose("midi", midi);
+      app.expose("saw", saw);
+      app.expose("createLFO", createLFO);
+      app.expose("randInt", randInt);
+      app.expose("rx", rx);
+      app.expose("f", f);
+      app.expose("xxx", xxx);
+      app.expose("beatPattern", beatPattern);
+      app.expose("once", once);
+      app.expose("color", color);
+    },
+  });
+}
+

@@ -397,3 +397,17 @@ window.initializeConvolutions = () => {
     convolutionKernels.forEach(_hydraScope.setConvolutionFunction);
   }
 };
+
+if (typeof window !== "undefined" && window.HydraliskPlugins) {
+  window.HydraliskPlugins.register({
+    id: "convolutions",
+    name: "GLSL Convolution Kernels",
+    onHydraReady(hydra, app) {
+      if (typeof window.initializeConvolutions === "function" && !window.initializeConvolutions.done) {
+        window.initializeConvolutions();
+        window.initializeConvolutions.done = true;
+      }
+    },
+  });
+}
+

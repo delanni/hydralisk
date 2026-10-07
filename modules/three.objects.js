@@ -56,8 +56,30 @@ window.threeObjects = {
 };
 
 // 'update' is a reserved function that will be run every time the main hydra rendering context is updated
-update = () => {
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-  renderer.render(scene, camera);
+window.update = () => {
+  if (typeof cube !== "undefined" && typeof renderer !== "undefined") {
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+    renderer.render(scene, camera);
+  }
 };
+
+if (typeof window !== "undefined" && window.HydraliskPlugins) {
+  window.HydraliskPlugins.register({
+    id: "three-objects",
+    name: "Three.js Objects Helper",
+    init(app) {
+      app.expose("threeObjects", window.threeObjects);
+    },
+    onHydraReady(hydra, app) {
+      if (window.THREE && window.threeObjects && typeof window.threeObjects.init === "function") {
+        try {
+          window.threeObjects.init();
+        } catch (e) {
+          console.warn("[three-objects] Could not auto-init canvas:", e.message);
+        }
+      }
+    },
+  });
+}
+

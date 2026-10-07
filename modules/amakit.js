@@ -19,9 +19,15 @@ if (typeof window !== "undefined") {
 const IV_LEN = 12;
 const AUTH_TAG_LEN = 16;
 
-const userName = localStorage.getItem("awsCredentials")
-  ? JSON.parse(localStorage.getItem("awsCredentials")).name
-  : "Unknown";
+const userName = (() => {
+  try {
+    return localStorage.getItem("awsCredentials")
+      ? JSON.parse(localStorage.getItem("awsCredentials")).name
+      : "Unknown";
+  } catch (e) {
+    return "Unknown";
+  }
+})();
 
 const metadataDefaults = {
   author: userName,
@@ -36,20 +42,28 @@ class Amakit {
 
   constructor() {
     this.table = "hydralisk-drafts";
-    this.AWS = window.AWS;
-    if (this.AWS) {
+    this.ensureAWS();
+  }
+
+  ensureAWS = () => {
+    if (!this.AWS && typeof window !== "undefined" && window.AWS) {
+      this.AWS = window.AWS;
+    }
+    if (this.AWS && !this.docClient) {
       this.AWS.config.update({ region: "eu-west-1" });
       this.docClient = new this.AWS.DynamoDB.DocumentClient({
         apiVersion: "2012-08-10",
         region: "eu-west-1",
       });
     }
-  }
+    return !!(this.AWS && this.docClient);
+  };
 
   loadDrafts = async () => {
+    this.ensureAWS();
     try {
       const drafts = await this.getAllDrafts();
-      this.draftCache = drafts;
+      this.draftCache = drafts || [];
       return drafts;
     } catch (err) {
       console.error("Error loading drafts: ", err);
@@ -147,7 +161,11 @@ class Amakit {
     secretAccessKey =
       secretAccessKey || prompt("What is your AWS Secret Access Key?");
 
-    const credentials = { name, machineId, accessKeyId, secretAccessKey };
+    if (!accessKeyId || !secretAccessKey) {
+      return null;
+    }
+
+    const credentials = { name: name || "User", machineId, accessKeyId, secretAccessKey };
     if (persist) {
       localStorage.setItem("awsCredentials", JSON.stringify(credentials));
     }
@@ -155,37 +173,94 @@ class Amakit {
     return credentials;
   };
 
-  login = (doPrompt = true) => {
+  login = async (doPrompt = true) => {
+    this.ensureAWS();
+    if (!this.AWS) {
+      return Promise.reject("AWS SDK (window.AWS) is not loaded.");
+    }
+
     let credentials = this.getCredentials();
+
+    // Check for encoded credentials (encrypted blob in storage or window)
+    const storedBlob = (() => {
+      try {
+        const parsed = JSON.parse(localStorage.getItem("awsCredentials") || "null");
+        if (parsed?.credentialsCiphertext) return parsed;
+      } catch (e) {}
+      return (typeof window !== "undefined" && window.awsCredentialsEncoded?.credentialsCiphertext)
+        ? window.awsCredentialsEncoded
+        : null;
+    })();
+
+    if (!credentials && storedBlob) {
+      if (!doPrompt) {
+        return Promise.reject("No plain credentials found. Decryption password required.");
+      }
+      const pwd = prompt("Enter password for AWS credentials:");
+      if (!pwd) {
+        return Promise.reject("Login cancelled: no password provided.");
+      }
+      try {
+        const decryptedStr = await this._decryptSecret(
+          storedBlob.credentialsCiphertext,
+          storedBlob.salt,
+          storedBlob.iv,
+          pwd
+        );
+        const keys = JSON.parse(decryptedStr);
+        credentials = {
+          name: storedBlob.name || "User",
+          machineId: storedBlob.machineId || "unknown",
+          accessKeyId: keys.accessKeyId,
+          secretAccessKey: keys.secretAccessKey,
+        };
+      } catch (err) {
+        console.error("Decryption error:", err);
+        return Promise.reject("Invalid password or decryption failed.");
+      }
+    }
+
     if (!credentials) {
       if (!doPrompt) {
-        return Promise.reject("No credentials found");
+        return Promise.reject("No credentials found.");
       }
       credentials = this.saveCredentials(undefined, undefined, undefined, false);
     }
 
-    const applyAndVerify = (accessKeyId, secretAccessKey) => {
-      this.AWS.config.update({ accessKeyId, secretAccessKey });
-      this.docClient.configure({ credentials: this.AWS.config.credentials });
-      return new Promise((resolve, reject) => {
-        this.AWS.config.credentials.get((err) => {
-          if (err) {
-            console.error("Error: ", err);
-            reject(err);
-          } else {
-            this.isAuthenticated = true;
-            console.log("Logged in as: ", credentials.name);
-            localStorage.setItem("awsCredentials", JSON.stringify(credentials));
-            resolve(credentials);
-          }
-        });
-      });
-    };
+    if (!credentials || !credentials.accessKeyId || !credentials.secretAccessKey) {
+      return Promise.reject("Login cancelled or invalid AWS credentials provided.");
+    }
 
-    return applyAndVerify(credentials.accessKeyId, credentials.secretAccessKey);
+    this.AWS.config.update({
+      accessKeyId: credentials.accessKeyId,
+      secretAccessKey: credentials.secretAccessKey,
+      region: "eu-west-1"
+    });
+
+    if (this.docClient && this.AWS.config.credentials) {
+      this.docClient.configure({ credentials: this.AWS.config.credentials });
+    }
+
+    return new Promise((resolve, reject) => {
+      if (!this.AWS.config.credentials) {
+        return reject(new Error("Failed to initialize AWS credentials."));
+      }
+      this.AWS.config.credentials.get((err) => {
+        if (err) {
+          console.error("AWS authentication error:", err);
+          reject(err);
+        } else {
+          this.isAuthenticated = true;
+          console.log("Logged in as:", credentials.name);
+          localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+          resolve(credentials);
+        }
+      });
+    });
   };
 
   getDraft = ({ id, name }) => {
+    this.ensureAWS();
     const params = {
       TableName: this.table,
       Key: id ? { id } : { name },
@@ -202,6 +277,7 @@ class Amakit {
   };
 
   getAllDrafts = () => {
+    this.ensureAWS();
     const params = { TableName: this.table };
     return new Promise((resolve, reject) => {
       this.docClient.scan(params, (err, data) => {
@@ -249,6 +325,7 @@ class Amakit {
   };
 
   addDraft = (draftOrString) => {
+    this.ensureAWS();
     let draft = null;
 
     if (typeof draftOrString === "string") {
@@ -280,6 +357,7 @@ class Amakit {
   };
 
   uploadDraftObj = (draft) => {
+    this.ensureAWS();
     const params = {
       TableName: this.table,
       Item: draft,
@@ -297,6 +375,7 @@ class Amakit {
 
   // Drop by id or name
   dropDraft = ({ id, name }) => {
+    this.ensureAWS();
     const params = {
       TableName: this.table,
       Key: id ? { id } : { name },
@@ -349,3 +428,13 @@ class Amakit {
 }
 
 window.amakit = new Amakit();
+
+if (typeof window !== "undefined" && window.HydraliskPlugins) {
+  window.HydraliskPlugins.register({
+    id: "amakit",
+    name: "Amazon DynamoDB Draft Storage",
+    init(app) {
+      app.expose("amakit", window.amakit);
+    },
+  });
+}

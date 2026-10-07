@@ -69,3 +69,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 ## 7. Developer Notes, Command Executions & Feedback
 
 - 2026-10-07: `npm start` serves the site. `npm run build` rebuilds `modules.dist.js` after editing `modules/`. To find hack points in the bundle, search for event names or `BOOKMARK` (line numbers drift).
+- 2026-10-08: Explicit rule enforced: Never automatically commit or push code to git unless specifically requested by the user. Configured in project rule `.agents/AGENTS.md`.
+- 2026-10-08: Fixed `amakit.login()` bugs: added lazy `ensureAWS()` initialization for `window.AWS` & `docClient`, supported encrypted credentials password decryption prompt, and handled prompt cancellations gracefully without throwing `TypeError` when `accessKeyId`/`secretAccessKey` are null.
+
+

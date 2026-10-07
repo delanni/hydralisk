@@ -82,9 +82,9 @@ async function startExperience() {
       window.addEventListener('resize', resizeCanvas);
 
       // Let's hide the canvas visualizer that hydra-synth creates inside document.body by default if any
-      const hydraAudioCanvas = document.querySelector('body > canvas:not(#hydra-canvas)');
-      if (hydraAudioCanvas) {
-        hydraAudioCanvas.id = 'audio-canvas';
+      if (window.HydraliskPlugins) {
+        window.HydraliskPlugins.init({ hydra: hydraInstance });
+        window.HydraliskPlugins.onHydraReady(hydraInstance);
       }
     } else {
       throw new Error('Hydra player engine library not loaded. Check CDN link.');

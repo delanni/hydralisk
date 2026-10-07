@@ -53,20 +53,21 @@ npm run watch        # same, in watch mode
 
 | Path | What it is | Edited how |
 |---|---|---|
-| [index.html](file:///Users/web/Git/hydralisk/index.html) | Main app entry. Loads every script with `defer`, in order. | by hand |
+| [plugins.js](file:///Users/web/Git/hydralisk/plugins.js) | Core Plugin Registry and unified module extension system | by hand |
+| [index.html](file:///Users/web/Git/hydralisk/index.html) | Main app entry. Loads `plugins.js` and extensions with `defer`, in order. | by hand |
 | [bundle.min.js](file:///Users/web/Git/hydralisk/bundle.min.js) | Upstream Hydra editor + hydra-synth browserify bundle, **heavily hacked** | by hand |
-| [hydrakit.js](file:///Users/web/Git/hydralisk/hydrakit.js) | Raw WebMIDI → `cc[]`, plus sketch helpers (`midi`, `saw`, `createLFO`, `xxx`, `beatPattern`, `color`, `f`, …) | by hand |
-| [midi-mapping.js](file:///Users/web/Git/hydralisk/midi-mapping.js) + [css/midi-mapping.css](file:///Users/web/Git/hydralisk/css/midi-mapping.css) | MIDI-learn modal that maps CC/notes to app events | by hand |
-| [amakit.js](file:///Users/web/Git/hydralisk/amakit.js) | AWS DynamoDB client for remote sketches ("drafts") | by hand |
-| [hyper-hydra.convolutions.js](file:///Users/web/Git/hydralisk/hyper-hydra.convolutions.js) | Convolution kernel functions registered into Hydra | by hand |
-| [modules/](file:///Users/web/Git/hydralisk/modules) → `modules.dist.js` | React (global, UMD) **Sketch Manager** modal | `npm run build` |
-| [player.html](file:///Users/web/Git/hydralisk/player.html) / [player.js](file:///Users/web/Git/hydralisk/player.js) / `css/player.css` | Separate "Visual Player" dashboard (vibe-coded 2026-06). Uses `hydra-synth` from unpkg, not the bundle. | by hand |
+| [hydrakit.js](file:///Users/web/Git/hydralisk/hydrakit.js) | Raw WebMIDI → `cc[]`, plus sketch helpers (`midi`, `saw`, `createLFO`, `xxx`, `beatPattern`, `color`, `f`, …). Registered as plugin. | by hand |
+| [midi-mapping.js](file:///Users/web/Git/hydralisk/midi-mapping.js) + [css/midi-mapping.css](file:///Users/web/Git/hydralisk/css/midi-mapping.css) | MIDI-learn modal that maps CC/notes to app events. Registered as plugin. | by hand |
+| [amakit.js](file:///Users/web/Git/hydralisk/amakit.js) | AWS DynamoDB client for remote sketches ("drafts"). Registered as plugin. | by hand |
+| [hyper-hydra.convolutions.js](file:///Users/web/Git/hydralisk/hyper-hydra.convolutions.js) | Convolution kernel functions registered into Hydra. Registered as plugin. | by hand |
+| [three.objects.js](file:///Users/web/Git/hydralisk/three.objects.js) | Three.js scene helpers. Registered as plugin. | by hand |
+| [modules/](file:///Users/web/Git/hydralisk/modules) → `modules.dist.js` | React (global, UMD) **Sketch Manager** modal. Registered as plugin. | `npm run build` |
+| [player.html](file:///Users/web/Git/hydralisk/player.html) / [player.js](file:///Users/web/Git/hydralisk/player.js) / `css/player.css` | Separate "Visual Player" dashboard. Uses `plugins.js` for extension wiring. | by hand |
 | [sketches.json](file:///Users/web/Git/hydralisk/sketches.json) | Default public sketch set. Loaded when not logged in to AWS. | `scripts/compile.js` |
 | [sketches/](file:///Users/web/Git/hydralisk/sketches) | One-file-per-sketch exploded form of `sketches.json` (`trashbin/` holds rejected ones) | `scripts/explode.js` |
 | [scripts/](file:///Users/web/Git/hydralisk/scripts) | `explode.js`, `compile.js`, `encode-credentials.js`, `pre-push.cjs` | — |
 | [version.js](file:///Users/web/Git/hydralisk/version.js) | Generated build stamp, loaded with a cache-buster | `pre-push.cjs` |
 | `react*.min.js`, `p5.min.js`, `three.module.js` | Vendored libs, loaded as globals | vendored |
-| `three.objects.js` | three.js scene helpers. **Not loaded anywhere.** | — |
 | `deduplicate.js` | One-off sketch dedupe/filter script | — |
 | `sketches_old*.json`, `export0930.json` | Historical sketch dumps | archive |
 | `img/`, `*.gif`, `*.mp4`, `*.jpg` | Media for sketches (`s0.initImage(...)` and similar) | assets |
@@ -76,22 +77,28 @@ npm run watch        # same, in watch mode
 
 ## 4. Runtime architecture
 
-### 4.1 Script load order ([index.html](file:///Users/web/Git/hydralisk/index.html))
+### 4.1 Script load order & Plugin System ([modules/plugins.js](file:///Users/web/Git/hydralisk/modules/plugins.js))
 
-All scripts use `defer`, so they run **in document order** after parsing:
+All extensions register themselves with `HydraliskPlugins.register({ id, name, init(app), onHydraReady(hydra, app) })`. The Plugin Registry (`modules/plugins.js`) and all extension plugins (`amakit.js`, `hydrakit.js`, `midi-mapping.js`, `hyper-hydra.convolutions.js`, `three.objects.js`) live in `modules/` and are compiled directly into a single output bundle `modules.dist.js` via `npm run build` or `npm run dev`:
 
 ```mermaid
 flowchart LR
-  A["three.module.js"] --> B["amakit.js"] --> C["p5.min.js"] --> D["react + react-dom"]
-  D --> E["bundle.min.js (choo app, hydra-synth, editor, store)"]
-  E --> F["hydrakit.js"] --> G["midi-mapping.js"] --> H["hyper-hydra.convolutions.js"] --> I["modules.dist.js (window.Modules)"]
-  I --> J["version.js (dynamic, cache-busted)"]
-  K["aws-sdk 2.111 (CDN, blocking)"] -.-> B
+  A["three.module.js / p5.min.js"] --> B["react + react-dom"]
+  B --> C["bundle.min.js (HydraliskPlugins.init / onHydraReady)"]
+  C --> D["modules.dist.js (bundles plugins.js, amakit, hydrakit, midi-mapping, convolutions, three-objects, sketch-manager)"]
+  D --> E["version.js (dynamic, cache-busted)"]
 ```
 
-The choo app's `DOMContentLoaded` handler in the store runs after all deferred scripts have executed. That is why it can use `window.Modules`, `window.amakit`, and the others.
+The plugin ambient context `app` provides:
+- **`app.emitter` / `app.emit()` / `app.on()`**: Access to the app event bus.
+- **`app.hydra`**: Live reference to `HydraSynth`.
+- **`app.bpm` & `app.speed`**: Live accessors.
+- **`app.plugins.get('plugin-id')`**: Inter-plugin dependency resolution.
+- **`app.expose(name, val)`**: Publishing symbols onto `window` for sketch availability.
+- **`app.registerState(key, val)` / `app.getState()` / `app.setState()`**: Shared reactive state store.
 
 ### 4.2 Global contract (`window.*`)
+
 
 Hydralisk is held together by globals. Treat this table as the API:
 
@@ -327,6 +334,7 @@ Browser defaults are suppressed for `Cmd-H/Q/[/O/P/S/W/T/N/M/A` ([L75824](file:/
 | `npm run encode-credentials` | produce an encrypted AWS credential blob |
 | `scripts/pre-push.cjs` | refuses dirty trees and stamps `version.js` with the last commit msg + sha (amends). **Not installed** in `.git/hooks` at the moment. |
 | `npm run build` | rollup: `modules/modules.js` → `modules.dist.js` (IIFE, `window.Modules`), babel-preset-react, postcss injects CSS |
+| `npm run dev` | runs `rollup -c --watch` and `serve .` concurrently for automatic rebuilds and local dev server at `http://localhost:3000` |
 
 The release process is simply: commit, then push `gh-pages`. Pages serves it. `version.js` is printed to the console on load (`VERSION {…}`).
 

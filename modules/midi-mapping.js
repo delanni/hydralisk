@@ -405,9 +405,23 @@
     console.log("MIDI Mapping module loaded");
   }
 
+  if (typeof window !== "undefined" && window.HydraliskPlugins) {
+    window.HydraliskPlugins.register({
+      id: "midi-mapping",
+      name: "MIDI Mapping UI & Actions",
+      init(app) {
+        if (app.emitter) {
+          app.emitter.on("midi-mapping:open", openModal);
+        }
+        app.expose("midiMapping", window.midiMapping);
+      },
+    });
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
   }
 })();
+
