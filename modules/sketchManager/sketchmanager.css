@@ -173,3 +173,30 @@
 .sketch-list-item {
     padding: 8px 12px;
 }
+
+/* --- Search Filter & Tag Cloud Styling --- */
+.sketch-tag-pill {
+    user-select: none;
+}
+.sketch-tag-pill:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+.sketch-tag-pill--selected {
+    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);
+}
+
+/* --- Setlist Manager Styling --- */
+.setlist-manager-panel select,
+.setlist-manager-panel button,
+.setlist-manager-panel input {
+    font-family: inherit;
+}
+
+.setlist-items-list::-webkit-scrollbar {
+    width: 6px;
+}
+.setlist-items-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}

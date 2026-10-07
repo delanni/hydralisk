@@ -11,7 +11,12 @@ export default {
         format: 'iife', // Immediately Invoked Function Expression for browser compatibility
         name: 'SketchManager', // Global variable name for the bundled module
         sourcemap: true, // Enable source maps for debugging
+        globals: {
+            react: 'React',
+            'react-dom': 'ReactDOM'
+        }
     },
+    external: ['react', 'react-dom'],
     plugins: [
         resolve({
             extensions: ['.js', '.jsx'], // Include .jsx files for resolution

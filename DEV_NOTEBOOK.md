@@ -10,6 +10,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 ## 2. Changelog & Milestones
 
 - **2026-10-07**: Created `DEVELOPER_HANDBOOK.md` (v0.1) and this notebook. The history before this date is summarised in handbook §9. Both docs live at the repo root and are committed.
+- **2026-10-08**: Upgraded Scene Management & Search Component: implemented `SketchSearchFilter` (fuzzy matching, interactive tag cloud pills, search stats), redesigned `CollectionsPanel` into full Setlist Manager (scene reordering, target BPM, cue notes, live stepper, duplicate, export/import JSON), and added `[`/`]` setlist navigation hotkeys.
 
 ## 3. Architecture & Technical Decisions (ADRs)
 
@@ -24,6 +25,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - [x] Tap tempo, speed dial, reverse
 - [x] Quick save/load, autosave + jump back
 - [x] Sketch library: next/prev/random/search, Sketch Manager, collections
+- [x] Setlist Manager & Fuzzy Search Component (scene reordering, live stepper, cue notes, BPM, tag cloud)
 - [x] Remote drafts (DynamoDB)
 - [x] MIDI raw helpers + MIDI-learn mapping
 - [x] Convolutions, `modulateHue` combine, `color()`
@@ -31,7 +33,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 ### Roadmap (confirmed by the developer, 2026-10-07; no priority order yet)
 - [ ] **Configurable automutate transform-swap %**: a setting and/or a separate MIDI action, instead of the current Cmd-click-only 25%.
 - [ ] **Oblivion guard**: detect black/white-out and auto jump back.
-- [ ] **Better scene management**: setlists, ordering, crossfades between sketches.
+- [x] **Better scene management**: setlists, ordering, cue notes, fuzzy search, and live stepper navigation.
 - [ ] **Touch/mobile HUD**: finish branch `copilot/add-touch-actions-buttons` (unmerged, based on `master`, targets `player.js`).
 - [ ] **Mobile UI & Remote Playability Overlay**: a proper, fixed mobile interface with a dedicated performance/playability overlay. Designed to function both locally and remotely on secondary devices (message relaying protocol to be implemented later).
 - [ ] **three.js integration** (`three.objects.js` exists but isn't wired in).
@@ -53,13 +55,13 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 ## 6. Blockers, Gotchas & Known Issues
 
 - 2026-10-08 **[RESOLVED] MIDI handler clobbering:** Refactored `modules/hydrakit.js` and `modules/midi-mapping.js` to use `input.addEventListener('midimessage', ...)` and `midiAccess.onstatechange` for hot-plugging. Both sketch helpers (`cc[]`, `midi()`) and action bindings run concurrently without overwriting each other.
+- 2026-10-08 **[RESOLVED] Case-sensitive CSS import:** Fixed `modules/sketchManager/index.jsx` import from `./sketchManager.css` to `./sketchmanager.css`.
+- 2026-10-08 **[RESOLVED] Empty Playlist NaN Navigation & Index Mismatch:** Fixed arithmetic bug in `bundle.min.js` where `(0 + 1) % 0` corrupted `sketchIdx` to `NaN` when an empty playlist was active. Added empty list guards in `gallery:nextSketch` and `gallery:randomSketch`, sanitized `sketchIdx` in `gallery:updateLocalSketches`, and properly mapped playlist index in `gallery:loadSketch`.
 - 2026-10-07 **Automutate never swaps transforms from keys or MIDI:** `changeTransformChance = 1` unless `evt.metaKey`, and `Math.random() > 1` is never true. Only a Cmd-click on 💩 gives a 25% swap chance.
 - 2026-10-07 **Automutate interval is fixed at start.** Tap tempo during a run has no effect until it is re-triggered. (Although in practise, the beatsynced automation is used mostly, the time doesn't really matter.)
 - 2026-10-07 **Speed stuck at 0:** `Math.sign(0) = 0`, so slower/faster can't leave 0 (the MIDI speed bind can set 0). Also `getCurrentSpeedIdx` checks `undefined`, but `findIndex` returns `-1`.
-- 2026-10-07 **Index mismatch:** `loadSketch` and search set `sketchIdx = sketch.index` (position in `sketches.json`), not the position in the current `mySketches` playlist. With a collection or filter active, next/prev then jumps to the wrong place.
 - 2026-10-07 **Loading a sketch mutates the source objects:** `delete sketch.metadata.bpm/date/local/index/type`.
 - 2026-10-07 `Mutator.glitchRelToInit` calls `glitchNumber()` without `this.`, so it throws a ReferenceError if `initVal` is undefined (rare).
-- 2026-10-07 `modules/sketchManager/index.jsx` imports `./sketchManager.css`, but the file is `sketchmanager.css`. This breaks builds on case-sensitive filesystems (Linux CI).
 - 2026-10-07 `xxx()` parses the `<anonymous>:L:C` stack format, so it only works in Chrome/V8.
 - 2026-10-07 **Security:** AWS keys are entered in the browser and stored in plain text in `localStorage`. There is a full-table `scan`, aws-sdk 2.111 (2017), and the encrypted-credentials path is dead code. The IAM user should be scoped to the single table.
 - 2026-10-07 `player.html` loads `hydra-synth` from unpkg **unpinned**, so it may break on an upstream release.
@@ -71,6 +73,11 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - 2026-10-07: `npm start` serves the site. `npm run build` rebuilds `modules.dist.js` after editing `modules/`. To find hack points in the bundle, search for event names or `BOOKMARK` (line numbers drift).
 - 2026-10-08: Explicit rule enforced: Never automatically commit or push code to git unless specifically requested by the user. Configured in project rule `.agents/AGENTS.md`.
 - 2026-10-08: Modernized `modules/hydrakit.js`: encapsulated WebMIDI state in `MidiEngine` class, replaced `eval()` in `color()` helper, migrated tap tempo handler to `window.addEventListener('keydown')`, and updated all helpers to modern ES module exports.
+- 2026-10-08: Delivered Scene Management overhaul & React fuzzy search component. `modules.dist.js` compiled cleanly via Rollup. Key mappings `[` / `]` bound for live setlist stepping.
+- 2026-10-08: Refined Setlist Collecting workflow: simplified `CollectionsPanel` (Setlists tab) to Load, Delete, Create actions; added Target Setlist collector dropdown with `+ All` and `- All` buttons plus per-sketch `+`/`-` buttons in `SketchesList`.
+- 2026-10-08: Implemented non-blocking `ConfirmModal` component and promise-based `dialogService` (`window.hydraDialog.confirm()` / `prompt()`) replacing native blocking `window.confirm`/`window.prompt` dialogs without pausing WebGL canvas rendering.
+- 2026-10-08: Fixed `NaN` empty playlist navigation bug and playlist index mapping in `bundle.min.js`. Next/prev navigation now safely guards empty setlists and recovers instantly when switching setlists.
+
 
 
 

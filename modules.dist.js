@@ -1,4 +1,4 @@
-(function () {
+(function (React$1) {
   'use strict';
 
   var plugins = {};
@@ -184,7 +184,7 @@
     }
   }
 
-  var css_248z = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}";
+  var css_248z = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
   styleInject(css_248z);
 
   // This is a module for managing sketch storage in a web application, through localStorage.
@@ -288,19 +288,36 @@
   }
 
   /**
-   * Filters sketches to those in the collection's sketchIds.
-   * sketchIds can contain sketch.id or sketch.name (for backward compatibility).
-   * @param {Object[]} sketches - All sketches
-   * @param {string[]} sketchIds - Collection member ids/names
-   * @returns {Object[]} Filtered sketches
+   * Filters sketches to those in the collection's sketchIds array, preserving explicit setlist item order.
+   * sketchIds items can be string IDs/names or item objects ({ sketchId, bpm, notes, transition }).
+   * @param {Object[]} sketches - All available sketches
+   * @param {(string|Object)[]} sketchIds - Collection member ids/names or item objects
+   * @returns {Object[]} Filtered sketches in exact setlist order with attached _setlistMeta
    */
   function filterSketchesByCollection(sketches, sketchIds) {
     if (!sketchIds || sketchIds.length === 0) return [];
-    const idSet = new Set(sketchIds);
-    return sketches.filter(sketch => {
-      if (sketch.id && idSet.has(sketch.id)) return true;
-      return idSet.has(sketch.name);
+
+    // Map available sketches by id and name for quick lookup
+    const sketchMap = new Map();
+    sketches.forEach(sketch => {
+      if (sketch.id) sketchMap.set(sketch.id, sketch);
+      if (sketch.name) sketchMap.set(sketch.name, sketch);
     });
+    const result = [];
+    sketchIds.forEach(item => {
+      const id = typeof item === 'string' ? item : item?.sketchId;
+      if (id && sketchMap.has(id)) {
+        const sketch = sketchMap.get(id);
+        const setlistMeta = typeof item === 'object' && item !== null ? item : {
+          sketchId: id
+        };
+        result.push({
+          ...sketch,
+          _setlistMeta: setlistMeta
+        });
+      }
+    });
+    return result;
   }
   class CollectionStorage {
     constructor(localStorageRef, storageKey = STORAGE_KEY) {
@@ -348,8 +365,10 @@
       const existing = state.collections.findIndex(c => c.id === collection.id);
       const toSave = {
         id: collection.id || generateId(),
-        name: collection.name || 'Unnamed',
-        sketchIds: Array.isArray(collection.sketchIds) ? [...collection.sketchIds] : []
+        name: collection.name || 'Unnamed Setlist',
+        sketchIds: Array.isArray(collection.sketchIds) ? [...collection.sketchIds] : [],
+        description: collection.description || '',
+        updatedAt: new Date().toISOString()
       };
       if (existing >= 0) {
         state.collections[existing] = toSave;
@@ -365,29 +384,133 @@
       if (state.activeId === id) state.activeId = null;
       this._write(state);
     }
-    addSketchToCollection(collectionId, sketchIdOrName) {
+    addSketchToCollection(collectionId, sketchIdOrName, itemMeta = {}) {
       const state = this._read();
       const col = state.collections.find(c => c.id === collectionId);
       if (!col) return;
-      if (col.sketchIds.includes(sketchIdOrName)) return;
-      col.sketchIds.push(sketchIdOrName);
+      const exists = col.sketchIds.some(item => (typeof item === 'string' ? item : item?.sketchId) === sketchIdOrName);
+      if (exists) return;
+      const entry = Object.keys(itemMeta).length > 0 ? {
+        sketchId: sketchIdOrName,
+        ...itemMeta
+      } : sketchIdOrName;
+      col.sketchIds.push(entry);
+      col.updatedAt = new Date().toISOString();
       this._write(state);
     }
-    removeSketchFromCollection(collectionId, sketchIdOrName) {
+    addMultipleSketchesToCollection(collectionId, sketchIdOrNameList) {
+      const state = this._read();
+      const col = state.collections.find(c => c.id === collectionId);
+      if (!col || !Array.isArray(sketchIdOrNameList)) return;
+      const existingSet = new Set(col.sketchIds.map(item => typeof item === 'string' ? item : item?.sketchId));
+      sketchIdOrNameList.forEach(id => {
+        if (id && !existingSet.has(id)) {
+          col.sketchIds.push(id);
+          existingSet.add(id);
+        }
+      });
+      col.updatedAt = new Date().toISOString();
+      this._write(state);
+    }
+    removeSketchFromCollection(collectionId, indexOrId) {
       const state = this._read();
       const col = state.collections.find(c => c.id === collectionId);
       if (!col) return;
-      col.sketchIds = col.sketchIds.filter(id => id !== sketchIdOrName);
+      if (typeof indexOrId === 'number' && indexOrId >= 0 && indexOrId < col.sketchIds.length) {
+        col.sketchIds.splice(indexOrId, 1);
+      } else {
+        col.sketchIds = col.sketchIds.filter(item => {
+          const id = typeof item === 'string' ? item : item?.sketchId;
+          return id !== indexOrId;
+        });
+      }
+      col.updatedAt = new Date().toISOString();
       this._write(state);
     }
-    createCollection(name) {
+    removeMultipleSketchesFromCollection(collectionId, sketchIdOrNameList) {
+      const state = this._read();
+      const col = state.collections.find(c => c.id === collectionId);
+      if (!col || !Array.isArray(sketchIdOrNameList)) return;
+      const toRemoveSet = new Set(sketchIdOrNameList);
+      col.sketchIds = col.sketchIds.filter(item => {
+        const id = typeof item === 'string' ? item : item?.sketchId;
+        return !toRemoveSet.has(id);
+      });
+      col.updatedAt = new Date().toISOString();
+      this._write(state);
+    }
+    moveSketch(collectionId, fromIndex, toIndex) {
+      const state = this._read();
+      const col = state.collections.find(c => c.id === collectionId);
+      if (!col || fromIndex < 0 || fromIndex >= col.sketchIds.length || toIndex < 0 || toIndex >= col.sketchIds.length) {
+        return;
+      }
+      const [moved] = col.sketchIds.splice(fromIndex, 1);
+      col.sketchIds.splice(toIndex, 0, moved);
+      col.updatedAt = new Date().toISOString();
+      this._write(state);
+    }
+    updateSetlistItem(collectionId, index, newMeta) {
+      const state = this._read();
+      const col = state.collections.find(c => c.id === collectionId);
+      if (!col || index < 0 || index >= col.sketchIds.length) return;
+      const existing = col.sketchIds[index];
+      const sketchId = typeof existing === 'string' ? existing : existing?.sketchId;
+      col.sketchIds[index] = {
+        ...(typeof existing === 'object' ? existing : {
+          sketchId
+        }),
+        ...newMeta,
+        sketchId
+      };
+      col.updatedAt = new Date().toISOString();
+      this._write(state);
+    }
+    duplicateCollection(collectionId) {
+      const state = this._read();
+      const col = state.collections.find(c => c.id === collectionId);
+      if (!col) return null;
+      const dup = {
+        id: generateId(),
+        name: `${col.name} (Copy)`,
+        description: col.description || '',
+        sketchIds: JSON.parse(JSON.stringify(col.sketchIds)),
+        updatedAt: new Date().toISOString()
+      };
+      state.collections.push(dup);
+      this._write(state);
+      return dup;
+    }
+    createCollection(name, description = '') {
       const collection = {
         id: generateId(),
-        name: name || 'New collection',
-        sketchIds: []
+        name: name || 'New Setlist',
+        description,
+        sketchIds: [],
+        updatedAt: new Date().toISOString()
       };
       this.saveCollection(collection);
       return collection;
+    }
+    exportCollectionJSON(collectionId) {
+      const col = this.getCollections().collections.find(c => c.id === collectionId);
+      if (!col) return null;
+      return JSON.stringify(col, null, 2);
+    }
+    importCollectionJSON(jsonString) {
+      try {
+        const parsed = JSON.parse(jsonString);
+        if (!parsed.name || !Array.isArray(parsed.sketchIds)) {
+          throw new Error('Invalid setlist format');
+        }
+        parsed.id = generateId();
+        parsed.updatedAt = new Date().toISOString();
+        this.saveCollection(parsed);
+        return parsed;
+      } catch (err) {
+        console.error('Import setlist failed:', err);
+        return null;
+      }
     }
   }
 
@@ -495,11 +618,246 @@
     }, "\uFF0B")));
   }
 
-  // --- SketchesList: List of sketches with actions ---
+  // --- SketchSearchFilter: React search & tag filtering component with fuzzy matching ---
+
+  /**
+   * Calculates a fuzzy match score for a given query against target text.
+   * Returns score > 0 if query characters match sequentially, otherwise 0.
+   * Higher scores represent better matches (e.g. prefix match, word start match).
+   */
+  function fuzzyMatchScore(query, target) {
+    if (!query) return 1; // Empty query matches everything
+    if (!target) return 0;
+    const q = query.toLowerCase().trim();
+    const t = target.toLowerCase();
+    if (t.includes(q)) {
+      // Substring match gets a boost proportional to position
+      const index = t.indexOf(q);
+      return 100 - index;
+    }
+
+    // Sequential character matching score
+    let qIdx = 0;
+    let score = 0;
+    let consecutive = 0;
+    for (let tIdx = 0; tIdx < t.length && qIdx < q.length; tIdx++) {
+      if (t[tIdx] === q[qIdx]) {
+        score += 10 + consecutive * 5;
+        if (tIdx === 0 || t[tIdx - 1] === ' ' || t[tIdx - 1] === '_' || t[tIdx - 1] === '-') {
+          score += 15; // Word boundary match boost
+        }
+        qIdx++;
+        consecutive++;
+      } else {
+        consecutive = 0;
+      }
+    }
+    return qIdx === q.length ? score : 0;
+  }
+
+  /**
+   * Filters and ranks sketches based on text search (fuzzy) and tag selection.
+   */
+  function filterAndRankSketches(sketches, searchQuery, selectedTags = [], filterMode = 'all') {
+    if (!sketches || !Array.isArray(sketches)) return [];
+    const query = (searchQuery || '').trim();
+    const tagsLower = (selectedTags || []).map(t => String(t).toLowerCase());
+    return sketches.map(sketch => {
+      // Source mode filter (all / remote / local)
+      if (filterMode === 'remote' && !sketch.remote) return null;
+      if (filterMode === 'local' && sketch.remote) return null;
+
+      // Tag filter check
+      const sketchTags = Array.isArray(sketch.metadata?.tags) ? sketch.metadata.tags : [];
+      const sketchTagsLower = sketchTags.map(t => String(t).toLowerCase());
+      if (tagsLower.length > 0) {
+        const matchesTags = tagsLower.every(reqTag => sketchTagsLower.includes(reqTag));
+        if (!matchesTags) return null;
+      }
+      if (!query) {
+        return {
+          sketch,
+          score: 1
+        };
+      }
+
+      // Fuzzy match across name, description, tags, and code
+      const nameScore = fuzzyMatchScore(query, sketch.name || '');
+      const descScore = fuzzyMatchScore(query, sketch.description || sketch.metadata?.description || '');
+      const tagsText = sketchTags.join(' ');
+      const tagScore = fuzzyMatchScore(query, tagsText);
+      const codeScore = sketch.code ? sketch.code.toLowerCase().includes(query.toLowerCase()) ? 20 : 0 : 0;
+      const maxScore = Math.max(nameScore * 2, descScore * 1.2, tagScore * 1.5, codeScore);
+      return maxScore > 0 ? {
+        sketch,
+        score: maxScore
+      } : null;
+    }).filter(Boolean).sort((a, b) => b.score - a.score).map(item => item.sketch);
+  }
+  function SketchSearchFilter({
+    sketches = [],
+    searchQuery = '',
+    selectedTags = [],
+    filterMode = 'all',
+    onSearchQueryChange,
+    onTagToggle,
+    onClearTags,
+    onFilterModeChange,
+    totalCount = 0,
+    filteredCount = 0
+  }) {
+    // Collect all unique tags across all available sketches
+    const allTagsMap = new Map();
+    sketches.forEach(sketch => {
+      const tags = Array.isArray(sketch.metadata?.tags) ? sketch.metadata.tags : [];
+      tags.forEach(tag => {
+        const clean = String(tag).trim();
+        if (clean) {
+          const lower = clean.toLowerCase();
+          allTagsMap.set(lower, clean); // preserve display casing
+        }
+      });
+    });
+    const uniqueTags = Array.from(allTagsMap.values()).sort((a, b) => a.localeCompare(b));
+    return /*#__PURE__*/React.createElement("div", {
+      className: "sketch-search-filter-container",
+      style: {
+        marginBottom: 12
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 8,
+        marginBottom: 8,
+        alignItems: 'center'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: 'relative',
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      className: "sketch-filter",
+      placeholder: "\uD83D\uDD0D Search sketches (name, tags, code...)",
+      value: searchQuery,
+      onChange: e => onSearchQueryChange(e.target.value),
+      style: {
+        width: '100%',
+        paddingRight: searchQuery ? 28 : 8,
+        boxSizing: 'border-box'
+      }
+    }), searchQuery && /*#__PURE__*/React.createElement("button", {
+      title: "Clear search query",
+      onClick: () => onSearchQueryChange(''),
+      style: {
+        position: 'absolute',
+        right: 6,
+        top: '50%',
+        transform: 'translateY(-50%)',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: 14,
+        color: '#666'
+      }
+    }, "\u2715")), /*#__PURE__*/React.createElement("select", {
+      value: filterMode,
+      onChange: e => onFilterModeChange(e.target.value),
+      style: {
+        padding: '7px 8px',
+        borderRadius: 4,
+        border: '1px solid #ccc',
+        fontSize: 13
+      }
+    }, /*#__PURE__*/React.createElement("option", {
+      value: "all"
+    }, "All Sources"), /*#__PURE__*/React.createElement("option", {
+      value: "local"
+    }, "Local Only"), /*#__PURE__*/React.createElement("option", {
+      value: "remote"
+    }, "Remote Only"))), uniqueTags.length > 0 && /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginBottom: 8
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 4
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 11,
+        fontWeight: 600,
+        color: '#666',
+        textTransform: 'uppercase',
+        letterSpacing: 0.5
+      }
+    }, "Filter by Tags (", selectedTags.length > 0 ? `${selectedTags.length} active` : 'all', ")"), selectedTags.length > 0 && /*#__PURE__*/React.createElement("button", {
+      onClick: onClearTags,
+      style: {
+        background: 'none',
+        border: 'none',
+        color: '#007bff',
+        fontSize: 11,
+        cursor: 'pointer',
+        padding: 0
+      }
+    }, "Clear selected tags")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 4,
+        maxHeight: 68,
+        overflowY: 'auto',
+        padding: '2px 0'
+      }
+    }, uniqueTags.map(tag => {
+      const isSelected = selectedTags.some(t => t.toLowerCase() === tag.toLowerCase());
+      return /*#__PURE__*/React.createElement("button", {
+        key: tag,
+        onClick: () => onTagToggle(tag),
+        className: `sketch-tag-pill${isSelected ? ' sketch-tag-pill--selected' : ''}`,
+        style: {
+          border: isSelected ? '1px solid #3b82f6' : '1px solid #e2e8f0',
+          background: isSelected ? '#3b82f6' : '#f1f5f9',
+          color: isSelected ? '#ffffff' : '#334155',
+          borderRadius: 12,
+          padding: '2px 10px',
+          fontSize: 11,
+          cursor: 'pointer',
+          transition: 'all 0.15s ease',
+          fontWeight: isSelected ? 600 : 400
+        }
+      }, "#", tag);
+    }))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontSize: 12,
+        color: '#666'
+      }
+    }, /*#__PURE__*/React.createElement("span", null, "Showing ", /*#__PURE__*/React.createElement("strong", null, filteredCount), " of ", /*#__PURE__*/React.createElement("strong", null, totalCount), " sketches"), (searchQuery || selectedTags.length > 0 || filterMode !== 'all') && /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: '#3b82f6'
+      }
+    }, "Fuzzy filter active")));
+  }
+
+  // --- SketchesList: Main Sketches Tab with Setlist Collecting & (+)/(-) Controls ---
   function SketchesList({
-    sketches,
-    filter,
-    tagFilter,
+    sketches = [],
+    collections = [],
+    targetCollectionId = '',
+    onTargetCollectionChange,
+    onAddSketchToTarget,
+    onRemoveSketchFromTarget,
+    onAddFilteredToTarget,
+    onRemoveFilteredFromTarget,
+    filter = '',
+    tagFilter = '',
     remoteDraftNames = new Set(),
     onFilterChange,
     onTagFilterChange,
@@ -507,103 +865,298 @@
     onDelete,
     onUpload,
     onRowClick,
-    actions = [] // <-- Accept an array of action button configs
+    actions = []
   }) {
-    // Split tag filter input by space, comma, or semicolon, and filter out empty strings
-    const tagFilterList = tagFilter.split(/[\s,;]+/).map(t => t.trim().toLowerCase()).filter(Boolean);
-    const isFiltering = filter && filter.trim() || tagFilterList.length > 0;
-    const filtered = sketches.filter(sketch => {
-      // Name filter
-      const nameMatch = sketch.name?.toLowerCase().includes(filter?.toLowerCase());
-      // Tag filter
-      if (tagFilterList.length === 0) return nameMatch;
-      const tags = Array.isArray(sketch.metadata?.tags) ? sketch.metadata.tags : [];
-      // If any tag matches any of the entered tags, keep the sketch
-      const tagMatch = tags.some(tag => tagFilterList.includes(String(tag).toLowerCase()));
-      return nameMatch && tagMatch;
-    });
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    const [selectedTags, setSelectedTags] = React$1.useState([]);
+    const [filterMode, setFilterMode] = React$1.useState('all');
+
+    // Handle tag filtering
+    const handleTagToggle = tag => {
+      const lower = tag.toLowerCase();
+      setSelectedTags(prev => {
+        const exists = prev.some(t => t.toLowerCase() === lower);
+        const updated = exists ? prev.filter(t => t.toLowerCase() !== lower) : [...prev, tag];
+        if (onTagFilterChange) {
+          onTagFilterChange({
+            target: {
+              value: updated.join(', ')
+            }
+          });
+        }
+        return updated;
+      });
+    };
+    const handleClearTags = () => {
+      setSelectedTags([]);
+      if (onTagFilterChange) {
+        onTagFilterChange({
+          target: {
+            value: ''
+          }
+        });
+      }
+    };
+    const handleSearchChange = val => {
+      if (onFilterChange) {
+        onFilterChange({
+          target: {
+            value: val
+          }
+        });
+      }
+    };
+
+    // Filter & rank sketches using fuzzy matcher and tag filter
+    const filtered = filterAndRankSketches(sketches, filter, selectedTags, filterMode);
+    const isFiltering = Boolean(filter.trim()) || selectedTags.length > 0 || filterMode !== 'all';
+
+    // Target collection lookup
+    const targetCollection = collections.find(c => c.id === targetCollectionId) || null;
+
+    // Helper to check if sketch is in target collection
+    const isSketchInTarget = sketch => {
+      if (!targetCollection || !Array.isArray(targetCollection.sketchIds)) return false;
+      const sId = sketch.id || sketch.name;
+      return targetCollection.sketchIds.some(item => {
+        const id = typeof item === 'string' ? item : item?.sketchId;
+        return id === sId || id === sketch.name;
+      });
+    };
+
+    // Handle + All and - All for current filtered sketches
+    const handleAddAllFiltered = () => {
+      if (!targetCollectionId) return;
+      const idsToAdd = filtered.map(s => s.id || s.name);
+      onAddFilteredToTarget?.(targetCollectionId, idsToAdd);
+    };
+    const handleRemoveAllFiltered = () => {
+      if (!targetCollectionId) return;
+      const idsToRemove = filtered.map(s => s.id || s.name);
+      onRemoveFilteredFromTarget?.(targetCollectionId, idsToRemove);
+    };
+    return /*#__PURE__*/React$1.createElement("div", {
+      className: "sketches-list-component"
+    }, /*#__PURE__*/React$1.createElement("div", {
+      style: {
+        background: '#f8fafc',
+        border: '1px solid #e2e8f0',
+        borderRadius: 6,
+        padding: '8px 12px',
+        marginBottom: 10,
+        display: 'flex',
+        alignItems: 'center',
+        justify: 'space-between',
+        flexWrap: 'wrap',
+        gap: 8
+      }
+    }, /*#__PURE__*/React$1.createElement("div", {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        flex: 1,
+        minWidth: 200
+      }
+    }, /*#__PURE__*/React$1.createElement("label", {
+      style: {
+        fontSize: 12,
+        fontWeight: 600,
+        color: '#334155',
+        whiteSpace: 'nowrap'
+      }
+    }, "Setlist to collect to:"), /*#__PURE__*/React$1.createElement("select", {
+      value: targetCollectionId || '',
+      onChange: e => onTargetCollectionChange?.(e.target.value),
+      style: {
+        padding: '5px 8px',
+        borderRadius: 4,
+        border: '1px solid #cbd5e1',
+        fontSize: 12,
+        flex: 1
+      }
+    }, /*#__PURE__*/React$1.createElement("option", {
+      value: ""
+    }, "-- Choose Setlist --"), collections.map(c => /*#__PURE__*/React$1.createElement("option", {
+      key: c.id,
+      value: c.id
+    }, c.name, " (", c.sketchIds?.length || 0, " items)")))), targetCollectionId ? /*#__PURE__*/React$1.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 6,
+        alignItems: 'center'
+      }
+    }, /*#__PURE__*/React$1.createElement("button", {
+      onClick: handleAddAllFiltered,
+      disabled: filtered.length === 0,
+      style: {
+        background: '#22c55e',
+        color: '#ffffff',
+        border: 'none',
+        padding: '4px 10px',
+        borderRadius: 4,
+        fontSize: 12,
+        fontWeight: 600,
+        cursor: filtered.length > 0 ? 'pointer' : 'default',
+        opacity: filtered.length > 0 ? 1 : 0.6
+      },
+      title: "Add all currently filtered sketches to target setlist"
+    }, "+ All (", filtered.length, ")"), /*#__PURE__*/React$1.createElement("button", {
+      onClick: handleRemoveAllFiltered,
+      disabled: filtered.length === 0,
+      style: {
+        background: '#ef4444',
+        color: '#ffffff',
+        border: 'none',
+        padding: '4px 10px',
+        borderRadius: 4,
+        fontSize: 12,
+        fontWeight: 600,
+        cursor: filtered.length > 0 ? 'pointer' : 'default',
+        opacity: filtered.length > 0 ? 1 : 0.6
+      },
+      title: "Remove all currently filtered sketches from target setlist"
+    }, "- All (", filtered.length, ")")) : /*#__PURE__*/React$1.createElement("span", {
+      style: {
+        fontSize: 11,
+        color: '#94a3b8',
+        fontStyle: 'italic'
+      }
+    }, "Select a setlist to enable + / - buttons")), /*#__PURE__*/React$1.createElement(SketchSearchFilter, {
+      sketches: sketches,
+      searchQuery: filter,
+      selectedTags: selectedTags,
+      filterMode: filterMode,
+      onSearchQueryChange: handleSearchChange,
+      onTagToggle: handleTagToggle,
+      onClearTags: handleClearTags,
+      onFilterModeChange: setFilterMode,
+      totalCount: sketches.length,
+      filteredCount: filtered.length
+    }), actions.length > 0 && /*#__PURE__*/React$1.createElement("div", {
       style: {
         display: 'flex',
         gap: 8,
-        marginBottom: 8
+        marginBottom: 10,
+        flexWrap: 'wrap'
       }
-    }, /*#__PURE__*/React.createElement("input", {
-      id: "sketch-filter",
-      type: "text",
-      className: "sketch-filter",
-      placeholder: "Filter by name",
-      value: filter,
-      onChange: onFilterChange,
-      style: {
-        flex: 1
-      }
-    }), /*#__PURE__*/React.createElement("input", {
-      id: "sketch-tag-filter",
-      type: "text",
-      className: "sketch-filter",
-      placeholder: "Filter by tag (space, comma, or semicolon separated)",
-      value: tagFilter,
-      onChange: onTagFilterChange,
-      style: {
-        flex: 1
-      }
-    })), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'flex',
-        gap: 8,
-        marginBottom: 8
-      }
-    }, actions.map((action, i) => /*#__PURE__*/React.createElement("button", {
+    }, actions.map((action, i) => /*#__PURE__*/React$1.createElement("button", {
       key: i,
       onClick: () => action.onClick(filtered, isFiltering),
-      disabled: action.disabled ? action.disabled(filtered, isFiltering) : false
-    }, action.label))), /*#__PURE__*/React.createElement("ul", {
-      className: "sketch-list"
-    }, filtered.length === 0 && /*#__PURE__*/React.createElement("li", {
+      disabled: action.disabled ? action.disabled(filtered, isFiltering) : false,
       style: {
-        color: '#888'
+        padding: '4px 10px',
+        fontSize: 12
       }
-    }, "No sketches found."), filtered.map((sketch, idx) => {
+    }, action.label))), /*#__PURE__*/React$1.createElement("ul", {
+      className: "sketch-list",
+      style: {
+        margin: 0
+      }
+    }, filtered.length === 0 && /*#__PURE__*/React$1.createElement("li", {
+      style: {
+        color: '#888',
+        padding: 12,
+        textAlign: 'center'
+      }
+    }, "No sketches match your search."), filtered.map((sketch, idx) => {
       const tags = Array.isArray(sketch.metadata?.tags) ? sketch.metadata.tags : [];
       const isOnRemote = remoteDraftNames.has(sketch.name);
-      return /*#__PURE__*/React.createElement("li", {
-        key: sketch.name,
+      const inTarget = isSketchInTarget(sketch);
+      const sketchId = sketch.id || sketch.name;
+      return /*#__PURE__*/React$1.createElement("li", {
+        key: sketchId || idx,
         className: `sketch-list-item${isOnRemote ? ' sketch-list-item--remote' : ''}`,
-        onClick: () => onRowClick(sketch, idx)
-      }, /*#__PURE__*/React.createElement("span", {
+        onClick: () => onRowClick(sketch, idx),
+        style: {
+          padding: '8px 10px',
+          borderBottom: '1px solid #f1f5f9'
+        }
+      }, /*#__PURE__*/React$1.createElement("span", {
         style: {
           display: 'flex',
           alignItems: 'center',
-          gap: 8
+          gap: 8,
+          flex: 1,
+          minWidth: 0
         }
-      }, sketch.name, tags.length > 0 && /*#__PURE__*/React.createElement("span", {
+      }, /*#__PURE__*/React$1.createElement("strong", {
+        style: {
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        }
+      }, sketch.name), tags.length > 0 && /*#__PURE__*/React$1.createElement("span", {
         style: {
           display: 'flex',
           gap: 4,
           flexWrap: 'wrap'
         }
-      }, tags.slice(0, 4).map((tag, i) => /*#__PURE__*/React.createElement("span", {
+      }, tags.slice(0, 3).map((tag, i) => /*#__PURE__*/React$1.createElement("span", {
         className: "sketch-tag",
         key: i
-      }, tag)))), /*#__PURE__*/React.createElement("span", {
-        onClick: e => e.stopPropagation()
-      }, onUpload && /*#__PURE__*/React.createElement("button", {
-        title: "Upload to remote",
+      }, "#", tag)))), /*#__PURE__*/React$1.createElement("span", {
+        onClick: e => e.stopPropagation(),
         style: {
-          marginRight: 8
-        },
-        onClick: () => onUpload(sketch, idx)
-      }, "\u2191"), /*#__PURE__*/React.createElement("button", {
-        title: "Edit sketch",
+          display: 'flex',
+          gap: 4,
+          alignItems: 'center'
+        }
+      }, targetCollectionId ? inTarget ? /*#__PURE__*/React$1.createElement("button", {
+        title: "Remove from target setlist",
+        onClick: () => onRemoveSketchFromTarget?.(targetCollectionId, sketchId),
         style: {
-          marginRight: 8
-        },
-        onClick: () => onEdit(sketch.name, idx)
-      }, "E"), /*#__PURE__*/React.createElement("button", {
+          background: '#ef4444',
+          color: '#ffffff',
+          border: 'none',
+          borderRadius: 4,
+          width: 26,
+          height: 24,
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          fontSize: 14,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 6
+        }
+      }, "-") : /*#__PURE__*/React$1.createElement("button", {
+        title: "Add to target setlist",
+        onClick: () => onAddSketchToTarget?.(targetCollectionId, sketchId),
+        style: {
+          background: '#22c55e',
+          color: '#ffffff',
+          border: 'none',
+          borderRadius: 4,
+          width: 26,
+          height: 24,
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          fontSize: 14,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 6
+        }
+      }, "+") : null, onUpload && /*#__PURE__*/React$1.createElement("button", {
+        title: "Upload to remote AWS DynamoDB",
+        onClick: () => onUpload(sketch, idx),
+        style: {
+          padding: '2px 6px',
+          fontSize: 12
+        }
+      }, "\u2191"), /*#__PURE__*/React$1.createElement("button", {
+        title: "Edit sketch metadata",
+        onClick: () => onEdit(sketch.name, idx),
+        style: {
+          padding: '2px 6px',
+          fontSize: 12
+        }
+      }, "E"), /*#__PURE__*/React$1.createElement("button", {
         title: "Delete sketch",
         style: {
-          color: 'red'
+          color: '#ef4444',
+          padding: '2px 6px',
+          fontSize: 12
         },
         onClick: () => onDelete(sketch.name)
       }, "\u2715")));
@@ -672,10 +1225,82 @@
     }, encodedError)));
   }
 
-  // --- CollectionsPanel: Manage collections of sketches ---
+  // Singleton promise-based dialog service to trigger non-blocking confirm/prompt modals anywhere in the app
+
+  class DialogService {
+    constructor() {
+      this.listeners = [];
+    }
+    subscribe(listener) {
+      this.listeners.push(listener);
+      return () => {
+        this.listeners = this.listeners.filter(l => l !== listener);
+      };
+    }
+
+    /**
+     * Show non-blocking confirmation dialog
+     * @returns {Promise<boolean>} Resolves to true if confirmed, false if cancelled
+     */
+    confirm({
+      title = 'Confirm Action',
+      message = 'Are you sure you want to proceed?',
+      confirmText = 'Confirm',
+      cancelText = 'Cancel',
+      isDanger = false
+    } = {}) {
+      return new Promise(resolve => {
+        const config = {
+          isOpen: true,
+          title,
+          message,
+          confirmText,
+          cancelText,
+          isDanger,
+          hasInput: false,
+          resolve
+        };
+        this.listeners.forEach(l => l(config));
+      });
+    }
+
+    /**
+     * Show non-blocking input prompt dialog
+     * @returns {Promise<string|null>} Resolves to string value if confirmed, null if cancelled
+     */
+    prompt({
+      title = 'Enter Value',
+      message = '',
+      defaultValue = '',
+      placeholder = '',
+      confirmText = 'OK',
+      cancelText = 'Cancel'
+    } = {}) {
+      return new Promise(resolve => {
+        const config = {
+          isOpen: true,
+          title,
+          message,
+          confirmText,
+          cancelText,
+          isDanger: false,
+          hasInput: true,
+          defaultValue,
+          placeholder,
+          resolve
+        };
+        this.listeners.forEach(l => l(config));
+      });
+    }
+  }
+  const dialogService = new DialogService();
+  if (typeof window !== 'undefined') {
+    window.hydraDialog = dialogService;
+  }
+
+  // --- CollectionsPanel: Simplified Setlist Tab (Create, Load/Activate, Delete) ---
   function CollectionsPanel({
     collectionStorage,
-    sketches,
     activeId,
     onActiveChange,
     onCollectionsChange
@@ -683,21 +1308,31 @@
     const {
       collections
     } = collectionStorage.getCollections();
-    collectionStorage.getActiveCollection();
     const handleSetActive = id => {
       collectionStorage.setActiveCollection(id);
       onActiveChange(id);
       onCollectionsChange?.();
     };
-    const handleCreateCollection = () => {
-      const name = window.prompt('Collection name:', 'New collection');
-      if (!name) return;
-      collectionStorage.createCollection(name.trim());
+    const handleCreateCollection = async () => {
+      const name = await dialogService.prompt({
+        title: 'Create New Setlist',
+        message: 'Enter a title for your new performance setlist:',
+        defaultValue: 'New Setlist',
+        placeholder: 'Setlist name'
+      });
+      if (!name || !name.trim()) return;
+      const col = collectionStorage.createCollection(name.trim());
+      handleSetActive(col.id);
       onCollectionsChange?.();
     };
-    const handleDeleteCollection = id => {
-      const col = collections.find(c => c.id === id);
-      if (!col || !window.confirm(`Delete collection "${col.name}"?`)) return;
+    const handleDeleteCollection = async (id, name) => {
+      const confirmed = await dialogService.confirm({
+        title: 'Delete Setlist',
+        message: `Are you sure you want to delete setlist "${name}"?`,
+        confirmText: 'Delete',
+        isDanger: true
+      });
+      if (!confirmed) return;
       collectionStorage.deleteCollection(id);
       if (activeId === id) {
         collectionStorage.setActiveCollection(null);
@@ -705,154 +1340,294 @@
       }
       onCollectionsChange?.();
     };
-    const handleAddSketch = (collectionId, sketchIdOrName) => {
-      collectionStorage.addSketchToCollection(collectionId, sketchIdOrName);
-      onCollectionsChange?.();
-    };
-    const handleRemoveSketch = (collectionId, sketchIdOrName) => {
-      collectionStorage.removeSketchFromCollection(collectionId, sketchIdOrName);
-      onCollectionsChange?.();
-    };
-    const getSketchId = sketch => sketch.id || sketch.name;
-    const isInCollection = (sketch, sketchIds) => {
-      const id = getSketchId(sketch);
-      return sketchIds.includes(id) || sketchIds.includes(sketch.name);
-    };
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    return /*#__PURE__*/React$1.createElement("div", {
+      className: "setlist-manager-panel",
       style: {
+        padding: '4px 0'
+      }
+    }, /*#__PURE__*/React$1.createElement("div", {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: 16
       }
-    }, /*#__PURE__*/React.createElement("label", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       style: {
+        fontSize: 13,
+        color: '#64748b'
+      }
+    }, "Manage your performance setlists. Select a setlist to load as active."), /*#__PURE__*/React$1.createElement("button", {
+      onClick: handleCreateCollection,
+      style: {
+        background: '#3b82f6',
+        color: '#ffffff',
+        border: 'none',
+        padding: '6px 14px',
+        borderRadius: 4,
         fontWeight: 600,
-        marginRight: 8
+        cursor: 'pointer',
+        fontSize: 13
       }
-    }, "Active:"), /*#__PURE__*/React.createElement("select", {
-      value: activeId || '',
-      onChange: e => handleSetActive(e.target.value || null),
+    }, "+ Create Setlist")), /*#__PURE__*/React$1.createElement("div", {
       style: {
-        padding: 6,
-        minWidth: 160
-      }
-    }, /*#__PURE__*/React.createElement("option", {
-      value: ""
-    }, "All sketches"), collections.map(c => /*#__PURE__*/React.createElement("option", {
-      key: c.id,
-      value: c.id
-    }, c.name)))), /*#__PURE__*/React.createElement("div", {
-      style: {
-        marginBottom: 12,
         display: 'flex',
         alignItems: 'center',
-        gap: 8
+        justify: 'space-between',
+        padding: '10px 14px',
+        marginBottom: 10,
+        border: !activeId ? '2px solid #3b82f6' : '1px solid #e2e8f0',
+        borderRadius: 6,
+        background: !activeId ? '#eff6ff' : '#f8fafc'
       }
-    }, /*#__PURE__*/React.createElement("button", {
-      onClick: handleCreateCollection
-    }, "New collection")), /*#__PURE__*/React.createElement("ul", {
-      className: "sketch-list",
+    }, /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("strong", {
+      style: {
+        fontSize: 14,
+        color: '#1e293b'
+      }
+    }, "All Sketches (Default Unfiltered)"), /*#__PURE__*/React$1.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: '#64748b',
+        marginTop: 2
+      }
+    }, "Show all sketches in library without setlist filtering")), !activeId ? /*#__PURE__*/React$1.createElement("span", {
+      style: {
+        fontSize: 12,
+        fontWeight: 600,
+        color: '#3b82f6',
+        background: '#dbeafe',
+        padding: '3px 10px',
+        borderRadius: 12
+      }
+    }, "\u25CF Active") : /*#__PURE__*/React$1.createElement("button", {
+      onClick: () => handleSetActive(null),
+      style: {
+        padding: '4px 12px',
+        fontSize: 12,
+        borderRadius: 4,
+        cursor: 'pointer'
+      }
+    }, "Load")), /*#__PURE__*/React$1.createElement("ul", {
       style: {
         listStyle: 'none',
-        padding: 0
+        padding: 0,
+        margin: 0
       }
-    }, collections.length === 0 && /*#__PURE__*/React.createElement("li", {
+    }, collections.length === 0 ? /*#__PURE__*/React$1.createElement("li", {
       style: {
-        color: '#888',
-        marginBottom: 8
+        color: '#94a3b8',
+        padding: 16,
+        textAlign: 'center',
+        background: '#f8fafc',
+        borderRadius: 6
       }
-    }, "No collections yet."), collections.map(col => {
+    }, "No setlists created yet. Click ", /*#__PURE__*/React$1.createElement("strong", null, "+ Create Setlist"), " to start collecting sketches.") : collections.map(col => {
       const count = col.sketchIds.length;
       const isActive = activeId === col.id;
-      return /*#__PURE__*/React.createElement("li", {
+      return /*#__PURE__*/React$1.createElement("li", {
         key: col.id,
-        className: "sketch-list-item",
-        style: {
-          marginBottom: 8,
-          padding: 8,
-          border: '1px solid #eee',
-          borderRadius: 4
-        }
-      }, /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: 8
+          justify: 'space-between',
+          padding: '10px 14px',
+          marginBottom: 8,
+          border: isActive ? '2px solid #3b82f6' : '1px solid #e2e8f0',
+          borderRadius: 6,
+          background: isActive ? '#eff6ff' : '#ffffff'
         }
-      }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, col.name), /*#__PURE__*/React.createElement("span", {
+      }, /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("strong", {
         style: {
-          color: '#666',
+          fontSize: 14,
+          color: '#1e293b'
+        }
+      }, col.name), /*#__PURE__*/React$1.createElement("span", {
+        style: {
+          fontSize: 12,
+          color: '#64748b',
           marginLeft: 8
         }
-      }, "(", count, ")")), /*#__PURE__*/React.createElement("span", {
-        onClick: e => e.stopPropagation()
-      }, !isActive && /*#__PURE__*/React.createElement("button", {
-        style: {
-          marginRight: 8
-        },
-        onClick: () => handleSetActive(col.id)
-      }, "Activate"), /*#__PURE__*/React.createElement("button", {
-        style: {
-          color: 'red'
-        },
-        onClick: () => handleDeleteCollection(col.id)
-      }, "Delete"))), /*#__PURE__*/React.createElement("div", {
-        style: {
-          marginTop: 8,
-          fontSize: 13,
-          maxHeight: 120,
-          overflowY: 'auto'
-        }
-      }, sketches.length === 0 ? /*#__PURE__*/React.createElement("span", {
-        style: {
-          color: '#888'
-        }
-      }, "No sketches in storage.") : /*#__PURE__*/React.createElement("div", {
+      }, "(", count, " ", count === 1 ? 'sketch' : 'sketches', ")")), /*#__PURE__*/React$1.createElement("div", {
         style: {
           display: 'flex',
-          flexWrap: 'wrap',
-          gap: 4
+          gap: 8,
+          alignItems: 'center'
         }
-      }, sketches.map(sketch => {
-        const sid = getSketchId(sketch);
-        const inCol = isInCollection(sketch, col.sketchIds);
-        return /*#__PURE__*/React.createElement("span", {
-          key: sid,
-          style: {
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 4,
-            padding: '2px 6px',
-            paddingRight: 4,
-            borderRadius: 4,
-            background: inCol ? '#e0e7ff' : '#f0f0f0',
-            fontSize: 12
-          }
-        }, sketch.name, inCol ? /*#__PURE__*/React.createElement("button", {
-          title: "Remove from collection",
-          style: {
-            padding: '0 4px',
-            fontSize: 10,
-            lineHeight: 1
-          },
-          onClick: e => {
-            e.stopPropagation();
-            handleRemoveSketch(col.id, sid);
-          }
-        }, "\u2715") : /*#__PURE__*/React.createElement("button", {
-          title: "Add to collection",
-          style: {
-            padding: '0 4px',
-            fontSize: 10,
-            lineHeight: 1
-          },
-          onClick: e => {
-            e.stopPropagation();
-            handleAddSketch(col.id, sid);
-          }
-        }, "+"));
-      }))));
+      }, isActive ? /*#__PURE__*/React$1.createElement("span", {
+        style: {
+          fontSize: 12,
+          fontWeight: 600,
+          color: '#3b82f6',
+          background: '#dbeafe',
+          padding: '3px 10px',
+          borderRadius: 12
+        }
+      }, "\u25CF Active") : /*#__PURE__*/React$1.createElement("button", {
+        onClick: () => handleSetActive(col.id),
+        style: {
+          background: '#22c55e',
+          color: '#ffffff',
+          border: 'none',
+          padding: '4px 12px',
+          borderRadius: 4,
+          fontSize: 12,
+          cursor: 'pointer'
+        }
+      }, "Load"), /*#__PURE__*/React$1.createElement("button", {
+        onClick: () => handleDeleteCollection(col.id, col.name),
+        style: {
+          background: 'none',
+          border: 'none',
+          color: '#ef4444',
+          fontSize: 13,
+          cursor: 'pointer',
+          padding: '4px 8px'
+        },
+        title: "Delete setlist"
+      }, "Delete")));
     })));
+  }
+
+  // --- ConfirmModal: Non-blocking custom modal dialog component ---
+  // Replaces window.confirm() and window.prompt() without freezing WebGL/Hydra animations.
+
+  function ConfirmModal({
+    isOpen,
+    title = 'Confirmation',
+    message = '',
+    confirmText = 'Confirm',
+    cancelText = 'Cancel',
+    isDanger = false,
+    hasInput = false,
+    defaultValue = '',
+    placeholder = '',
+    onConfirm,
+    onCancel
+  }) {
+    const [inputValue, setInputValue] = React$1.useState(defaultValue);
+    const inputRef = React$1.useRef(null);
+    React$1.useEffect(() => {
+      setInputValue(defaultValue);
+    }, [defaultValue, isOpen]);
+    React$1.useEffect(() => {
+      if (isOpen) {
+        // Auto focus on input or confirm button
+        setTimeout(() => {
+          if (hasInput && inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.select();
+          }
+        }, 50);
+      }
+    }, [isOpen, hasInput]);
+    if (!isOpen) return null;
+    const handleKeyDown = e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        onConfirm(hasInput ? inputValue : true);
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        onCancel();
+      }
+    };
+    return /*#__PURE__*/React$1.createElement("div", {
+      className: "confirm-modal-overlay",
+      onClick: onCancel,
+      style: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(15, 23, 42, 0.6)',
+        backdropFilter: 'blur(4px)',
+        zIndex: 99999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 16,
+        animation: 'confirmFadeIn 0.15s ease-out'
+      }
+    }, /*#__PURE__*/React$1.createElement("div", {
+      className: "confirm-modal-card",
+      onClick: e => e.stopPropagation(),
+      onKeyDown: handleKeyDown,
+      style: {
+        background: '#ffffff',
+        borderRadius: 10,
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
+        width: '100%',
+        maxWidth: 420,
+        padding: 20,
+        color: '#0f172a',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
+      }
+    }, /*#__PURE__*/React$1.createElement("h3", {
+      style: {
+        margin: '0 0 8px 0',
+        fontSize: 16,
+        fontWeight: 700,
+        color: isDanger ? '#dc2626' : '#0f172a'
+      }
+    }, title), message && /*#__PURE__*/React$1.createElement("div", {
+      style: {
+        fontSize: 13,
+        color: '#475569',
+        marginBottom: hasInput ? 12 : 16,
+        lineHeight: 1.5
+      }
+    }, message), hasInput && /*#__PURE__*/React$1.createElement("div", {
+      style: {
+        marginBottom: 16
+      }
+    }, /*#__PURE__*/React$1.createElement("input", {
+      ref: inputRef,
+      type: "text",
+      value: inputValue,
+      placeholder: placeholder,
+      onChange: e => setInputValue(e.target.value),
+      style: {
+        width: '100%',
+        padding: '8px 12px',
+        border: '1px solid #cbd5e1',
+        borderRadius: 6,
+        fontSize: 14,
+        boxSizing: 'border-box',
+        outline: 'none',
+        transition: 'border-color 0.15s'
+      }
+    })), /*#__PURE__*/React$1.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 8,
+        justifyContent: 'flex-end'
+      }
+    }, /*#__PURE__*/React$1.createElement("button", {
+      onClick: onCancel,
+      style: {
+        background: '#f1f5f9',
+        color: '#334155',
+        border: '1px solid #cbd5e1',
+        padding: '7px 16px',
+        borderRadius: 6,
+        fontSize: 13,
+        fontWeight: 500,
+        cursor: 'pointer'
+      }
+    }, cancelText), /*#__PURE__*/React$1.createElement("button", {
+      onClick: () => onConfirm(hasInput ? inputValue : true),
+      style: {
+        background: isDanger ? '#dc2626' : '#3b82f6',
+        color: '#ffffff',
+        border: 'none',
+        padding: '7px 18px',
+        borderRadius: 6,
+        fontSize: 13,
+        fontWeight: 600,
+        cursor: 'pointer'
+      }
+    }, confirmText))));
   }
 
   // This is a module for sketch management
@@ -879,9 +1654,31 @@
         sketchTagFilter: "",
         editingSketchIdx: null,
         collectionVersion: 0,
-        remoteDraftNames: new Set()
+        remoteDraftNames: new Set(),
+        targetCollectionId: ''
       };
     }
+    handleTargetCollectionChange = id => {
+      this.setState({
+        targetCollectionId: id
+      });
+    };
+    handleAddSketchToTarget = (collectionId, sketchId) => {
+      this.collectionStorage.addSketchToCollection(collectionId, sketchId);
+      this.handleCollectionChange();
+    };
+    handleRemoveSketchFromTarget = (collectionId, sketchId) => {
+      this.collectionStorage.removeSketchFromCollection(collectionId, sketchId);
+      this.handleCollectionChange();
+    };
+    handleAddFilteredToTarget = (collectionId, sketchIds) => {
+      this.collectionStorage.addMultipleSketchesToCollection(collectionId, sketchIds);
+      this.handleCollectionChange();
+    };
+    handleRemoveFilteredFromTarget = (collectionId, sketchIds) => {
+      this.collectionStorage.removeMultipleSketchesFromCollection(collectionId, sketchIds);
+      this.handleCollectionChange();
+    };
     setTab = tab => {
       this.setState({
         activeTab: tab
@@ -1003,8 +1800,14 @@
         });
       });
     };
-    handleDeleteSketch = name => {
-      if (window.confirm(`Delete "${name}"?`)) {
+    handleDeleteSketch = async name => {
+      const confirmed = await dialogService.confirm({
+        title: 'Delete Sketch',
+        message: `Are you sure you want to delete "${name}"?`,
+        confirmText: 'Delete',
+        isDanger: true
+      });
+      if (confirmed) {
         this.sketchStorage.deleteSketchByName(name);
         const sketches = this.sketchStorage.getSketches();
         this.setState({
@@ -1071,14 +1874,17 @@
       }).catch(err => console.error('Upload failed:', err));
     };
     renderTabs() {
-      const tabs = ['This', 'Sketches', 'Collections', 'Import/Export'];
+      const tabs = ['This', 'Sketches', 'Setlists', 'Import/Export'];
       return /*#__PURE__*/React.createElement("div", {
         className: "modal-tabs"
-      }, tabs.map(tab => /*#__PURE__*/React.createElement("button", {
-        key: tab,
-        className: this.state.activeTab === tab ? 'active' : '',
-        onClick: () => this.setTab(tab)
-      }, tab)));
+      }, tabs.map(tab => {
+        const isActive = this.state.activeTab === tab || tab === 'Setlists' && this.state.activeTab === 'Collections';
+        return /*#__PURE__*/React.createElement("button", {
+          key: tab,
+          className: isActive ? 'active' : '',
+          onClick: () => this.setTab(tab)
+        }, tab);
+      }));
     }
     renderJsonEditor() {
       const {
@@ -1114,6 +1920,12 @@
       }, "Upload")));
     }
     renderSketchesList() {
+      const {
+        collections
+      } = this.collectionStorage ? this.collectionStorage.getCollections() : {
+        collections: []
+      };
+      const activeTarget = this.state.targetCollectionId || collections[0]?.id || '';
       const actions = [{
         label: "Keep these",
         onClick: (filtered, isFiltering) => {
@@ -1122,8 +1934,14 @@
         disabled: (filtered, isFiltering) => filtered.length === 0
       }, {
         label: "Clear all local!",
-        onClick: () => {
-          if (window.confirm("Are you sure you want to clear all local sketches? This cannot be undone.")) {
+        onClick: async () => {
+          const confirmed = await dialogService.confirm({
+            title: 'Clear Local Storage',
+            message: 'Are you sure you want to clear all local sketches? This action cannot be undone.',
+            confirmText: 'Clear All',
+            isDanger: true
+          });
+          if (confirmed) {
             this.sketchStorage.deleteAll();
             this.setState({
               sketches: []
@@ -1134,6 +1952,13 @@
       }];
       return /*#__PURE__*/React.createElement(SketchesList, {
         sketches: this.state.sketches,
+        collections: collections,
+        targetCollectionId: activeTarget,
+        onTargetCollectionChange: this.handleTargetCollectionChange,
+        onAddSketchToTarget: this.handleAddSketchToTarget,
+        onRemoveSketchFromTarget: this.handleRemoveSketchFromTarget,
+        onAddFilteredToTarget: this.handleAddFilteredToTarget,
+        onRemoveFilteredFromTarget: this.handleRemoveFilteredFromTarget,
         filter: this.state.sketchFilter,
         tagFilter: this.state.sketchTagFilter,
         remoteDraftNames: this.state.remoteDraftNames,
@@ -1168,7 +1993,10 @@
         sketches: this.state.sketches,
         activeId: activeId,
         onActiveChange: this.handleCollectionChange,
-        onCollectionsChange: this.handleCollectionChange
+        onCollectionsChange: this.handleCollectionChange,
+        onLoadSketch: sketch => {
+          window.xemitter.emit('gallery:loadSketch', sketch);
+        }
       });
     }
     renderTabContent() {
@@ -1178,6 +2006,7 @@
         case 'Sketches':
           return this.renderSketchesList();
         case 'Collections':
+        case 'Setlists':
           return this.renderCollectionsPanel();
         case 'Import/Export':
           return this.renderImportExport();
@@ -1217,6 +2046,57 @@
   }
 
   // Main App Component
+  class DialogHost extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        dialogConfig: null
+      };
+    }
+    componentDidMount() {
+      this.unsubscribe = dialogService.subscribe(config => {
+        this.setState({
+          dialogConfig: config
+        });
+      });
+    }
+    componentWillUnmount() {
+      if (this.unsubscribe) this.unsubscribe();
+    }
+    handleConfirm = val => {
+      const resolve = this.state.dialogConfig?.resolve;
+      this.setState({
+        dialogConfig: null
+      });
+      if (resolve) resolve(val);
+    };
+    handleCancel = () => {
+      const resolve = this.state.dialogConfig?.resolve;
+      this.setState({
+        dialogConfig: null
+      });
+      if (resolve) resolve(false);
+    };
+    render() {
+      const {
+        dialogConfig
+      } = this.state;
+      if (!dialogConfig || !dialogConfig.isOpen) return null;
+      return /*#__PURE__*/React.createElement(ConfirmModal, {
+        isOpen: dialogConfig.isOpen,
+        title: dialogConfig.title,
+        message: dialogConfig.message,
+        confirmText: dialogConfig.confirmText,
+        cancelText: dialogConfig.cancelText,
+        isDanger: dialogConfig.isDanger,
+        hasInput: dialogConfig.hasInput,
+        defaultValue: dialogConfig.defaultValue,
+        placeholder: dialogConfig.placeholder,
+        onConfirm: this.handleConfirm,
+        onCancel: this.handleCancel
+      });
+    }
+  }
   class SketchApp extends React.Component {
     constructor(props) {
       super(props);
@@ -1235,9 +2115,6 @@
       }
     };
     toggleModal = () => {
-      // if (this.state.isModalVisible) {
-      //     window.xemitter.emit('gallery:updateLocalSketches', this.sketchStorage.getSketches());
-      // }
       this.setState(prevState => ({
         isModalVisible: !prevState.isModalVisible
       }));
@@ -1252,7 +2129,7 @@
         visible: this.state.isModalVisible,
         onClose: this.toggleModal,
         onApplyCollection: this.applyCollectionFilter
-      }));
+      }), /*#__PURE__*/React.createElement(DialogHost, null));
     }
   }
   class SketchManager {
@@ -1835,9 +2712,16 @@
   if (typeof window !== "undefined") {
     window.tapTempo = tapTempo;
     window.addEventListener("keydown", e => {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+        return;
+      }
       if (e.code === "Space" && e.altKey) {
         e.preventDefault();
         tapTempo.tap(e.timeStamp);
+      } else if (e.key === "[") {
+        window.xemitter?.emit('gallery:prevSetlistSketch');
+      } else if (e.key === "]") {
+        window.xemitter?.emit('gallery:nextSetlistSketch');
       }
     });
   }
@@ -2852,5 +3736,5 @@
     });
   }
 
-})();
+})(React);
 //# sourceMappingURL=modules.dist.js.map

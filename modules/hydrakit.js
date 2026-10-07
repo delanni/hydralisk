@@ -179,9 +179,16 @@ export const tapTempo = new TapTempo();
 if (typeof window !== "undefined") {
   window.tapTempo = tapTempo;
   window.addEventListener("keydown", (e) => {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+      return;
+    }
     if (e.code === "Space" && e.altKey) {
       e.preventDefault();
       tapTempo.tap(e.timeStamp);
+    } else if (e.key === "[") {
+      window.xemitter?.emit('gallery:prevSetlistSketch');
+    } else if (e.key === "]") {
+      window.xemitter?.emit('gallery:nextSetlistSketch');
     }
   });
 }

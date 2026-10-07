@@ -1,13 +1,14 @@
-// --- CollectionsPanel: Manage collections of sketches ---
+import React from 'react';
+import { dialogService } from './dialogService.js';
+
+// --- CollectionsPanel: Simplified Setlist Tab (Create, Load/Activate, Delete) ---
 export default function CollectionsPanel({
     collectionStorage,
-    sketches,
     activeId,
     onActiveChange,
     onCollectionsChange
 }) {
     const { collections } = collectionStorage.getCollections();
-    const activeCollection = collectionStorage.getActiveCollection();
 
     const handleSetActive = (id) => {
         collectionStorage.setActiveCollection(id);
@@ -15,16 +16,27 @@ export default function CollectionsPanel({
         onCollectionsChange?.();
     };
 
-    const handleCreateCollection = () => {
-        const name = window.prompt('Collection name:', 'New collection');
-        if (!name) return;
-        collectionStorage.createCollection(name.trim());
+    const handleCreateCollection = async () => {
+        const name = await dialogService.prompt({
+            title: 'Create New Setlist',
+            message: 'Enter a title for your new performance setlist:',
+            defaultValue: 'New Setlist',
+            placeholder: 'Setlist name'
+        });
+        if (!name || !name.trim()) return;
+        const col = collectionStorage.createCollection(name.trim());
+        handleSetActive(col.id);
         onCollectionsChange?.();
     };
 
-    const handleDeleteCollection = (id) => {
-        const col = collections.find((c) => c.id === id);
-        if (!col || !window.confirm(`Delete collection "${col.name}"?`)) return;
+    const handleDeleteCollection = async (id, name) => {
+        const confirmed = await dialogService.confirm({
+            title: 'Delete Setlist',
+            message: `Are you sure you want to delete setlist "${name}"?`,
+            confirmText: 'Delete',
+            isDanger: true
+        });
+        if (!confirmed) return;
         collectionStorage.deleteCollection(id);
         if (activeId === id) {
             collectionStorage.setActiveCollection(null);
@@ -33,132 +45,121 @@ export default function CollectionsPanel({
         onCollectionsChange?.();
     };
 
-    const handleAddSketch = (collectionId, sketchIdOrName) => {
-        collectionStorage.addSketchToCollection(collectionId, sketchIdOrName);
-        onCollectionsChange?.();
-    };
-
-    const handleRemoveSketch = (collectionId, sketchIdOrName) => {
-        collectionStorage.removeSketchFromCollection(collectionId, sketchIdOrName);
-        onCollectionsChange?.();
-    };
-
-    const getSketchId = (sketch) => sketch.id || sketch.name;
-    const isInCollection = (sketch, sketchIds) => {
-        const id = getSketchId(sketch);
-        return sketchIds.includes(id) || sketchIds.includes(sketch.name);
-    };
-
     return (
-        <div>
-            <div style={{ marginBottom: 16 }}>
-                <label style={{ fontWeight: 600, marginRight: 8 }}>Active:</label>
-                <select
-                    value={activeId || ''}
-                    onChange={(e) => handleSetActive(e.target.value || null)}
-                    style={{ padding: 6, minWidth: 160 }}
+        <div className="setlist-manager-panel" style={{ padding: '4px 0' }}>
+            {/* Create New Setlist Action */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <span style={{ fontSize: 13, color: '#64748b' }}>
+                    Manage your performance setlists. Select a setlist to load as active.
+                </span>
+                <button
+                    onClick={handleCreateCollection}
+                    style={{
+                        background: '#3b82f6',
+                        color: '#ffffff',
+                        border: 'none',
+                        padding: '6px 14px',
+                        borderRadius: 4,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        fontSize: 13
+                    }}
                 >
-                    <option value="">All sketches</option>
-                    {collections.map((c) => (
-                        <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                </select>
+                    + Create Setlist
+                </button>
             </div>
 
-            <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <button onClick={handleCreateCollection}>New collection</button>
-            </div>
-
-            <ul className="sketch-list" style={{ listStyle: 'none', padding: 0 }}>
-                {collections.length === 0 && (
-                    <li style={{ color: '#888', marginBottom: 8 }}>No collections yet.</li>
+            {/* Default Unfiltered State Option */}
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justify: 'space-between',
+                    padding: '10px 14px',
+                    marginBottom: 10,
+                    border: !activeId ? '2px solid #3b82f6' : '1px solid #e2e8f0',
+                    borderRadius: 6,
+                    background: !activeId ? '#eff6ff' : '#f8fafc'
+                }}
+            >
+                <div>
+                    <strong style={{ fontSize: 14, color: '#1e293b' }}>All Sketches (Default Unfiltered)</strong>
+                    <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>
+                        Show all sketches in library without setlist filtering
+                    </div>
+                </div>
+                {!activeId ? (
+                    <span style={{ fontSize: 12, fontWeight: 600, color: '#3b82f6', background: '#dbeafe', padding: '3px 10px', borderRadius: 12 }}>
+                        ● Active
+                    </span>
+                ) : (
+                    <button
+                        onClick={() => handleSetActive(null)}
+                        style={{ padding: '4px 12px', fontSize: 12, borderRadius: 4, cursor: 'pointer' }}
+                    >
+                        Load
+                    </button>
                 )}
-                {collections.map((col) => {
-                    const count = col.sketchIds.length;
-                    const isActive = activeId === col.id;
-                    return (
-                        <li
-                            key={col.id}
-                            className="sketch-list-item"
-                            style={{ marginBottom: 8, padding: 8, border: '1px solid #eee', borderRadius: 4 }}
-                        >
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-                                <span>
-                                    <strong>{col.name}</strong>
-                                    <span style={{ color: '#666', marginLeft: 8 }}>({count})</span>
-                                </span>
-                                <span onClick={(e) => e.stopPropagation()}>
-                                    {!isActive && (
+            </div>
+
+            {/* List of Setlists */}
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {collections.length === 0 ? (
+                    <li style={{ color: '#94a3b8', padding: 16, textAlign: 'center', background: '#f8fafc', borderRadius: 6 }}>
+                        No setlists created yet. Click <strong>+ Create Setlist</strong> to start collecting sketches.
+                    </li>
+                ) : (
+                    collections.map((col) => {
+                        const count = col.sketchIds.length;
+                        const isActive = activeId === col.id;
+
+                        return (
+                            <li
+                                key={col.id}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justify: 'space-between',
+                                    padding: '10px 14px',
+                                    marginBottom: 8,
+                                    border: isActive ? '2px solid #3b82f6' : '1px solid #e2e8f0',
+                                    borderRadius: 6,
+                                    background: isActive ? '#eff6ff' : '#ffffff'
+                                }}
+                            >
+                                <div>
+                                    <strong style={{ fontSize: 14, color: '#1e293b' }}>{col.name}</strong>
+                                    <span style={{ fontSize: 12, color: '#64748b', marginLeft: 8 }}>
+                                        ({count} {count === 1 ? 'sketch' : 'sketches'})
+                                    </span>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                                    {isActive ? (
+                                        <span style={{ fontSize: 12, fontWeight: 600, color: '#3b82f6', background: '#dbeafe', padding: '3px 10px', borderRadius: 12 }}>
+                                            ● Active
+                                        </span>
+                                    ) : (
                                         <button
-                                            style={{ marginRight: 8 }}
                                             onClick={() => handleSetActive(col.id)}
+                                            style={{ background: '#22c55e', color: '#ffffff', border: 'none', padding: '4px 12px', borderRadius: 4, fontSize: 12, cursor: 'pointer' }}
                                         >
-                                            Activate
+                                            Load
                                         </button>
                                     )}
+
                                     <button
-                                        style={{ color: 'red' }}
-                                        onClick={() => handleDeleteCollection(col.id)}
+                                        onClick={() => handleDeleteCollection(col.id, col.name)}
+                                        style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: 13, cursor: 'pointer', padding: '4px 8px' }}
+                                        title="Delete setlist"
                                     >
                                         Delete
                                     </button>
-                                </span>
-                            </div>
-                            <div style={{ marginTop: 8, fontSize: 13, maxHeight: 120, overflowY: 'auto' }}>
-                                {sketches.length === 0 ? (
-                                    <span style={{ color: '#888' }}>No sketches in storage.</span>
-                                ) : (
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                                        {sketches.map((sketch) => {
-                                            const sid = getSketchId(sketch);
-                                            const inCol = isInCollection(sketch, col.sketchIds);
-                                            return (
-                                                <span
-                                                    key={sid}
-                                                    style={{
-                                                        display: 'inline-flex',
-                                                        alignItems: 'center',
-                                                        gap: 4,
-                                                        padding: '2px 6px',
-                                                        paddingRight: 4,
-                                                        borderRadius: 4,
-                                                        background: inCol ? '#e0e7ff' : '#f0f0f0',
-                                                        fontSize: 12
-                                                    }}
-                                                >
-                                                    {sketch.name}
-                                                    {inCol ? (
-                                                        <button
-                                                            title="Remove from collection"
-                                                            style={{ padding: '0 4px', fontSize: 10, lineHeight: 1 }}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                handleRemoveSketch(col.id, sid);
-                                                            }}
-                                                        >
-                                                            ✕
-                                                        </button>
-                                                    ) : (
-                                                        <button
-                                                            title="Add to collection"
-                                                            style={{ padding: '0 4px', fontSize: 10, lineHeight: 1 }}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                handleAddSketch(col.id, sid);
-                                                            }}
-                                                        >
-                                                            +
-                                                        </button>
-                                                    )}
-                                                </span>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-                    );
-                })}
+                                </div>
+                            </li>
+                        );
+                    })
+                )}
             </ul>
         </div>
     );

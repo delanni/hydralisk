@@ -1,7 +1,7 @@
 // This is a module for sketch management
 
 // React and ReactDOM are globally defined
-import './sketchManager.css';
+import './sketchmanager.css';
 import SketchStorage from './sketchstorage.js';
 import CollectionStorage, { filterSketchesByCollection } from './collectionStorage.js';
 import SketchFieldsEditor from './sketchFieldsEditor.jsx';
@@ -9,6 +9,8 @@ import MetadataEditor from './metadataEditor.jsx';
 import SketchesList from './sketchesList.jsx';
 import ImportExportPanel from './importExportPanel.jsx';
 import CollectionsPanel from './collectionsPanel.jsx';
+import ConfirmModal from './confirmModal.jsx';
+import { dialogService } from './dialogService.js';
 
 // --- Main Modal Component ---
 class SketchModal extends React.Component {
@@ -28,9 +30,34 @@ class SketchModal extends React.Component {
             sketchTagFilter: "",
             editingSketchIdx: null,
             collectionVersion: 0,
-            remoteDraftNames: new Set()
+            remoteDraftNames: new Set(),
+            targetCollectionId: ''
         };
     }
+
+    handleTargetCollectionChange = (id) => {
+        this.setState({ targetCollectionId: id });
+    };
+
+    handleAddSketchToTarget = (collectionId, sketchId) => {
+        this.collectionStorage.addSketchToCollection(collectionId, sketchId);
+        this.handleCollectionChange();
+    };
+
+    handleRemoveSketchFromTarget = (collectionId, sketchId) => {
+        this.collectionStorage.removeSketchFromCollection(collectionId, sketchId);
+        this.handleCollectionChange();
+    };
+
+    handleAddFilteredToTarget = (collectionId, sketchIds) => {
+        this.collectionStorage.addMultipleSketchesToCollection(collectionId, sketchIds);
+        this.handleCollectionChange();
+    };
+
+    handleRemoveFilteredFromTarget = (collectionId, sketchIds) => {
+        this.collectionStorage.removeMultipleSketchesFromCollection(collectionId, sketchIds);
+        this.handleCollectionChange();
+    };
 
     setTab = (tab) => {
         this.setState({ activeTab: tab });
@@ -148,8 +175,14 @@ class SketchModal extends React.Component {
             });
     };
 
-    handleDeleteSketch = (name) => {
-        if (window.confirm(`Delete "${name}"?`)) {
+    handleDeleteSketch = async (name) => {
+        const confirmed = await dialogService.confirm({
+            title: 'Delete Sketch',
+            message: `Are you sure you want to delete "${name}"?`,
+            confirmText: 'Delete',
+            isDanger: true
+        });
+        if (confirmed) {
             this.sketchStorage.deleteSketchByName(name);
             const sketches = this.sketchStorage.getSketches();
             this.setState({ sketches });
@@ -219,18 +252,21 @@ class SketchModal extends React.Component {
     };
 
     renderTabs() {
-        const tabs = ['This', 'Sketches', 'Collections', 'Import/Export'];
+        const tabs = ['This', 'Sketches', 'Setlists', 'Import/Export'];
         return (
             <div className="modal-tabs">
-                {tabs.map((tab) => (
-                    <button
-                        key={tab}
-                        className={this.state.activeTab === tab ? 'active' : ''}
-                        onClick={() => this.setTab(tab)}
-                    >
-                        {tab}
-                    </button>
-                ))}
+                {tabs.map((tab) => {
+                    const isActive = this.state.activeTab === tab || (tab === 'Setlists' && this.state.activeTab === 'Collections');
+                    return (
+                        <button
+                            key={tab}
+                            className={isActive ? 'active' : ''}
+                            onClick={() => this.setTab(tab)}
+                        >
+                            {tab}
+                        </button>
+                    );
+                })}
             </div>
         );
     }
@@ -278,6 +314,9 @@ class SketchModal extends React.Component {
     }
 
     renderSketchesList() {
+        const { collections } = this.collectionStorage ? this.collectionStorage.getCollections() : { collections: [] };
+        const activeTarget = this.state.targetCollectionId || (collections[0]?.id || '');
+
         const actions = [
             {
                 label: "Keep these",
@@ -288,8 +327,14 @@ class SketchModal extends React.Component {
             },
             {
                 label: "Clear all local!",
-                onClick: () => {
-                    if (window.confirm("Are you sure you want to clear all local sketches? This cannot be undone.")) {
+                onClick: async () => {
+                    const confirmed = await dialogService.confirm({
+                        title: 'Clear Local Storage',
+                        message: 'Are you sure you want to clear all local sketches? This action cannot be undone.',
+                        confirmText: 'Clear All',
+                        isDanger: true
+                    });
+                    if (confirmed) {
                         this.sketchStorage.deleteAll();
                         this.setState({ sketches: [] });
                         window.xemitter.emit('gallery:updateLocalSketches', []);
@@ -300,6 +345,13 @@ class SketchModal extends React.Component {
         return (
             <SketchesList
                 sketches={this.state.sketches}
+                collections={collections}
+                targetCollectionId={activeTarget}
+                onTargetCollectionChange={this.handleTargetCollectionChange}
+                onAddSketchToTarget={this.handleAddSketchToTarget}
+                onRemoveSketchFromTarget={this.handleRemoveSketchFromTarget}
+                onAddFilteredToTarget={this.handleAddFilteredToTarget}
+                onRemoveFilteredFromTarget={this.handleRemoveFilteredFromTarget}
                 filter={this.state.sketchFilter}
                 tagFilter={this.state.sketchTagFilter}
                 remoteDraftNames={this.state.remoteDraftNames}
@@ -336,6 +388,9 @@ class SketchModal extends React.Component {
                 activeId={activeId}
                 onActiveChange={this.handleCollectionChange}
                 onCollectionsChange={this.handleCollectionChange}
+                onLoadSketch={(sketch) => {
+                    window.xemitter.emit('gallery:loadSketch', sketch);
+                }}
             />
         );
     }
@@ -347,6 +402,7 @@ class SketchModal extends React.Component {
             case 'Sketches':
                 return this.renderSketchesList();
             case 'Collections':
+            case 'Setlists':
                 return this.renderCollectionsPanel();
             case 'Import/Export':
                 return this.renderImportExport();
@@ -380,6 +436,56 @@ class SketchModal extends React.Component {
 }
 
 // Main App Component
+class DialogHost extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { dialogConfig: null };
+    }
+
+    componentDidMount() {
+        this.unsubscribe = dialogService.subscribe((config) => {
+            this.setState({ dialogConfig: config });
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribe) this.unsubscribe();
+    }
+
+    handleConfirm = (val) => {
+        const resolve = this.state.dialogConfig?.resolve;
+        this.setState({ dialogConfig: null });
+        if (resolve) resolve(val);
+    };
+
+    handleCancel = () => {
+        const resolve = this.state.dialogConfig?.resolve;
+        this.setState({ dialogConfig: null });
+        if (resolve) resolve(false);
+    };
+
+    render() {
+        const { dialogConfig } = this.state;
+        if (!dialogConfig || !dialogConfig.isOpen) return null;
+
+        return (
+            <ConfirmModal
+                isOpen={dialogConfig.isOpen}
+                title={dialogConfig.title}
+                message={dialogConfig.message}
+                confirmText={dialogConfig.confirmText}
+                cancelText={dialogConfig.cancelText}
+                isDanger={dialogConfig.isDanger}
+                hasInput={dialogConfig.hasInput}
+                defaultValue={dialogConfig.defaultValue}
+                placeholder={dialogConfig.placeholder}
+                onConfirm={this.handleConfirm}
+                onCancel={this.handleCancel}
+            />
+        );
+    }
+}
+
 class SketchApp extends React.Component {
     constructor(props) {
         super(props);
@@ -400,9 +506,6 @@ class SketchApp extends React.Component {
     };
 
     toggleModal = () => {
-        // if (this.state.isModalVisible) {
-        //     window.xemitter.emit('gallery:updateLocalSketches', this.sketchStorage.getSketches());
-        // }
         this.setState((prevState) => ({
             isModalVisible: !prevState.isModalVisible,
         }));
@@ -422,6 +525,7 @@ class SketchApp extends React.Component {
                     onClose={this.toggleModal}
                     onApplyCollection={this.applyCollectionFilter}
                 />
+                <DialogHost />
             </div>
         );
     }
