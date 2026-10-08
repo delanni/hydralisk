@@ -11,6 +11,8 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 
 - **2026-10-07**: Created `DEVELOPER_HANDBOOK.md` (v0.1) and this notebook. The history before this date is summarised in handbook §9. Both docs live at the repo root and are committed.
 - **2026-10-08**: Upgraded Scene Management & Search Component: implemented `SketchSearchFilter` (fuzzy matching, interactive tag cloud pills, search stats), redesigned `CollectionsPanel` into full Setlist Manager (scene reordering, target BPM, cue notes, live stepper, duplicate, export/import JSON), and added `[`/`]` setlist navigation hotkeys.
+- **2026-10-08**: Modular Core Extraction: Refactored custom features out of `bundle.min.js` into standalone `HydraliskPlugins` modules (`modules/automutate.js`, `modules/sketchLibrary.js`, `modules/editorActions.js`, `modules/hydraliskExtras.js`), streamlining `bundle.min.js` into a minimal host bundle ready for upstream Hydra updates.
+- **2026-10-08**: Fixed mutation code formatting by delegating directly to the native `editor.formatCode()` command in `Mutator.mutate()` ([modules/automutate.js](file:///Users/web/Git/hydralisk/modules/automutate.js)) and [modules/editorActions.js](file:///Users/web/Git/hydralisk/modules/editorActions.js) (ensuring `indent_with_tabs: true` and `break_chained_methods: true` format settings align 1:1 with the code editor layout).
 
 ## 3. Architecture & Technical Decisions (ADRs)
 
@@ -18,6 +20,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - **ADR-002 (2025-05, retroactive): New UI goes in `modules/` (React via global UMD, rollup IIFE)** or standalone scripts, not into the bundle.
 - **ADR-003 (retroactive): `xemitter` event bus is the integration point.** It lets keys, toolbar, MIDI, and the Sketch Manager share actions.
 - **ADR-004 (retroactive): Static site, no runtime deps.** Remote storage is DynamoDB accessed from the browser.
+- **ADR-005 (2026-10-08): Modular Plugin Architecture.** Extract all custom application logic (randomizers, mutator AST transformations, sketch library state, hotkey prevention & shortcut dispatch, speed settings, and custom shader functions) into `modules/` plugins registered with `HydraliskPlugins`.
 
 ## 4. Features & Current Capabilities
 
@@ -39,7 +42,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - [ ] **three.js integration** (`three.objects.js` exists but isn't wired in).
 - [ ] **player.html as the main performance UI**.
 - [ ] **UI cleanup**: replace `prompt`/`alert`/`confirm` and the rudimentary buttons.
-- [ ] **Rebuild from real Hydra sources** to get away from the hacked bundle.
+- [x] **Rebuild from real Hydra sources**: extracted features to modular plugins (`modules/`) so `bundle.min.js` remains a minimal host.
 - [ ] **Netlify deploys**: preview deploys from PRs plus production from `gh-pages`.
 
 ## 5. Potentials & Future Opportunities

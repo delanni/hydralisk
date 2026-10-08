@@ -179,13 +179,17 @@ export const tapTempo = new TapTempo();
 if (typeof window !== "undefined") {
   window.tapTempo = tapTempo;
   window.addEventListener("keydown", (e) => {
+    const isOptionSpace = e.altKey && (e.code === "Space" || e.key === " " || e.key === "Spacebar");
+    if (isOptionSpace) {
+      e.preventDefault();
+      e.stopPropagation();
+      tapTempo.tap(e.timeStamp);
+      return;
+    }
     if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
       return;
     }
-    if (e.code === "Space" && e.altKey) {
-      e.preventDefault();
-      tapTempo.tap(e.timeStamp);
-    } else if (e.key === "[") {
+    if (e.key === "[") {
       window.xemitter?.emit('gallery:prevSetlistSketch');
     } else if (e.key === "]") {
       window.xemitter?.emit('gallery:nextSetlistSketch');
@@ -383,6 +387,9 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
       if (app.on) {
         app.on("taptempo", () => tapTempo.tap());
         app.on("bpm:taptempo", () => tapTempo.tap());
+        app.on("bpm:change", (bpmVal) => {
+          if (typeof window !== "undefined") window.bpm = bpmVal;
+        });
       }
       app.expose("midiEngine", midiEngine);
       app.expose("tapTempo", tapTempo);

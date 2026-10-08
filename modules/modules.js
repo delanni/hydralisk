@@ -10,6 +10,10 @@ import './hydrakit.js';
 import './midi-mapping.js';
 import './hyper-hydra.convolutions.js';
 import './three.objects.js';
+import './automutate.js';
+import './sketchLibrary.js';
+import './editorActions.js';
+import './hydraliskExtras.js';
 
 window.Modules = {
     SketchManager
