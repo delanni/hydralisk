@@ -827,6 +827,12 @@ function toggleCollapse() {
   updateTouchActionsUI();
 }
 
+function isMobileDevice() {
+  return window.matchMedia('(max-width: 768px)').matches ||
+         ('ontouchstart' in window && window.innerWidth <= 1024) ||
+         /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
 function isUIHidden() {
   const panel = document.getElementById('sidebar-panel');
   const shortcuts = document.getElementById('shortcuts-panel');
@@ -839,13 +845,23 @@ function updateTouchActionsUI() {
   const floatingActions = document.getElementById('floating-hud-actions');
   const hudBtn = document.getElementById('touch-actions-hud-btn');
   const floatingBtn = document.getElementById('touch-actions-floating-btn');
+  const shortcuts = document.getElementById('shortcuts-panel');
+  const isMobile = isMobileDevice();
   const hidden = isUIHidden();
 
+  // On mobile screens, hide QWERTY keyboard shortcuts guide and auto-enable touch mode
+  if (isMobile) {
+    if (shortcuts) {
+      shortcuts.classList.add('hidden');
+    }
+  }
+
   if (floatingActions) {
-    floatingActions.classList.toggle('visible', hidden);
+    floatingActions.classList.toggle('visible', hidden || isMobile);
   }
   if (overlay) {
-    overlay.classList.toggle('visible', hidden && touchActionsEnabled);
+    // Automatically display mobile GUI/HUD on mobile devices or when UI is hidden with touch actions enabled
+    overlay.classList.toggle('visible', (isMobile || hidden) && touchActionsEnabled);
   }
   if (hudBtn) {
     hudBtn.classList.toggle('active', touchActionsEnabled);
@@ -1167,5 +1183,10 @@ document.addEventListener('DOMContentLoaded', () => {
       updateAuthUI(false);
     }
   }
+
+  if (isMobileDevice()) {
+    touchActionsEnabled = true;
+  }
   updateTouchActionsUI();
+  window.addEventListener('resize', updateTouchActionsUI);
 });

@@ -150,7 +150,7 @@ body {
   top: 20px;
   left: 20px;
   bottom: 20px;
-  width: 380px;
+  width: min(380px, calc(100vw - 40px));
   background: var(--bg-glass);
   backdrop-filter: blur(16px);
   border: 1px solid var(--border-glass);
@@ -499,6 +499,7 @@ body {
 
 .code-textarea {
   flex: 1;
+  min-height: 200px;
   height: 320px;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--border-glass);
@@ -721,7 +722,7 @@ body {
   transform: translateY(-20px);
   opacity: 0;
   animation: slide-in-toast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 @keyframes slide-in-toast {
@@ -777,11 +778,18 @@ body {
   pointer-events: none;
   z-index: 18;
   opacity: 0;
+  visibility: hidden;
   transition: var(--transition-smooth);
 }
 
 .touch-actions-overlay.visible {
   opacity: 1;
+  visibility: visible;
+}
+
+.touch-actions-overlay:not(.visible) .touch-actions-card {
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .touch-actions-card {
@@ -797,6 +805,28 @@ body {
   padding: 14px;
   pointer-events: auto;
 }
+
+@media (max-width: 768px) {
+  .sidebar-panel {
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    width: calc(100vw - 20px);
+    border-radius: 16px;
+  }
+
+  .sidebar-panel.collapsed {
+    transform: translateX(calc(-100% - 20px));
+  }
+
+  .toast-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    align-items: flex-end;
+  }
+}
+
 
 .touch-actions-header {
   display: flex;
