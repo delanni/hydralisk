@@ -977,33 +977,76 @@ function updateAuthUI(isAuthenticated) {
   }
 }
 
-// Hook up Event Emitter for midi-mapping.js integration
-if (window.xemitter) {
-  window.xemitter.on("gallery:nextSketch", () => playNextSketch());
-  window.xemitter.on("gallery:prevSketch", (payload) => {
-    if (payload && payload.backwards) {
-      playPrevSketch();
-    } else {
-      playNextSketch();
+// Tap tempo calculator for Option+Space / Alt+Space & xemitter
+function handleTapTempo(evt = {}) {
+  if (evt && typeof evt.bpm === "number") {
+    baseBpm = evt.bpm;
+    updateBPM(evt.bpm);
+    const bpmInput = document.getElementById('bpm-number-input');
+    if (bpmInput) bpmInput.value = evt.bpm;
+    showToast(`Tap Tempo: ${evt.bpm} BPM`);
+    return;
+  }
+
+  const now = Date.now();
+  tapTimes.push(now);
+  if (tapTimes.length > 4) tapTimes.shift();
+
+  if (tapTimes.length > 1) {
+    const intervals = [];
+    for (let i = 1; i < tapTimes.length; i++) {
+      intervals.push(tapTimes[i] - tapTimes[i - 1]);
     }
-  });
+    const avgMs = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+    const calculatedBpm = Math.round(60000 / avgMs);
+
+    if (calculatedBpm >= 30 && calculatedBpm <= 300) {
+      baseBpm = calculatedBpm;
+      updateBPM(calculatedBpm);
+      const bpmInput = document.getElementById('bpm-number-input');
+      if (bpmInput) bpmInput.value = calculatedBpm;
+      showToast(`Tap Tempo: ${calculatedBpm} BPM`);
+    }
+  }
+}
+
+// Hook up Event Emitter for core editor hotkeys & midi-mapping.js integration
+if (window.xemitter) {
+  window.xemitter.on("taptempo", (data) => handleTapTempo(data));
+  window.xemitter.on("bpm:taptempo", (data) => handleTapTempo(data));
+  window.xemitter.on("gallery:nextSketch", () => playNextSketch());
+  window.xemitter.on("gallery:prevSketch", () => playPrevSketch());
   window.xemitter.on("gallery:randomSketch", () => playRandomSketch());
+  window.xemitter.on("editor:randomize", () => triggerMutation());
+  window.xemitter.on("editor:jumpBack1", () => undoMutation());
+  window.xemitter.on("gfx:speedSlower", () => nudgeSpeed(-0.1));
+  window.xemitter.on("gfx:speedFaster", () => nudgeSpeed(0.1));
+  window.xemitter.on("gfx:speedDefault", () => {
+    window.speed = 1.0;
+    const speedSlider = document.getElementById('speed-slider');
+    const speedVal = document.getElementById('speed-val');
+    if (speedSlider) speedSlider.value = "1.0";
+    if (speedVal) speedVal.innerText = "1.0x";
+    showToast("Speed: 1.0x");
+  });
+  window.xemitter.on("gfx:speedReverse", () => {
+    window.speed = -1 * (window.speed || 1.0);
+    const speedVal = document.getElementById('speed-val');
+    if (speedVal) speedVal.innerText = window.speed.toFixed(1) + "x";
+    showToast(`Speed: ${window.speed.toFixed(1)}x`);
+  });
   window.xemitter.on("hideAll", () => toggleUI());
   window.xemitter.on("fullscreen", () => toggleFullscreen());
 }
 
 // Listen to keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-  // If editing code, don't trigger playback shortcuts
+  // If editing code in textarea or input, don't trigger global playback shortcuts
   if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') {
     return;
   }
 
   switch (e.code) {
-    case 'Space':
-      e.preventDefault();
-      togglePlayPause();
-      break;
     case 'ArrowLeft':
       e.preventDefault();
       playPrevSketch();
