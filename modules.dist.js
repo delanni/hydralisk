@@ -18497,7 +18497,7 @@
 	      });
 
 	      // Global Keydown Listener & Prevention List
-	      const PREVENT_LIST = ["Cmd-H", "Cmd-Q", "Cmd-[", "Cmd-O", "Cmd-P", "Cmd-S", "Cmd-W", "Cmd-T", "Cmd-N", "Cmd-M", "Cmd-A"];
+	      const PREVENT_LIST = ["Cmd-H", "Shift-Ctrl-H", "Ctrl-Shift-H", "Cmd-Q", "Cmd-[", "Cmd-O", "Cmd-P", "Cmd-S", "Shift-Ctrl-S", "Ctrl-Shift-S", "Cmd-W", "Cmd-T", "Cmd-N", "Cmd-M", "Cmd-A", "Shift-Ctrl-F", "Ctrl-Shift-F", "Shift-Ctrl-G", "Ctrl-Shift-G"];
 	      document.addEventListener("keydown", evt => {
 	        if (!evt.key) return;
 	        const isOptionSpace = evt.altKey && (evt.code === "Space" || evt.key === " " || evt.key === "Spacebar");
@@ -18507,74 +18507,112 @@
 	          app.emit("taptempo");
 	          return;
 	        }
-	        const prefixes = [evt.metaKey && "Cmd", evt.ctrlKey && "Ctrl", evt.altKey && "Alt", evt.shiftKey && "Shift"].filter(Boolean).sort();
+	        const prefixes = [evt.shiftKey && "Shift", evt.ctrlKey && "Ctrl", evt.metaKey && "Cmd", evt.altKey && "Alt"].filter(Boolean);
+	        const altPrefixes = [evt.ctrlKey && "Ctrl", evt.shiftKey && "Shift", evt.metaKey && "Cmd", evt.altKey && "Alt"].filter(Boolean);
 	        const prefix = prefixes.join("-");
+	        const altPrefix = altPrefixes.join("-");
 	        const key = evt.key.toUpperCase();
 	        const combo = prefix ? `${prefix}-${key}` : key;
-	        if (PREVENT_LIST.includes(combo)) {
+	        const altCombo = altPrefix ? `${altPrefix}-${key}` : key;
+	        const matchCombo = (...targets) => targets.some(t => t === combo || t === altCombo);
+	        if (PREVENT_LIST.includes(combo) || PREVENT_LIST.includes(altCombo)) {
 	          evt.preventDefault();
 	          evt.stopPropagation();
 	        }
 
 	        // Custom keyboard shortcuts map
-	        if (combo === "Cmd-S") {
+	        if (matchCombo("Cmd-S")) {
+	          evt.preventDefault();
 	          app.emit("editor:quickSave");
-	        } else if (combo === "Cmd-L") {
+	        } else if (matchCombo("Cmd-L")) {
+	          evt.preventDefault();
 	          app.emit("editor:quickLoad");
-	        } else if (combo === "Cmd-]") {
+	        } else if (matchCombo("Cmd-]")) {
+	          evt.preventDefault();
 	          app.emit("gallery:nextSketch", evt);
-	        } else if (combo === "Cmd-\\") {
+	        } else if (matchCombo("Cmd-\\")) {
+	          evt.preventDefault();
 	          app.emit("gallery:prevSketch", evt);
-	        } else if (combo === "Cmd-[") {
+	        } else if (matchCombo("Cmd-[")) {
+	          evt.preventDefault();
 	          app.emit("editor:jumpBack1", evt);
-	        } else if (combo === "Cmd-Shift-[") {
+	        } else if (matchCombo("Cmd-Shift-[", "Shift-Cmd-[")) {
+	          evt.preventDefault();
 	          app.emit("editor:jumpBack5", evt);
-	        } else if (combo === "Cmd-O") {
+	        } else if (matchCombo("Cmd-O")) {
+	          evt.preventDefault();
 	          app.emit("gallery:toggleSketchManager");
-	        } else if (combo === "Shift-Ctrl-F" || combo === "Shift-Ctrl-G") {
+	        } else if (matchCombo("Shift-Ctrl-F")) {
+	          evt.preventDefault();
+	          app.emit("editor:formatCode");
+	        } else if (matchCombo("Shift-Ctrl-G")) {
+	          evt.preventDefault();
 	          app.emit("fullscreen");
-	        } else if (combo === "Shift-Ctrl-H" || combo === "Cmd-H") {
+	        } else if (matchCombo("Shift-Ctrl-H", "Cmd-H")) {
+	          evt.preventDefault();
 	          app.emit("hideAll");
-	        } else if (combo === "Shift-Ctrl-X") {
+	        } else if (matchCombo("Shift-Ctrl-X")) {
+	          evt.preventDefault();
 	          app.emit("editor:toggleAutomutate", {
 	            lastCombo: combo
 	          });
-	        } else if (combo === "Shift-Ctrl-0") {
+	        } else if (matchCombo("Shift-Ctrl-0")) {
+	          evt.preventDefault();
 	          app.emit("editor:toggleAutomutate", {
 	            lastCombo: "0"
 	          });
-	        } else if (combo === "Shift-Ctrl-1") {
+	        } else if (matchCombo("Shift-Ctrl-1")) {
+	          evt.preventDefault();
 	          app.emit("editor:toggleAutomutate", {
 	            lastCombo: "1"
 	          });
-	        } else if (combo === "Shift-Ctrl-2") {
+	        } else if (matchCombo("Shift-Ctrl-2")) {
+	          evt.preventDefault();
 	          app.emit("editor:toggleAutomutate", {
 	            lastCombo: "2"
 	          });
-	        } else if (combo === "Shift-Ctrl-3") {
+	        } else if (matchCombo("Shift-Ctrl-3")) {
+	          evt.preventDefault();
 	          app.emit("editor:toggleAutomutate", {
 	            lastCombo: "3"
 	          });
-	        } else if (combo === "Shift-Ctrl-4") {
+	        } else if (matchCombo("Shift-Ctrl-4")) {
+	          evt.preventDefault();
 	          app.emit("editor:toggleAutomutate", {
 	            lastCombo: "4"
 	          });
-	        } else if (combo === "Shift-Ctrl-5") {
+	        } else if (matchCombo("Shift-Ctrl-5")) {
+	          evt.preventDefault();
 	          app.emit("editor:toggleAutomutate", {
 	            lastCombo: "5"
 	          });
-	        } else if (combo === "Shift-Ctrl-7") {
+	        } else if (matchCombo("Shift-Ctrl-7")) {
+	          evt.preventDefault();
 	          app.emit("gfx:speedSlower");
-	        } else if (combo === "Shift-Ctrl-8") {
+	        } else if (matchCombo("Shift-Ctrl-8")) {
+	          evt.preventDefault();
 	          app.emit("gfx:speedDefault");
-	        } else if (combo === "Shift-Ctrl-9") {
+	        } else if (matchCombo("Shift-Ctrl-9")) {
+	          evt.preventDefault();
 	          app.emit("gfx:speedFaster");
-	        } else if (combo === "Shift-Cmd-8") {
+	        } else if (matchCombo("Shift-Cmd-8", "Cmd-Shift-8")) {
+	          evt.preventDefault();
 	          app.emit("gfx:speedReverse");
-	        } else if (combo === "Cmd-D") {
+	        } else if (matchCombo("Cmd-D")) {
+	          evt.preventDefault();
 	          app.emit("editor:duplicateLine");
-	        } else if (combo === "Shift-Ctrl-K") {
+	        } else if (matchCombo("Shift-Ctrl-K")) {
+	          evt.preventDefault();
 	          app.emit("editor:commentLine");
+	        } else if (matchCombo("Shift-Ctrl-C")) {
+	          evt.preventDefault();
+	          app.emit("gallery:search");
+	        } else if (matchCombo("Shift-Ctrl-S")) {
+	          evt.preventDefault();
+	          app.emit("screencap");
+	        } else if (matchCombo("Shift-Ctrl-L")) {
+	          evt.preventDefault();
+	          app.emit("gallery:saveToURL");
 	        }
 	      });
 	    }
