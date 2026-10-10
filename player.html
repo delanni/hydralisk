@@ -52,7 +52,7 @@
     <script src="./modules.dist.js" defer></script>
     
     <!-- Main player controller -->
-    <script src="./player.js" defer></script>
+    <script src="./player.dist.js" defer></script>
   </head>
   <body>
     <!-- Splash Screen (unlocks browser AudioContext & WebMIDI via gesture) -->
@@ -74,8 +74,13 @@
     <!-- Background Fullscreen Hydra Canvas -->
     <canvas id="hydra-canvas"></canvas>
 
-    <!-- Toast Notifications Container -->
-    <div id="toast-container" class="toast-container"></div>
+    <!-- Intercom System Ticker Bar (Thin Top Row) -->
+    <div id="intercom-bar" class="intercom-bar">
+      <div id="intercom-badge" class="intercom-badge">HYDRA // SYS</div>
+      <div id="intercom-viewport" class="intercom-viewport">
+        <div id="intercom-track" class="intercom-track"></div>
+      </div>
+    </div>
 
     <!-- Floating Expand Button (visible when sidebar is collapsed) -->
     <div id="expand-trigger" class="expand-trigger" onclick="toggleCollapse()" title="Show Controls">
@@ -90,6 +95,9 @@
       <button id="touch-actions-floating-btn" class="floating-hud-btn" onclick="toggleTouchActions()" title="Toggle Touch Actions">
         TOUCH
       </button>
+      <button id="floating-editor-btn" class="floating-hud-btn" onclick="openEditorWithCurrentSketch()" title="Open Full Editor">
+        EDITOR ↗
+      </button>
     </div>
 
     <!-- Floating Controls Panel Drawer -->
@@ -98,6 +106,9 @@
       <div class="panel-header">
         <h2 class="panel-title">HYDRALISK</h2>
         <div class="header-status">
+          <button id="nav-editor-btn" class="nav-editor-btn" onclick="openEditorWithCurrentSketch()" title="Open Full Editor">
+            Editor ↗
+          </button>
           <div id="audio-indicator-dot" class="status-dot" title="Audio Reactive Ready"></div>
           <div id="midi-indicator-dot" class="status-dot" title="MIDI Access Active"></div>
           <button class="collapse-btn" onclick="toggleCollapse()" title="Hide Sidebar">
