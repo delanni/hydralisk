@@ -92,6 +92,9 @@
         <div class="header-status">
           <div id="audio-indicator-dot" class="status-dot" title="Audio Reactive Ready"></div>
           <div id="midi-indicator-dot" class="status-dot" title="MIDI Access Active"></div>
+          <button class="collapse-btn" onclick="window.hydraFeedback ? window.hydraFeedback.toggle() : window.xemitter.emit('feedback:toggle')" title="Report Bug / Send Feedback (Cmd+Shift+F)" style="display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
+            💬
+          </button>
           <button class="collapse-btn" onclick="toggleCollapse()" title="Hide Sidebar">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M15 18l-6-6 6-6" />
@@ -333,6 +336,7 @@
       <span><span class="shortcut-key">R</span> Shuffle</span>
       <span><span class="shortcut-key">H</span> Toggle HUD</span>
       <span><span class="shortcut-key">F</span> Fullscreen</span>
+      <span><span class="shortcut-key">⌘⇧F</span> Feedback</span>
     </div>
   </body>
 </html>

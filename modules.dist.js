@@ -1,4 +1,4 @@
-(function (React$1) {
+(function (React$1, ReactDOM$1) {
 	'use strict';
 
 	function getDefaultExportFromCjs (x) {
@@ -188,8 +188,8 @@
 	  }
 	}
 
-	var css_248z = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
-	styleInject(css_248z);
+	var css_248z$1 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
+	styleInject(css_248z$1);
 
 	// This is a module for managing sketch storage in a web application, through localStorage.
 
@@ -2160,6 +2160,497 @@
 	      console.error("SketchManager is not initialized with an app instance");
 	    }
 	  }
+	}
+
+	var css_248z = "/* Hydralisk Feedback & Bug Reporting Modal CSS */\n\n.feedback-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(8, 8, 14, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 99999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  animation: feedbackFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  box-sizing: border-box;\n}\n\n@keyframes feedbackFadeIn {\n  from {\n    opacity: 0;\n    transform: scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n.feedback-modal-card {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);\n  border-radius: 14px;\n  width: 100%;\n  max-width: 580px;\n  max-height: 90vh;\n  display: flex;\n  flex-direction: column;\n  color: #f8fafc;\n  font-family: 'Outfit', system-ui, -apple-system, sans-serif;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n\n.feedback-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 18px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n}\n\n.feedback-modal-title {\n  margin: 0;\n  font-size: 1.15rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.feedback-modal-badge {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  font-size: 0.65rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  padding: 3px 8px;\n  border-radius: 9999px;\n  letter-spacing: 1px;\n}\n\n.feedback-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 1.5rem;\n  cursor: pointer;\n  line-height: 1;\n  padding: 4px 8px;\n  border-radius: 6px;\n  transition: all 0.2s ease;\n}\n\n.feedback-close-btn:hover {\n  color: #ffffff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.feedback-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  box-sizing: border-box;\n}\n\n/* Category Pills */\n.feedback-category-group {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n\n.feedback-cat-pill {\n  background: rgba(30, 41, 59, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #cbd5e1;\n  padding: 8px 14px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 500;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-cat-pill:hover {\n  border-color: rgba(0, 242, 254, 0.4);\n  background: rgba(30, 41, 59, 0.9);\n}\n\n.feedback-cat-pill.active {\n  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);\n  border-color: #00f2fe;\n  color: #00f2fe;\n  font-weight: 600;\n  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);\n}\n\n/* Ratings */\n.feedback-rating-container {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  background: rgba(30, 41, 59, 0.3);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.feedback-rating-label {\n  font-size: 0.82rem;\n  color: #94a3b8;\n  font-weight: 500;\n}\n\n.feedback-stars-row {\n  display: flex;\n  gap: 6px;\n}\n\n.feedback-star-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.25rem;\n  cursor: pointer;\n  opacity: 0.35;\n  transition: transform 0.15s ease, opacity 0.15s ease;\n  padding: 2px 4px;\n}\n\n.feedback-star-btn.selected,\n.feedback-star-btn:hover {\n  opacity: 1;\n  transform: scale(1.2);\n}\n\n/* Form Inputs */\n.feedback-field-group {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.feedback-label {\n  font-size: 0.8rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: #94a3b8;\n}\n\n.feedback-input,\n.feedback-textarea {\n  width: 100%;\n  background: rgba(15, 23, 42, 0.8);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 8px;\n  padding: 10px 14px;\n  color: #f8fafc;\n  font-size: 0.9rem;\n  font-family: inherit;\n  box-sizing: border-box;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\n.feedback-input:focus,\n.feedback-textarea:focus {\n  border-color: #00f2fe;\n  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);\n}\n\n.feedback-textarea {\n  min-height: 100px;\n  resize: vertical;\n  line-height: 1.5;\n}\n\n/* Toggle Checkbox */\n.feedback-checkbox-wrapper {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  cursor: pointer;\n  user-select: none;\n  background: rgba(30, 41, 59, 0.4);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.feedback-checkbox-wrapper input[type=\"checkbox\"] {\n  accent-color: #00f2fe;\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.feedback-checkbox-text {\n  font-size: 0.85rem;\n  color: #cbd5e1;\n}\n\n/* Diagnostic Details Box */\n.feedback-diag-box {\n  background: rgba(8, 8, 12, 0.9);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 12px;\n  font-family: 'JetBrains Mono', monospace;\n  font-size: 0.75rem;\n  color: #a7f3d0;\n  max-height: 140px;\n  overflow-y: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n/* Modal Actions */\n.feedback-modal-actions {\n  padding: 16px 24px;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n  display: flex;\n  gap: 10px;\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n.feedback-btn {\n  background: rgba(51, 65, 85, 0.8);\n  color: #f8fafc;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  padding: 9px 16px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-btn:hover {\n  background: rgba(71, 85, 105, 0.9);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.feedback-btn.primary {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  border: none;\n  box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);\n}\n\n.feedback-btn.primary:hover {\n  filter: brightness(1.1);\n  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);\n}\n\n/* Success State Overlay */\n.feedback-success-card {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 40px 24px;\n  text-align: center;\n  gap: 14px;\n}\n\n.feedback-success-icon {\n  font-size: 3rem;\n  animation: bounceSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n\n@keyframes bounceSuccess {\n  0% { transform: scale(0); }\n  50% { transform: scale(1.2); }\n  100% { transform: scale(1); }\n}\n\n.feedback-toast-notification {\n  position: fixed;\n  bottom: 24px;\n  right: 24px;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid #00f2fe;\n  color: #ffffff;\n  padding: 12px 20px;\n  border-radius: 8px;\n  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.3);\n  z-index: 100000;\n  font-family: 'Outfit', sans-serif;\n  font-size: 0.9rem;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  animation: toastSlideUp 0.3s ease-out;\n}\n\n@keyframes toastSlideUp {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n";
+	styleInject(css_248z);
+
+	/**
+	 * Hydralisk Feedback & Diagnostic Service
+	 * Collects runtime diagnostics, WebGL stats, sketch details, and error logs for bug reporting.
+	 */
+
+	class FeedbackDiagnosticService {
+	  constructor() {
+	    this.errorBuffer = [];
+	    this.maxErrorBufferSize = 15;
+	    this.subscribers = new Set();
+	    this.isOpen = false;
+	    this.initErrorListeners();
+	  }
+	  initErrorListeners() {
+	    if (typeof window === 'undefined') return;
+
+	    // Listen for global uncaught JavaScript errors
+	    window.addEventListener('error', event => {
+	      this.pushErrorLog({
+	        type: 'uncaught-error',
+	        message: event.message || String(event.error),
+	        filename: event.filename,
+	        lineno: event.lineno,
+	        colno: event.colno,
+	        stack: event.error ? event.error.stack : null,
+	        timestamp: new Date().toISOString()
+	      });
+	    });
+
+	    // Listen for unhandled promise rejections
+	    window.addEventListener('unhandledrejection', event => {
+	      this.pushErrorLog({
+	        type: 'unhandled-rejection',
+	        message: event.reason ? event.reason.message || String(event.reason) : 'Unhandled Rejection',
+	        stack: event.reason ? event.reason.stack : null,
+	        timestamp: new Date().toISOString()
+	      });
+	    });
+
+	    // Optional: Intercept console.error without breaking original console behavior
+	    const origConsoleError = console.error;
+	    console.error = (...args) => {
+	      origConsoleError.apply(console, args);
+	      this.pushErrorLog({
+	        type: 'console-error',
+	        message: args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' '),
+	        timestamp: new Date().toISOString()
+	      });
+	    };
+	  }
+	  pushErrorLog(logEntry) {
+	    this.errorBuffer.push(logEntry);
+	    if (this.errorBuffer.length > this.maxErrorBufferSize) {
+	      this.errorBuffer.shift();
+	    }
+	  }
+	  getWebGLInfo() {
+	    if (typeof document === 'undefined') return {
+	      renderer: 'Unknown (SSR)'
+	    };
+	    try {
+	      const canvas = document.createElement('canvas');
+	      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+	      if (!gl) return {
+	        renderer: 'WebGL unsupported'
+	      };
+	      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+	      return {
+	        vendor: debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : gl.getParameter(gl.VENDOR),
+	        renderer: debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER),
+	        version: gl.getParameter(gl.VERSION),
+	        shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION)
+	      };
+	    } catch (e) {
+	      return {
+	        renderer: 'Error probing WebGL: ' + e.message
+	      };
+	    }
+	  }
+	  getDiagnosticData() {
+	    const hydraCode = typeof window !== 'undefined' && window.editor && typeof window.editor.getValue === 'function' ? window.editor.getValue() : window.currentSketchCode || null;
+	    const currentSketch = typeof window !== 'undefined' && window.mySketches && window.mySketches[window.sketchIdx] ? window.mySketches[window.sketchIdx] : null;
+	    const oblivionGuardState = typeof window !== 'undefined' && window.oblivionGuard ? {
+	      enabled: window.oblivionGuard.enabled !== false,
+	      consecutiveBlackouts: window.oblivionGuard.consecutiveBlackouts || 0,
+	      totalReverts: window.oblivionGuard.totalReverts || 0
+	    } : {
+	      status: 'not-initialized'
+	    };
+	    return {
+	      timestamp: new Date().toISOString(),
+	      app: {
+	        name: 'Hydralisk',
+	        version: '0.0.1',
+	        branch: 'add-feedback',
+	        url: typeof window !== 'undefined' ? window.location.href : ''
+	      },
+	      environment: {
+	        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+	        screen: typeof window !== 'undefined' ? `${window.screen.width}x${window.screen.height}` : '',
+	        viewport: typeof window !== 'undefined' ? `${window.innerWidth}x${window.innerHeight}` : '',
+	        devicePixelRatio: typeof window !== 'undefined' ? window.devicePixelRatio : 1,
+	        platform: typeof navigator !== 'undefined' ? navigator.platform : ''
+	      },
+	      webgl: this.getWebGLInfo(),
+	      hydra: {
+	        bpm: typeof window !== 'undefined' ? window.bpm : 120,
+	        speed: typeof window !== 'undefined' ? window.speed : 1.0,
+	        sketchIdx: typeof window !== 'undefined' ? window.sketchIdx : 0,
+	        totalSketches: typeof window !== 'undefined' && window.mySketches ? window.mySketches.length : 0,
+	        currentSketchName: currentSketch ? currentSketch.name || 'Untitled' : 'Unknown',
+	        codeSnippet: hydraCode ? hydraCode.length > 500 ? hydraCode.substring(0, 500) + '...' : hydraCode : null
+	      },
+	      oblivionGuard: oblivionGuardState,
+	      recentLogs: [...this.errorBuffer]
+	    };
+	  }
+	  saveFeedbackLocally(feedbackPayload) {
+	    if (typeof window === 'undefined' || !window.localStorage) return false;
+	    try {
+	      const key = 'hydralisk_feedback_logs';
+	      const existing = JSON.parse(window.localStorage.getItem(key) || '[]');
+	      existing.unshift(feedbackPayload);
+	      // Limit stored feedback logs locally to 50
+	      if (existing.length > 50) existing.pop();
+	      window.localStorage.setItem(key, JSON.stringify(existing));
+	      return true;
+	    } catch (err) {
+	      console.error('[FeedbackService] Error saving feedback locally:', err);
+	      return false;
+	    }
+	  }
+	  subscribe(listener) {
+	    this.subscribers.add(listener);
+	    return () => this.subscribers.delete(listener);
+	  }
+	  open() {
+	    this.isOpen = true;
+	    this.notify();
+	  }
+	  close() {
+	    this.isOpen = false;
+	    this.notify();
+	  }
+	  toggle() {
+	    this.isOpen = !this.isOpen;
+	    this.notify();
+	  }
+	  notify() {
+	    for (const listener of this.subscribers) {
+	      try {
+	        listener(this.isOpen);
+	      } catch (e) {
+	        console.error('[FeedbackService] Listener error:', e);
+	      }
+	    }
+	  }
+	}
+	const feedbackDiagnosticService = new FeedbackDiagnosticService();
+
+	function FeedbackModal({
+	  isOpen,
+	  onClose
+	}) {
+	  const [category, setCategory] = React$1.useState('bug');
+	  const [rating, setRating] = React$1.useState(5);
+	  const [subject, setSubject] = React$1.useState('');
+	  const [description, setDescription] = React$1.useState('');
+	  const [userName, setUserName] = React$1.useState('');
+	  const [includeDiagnostics, setIncludeDiagnostics] = React$1.useState(true);
+	  const [showDiagPreview, setShowDiagPreview] = React$1.useState(false);
+	  const [submitted, setSubmitted] = React$1.useState(false);
+	  const [copiedToast, setCopiedToast] = React$1.useState(false);
+	  const [diagPayload, setDiagPayload] = React$1.useState(null);
+	  const subjectInputRef = React$1.useRef(null);
+	  React$1.useEffect(() => {
+	    if (typeof window !== 'undefined' && window.localStorage) {
+	      const savedName = window.localStorage.getItem('hydralisk_user_handle') || '';
+	      setUserName(savedName);
+	    }
+	  }, []);
+	  React$1.useEffect(() => {
+	    if (isOpen) {
+	      setSubmitted(false);
+	      setCopiedToast(false);
+	      const data = feedbackDiagnosticService.getDiagnosticData();
+	      setDiagPayload(data);
+	      setTimeout(() => {
+	        if (subjectInputRef.current) {
+	          subjectInputRef.current.focus();
+	        }
+	      }, 100);
+	    }
+	  }, [isOpen]);
+	  if (!isOpen) return null;
+	  const categories = [{
+	    id: 'bug',
+	    label: '🐛 Bug Report'
+	  }, {
+	    id: 'feature',
+	    label: '💡 Feature Request'
+	  }, {
+	    id: 'crash',
+	    label: '💥 Crash / Blackout'
+	  }, {
+	    id: 'general',
+	    label: '💬 General Feedback'
+	  }];
+	  const ratingIcons = ['🐛', '⚡', '🎨', '💡', '❤️'];
+	  const getFullPayload = () => {
+	    return {
+	      category,
+	      rating,
+	      subject: subject || 'No Subject Provided',
+	      description: description || '',
+	      user: userName || 'Anonymous Hydralisk User',
+	      submittedAt: new Date().toISOString(),
+	      diagnostics: includeDiagnostics ? diagPayload || feedbackDiagnosticService.getDiagnosticData() : null
+	    };
+	  };
+	  const handleCopyPayload = () => {
+	    const payload = getFullPayload();
+	    const jsonStr = JSON.stringify(payload, null, 2);
+	    if (navigator.clipboard) {
+	      navigator.clipboard.writeText(jsonStr);
+	    }
+	    setCopiedToast(true);
+	    setTimeout(() => setCopiedToast(false), 2500);
+	  };
+	  const handleExportJson = () => {
+	    const payload = getFullPayload();
+	    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+	    const downloadAnchor = document.createElement('a');
+	    const filename = `hydralisk-report-${category}-${Date.now()}.json`;
+	    downloadAnchor.setAttribute("href", dataStr);
+	    downloadAnchor.setAttribute("download", filename);
+	    document.body.appendChild(downloadAnchor);
+	    downloadAnchor.click();
+	    downloadAnchor.remove();
+	  };
+	  const handleSubmit = e => {
+	    if (e) e.preventDefault();
+	    if (!description.trim() && !subject.trim()) {
+	      alert('Please provide a subject or description for your feedback.');
+	      return;
+	    }
+	    const payload = getFullPayload();
+	    feedbackDiagnosticService.saveFeedbackLocally(payload);
+	    if (typeof window !== 'undefined' && window.localStorage && userName) {
+	      window.localStorage.setItem('hydralisk_user_handle', userName);
+	    }
+	    if (typeof window !== 'undefined' && window.xemitter) {
+	      window.xemitter.emit('feedback:submitted', payload);
+	    }
+	    setSubmitted(true);
+	  };
+	  const handleOverlayClick = e => {
+	    if (e.target === e.currentTarget) {
+	      onClose();
+	    }
+	  };
+	  const handleKeyDown = e => {
+	    if (e.key === 'Escape') {
+	      onClose();
+	    }
+	  };
+	  return /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-modal-overlay",
+	    onClick: handleOverlayClick,
+	    onKeyDown: handleKeyDown
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-modal-card"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-modal-header"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-modal-title"
+	  }, /*#__PURE__*/React$1.createElement("span", null, "Hydralisk Feedback & Bug Report"), /*#__PURE__*/React$1.createElement("span", {
+	    className: "feedback-modal-badge"
+	  }, "v0.0.1")), /*#__PURE__*/React$1.createElement("button", {
+	    className: "feedback-close-btn",
+	    onClick: onClose,
+	    title: "Close (Esc)"
+	  }, "\xD7")), submitted ?
+	  /*#__PURE__*/
+	  /* Success State */
+	  React$1.createElement("div", {
+	    className: "feedback-success-card"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-success-icon"
+	  }, "\uD83D\uDE80"), /*#__PURE__*/React$1.createElement("h3", {
+	    style: {
+	      margin: 0,
+	      fontSize: '1.25rem',
+	      color: '#00f2fe'
+	    }
+	  }, "Thank You for Your Feedback!"), /*#__PURE__*/React$1.createElement("p", {
+	    style: {
+	      margin: 0,
+	      color: '#94a3b8',
+	      fontSize: '0.9rem',
+	      maxWidth: 400,
+	      lineHeight: 1.5
+	    }
+	  }, "Your report has been stored locally and emitted to the Hydralisk engine event bus."), /*#__PURE__*/React$1.createElement("div", {
+	    style: {
+	      display: 'flex',
+	      gap: 10,
+	      marginTop: 10
+	    }
+	  }, /*#__PURE__*/React$1.createElement("button", {
+	    className: "feedback-btn",
+	    onClick: handleExportJson
+	  }, "\uD83D\uDCE5 Export .json Copy"), /*#__PURE__*/React$1.createElement("button", {
+	    className: "feedback-btn primary",
+	    onClick: onClose
+	  }, "Done"))) :
+	  /*#__PURE__*/
+	  /* Main Form */
+	  React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-modal-body"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-field-group"
+	  }, /*#__PURE__*/React$1.createElement("label", {
+	    className: "feedback-label"
+	  }, "Report Category"), /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-category-group"
+	  }, categories.map(cat => /*#__PURE__*/React$1.createElement("div", {
+	    key: cat.id,
+	    className: `feedback-cat-pill ${category === cat.id ? 'active' : ''}`,
+	    onClick: () => setCategory(cat.id)
+	  }, cat.label)))), /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-rating-container"
+	  }, /*#__PURE__*/React$1.createElement("span", {
+	    className: "feedback-rating-label"
+	  }, "Experience Rating:"), /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-stars-row"
+	  }, [1, 2, 3, 4, 5].map(val => /*#__PURE__*/React$1.createElement("button", {
+	    key: val,
+	    type: "button",
+	    className: `feedback-star-btn ${rating >= val ? 'selected' : ''}`,
+	    onClick: () => setRating(val),
+	    title: `Score ${val}/5`
+	  }, ratingIcons[val - 1])))), /*#__PURE__*/React$1.createElement("div", {
+	    style: {
+	      display: 'grid',
+	      gridTemplateColumns: '1fr 2fr',
+	      gap: 12
+	    }
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-field-group"
+	  }, /*#__PURE__*/React$1.createElement("label", {
+	    className: "feedback-label"
+	  }, "Your Name / Handle"), /*#__PURE__*/React$1.createElement("input", {
+	    type: "text",
+	    className: "feedback-input",
+	    placeholder: "e.g. dj_hydra",
+	    value: userName,
+	    onChange: e => setUserName(e.target.value)
+	  })), /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-field-group"
+	  }, /*#__PURE__*/React$1.createElement("label", {
+	    className: "feedback-label"
+	  }, "Subject"), /*#__PURE__*/React$1.createElement("input", {
+	    ref: subjectInputRef,
+	    type: "text",
+	    className: "feedback-input",
+	    placeholder: "Short summary of the issue or idea...",
+	    value: subject,
+	    onChange: e => setSubject(e.target.value)
+	  }))), /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-field-group"
+	  }, /*#__PURE__*/React$1.createElement("label", {
+	    className: "feedback-label"
+	  }, "Detailed Description"), /*#__PURE__*/React$1.createElement("textarea", {
+	    className: "feedback-textarea",
+	    placeholder: "Describe what happened, steps to reproduce the bug, or details of your feature request...",
+	    value: description,
+	    onChange: e => setDescription(e.target.value)
+	  })), /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-checkbox-wrapper",
+	    onClick: () => setIncludeDiagnostics(!includeDiagnostics)
+	  }, /*#__PURE__*/React$1.createElement("input", {
+	    type: "checkbox",
+	    checked: includeDiagnostics,
+	    onChange: e => setIncludeDiagnostics(e.target.checked)
+	  }), /*#__PURE__*/React$1.createElement("span", {
+	    className: "feedback-checkbox-text"
+	  }, "Include system specs, WebGL renderer stats, and recent error logs")), includeDiagnostics && /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
+	    style: {
+	      display: 'flex',
+	      justify: 'space-between',
+	      alignItems: 'center',
+	      fontSize: '0.75rem',
+	      color: '#94a3b8',
+	      cursor: 'pointer',
+	      padding: '2px 0'
+	    },
+	    onClick: () => setShowDiagPreview(!showDiagPreview)
+	  }, /*#__PURE__*/React$1.createElement("span", null, "\uD83D\uDD0D ", showDiagPreview ? 'Hide Diagnostic JSON Payload' : 'View Diagnostic JSON Payload'), /*#__PURE__*/React$1.createElement("span", null, showDiagPreview ? '▲' : '▼')), showDiagPreview && /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-diag-box"
+	  }, JSON.stringify(diagPayload || feedbackDiagnosticService.getDiagnosticData(), null, 2)))), /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-modal-actions"
+	  }, /*#__PURE__*/React$1.createElement("button", {
+	    className: "feedback-btn",
+	    type: "button",
+	    onClick: handleCopyPayload
+	  }, "\uD83D\uDCCB Copy JSON"), /*#__PURE__*/React$1.createElement("button", {
+	    className: "feedback-btn",
+	    type: "button",
+	    onClick: handleExportJson
+	  }, "\uD83D\uDCE5 Export .json"), /*#__PURE__*/React$1.createElement("button", {
+	    className: "feedback-btn primary",
+	    type: "button",
+	    onClick: handleSubmit
+	  }, "\uD83D\uDE80 Send Report")))), copiedToast && /*#__PURE__*/React$1.createElement("div", {
+	    className: "feedback-toast-notification"
+	  }, /*#__PURE__*/React$1.createElement("span", null, "\u2728 Diagnostic payload copied to clipboard!")));
+	}
+
+	function FeedbackHost() {
+	  const [isOpen, setIsOpen] = React$1.useState(false);
+	  React$1.useEffect(() => {
+	    const unsubscribe = feedbackDiagnosticService.subscribe(openState => {
+	      setIsOpen(openState);
+	    });
+	    const handleKeyDown = e => {
+	      // Hotkey: Cmd+Shift+F or Ctrl+Shift+F
+	      if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'F' || e.key === 'f')) {
+	        e.preventDefault();
+	        feedbackDiagnosticService.toggle();
+	      }
+	    };
+	    window.addEventListener('keydown', handleKeyDown);
+	    return () => {
+	      unsubscribe();
+	      window.removeEventListener('keydown', handleKeyDown);
+	    };
+	  }, []);
+	  return /*#__PURE__*/React$1.createElement(FeedbackModal, {
+	    isOpen: isOpen,
+	    onClose: () => feedbackDiagnosticService.close()
+	  });
+	}
+	class FeedbackManager {
+	  constructor() {
+	    this.service = feedbackDiagnosticService;
+	  }
+	  inject() {
+	    if (typeof document === 'undefined') return;
+	    let host = document.getElementById('hydra-feedback-app');
+	    if (!host) {
+	      host = document.createElement('div');
+	      host.id = 'hydra-feedback-app';
+	      document.body.appendChild(host);
+	    }
+	    ReactDOM$1.render(/*#__PURE__*/React$1.createElement(FeedbackHost, null), host);
+	    console.log('[FeedbackManager] Injected Feedback Modal Host');
+	    if (window.xemitter) {
+	      window.xemitter.on('feedback:open', () => this.service.open());
+	      window.xemitter.on('feedback:close', () => this.service.close());
+	      window.xemitter.on('feedback:toggle', () => this.service.toggle());
+	    }
+	    window.hydraFeedback = this.service;
+	  }
+	  open() {
+	    this.service.open();
+	  }
+	  close() {
+	    this.service.close();
+	  }
+	  toggle() {
+	    this.service.toggle();
+	  }
+	}
+
+	// Auto-register with HydraliskPlugins if present
+	if (typeof window !== 'undefined' && window.HydraliskPlugins) {
+	  window.HydraliskPlugins.register({
+	    id: 'feedback-modal',
+	    name: 'User Feedback & Bug Reporting Modal',
+	    init(app) {
+	      const manager = new FeedbackManager();
+	      setTimeout(() => manager.inject(), 150);
+	      app.expose('feedbackManager', manager);
+	    }
+	  });
 	}
 
 	/**
@@ -18781,7 +19272,8 @@
 	// Barrel file for all Hydralisk modules, plugin registry, and extension plugins
 
 	window.Modules = {
-	  SketchManager
+	  SketchManager,
+	  FeedbackManager
 	};
 	if (typeof window !== "undefined" && window.HydraliskPlugins) {
 	  window.HydraliskPlugins.register({
@@ -18797,5 +19289,5 @@
 	  });
 	}
 
-})(React);
+})(React, ReactDOM);
 //# sourceMappingURL=modules.dist.js.map
