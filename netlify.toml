@@ -21,6 +21,37 @@
 [context.branch-deploy]
   command = "npm run build"
 
+# SECURITY: Block access to internal server code, scripts, secrets, and dev docs
+[[redirects]]
+  from = "/server/*"
+  to = "/404"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.env*"
+  to = "/404"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/*.md"
+  to = "/404"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/sketches_old*.json"
+  to = "/404"
+  status = 404
+  force = true
+
 # HTTP Caching & Headers
 [[headers]]
   for = "/*"
