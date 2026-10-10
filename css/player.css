@@ -21,7 +21,8 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
-html, body {
+html,
+body {
   background-color: var(--bg-dark);
   margin: 0;
   padding: 0;
@@ -211,9 +212,17 @@ html, body {
 }
 
 @keyframes pulse-dot {
-  0% { opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { opacity: 0.5; }
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
 }
 
 .collapse-btn {
@@ -268,6 +277,48 @@ html, body {
   border-color: var(--color-accent);
   box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
 }
+
+.floating-hud-actions {
+  position: absolute;
+  top: 20px;
+  left: 76px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: var(--transition-smooth);
+  z-index: 16;
+}
+
+.floating-hud-actions.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.floating-hud-btn {
+  min-width: 64px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.floating-hud-btn:hover,
+.floating-hud-btn.active {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--bg-glass-hover);
+}
+
+=======>>>>>>>gh-pages
 
 /* Navigation Tabs */
 .panel-tabs {
@@ -365,7 +416,8 @@ html, body {
   transition: var(--transition-smooth);
 }
 
-.filter-tag:hover, .filter-tag.active {
+.filter-tag:hover,
+.filter-tag.active {
   background: rgba(0, 242, 254, 0.1);
   border-color: var(--color-accent);
   color: var(--color-accent);
@@ -560,6 +612,16 @@ html, body {
   align-items: center;
 }
 
+.touch-toggle-row {
+  display: flex;
+}
+
+.touch-actions-hud-btn.active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(0, 242, 254, 0.08);
+}
+
 .control-icon-btn {
   background: transparent;
   border: none;
@@ -712,21 +774,118 @@ html, body {
   margin-right: 4px;
 }
 
+.touch-actions-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 18;
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.touch-actions-overlay.visible {
+  opacity: 1;
+}
+
+.touch-actions-card {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: min(360px, calc(100vw - 32px));
+  border-radius: 14px;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-glass-heavy);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-premium);
+  padding: 14px;
+  pointer-events: auto;
+}
+
+.touch-actions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.touch-actions-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.touch-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: var(--transition-smooth);
+}
+
+.touch-close-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.touch-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.touch-action-btn {
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  padding: 10px 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-action-btn:active,
+.touch-action-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(0, 242, 254, 0.12);
+}
+
+.touch-action-wide {
+  grid-column: span 2;
+}
+
 /* Custom Scrollbars */
-.sketches-list::-webkit-scrollbar, .panel-body::-webkit-scrollbar, .code-textarea::-webkit-scrollbar {
+.sketches-list::-webkit-scrollbar,
+.panel-body::-webkit-scrollbar,
+.code-textarea::-webkit-scrollbar {
   width: 6px;
 }
 
-.sketches-list::-webkit-scrollbar-track, .panel-body::-webkit-scrollbar-track, .code-textarea::-webkit-scrollbar-track {
+.sketches-list::-webkit-scrollbar-track,
+.panel-body::-webkit-scrollbar-track,
+.code-textarea::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.sketches-list::-webkit-scrollbar-thumb, .panel-body::-webkit-scrollbar-thumb, .code-textarea::-webkit-scrollbar-thumb {
+.sketches-list::-webkit-scrollbar-thumb,
+.panel-body::-webkit-scrollbar-thumb,
+.code-textarea::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
 }
 
-.sketches-list::-webkit-scrollbar-thumb:hover, .panel-body::-webkit-scrollbar-thumb:hover, .code-textarea::-webkit-scrollbar-thumb:hover {
+.sketches-list::-webkit-scrollbar-thumb:hover,
+.panel-body::-webkit-scrollbar-thumb:hover,
+.code-textarea::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent-secondary);
 }
 

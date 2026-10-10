@@ -8,6 +8,7 @@ let isPlaying = false;
 let currentTab = 'library';
 let activeTags = new Set();
 let isPanelCollapsed = false;
+let touchActionsEnabled = false;
 
 // BPM & Pitch bend state
 let baseBpm = 120;
@@ -28,9 +29,9 @@ function showToast(message, isError = false) {
 
   const toast = document.createElement('div');
   toast.className = `toast ${isError ? 'error' : ''}`;
-  toast.innerHTML = `
-    <span>${message}</span>
-  `;
+  const messageSpan = document.createElement('span');
+  messageSpan.textContent = String(message);
+  toast.appendChild(messageSpan);
   container.appendChild(toast);
 
   // Slide out and remove
@@ -82,6 +83,10 @@ async function startExperience() {
       window.addEventListener('resize', resizeCanvas);
 
       // Let's hide the canvas visualizer that hydra-synth creates inside document.body by default if any
+      const hydraAudioCanvas = document.querySelector('body > canvas:not(#hydra-canvas)');
+      if (hydraAudioCanvas) {
+        hydraAudioCanvas.id = 'audio-canvas';
+      }
       if (window.HydraliskPlugins) {
         window.HydraliskPlugins.init({ hydra: hydraInstance });
         window.HydraliskPlugins.onHydraReady(hydraInstance);
@@ -118,6 +123,7 @@ async function startExperience() {
     showToast("Failed to initialize engine: " + err.message, true);
   }
 }
+window.startExperience = startExperience;
 
 // Backup visual if sketch fetching fails
 function playBackupVisual() {
@@ -427,7 +433,8 @@ function playSketch(index) {
     // Source URL added for better DevTools experience
     const wrappedCode = `(() => {
       ${sketch.code}
-    })()//# sourceURL=hydra-sketch-${sketch.name.replace(/\s+/g, '-').toLowerCase()}.js`;
+    })()
+//# sourceURL=hydra-sketch-${sketch.name.replace(/\s+/g, '-').toLowerCase()}.js\n`;
 
     eval(wrappedCode);
 
@@ -547,7 +554,8 @@ function runCustomCode() {
   try {
     const wrappedCode = `(() => {
       ${code}
-    })()//# sourceURL=hydra-custom-sketch.js`;
+    })()
+//# sourceURL=hydra-custom-sketch.js\n`;
 
     eval(wrappedCode);
     showToast("Code updated & running");
@@ -709,7 +717,8 @@ function triggerMutation() {
       hush();
       const wrappedCode = `(() => {
         ${newCode}
-      })()//# sourceURL=hydra-mutated-sketch.js`;
+      })()
+//# sourceURL=hydra-mutated-sketch.js\n`;
       eval(wrappedCode);
 
       textarea.value = newCode;
@@ -814,6 +823,77 @@ function toggleCollapse() {
     panel.classList.remove('collapsed');
     trigger.classList.remove('visible');
   }
+
+  updateTouchActionsUI();
+}
+
+function isUIHidden() {
+  const panel = document.getElementById('sidebar-panel');
+  const shortcuts = document.getElementById('shortcuts-panel');
+  if (!panel || !shortcuts) return false;
+  return panel.classList.contains('collapsed') && shortcuts.classList.contains('hidden');
+}
+
+function updateTouchActionsUI() {
+  const overlay = document.getElementById('touch-actions-overlay');
+  const floatingActions = document.getElementById('floating-hud-actions');
+  const hudBtn = document.getElementById('touch-actions-hud-btn');
+  const floatingBtn = document.getElementById('touch-actions-floating-btn');
+  const hidden = isUIHidden();
+
+  if (floatingActions) {
+    floatingActions.classList.toggle('visible', hidden);
+  }
+  if (overlay) {
+    overlay.classList.toggle('visible', hidden && touchActionsEnabled);
+  }
+  if (hudBtn) {
+    hudBtn.classList.toggle('active', touchActionsEnabled);
+  }
+  if (floatingBtn) {
+    floatingBtn.classList.toggle('active', touchActionsEnabled);
+  }
+}
+
+function toggleTouchActions() {
+  touchActionsEnabled = !touchActionsEnabled;
+  updateTouchActionsUI();
+  showToast(touchActionsEnabled ? "Touch actions enabled" : "Touch actions disabled");
+}
+
+function triggerMutation() {
+  if (window.xemitter) {
+    window.xemitter.emit("editor:randomize");
+    showToast("Mutated sketch GLSL!");
+  } else {
+    playRandomSketch();
+  }
+}
+
+function nudgeTempo(delta) {
+  const bpmInput = document.getElementById('bpm-number-input');
+  const current = parseInt(bpmInput?.value || baseBpm || 120, 10) || 120;
+  const next = Math.max(20, Math.min(240, current + delta));
+  baseBpm = next;
+  updateBPM(next);
+  if (bpmInput) bpmInput.value = next;
+}
+
+function nudgeSpeed(delta) {
+  const speedSlider = document.getElementById('speed-slider');
+  const speedVal = document.getElementById('speed-val');
+  if (!speedSlider || !speedVal) return;
+
+  const current = parseFloat(speedSlider.value || '1');
+  const next = Math.max(0, Math.min(4, current + delta));
+  const rounded = Math.round(next * 10) / 10;
+  speedSlider.value = rounded.toFixed(1);
+  if (isPlaying) {
+    window.speed = rounded;
+  }
+  speedVal.innerText = `${rounded.toFixed(1)}x`;
+=======
+>>>>>>> gh-pages
 }
 
 // Toggle entire UI (hide all control bars for clean installation viewing)
@@ -840,6 +920,8 @@ function toggleUI() {
     isPanelCollapsed = true;
     showToast("Interface hidden. Press 'H' to show again.");
   }
+
+  updateTouchActionsUI();
 }
 
 // Fullscreen toggle helper
@@ -937,6 +1019,9 @@ document.addEventListener('keydown', (e) => {
       break;
     case 'KeyH':
       toggleUI();
+      break;
+    case 'KeyT':
+      toggleTouchActions();
       break;
     case 'KeyF':
       toggleFullscreen();
@@ -1041,4 +1126,5 @@ document.addEventListener('DOMContentLoaded', () => {
       updateAuthUI(false);
     }
   }
+  updateTouchActionsUI();
 });
