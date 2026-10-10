@@ -15,6 +15,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - **2026-10-08**: Fixed mutation code formatting by delegating directly to the native `editor.formatCode()` command in `Mutator.mutate()` ([modules/automutate.js](file:///Users/web/Git/hydralisk/modules/automutate.js)) and [modules/editorActions.js](file:///Users/web/Git/hydralisk/modules/editorActions.js) (ensuring `indent_with_tabs: true` and `break_chained_methods: true` format settings align 1:1 with the code editor layout).
 - **2026-10-10**: Implemented Oblivion Guard ([modules/oblivionGuard.js](file:///Users/web/Git/hydralisk/modules/oblivionGuard.js)): Canvas blackout/whiteout auto-recovery engine that monitors WebGL frame pixel buffers on mutations and automatically reverts to the previous functional sketch state if an oblivion crash state is detected.
 - **2026-10-10**: Resolved Speed Controls & BPM-sync Automutate issues ([modules/editorActions.js](file:///Users/web/Git/hydralisk/modules/editorActions.js), [modules/automutate.js](file:///Users/web/Git/hydralisk/modules/automutate.js)): Fixed speed `0` freeze bug, preserved direction sign on reverse, and implemented live re-timing of running automutate intervals when BPM or tap-tempo changes occur.
+- **2026-10-10**: Configured Netlify Deploys ([`netlify.toml`](file:///Users/web/Git/hydralisk/netlify.toml)): Production deploys from `gh-pages` branch, automated Rollup build preview deploys for PRs and branch builds, custom caching headers, and Node 20 environment settings.
 
 ## 3. Architecture & Technical Decisions (ADRs)
 
@@ -45,7 +46,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - [ ] **player.html as the main performance UI**.
 - [ ] **UI cleanup**: replace `prompt`/`alert`/`confirm` and the rudimentary buttons.
 - [x] **Rebuild from real Hydra sources**: extracted features to modular plugins (`modules/`) so `bundle.min.js` remains a minimal host.
-- [ ] **Netlify deploys**: preview deploys from PRs plus production from `gh-pages`.
+- [x] **Netlify deploys**: preview deploys from PRs plus production from `gh-pages`.
 
 ## 5. Potentials & Future Opportunities
 

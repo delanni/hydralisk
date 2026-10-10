@@ -1,0 +1,40 @@
+# Netlify Configuration for Hydralisk
+# Configures production deploys from gh-pages and preview deploys from PRs.
+
+[build]
+  command = "npm run build"
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Production context: deploys automatically from gh-pages branch
+[context.production]
+  branch = "gh-pages"
+  command = "npm run build"
+
+# Deploy Previews context: generated for every Pull Request
+[context.deploy-preview]
+  command = "npm run build"
+
+# Branch Deploys context: generated for non-production branches
+[context.branch-deploy]
+  command = "npm run build"
+
+# HTTP Caching & Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/modules.dist.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
