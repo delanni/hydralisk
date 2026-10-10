@@ -308,9 +308,7 @@ html, body {
   border-color: var(--color-accent);
   background: var(--bg-glass-hover);
 }
-
-=======
->>>>>>> gh-pages
+}
 /* Navigation Tabs */
 .panel-tabs {
   display: flex;
