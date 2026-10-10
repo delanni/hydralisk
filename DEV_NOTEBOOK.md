@@ -87,6 +87,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - 2026-10-10: Added `OblivionGuard` module ([modules/oblivionGuard.js](file:///Users/web/Git/hydralisk/modules/oblivionGuard.js)) with WebGL `readPixels` sampling, 2D OffscreenCanvas fallback, consecutive revert rate limiting, and non-intrusive toast feedback UI. Verified via unit test suite.
 - 2026-10-10: Fixed speed control edge cases (`speed=0` freeze, direction preservation) and implemented live beat re-timing for running automutate intervals in [`modules/editorActions.js`](file:///Users/web/Git/hydralisk/modules/editorActions.js) and [`modules/automutate.js`](file:///Users/web/Git/hydralisk/modules/automutate.js). Verified via unit test suite.
 - 2026-10-10: Finished branch [`copilot/add-touch-actions-buttons`](https://github.com/delanni/hydralisk/tree/copilot/add-touch-actions-buttons) for Touch HUD & Mobile Performance Overlay: resolved merge conflicts with `gh-pages` plugins, added glassmorphism touch card controls, `T` shortcut, `triggerMutation()` event integration, and pushed updated branch to remote.
+- 2026-10-10: Developer preference recorded: When tasked with working on a specific branch, switch directly to that branch and stay on it for execution instead of switching back and forth, preventing merge conflict markers. Rule updated in `.agents/AGENTS.md`.
 
 
 

@@ -892,8 +892,6 @@ function nudgeSpeed(delta) {
     window.speed = rounded;
   }
   speedVal.innerText = `${rounded.toFixed(1)}x`;
-=======
->>>>>>> gh-pages
 }
 
 // Toggle entire UI (hide all control bars for clean installation viewing)
