@@ -91,7 +91,6 @@ async function startExperience() {
         window.HydraliskPlugins.init({ hydra: hydraInstance });
         window.HydraliskPlugins.onHydraReady(hydraInstance);
       }
-      }
     } else {
       throw new Error('Hydra player engine library not loaded. Check CDN link.');
     }
@@ -124,6 +123,7 @@ async function startExperience() {
     showToast("Failed to initialize engine: " + err.message, true);
   }
 }
+window.startExperience = startExperience;
 
 // Backup visual if sketch fetching fails
 function playBackupVisual() {
@@ -433,7 +433,8 @@ function playSketch(index) {
     // Source URL added for better DevTools experience
     const wrappedCode = `(() => {
       ${sketch.code}
-    })()//# sourceURL=hydra-sketch-${sketch.name.replace(/\s+/g, '-').toLowerCase()}.js`;
+    })()
+//# sourceURL=hydra-sketch-${sketch.name.replace(/\s+/g, '-').toLowerCase()}.js\n`;
 
     eval(wrappedCode);
 
@@ -553,7 +554,8 @@ function runCustomCode() {
   try {
     const wrappedCode = `(() => {
       ${code}
-    })()//# sourceURL=hydra-custom-sketch.js`;
+    })()
+//# sourceURL=hydra-custom-sketch.js\n`;
 
     eval(wrappedCode);
     showToast("Code updated & running");
@@ -715,7 +717,8 @@ function triggerMutation() {
       hush();
       const wrappedCode = `(() => {
         ${newCode}
-      })()//# sourceURL=hydra-mutated-sketch.js`;
+      })()
+//# sourceURL=hydra-mutated-sketch.js\n`;
       eval(wrappedCode);
 
       textarea.value = newCode;
@@ -889,6 +892,8 @@ function nudgeSpeed(delta) {
     window.speed = rounded;
   }
   speedVal.innerText = `${rounded.toFixed(1)}x`;
+=======
+>>>>>>> gh-pages
 }
 
 // Toggle entire UI (hide all control bars for clean installation viewing)

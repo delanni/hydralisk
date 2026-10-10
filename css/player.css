@@ -21,7 +21,8 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
-html, body {
+html,
+body {
   background-color: var(--bg-dark);
   margin: 0;
   padding: 0;
@@ -211,9 +212,17 @@ html, body {
 }
 
 @keyframes pulse-dot {
-  0% { opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { opacity: 0.5; }
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
 }
 
 .collapse-btn {
@@ -308,7 +317,9 @@ html, body {
   border-color: var(--color-accent);
   background: var(--bg-glass-hover);
 }
-}
+
+=======>>>>>>>gh-pages
+
 /* Navigation Tabs */
 .panel-tabs {
   display: flex;
@@ -405,7 +416,8 @@ html, body {
   transition: var(--transition-smooth);
 }
 
-.filter-tag:hover, .filter-tag.active {
+.filter-tag:hover,
+.filter-tag.active {
   background: rgba(0, 242, 254, 0.1);
   border-color: var(--color-accent);
   color: var(--color-accent);
@@ -609,6 +621,7 @@ html, body {
   color: var(--color-accent);
   background: rgba(0, 242, 254, 0.08);
 }
+
 .control-icon-btn {
   background: transparent;
   border: none;
@@ -839,7 +852,8 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.touch-action-btn:active, .touch-action-btn:hover {
+.touch-action-btn:active,
+.touch-action-btn:hover {
   border-color: var(--color-accent);
   color: var(--color-accent);
   background: rgba(0, 242, 254, 0.12);
@@ -848,21 +862,30 @@ html, body {
 .touch-action-wide {
   grid-column: span 2;
 }
+
 /* Custom Scrollbars */
-.sketches-list::-webkit-scrollbar, .panel-body::-webkit-scrollbar, .code-textarea::-webkit-scrollbar {
+.sketches-list::-webkit-scrollbar,
+.panel-body::-webkit-scrollbar,
+.code-textarea::-webkit-scrollbar {
   width: 6px;
 }
 
-.sketches-list::-webkit-scrollbar-track, .panel-body::-webkit-scrollbar-track, .code-textarea::-webkit-scrollbar-track {
+.sketches-list::-webkit-scrollbar-track,
+.panel-body::-webkit-scrollbar-track,
+.code-textarea::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.sketches-list::-webkit-scrollbar-thumb, .panel-body::-webkit-scrollbar-thumb, .code-textarea::-webkit-scrollbar-thumb {
+.sketches-list::-webkit-scrollbar-thumb,
+.panel-body::-webkit-scrollbar-thumb,
+.code-textarea::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
 }
 
-.sketches-list::-webkit-scrollbar-thumb:hover, .panel-body::-webkit-scrollbar-thumb:hover, .code-textarea::-webkit-scrollbar-thumb:hover {
+.sketches-list::-webkit-scrollbar-thumb:hover,
+.panel-body::-webkit-scrollbar-thumb:hover,
+.code-textarea::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent-secondary);
 }
 
