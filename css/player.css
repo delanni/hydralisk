@@ -315,10 +315,7 @@ body {
 .floating-hud-btn.active {
   color: var(--color-accent);
   border-color: var(--color-accent);
-  background: var(--bg-glass-hover);
 }
-
-=======>>>>>>>gh-pages
 
 /* Navigation Tabs */
 .panel-tabs {
