@@ -17959,11 +17959,84 @@
 	        app.expose("sketchIdx", sketchIdx);
 	        app.emit("gallery:nextSketch", e);
 	      });
+
+	      // Cross-navigation helper to launch player with active sketch
+	      const openPlayerWithCurrentSketch = e => {
+	        if (e && e.preventDefault) e.preventDefault();
+	        let sketchName = "";
+	        if (Array.isArray(mySketches) && typeof sketchIdx === "number" && mySketches[sketchIdx]) {
+	          sketchName = mySketches[sketchIdx].name;
+	        }
+	        if (!sketchName) {
+	          try {
+	            sketchName = localStorage.getItem("lastSelectedSketchName") || "";
+	          } catch (err) {}
+	        }
+	        const targetUrl = sketchName ? `player.html?sketch=${encodeURIComponent(sketchName)}` : "player.html";
+	        window.location.href = targetUrl;
+	      };
+	      window.openPlayerWithCurrentSketch = openPlayerWithCurrentSketch;
+	      app.expose("openPlayerWithCurrentSketch", openPlayerWithCurrentSketch);
+
+	      // Inject white toolbar icon "Visual Player" in editor DOM (suppressed on player page)
+	      if (typeof document !== "undefined") {
+	        const isPlayerPage = Boolean(window.location.pathname.endsWith("player.html") || window.location.pathname.endsWith("/player") || document.getElementById("hydra-player-dashboard"));
+	        if (!isPlayerPage) {
+	          const injectNavIcon = () => {
+	            // Remove old text button if present
+	            const oldBtn = document.getElementById("nav-to-player-btn");
+	            if (oldBtn) oldBtn.remove();
+	            let navIcon = document.getElementById("nav-to-player-icon");
+	            if (!navIcon) {
+	              navIcon = document.createElement("i");
+	              navIcon.id = "nav-to-player-icon";
+	              navIcon.className = "fa fa-tv icon";
+	              navIcon.title = "Visual Player";
+	              navIcon.onclick = evt => openPlayerWithCurrentSketch(evt);
+
+	              // Attach to editor toolbar container alongside other white menu icons
+	              const existingIcon = document.querySelector("i.icon");
+	              if (existingIcon && existingIcon.parentNode) {
+	                existingIcon.parentNode.appendChild(navIcon);
+	              } else {
+	                navIcon.style.cssText = "position: fixed; top: 12px; right: 20px; z-index: 99999; color: #fff; cursor: pointer; font-size: 20px;";
+	                (document.body || document.documentElement).appendChild(navIcon);
+	              }
+	            }
+	          };
+	          if (document.readyState === "loading") {
+	            document.addEventListener("DOMContentLoaded", injectNavIcon);
+	          } else {
+	            injectNavIcon();
+	          }
+	          setTimeout(injectNavIcon, 300);
+	          setTimeout(injectNavIcon, 1000);
+	          setTimeout(injectNavIcon, 2500);
+	        } else {
+	          // If on player page, ensure any old button/icon is removed
+	          const oldBtn = document.getElementById("nav-to-player-btn");
+	          if (oldBtn) oldBtn.remove();
+	          const oldIcon = document.getElementById("nav-to-player-icon");
+	          if (oldIcon) oldIcon.remove();
+	        }
+	      }
 	      app.on("gallery:loadSketch", sketchInfo => {
 	        if (!sketchInfo) return;
 	        const targetIdx = Array.isArray(mySketches) ? mySketches.findIndex(s => s.name === sketchInfo.name || s.id && s.id === sketchInfo.id) : -1;
 	        const sketch = targetIdx >= 0 ? mySketches[targetIdx] : sketchInfo;
 	        if (!sketch) return;
+
+	        // Save sketch name protocol in localStorage and URL querystring
+	        if (sketch && sketch.name) {
+	          try {
+	            localStorage.setItem("lastSelectedSketchName", sketch.name);
+	            if (window.history && window.history.replaceState) {
+	              const url = new URL(window.location);
+	              url.searchParams.set("sketch", sketch.name);
+	              window.history.replaceState({}, "", url.toString());
+	            }
+	          } catch (e) {}
+	        }
 	        let formattedCode = "";
 	        if (sketch.metadata) {
 	          const metaCopy = {
@@ -17997,6 +18070,23 @@
 	          app.memory.autoSave(formattedCode, true);
 	        }
 	      });
+
+	      // Query parameter & localStorage sketch loading protocol on initialization
+	      const loadSketchFromProtocol = () => {
+	        try {
+	          const urlParams = new URLSearchParams(window.location.search);
+	          const targetName = urlParams.get("sketch") || localStorage.getItem("lastSelectedSketchName");
+	          if (targetName && Array.isArray(mySketches) && mySketches.length > 0) {
+	            const foundIdx = mySketches.findIndex(s => s.name && s.name.toLowerCase() === targetName.toLowerCase());
+	            if (foundIdx >= 0) {
+	              sketchIdx = foundIdx;
+	              sPut("sketchIdx", sketchIdx);
+	              app.expose("sketchIdx", sketchIdx);
+	              app.emit("gallery:loadSketch", mySketches[foundIdx]);
+	            }
+	          }
+	        } catch (e) {}
+	      };
 	      app.on("gallery:updateLocalSketches", sketchList => {
 	        mySketches = Array.isArray(sketchList) ? sketchList : [];
 	        app.expose("mySketches", mySketches);
@@ -18005,6 +18095,7 @@
 	          sPut("sketchIdx", sketchIdx);
 	          app.expose("sketchIdx", sketchIdx);
 	        }
+	        loadSketchFromProtocol();
 	      });
 	      app.on("gallery:saveMyExample", () => {
 	        const editor = getEditor();
@@ -18814,6 +18905,116 @@
 	      });
 	    }
 	  });
+	}
+
+	/**
+	 * Performance State Hash Fragment Settings Module for Hydralisk
+	 * Encodes/decodes player performance state (BPM, HUD visibility, Automutate mode, Speed)
+	 * Protocol format: #(<key>[a-z])(<value>[a-z0-9][0-9]*)|(<key>[a-z])(<value>[a-z0-9][0-9]*)
+	 */
+
+	class PlayerSettings {
+	  constructor() {
+	    this.keyMap = {
+	      b: "bpm",
+	      h: "hud",
+	      m: "automutate",
+	      s: "speed"
+	    };
+	    this.reverseKeyMap = {
+	      bpm: "b",
+	      hud: "h",
+	      automutate: "m",
+	      speed: "s"
+	    };
+	  }
+
+	  /**
+	   * Decode URL fragment string into a settings object
+	   * @param {string} hashStr e.g. "#b120|h1|m4|s10"
+	   * @returns {object} decoded settings object e.g. { bpm: 120, hud: 1, automutate: '4', speed: 1.0 }
+	   */
+	  decode(hashStr = typeof window !== "undefined" ? window.location.hash : "") {
+	    const settings = {};
+	    if (!hashStr) return settings;
+	    let raw = hashStr.startsWith("#") ? hashStr.substring(1) : hashStr;
+	    if (!raw) return settings;
+	    const pairs = raw.split("|");
+	    for (const pair of pairs) {
+	      if (!pair) continue;
+	      // Match protocol: key [a-z] followed by value [a-z0-9][0-9]*
+	      const match = pair.match(/^([a-z])([a-z0-9][0-9]*)$/i);
+	      if (match) {
+	        const keyChar = match[1].toLowerCase();
+	        const rawVal = match[2];
+	        const settingsKey = this.keyMap[keyChar] || keyChar;
+	        if (settingsKey === "bpm") {
+	          const num = parseInt(rawVal, 10);
+	          if (!isNaN(num)) settings[settingsKey] = num;
+	        } else if (settingsKey === "hud") {
+	          settings[settingsKey] = rawVal === "1" ? 1 : 0;
+	        } else if (settingsKey === "automutate") {
+	          settings[settingsKey] = rawVal;
+	        } else if (settingsKey === "speed") {
+	          const num = parseInt(rawVal, 10);
+	          if (!isNaN(num)) settings[settingsKey] = num / 10;
+	        } else {
+	          settings[settingsKey] = rawVal;
+	        }
+	      }
+	    }
+	    return settings;
+	  }
+
+	  /**
+	   * Encode settings object into a URL fragment string
+	   * @param {object} settings e.g. { bpm: 120, hud: 1, automutate: '4', speed: 1.0 }
+	   * @returns {string} e.g. "#b120|h1|m4|s10"
+	   */
+	  encode(settings = {}) {
+	    const pairs = [];
+	    if (typeof settings.bpm === "number" && !isNaN(settings.bpm)) {
+	      pairs.push(`b${settings.bpm}`);
+	    }
+	    if (typeof settings.hud !== "undefined") {
+	      pairs.push(`h${settings.hud ? 1 : 0}`);
+	    }
+	    if (settings.automutate) {
+	      pairs.push(`m${settings.automutate}`);
+	    }
+	    if (typeof settings.speed === "number" && !isNaN(settings.speed)) {
+	      const speedVal = Math.round(settings.speed * 10);
+	      pairs.push(`s${speedVal}`);
+	    }
+	    return "#" + pairs.join("|");
+	  }
+
+	  /**
+	   * Update browser location.hash with current settings without reloading/scrolling
+	   * @param {object} settings
+	   */
+	  syncToHash(settings = {}) {
+	    if (typeof window === "undefined" || !window.history || !window.history.replaceState) return;
+	    const hash = this.encode(settings);
+	    const url = new URL(window.location);
+	    url.hash = hash;
+	    window.history.replaceState(null, "", url.toString());
+	  }
+	}
+
+	// Instantiate singleton
+	const playerSettings = new PlayerSettings();
+	if (typeof window !== "undefined") {
+	  window.playerSettings = playerSettings;
+	  if (window.HydraliskPlugins) {
+	    window.HydraliskPlugins.register({
+	      id: "player-settings",
+	      name: "Player Performance State Fragment Encoder/Decoder",
+	      init(app) {
+	        app.expose("playerSettings", playerSettings);
+	      }
+	    });
+	  }
 	}
 
 	// Barrel file for all Hydralisk modules, plugin registry, and extension plugins

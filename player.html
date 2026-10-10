@@ -52,7 +52,7 @@
     <script src="./modules.dist.js" defer></script>
     
     <!-- Main player controller -->
-    <script src="./player.js" defer></script>
+    <script src="./player.dist.js" defer></script>
   </head>
   <body>
     <!-- Splash Screen (unlocks browser AudioContext & WebMIDI via gesture) -->
@@ -74,14 +74,30 @@
     <!-- Background Fullscreen Hydra Canvas -->
     <canvas id="hydra-canvas"></canvas>
 
-    <!-- Toast Notifications Container -->
-    <div id="toast-container" class="toast-container"></div>
+    <!-- Intercom System Ticker Bar (Thin Top Row) -->
+    <div id="intercom-bar" class="intercom-bar">
+      <div id="intercom-badge" class="intercom-badge">HYDRA // SYS</div>
+      <div id="intercom-viewport" class="intercom-viewport">
+        <div id="intercom-track" class="intercom-track"></div>
+      </div>
+    </div>
 
     <!-- Floating Expand Button (visible when sidebar is collapsed) -->
     <div id="expand-trigger" class="expand-trigger" onclick="toggleCollapse()" title="Show Controls">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M9 18l6-6-6-6" />
       </svg>
+    </div>
+    <div id="floating-hud-actions" class="floating-hud-actions">
+      <button id="hud-toggle-floating-btn" class="floating-hud-btn" onclick="toggleUI()" title="Toggle HUD">
+        HUD
+      </button>
+      <button id="touch-actions-floating-btn" class="floating-hud-btn" onclick="toggleTouchActions()" title="Toggle Touch Actions">
+        TOUCH
+      </button>
+      <button id="floating-editor-btn" class="floating-hud-btn" onclick="openEditorWithCurrentSketch()" title="Open Full Editor">
+        EDITOR ↗
+      </button>
     </div>
 
     <!-- Floating Controls Panel Drawer -->
@@ -90,6 +106,9 @@
       <div class="panel-header">
         <h2 class="panel-title">HYDRALISK</h2>
         <div class="header-status">
+          <button id="nav-editor-btn" class="nav-editor-btn" onclick="openEditorWithCurrentSketch()" title="Open Full Editor">
+            Editor ↗
+          </button>
           <div id="audio-indicator-dot" class="status-dot" title="Audio Reactive Ready"></div>
           <div id="midi-indicator-dot" class="status-dot" title="MIDI Access Active"></div>
           <button class="collapse-btn" onclick="toggleCollapse()" title="Hide Sidebar">
@@ -323,16 +342,45 @@
             </svg>
           </button>
         </div>
+        <div class="touch-toggle-row">
+          <button id="touch-actions-hud-btn" class="action-btn touch-actions-hud-btn" onclick="toggleTouchActions()">
+            Touch Actions Overlay
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Floating Keyboard Shortcuts Guide -->
     <div id="shortcuts-panel" class="shortcuts-panel">
-      <span><span class="shortcut-key">Space</span> Play/Pause</span>
+      <span><span class="shortcut-key">Alt+Space</span> Tap Tempo</span>
       <span><span class="shortcut-key">←</span> <span class="shortcut-key">→</span> Navigate</span>
+      <span><span class="shortcut-key">Cmd+]</span> Next</span>
       <span><span class="shortcut-key">R</span> Shuffle</span>
       <span><span class="shortcut-key">H</span> Toggle HUD</span>
+      <span><span class="shortcut-key">T</span> Touch Actions</span>
       <span><span class="shortcut-key">F</span> Fullscreen</span>
+    </div>
+
+    <!-- Mobile UI & Touch Performance Overlay -->
+    <div id="touch-actions-overlay" class="touch-actions-overlay">
+      <div class="touch-actions-card">
+        <div class="touch-actions-header">
+          <div class="touch-actions-title">TOUCH PERFORMANCE OVERLAY</div>
+          <button class="touch-close-btn" onclick="toggleTouchActions()">✕</button>
+        </div>
+        <div class="touch-actions-grid">
+          <button class="touch-action-btn" onclick="playPrevSketch()">◄ Prev</button>
+          <button class="touch-action-btn" onclick="togglePlayPause()">⏸ / ▶</button>
+          <button class="touch-action-btn" onclick="playNextSketch()">Next ►</button>
+          <button class="touch-action-btn" onclick="playRandomSketch()">🔀 Random</button>
+          <button class="touch-action-btn" onclick="nudgeTempo(-2)">BPM -</button>
+          <button class="touch-action-btn" onclick="nudgeTempo(2)">BPM +</button>
+          <button class="touch-action-btn" onclick="nudgeSpeed(-0.1)">Speed -</button>
+          <button class="touch-action-btn" onclick="nudgeSpeed(0.1)">Speed +</button>
+          <button class="touch-action-btn touch-action-wide" onclick="triggerMutation()">💩 Glitch / Mutate</button>
+          <button class="touch-action-btn touch-action-wide" onclick="toggleUI()">👁 Toggle HUD</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

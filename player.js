@@ -22,23 +22,105 @@ let automutateMode = 'off';
 let mutationHistory = [];
 let mutationHistoryIndex = -1;
 
-// Toast helper
+// Intercom Ticker Queue System
+let intercomQueue = [];
+let isIntercomBusy = false;
+let intercomActiveTimeout = null;
+
 function showToast(message, isError = false) {
-  const container = document.getElementById('toast-container');
-  if (!container) return;
+  intercomNotify(message, isError);
+}
 
-  const toast = document.createElement('div');
-  toast.className = `toast ${isError ? 'error' : ''}`;
-  const messageSpan = document.createElement('span');
-  messageSpan.textContent = String(message);
-  toast.appendChild(messageSpan);
-  container.appendChild(toast);
+function intercomNotify(message, isError = false) {
+  if (!message) return;
+  intercomQueue.push({ message: String(message), isError: Boolean(isError) });
+  if (!isIntercomBusy) {
+    processIntercomQueue();
+  }
+}
 
-  // Slide out and remove
-  setTimeout(() => {
-    toast.style.animation = 'slide-out-toast 0.3s ease forwards';
-    toast.addEventListener('animationend', () => toast.remove());
-  }, 4000);
+function processIntercomQueue() {
+  if (intercomQueue.length === 0) {
+    isIntercomBusy = false;
+    const badge = document.getElementById('intercom-badge');
+    const track = document.getElementById('intercom-track');
+    if (badge) {
+      badge.classList.remove('error');
+      badge.textContent = "HYDRA // SYS";
+    }
+    if (track) {
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(0)';
+      track.textContent = '';
+    }
+    return;
+  }
+
+  isIntercomBusy = true;
+  const current = intercomQueue.shift();
+
+  const badge = document.getElementById('intercom-badge');
+  const viewport = document.getElementById('intercom-viewport');
+  const track = document.getElementById('intercom-track');
+
+  if (!viewport || !track) {
+    isIntercomBusy = false;
+    return;
+  }
+
+  if (badge) {
+    badge.textContent = current.isError ? "HYDRA // ERR" : "HYDRA // SYS";
+    if (current.isError) {
+      badge.classList.add('error');
+    } else {
+      badge.classList.remove('error');
+    }
+  }
+
+  if (current.isError) {
+    track.classList.add('error');
+  } else {
+    track.classList.remove('error');
+  }
+
+  track.textContent = current.message;
+
+  // Calculate scroll distance and timing for single-pass left marquee scroll
+  const viewportWidth = viewport.offsetWidth || window.innerWidth;
+  const textWidth = track.offsetWidth || (current.message.length * 8);
+
+  const startX = viewportWidth;
+  const endX = -textWidth - 20;
+  const totalDistance = startX - endX;
+
+  // 140px per second speed ensures smooth, crisp readability across all screen sizes
+  const speedPxPerSec = 140;
+  const durationSec = Math.max(2.2, totalDistance / speedPxPerSec);
+
+  // Position track at right boundary
+  track.style.transition = 'none';
+  track.style.transform = `translateX(${startX}px)`;
+
+  // Force layout reflow
+  void track.offsetWidth;
+
+  // Start smooth left marquee scroll
+  track.style.transition = `transform ${durationSec}s linear`;
+  track.style.transform = `translateX(${endX}px)`;
+
+  let hasEnded = false;
+  const onEnd = () => {
+    if (hasEnded) return;
+    hasEnded = true;
+    if (intercomActiveTimeout) clearTimeout(intercomActiveTimeout);
+    track.removeEventListener('transitionend', onEnd);
+    setTimeout(() => {
+      processIntercomQueue();
+    }, 150);
+  };
+
+  track.addEventListener('transitionend', onEnd);
+  intercomActiveTimeout = setTimeout(onEnd, (durationSec * 1000) + 200);
 }
 
 // Custom error logging
@@ -95,6 +177,11 @@ async function startExperience() {
       throw new Error('Hydra player engine library not loaded. Check CDN link.');
     }
 
+    // Remember in local storage that welcome screen has been closed
+    try {
+      localStorage.setItem('welcomeScreenClosed', 'true');
+    } catch (e) {}
+
     // Fade out splash
     splash.style.opacity = 0;
     setTimeout(() => {
@@ -109,13 +196,27 @@ async function startExperience() {
     // Load sketches
     await loadAllSketches();
 
-    // Play default or first sketch
+    // Check URL querystring or localStorage for sketch protocol
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetName = urlParams.get('sketch') || localStorage.getItem('lastSelectedSketchName');
+
+    let initialIdx = 0;
+    if (targetName && sketchesList.length > 0) {
+      const foundIdx = sketchesList.findIndex(s => s.name && s.name.toLowerCase() === targetName.toLowerCase());
+      if (foundIdx >= 0) initialIdx = foundIdx;
+    }
+
+    // Play default or target sketch
     if (sketchesList.length > 0) {
-      playSketch(0);
+      playSketch(initialIdx);
     } else {
       // Play a simple backup visual if no sketches
       playBackupVisual();
     }
+
+    // Apply performance state settings from URL hash fragment protocol
+    applySettingsFromHash();
+    window.addEventListener('hashchange', applySettingsFromHash);
 
     showToast("Visual engine initialized successfully");
   } catch (err) {
@@ -363,6 +464,7 @@ function updateBPM(newBpm) {
   if (automutateMode !== 'off') {
     setAutomutateMode(automutateMode, true); // Keep quiet
   }
+  syncPerformanceSettingsToHash();
 }
 
 // Tap Tempo logic
@@ -404,6 +506,18 @@ function playSketch(index) {
 
   currentSketchIndex = index;
   const sketch = sketchesList[index];
+
+  // Remember selected sketch name in localStorage and URL querystring protocol
+  if (sketch && sketch.name) {
+    try {
+      localStorage.setItem('lastSelectedSketchName', sketch.name);
+      if (window.history && window.history.replaceState) {
+        const url = new URL(window.location);
+        url.searchParams.set('sketch', sketch.name);
+        window.history.replaceState({}, '', url.toString());
+      }
+    } catch (e) {}
+  }
 
   // Update selected class in list
   const items = document.querySelectorAll('.sketch-item');
@@ -700,6 +814,8 @@ function setAutomutateMode(mode, quiet = false) {
   automutateIntervalId = setInterval(() => {
     triggerMutation();
   }, timeoutMs);
+
+  syncPerformanceSettingsToHash();
 }
 
 // Mutate current active sketch code and run it
@@ -810,6 +926,52 @@ function switchTab(tabId) {
   });
 }
 
+// Sync performance state to location.hash fragment according to protocol: #b120|h1|m4|s10
+function syncPerformanceSettingsToHash() {
+  if (window.playerSettings && typeof window.playerSettings.syncToHash === 'function') {
+    window.playerSettings.syncToHash({
+      bpm: window.bpm || baseBpm || 120,
+      hud: isUIHidden() ? 0 : 1,
+      automutate: automutateMode || 'off',
+      speed: window.speed || 1.0
+    });
+  }
+}
+
+// Decode performance state from location.hash fragment and apply to player state
+function applySettingsFromHash() {
+  if (!window.playerSettings || typeof window.playerSettings.decode !== 'function') return;
+  const settings = window.playerSettings.decode(window.location.hash);
+
+  if (typeof settings.bpm === 'number') {
+    baseBpm = settings.bpm;
+    window.bpm = settings.bpm;
+    const numInput = document.getElementById('bpm-number-input');
+    if (numInput) numInput.value = settings.bpm;
+  }
+
+  if (typeof settings.hud === 'number') {
+    const isHidden = isUIHidden();
+    if (settings.hud === 0 && !isHidden) {
+      toggleUI();
+    } else if (settings.hud === 1 && isHidden) {
+      toggleUI();
+    }
+  }
+
+  if (settings.automutate) {
+    setAutomutateMode(settings.automutate, true);
+  }
+
+  if (typeof settings.speed === 'number') {
+    window.speed = settings.speed;
+    const speedSlider = document.getElementById('speed-slider');
+    const speedVal = document.getElementById('speed-val');
+    if (speedSlider) speedSlider.value = settings.speed.toFixed(1);
+    if (speedVal) speedVal.innerText = `${settings.speed.toFixed(1)}x`;
+  }
+}
+
 // Sidebar toggle collapse
 function toggleCollapse() {
   isPanelCollapsed = !isPanelCollapsed;
@@ -825,6 +987,13 @@ function toggleCollapse() {
   }
 
   updateTouchActionsUI();
+  syncPerformanceSettingsToHash();
+}
+
+function isMobileDevice() {
+  return window.matchMedia('(max-width: 768px)').matches ||
+         ('ontouchstart' in window && window.innerWidth <= 1024) ||
+         /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
 function isUIHidden() {
@@ -839,13 +1008,29 @@ function updateTouchActionsUI() {
   const floatingActions = document.getElementById('floating-hud-actions');
   const hudBtn = document.getElementById('touch-actions-hud-btn');
   const floatingBtn = document.getElementById('touch-actions-floating-btn');
+  const shortcuts = document.getElementById('shortcuts-panel');
+  const intercomBar = document.getElementById('intercom-bar');
+  const isMobile = isMobileDevice();
   const hidden = isUIHidden();
 
+  // If HUD is closed / hidden, hide the intercom bar as part of the HUD
+  if (intercomBar) {
+    intercomBar.classList.toggle('hidden', hidden);
+  }
+
+  // On mobile screens, hide QWERTY keyboard shortcuts guide and auto-enable touch mode
+  if (isMobile) {
+    if (shortcuts) {
+      shortcuts.classList.add('hidden');
+    }
+  }
+
   if (floatingActions) {
-    floatingActions.classList.toggle('visible', hidden);
+    floatingActions.classList.toggle('visible', hidden || isMobile);
   }
   if (overlay) {
-    overlay.classList.toggle('visible', hidden && touchActionsEnabled);
+    // Automatically display mobile GUI/HUD on mobile devices or when UI is hidden with touch actions enabled
+    overlay.classList.toggle('visible', (isMobile || hidden) && touchActionsEnabled);
   }
   if (hudBtn) {
     hudBtn.classList.toggle('active', touchActionsEnabled);
@@ -854,6 +1039,21 @@ function updateTouchActionsUI() {
     floatingBtn.classList.toggle('active', touchActionsEnabled);
   }
 }
+
+function openEditorWithCurrentSketch() {
+  let sketchName = '';
+  if (sketchesList && sketchesList[currentSketchIndex]) {
+    sketchName = sketchesList[currentSketchIndex].name;
+  }
+  if (!sketchName) {
+    try {
+      sketchName = localStorage.getItem('lastSelectedSketchName') || '';
+    } catch (e) {}
+  }
+  const targetUrl = sketchName ? `index.html?sketch=${encodeURIComponent(sketchName)}` : 'index.html';
+  window.location.href = targetUrl;
+}
+window.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
 
 function toggleTouchActions() {
   touchActionsEnabled = !touchActionsEnabled;
@@ -892,6 +1092,7 @@ function nudgeSpeed(delta) {
     window.speed = rounded;
   }
   speedVal.innerText = `${rounded.toFixed(1)}x`;
+  syncPerformanceSettingsToHash();
 }
 
 // Toggle entire UI (hide all control bars for clean installation viewing)
@@ -920,6 +1121,7 @@ function toggleUI() {
   }
 
   updateTouchActionsUI();
+  syncPerformanceSettingsToHash();
 }
 
 // Fullscreen toggle helper
@@ -977,33 +1179,76 @@ function updateAuthUI(isAuthenticated) {
   }
 }
 
-// Hook up Event Emitter for midi-mapping.js integration
-if (window.xemitter) {
-  window.xemitter.on("gallery:nextSketch", () => playNextSketch());
-  window.xemitter.on("gallery:prevSketch", (payload) => {
-    if (payload && payload.backwards) {
-      playPrevSketch();
-    } else {
-      playNextSketch();
+// Tap tempo calculator for Option+Space / Alt+Space & xemitter
+function handleTapTempo(evt = {}) {
+  if (evt && typeof evt.bpm === "number") {
+    baseBpm = evt.bpm;
+    updateBPM(evt.bpm);
+    const bpmInput = document.getElementById('bpm-number-input');
+    if (bpmInput) bpmInput.value = evt.bpm;
+    showToast(`Tap Tempo: ${evt.bpm} BPM`);
+    return;
+  }
+
+  const now = Date.now();
+  tapTimes.push(now);
+  if (tapTimes.length > 4) tapTimes.shift();
+
+  if (tapTimes.length > 1) {
+    const intervals = [];
+    for (let i = 1; i < tapTimes.length; i++) {
+      intervals.push(tapTimes[i] - tapTimes[i - 1]);
     }
-  });
+    const avgMs = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+    const calculatedBpm = Math.round(60000 / avgMs);
+
+    if (calculatedBpm >= 30 && calculatedBpm <= 300) {
+      baseBpm = calculatedBpm;
+      updateBPM(calculatedBpm);
+      const bpmInput = document.getElementById('bpm-number-input');
+      if (bpmInput) bpmInput.value = calculatedBpm;
+      showToast(`Tap Tempo: ${calculatedBpm} BPM`);
+    }
+  }
+}
+
+// Hook up Event Emitter for core editor hotkeys & midi-mapping.js integration
+if (window.xemitter) {
+  window.xemitter.on("taptempo", (data) => handleTapTempo(data));
+  window.xemitter.on("bpm:taptempo", (data) => handleTapTempo(data));
+  window.xemitter.on("gallery:nextSketch", () => playNextSketch());
+  window.xemitter.on("gallery:prevSketch", () => playPrevSketch());
   window.xemitter.on("gallery:randomSketch", () => playRandomSketch());
+  window.xemitter.on("editor:randomize", () => triggerMutation());
+  window.xemitter.on("editor:jumpBack1", () => undoMutation());
+  window.xemitter.on("gfx:speedSlower", () => nudgeSpeed(-0.1));
+  window.xemitter.on("gfx:speedFaster", () => nudgeSpeed(0.1));
+  window.xemitter.on("gfx:speedDefault", () => {
+    window.speed = 1.0;
+    const speedSlider = document.getElementById('speed-slider');
+    const speedVal = document.getElementById('speed-val');
+    if (speedSlider) speedSlider.value = "1.0";
+    if (speedVal) speedVal.innerText = "1.0x";
+    showToast("Speed: 1.0x");
+  });
+  window.xemitter.on("gfx:speedReverse", () => {
+    window.speed = -1 * (window.speed || 1.0);
+    const speedVal = document.getElementById('speed-val');
+    if (speedVal) speedVal.innerText = window.speed.toFixed(1) + "x";
+    showToast(`Speed: ${window.speed.toFixed(1)}x`);
+  });
   window.xemitter.on("hideAll", () => toggleUI());
   window.xemitter.on("fullscreen", () => toggleFullscreen());
 }
 
 // Listen to keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-  // If editing code, don't trigger playback shortcuts
+  // If editing code in textarea or input, don't trigger global playback shortcuts
   if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') {
     return;
   }
 
   switch (e.code) {
-    case 'Space':
-      e.preventDefault();
-      togglePlayPause();
-      break;
     case 'ArrowLeft':
       e.preventDefault();
       playPrevSketch();
@@ -1124,5 +1369,19 @@ document.addEventListener('DOMContentLoaded', () => {
       updateAuthUI(false);
     }
   }
+
+  if (isMobileDevice()) {
+    touchActionsEnabled = true;
+  }
   updateTouchActionsUI();
+  window.addEventListener('resize', updateTouchActionsUI);
+
+  // Auto-launch player experience if welcome screen was previously closed
+  try {
+    if (localStorage.getItem('welcomeScreenClosed') === 'true') {
+      const splash = document.getElementById('splash-screen');
+      if (splash) splash.style.display = 'none';
+      startExperience();
+    }
+  } catch (e) {}
 });
