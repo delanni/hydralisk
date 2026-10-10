@@ -14,6 +14,7 @@ import './automutate.js';
 import './sketchLibrary.js';
 import './editorActions.js';
 import './hydraliskExtras.js';
+import './oblivionGuard.js';
 
 window.Modules = {
     SketchManager

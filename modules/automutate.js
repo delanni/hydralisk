@@ -7,7 +7,8 @@
 import { Parser } from "acorn";
 import { generate } from "astring";
 import { defaultTraveler, makeTraveler } from "astravel";
-import { js_beautify } from "js-beautify";
+import jsBeautify from "js-beautify";
+const js_beautify = jsBeautify.js_beautify || jsBeautify;
 
 export const GLSL_TRANSFORMS = {
   src: ["noise", "voronoi", "osc", "shape", "gradient", "src", "solid"],
@@ -252,8 +253,10 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
       app.memory = memory;
       app.expose("memory", memory);
 
-      const setAutomutateState = (interval) => {
+      const setAutomutateState = (interval, multiplier = null, changeTransformChance = 1) => {
         app.automutateInterval = interval;
+        app.automutateBeatMultiplier = multiplier;
+        app.automutateChangeTransformChance = changeTransformChance;
         if (app.state) app.state.automutateInterval = interval;
         if (window.state) window.state.automutateInterval = interval;
         app.emit("render");
@@ -275,6 +278,35 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         }
         if (app.emitter) app.emitter.emit("render");
       };
+
+      const retimeAutomutate = (newBpm) => {
+        if (!app.automutateInterval || !app.automutateBeatMultiplier) return;
+        const currentBpm = Number(newBpm) || app.bpm || window.bpm || 120;
+        const mutateTimeout = (60000 / currentBpm) * app.automutateBeatMultiplier;
+
+        clearInterval(app.automutateInterval);
+
+        const newInterval = setInterval(() => {
+          const ed = getEditor();
+          if (!ed) return;
+          if (!ed.mutator) ed.mutator = new Mutator(ed);
+          const changeTransform = Math.random() > (app.automutateChangeTransformChance ?? 1);
+          ed.mutator.mutate({ reroll: false, changeTransform });
+          if (app.emitter) {
+            app.emitter.emit("editor:formatCode");
+            app.emitter.emit("oblivion:scheduleCheck", { delay: 250 });
+          }
+          memory.autoSave(ed.getValue());
+        }, mutateTimeout);
+
+        setAutomutateState(newInterval, app.automutateBeatMultiplier, app.automutateChangeTransformChance);
+      };
+
+      app.on("bpm:change", (newBpm) => retimeAutomutate(newBpm));
+      app.on("taptempo", (evt = {}) => {
+        const bpm = evt && typeof evt.bpm === "number" ? evt.bpm : app.bpm || window.bpm;
+        if (bpm) retimeAutomutate(bpm);
+      });
 
       app.on("editor:randomize", (evt = {}) => {
         const editor = getEditor();
@@ -301,13 +333,14 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         app.emit("editor:randomize", evt);
       });
 
-      app.on("editor:toggleAutomutate", (evt = {}) => {
+      app.on("editor:toggleAutomutate", async (evt = {}) => {
         const bpm = app.bpm || window.bpm || 120;
         const guessedMsPerBeat = 60000 / bpm;
         const lastCombo = evt.lastCombo || "";
         const automutateMode = lastCombo.match(/-(.)$/)?.[1];
 
         let mutateTimeout = guessedMsPerBeat;
+        let beatMultiplier = null;
 
         if (automutateMode === "X" || !automutateMode) {
           if (app.automutateInterval) {
@@ -315,9 +348,12 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
             setAutomutateState(null);
             return;
           } else {
-            const promptVal = window.hydraDialog && window.hydraDialog.prompt
-              ? window.prompt("How fast would you like to go? (in ms)", guessedMsPerBeat)
-              : guessedMsPerBeat;
+            let promptVal = guessedMsPerBeat;
+            if (window.hydraDialog && window.hydraDialog.prompt) {
+              promptVal = await window.hydraDialog.prompt("How fast would you like to go? (in ms)", guessedMsPerBeat);
+            } else if (typeof window.prompt === "function") {
+              promptVal = window.prompt("How fast would you like to go? (in ms)", guessedMsPerBeat);
+            }
             mutateTimeout = Number(promptVal) || guessedMsPerBeat;
           }
         } else if (automutateMode === "0") {
@@ -327,14 +363,19 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
           setAutomutateState(null);
           return;
         } else if (automutateMode === "1") {
+          beatMultiplier = 1;
           mutateTimeout = guessedMsPerBeat;
         } else if (automutateMode === "2") {
+          beatMultiplier = 2;
           mutateTimeout = guessedMsPerBeat * 2;
         } else if (automutateMode === "3") {
+          beatMultiplier = 4;
           mutateTimeout = guessedMsPerBeat * 4;
         } else if (automutateMode === "4") {
+          beatMultiplier = 8;
           mutateTimeout = guessedMsPerBeat * 8;
         } else if (automutateMode === "5") {
+          beatMultiplier = 16;
           mutateTimeout = guessedMsPerBeat * 16;
         }
 
@@ -355,11 +396,14 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
           if (!ed.mutator) ed.mutator = new Mutator(ed);
           const changeTransform = Math.random() > changeTransformChance;
           ed.mutator.mutate({ reroll: false, changeTransform });
-          if (app.emitter) app.emitter.emit("editor:formatCode");
+          if (app.emitter) {
+            app.emitter.emit("editor:formatCode");
+            app.emitter.emit("oblivion:scheduleCheck", { delay: 250 });
+          }
           memory.autoSave(ed.getValue());
         }, mutateTimeout);
 
-        setAutomutateState(newInterval);
+        setAutomutateState(newInterval, beatMultiplier, changeTransformChance);
 
         if (editor) {
           memory.autoSave(editor.getValue(), true);

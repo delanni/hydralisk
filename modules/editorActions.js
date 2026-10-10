@@ -4,7 +4,8 @@
  * global speed controls, and global keyboard shortcut binding & prevention.
  */
 
-import { js_beautify } from "js-beautify";
+import jsBeautify from "js-beautify";
+const js_beautify = jsBeautify.js_beautify || jsBeautify;
 
 export const SPEED_SETTINGS = [
   0.01, 0.05, 0.1, 0.125, 0.25, 0.3333333333333333, 0.5, 1, 2, 3, 4, 8, 10, 20, 100,
@@ -12,12 +13,10 @@ export const SPEED_SETTINGS = [
 
 export function getCurrentSpeedIdx(currentSpeed) {
   const n = Math.abs(currentSpeed);
+  if (n === 0) return -1;
   let spdIndex = SPEED_SETTINGS.findIndex(
-    (_v, i, a) => n === a[i] || (a[i] < n && a[i + 1] > n)
+    (_v, i, a) => n === a[i] || (a[i] < n && (a[i + 1] === undefined || a[i + 1] > n))
   );
-  if (spdIndex === -1 || typeof spdIndex === "undefined") {
-    spdIndex = SPEED_SETTINGS.indexOf(1);
-  }
   return spdIndex;
 }
 
@@ -176,27 +175,48 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
       // Speed Controls
       app.on("gfx:speedSlower", () => {
         const cur = window.speed ?? 1;
-        const spdIndex = getCurrentSpeedIdx(cur);
-        const sign = Math.sign(cur) || 1;
-        window.speed = SPEED_SETTINGS[Math.max(0, spdIndex - 1)] * sign;
+        const absCur = Math.abs(cur);
+        const sign = cur === 0 ? (window._speedSign || 1) : Math.sign(cur);
+
+        if (absCur <= 0.01) {
+          window.speed = 0;
+        } else {
+          const spdIndex = getCurrentSpeedIdx(absCur);
+          const nextIdx = spdIndex <= 0 ? 0 : spdIndex - 1;
+          window.speed = SPEED_SETTINGS[nextIdx] * sign;
+        }
         console.log(`Speed is ${window.speed}`);
       });
 
       app.on("gfx:speedDefault", () => {
         window.speed = 1;
+        window._speedSign = 1;
         console.log(`Speed is ${window.speed}`);
       });
 
       app.on("gfx:speedFaster", () => {
         const cur = window.speed ?? 1;
-        const spdIndex = getCurrentSpeedIdx(cur);
-        const sign = Math.sign(cur) || 1;
-        window.speed = SPEED_SETTINGS[Math.min(SPEED_SETTINGS.length - 1, spdIndex + 1)] * sign;
+        const absCur = Math.abs(cur);
+        const sign = cur === 0 ? (window._speedSign || 1) : Math.sign(cur);
+
+        if (cur === 0) {
+          window.speed = SPEED_SETTINGS[0] * sign;
+        } else {
+          const spdIndex = getCurrentSpeedIdx(absCur);
+          const nextIdx = spdIndex < 0 ? 0 : Math.min(SPEED_SETTINGS.length - 1, spdIndex + 1);
+          window.speed = SPEED_SETTINGS[nextIdx] * sign;
+        }
         console.log(`Speed is ${window.speed}`);
       });
 
       app.on("gfx:speedReverse", () => {
-        window.speed = -1 * (window.speed || 1);
+        const cur = window.speed ?? 1;
+        if (cur === 0) {
+          window._speedSign = (window._speedSign || 1) * -1;
+        } else {
+          window._speedSign = Math.sign(cur) * -1;
+          window.speed = -1 * cur;
+        }
         console.log(`Speed is ${window.speed}`);
       });
 

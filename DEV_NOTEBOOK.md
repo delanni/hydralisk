@@ -13,6 +13,8 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - **2026-10-08**: Upgraded Scene Management & Search Component: implemented `SketchSearchFilter` (fuzzy matching, interactive tag cloud pills, search stats), redesigned `CollectionsPanel` into full Setlist Manager (scene reordering, target BPM, cue notes, live stepper, duplicate, export/import JSON), and added `[`/`]` setlist navigation hotkeys.
 - **2026-10-08**: Modular Core Extraction: Refactored custom features out of `bundle.min.js` into standalone `HydraliskPlugins` modules (`modules/automutate.js`, `modules/sketchLibrary.js`, `modules/editorActions.js`, `modules/hydraliskExtras.js`), streamlining `bundle.min.js` into a minimal host bundle ready for upstream Hydra updates.
 - **2026-10-08**: Fixed mutation code formatting by delegating directly to the native `editor.formatCode()` command in `Mutator.mutate()` ([modules/automutate.js](file:///Users/web/Git/hydralisk/modules/automutate.js)) and [modules/editorActions.js](file:///Users/web/Git/hydralisk/modules/editorActions.js) (ensuring `indent_with_tabs: true` and `break_chained_methods: true` format settings align 1:1 with the code editor layout).
+- **2026-10-10**: Implemented Oblivion Guard ([modules/oblivionGuard.js](file:///Users/web/Git/hydralisk/modules/oblivionGuard.js)): Canvas blackout/whiteout auto-recovery engine that monitors WebGL frame pixel buffers on mutations and automatically reverts to the previous functional sketch state if an oblivion crash state is detected.
+- **2026-10-10**: Resolved Speed Controls & BPM-sync Automutate issues ([modules/editorActions.js](file:///Users/web/Git/hydralisk/modules/editorActions.js), [modules/automutate.js](file:///Users/web/Git/hydralisk/modules/automutate.js)): Fixed speed `0` freeze bug, preserved direction sign on reverse, and implemented live re-timing of running automutate intervals when BPM or tap-tempo changes occur.
 
 ## 3. Architecture & Technical Decisions (ADRs)
 
@@ -35,7 +37,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - [x] Visual Player (`player.html`)
 ### Roadmap (confirmed by the developer, 2026-10-07; no priority order yet)
 - [ ] **Configurable automutate transform-swap %**: a setting and/or a separate MIDI action, instead of the current Cmd-click-only 25%.
-- [ ] **Oblivion guard**: detect black/white-out and auto jump back.
+- [x] **Oblivion guard**: detect black/white-out and auto jump back.
 - [x] **Better scene management**: setlists, ordering, cue notes, fuzzy search, and live stepper navigation.
 - [ ] **Touch/mobile HUD**: finish branch `copilot/add-touch-actions-buttons` (unmerged, based on `master`, targets `player.js`).
 - [ ] **Mobile UI & Remote Playability Overlay**: a proper, fixed mobile interface with a dedicated performance/playability overlay. Designed to function both locally and remotely on secondary devices (message relaying protocol to be implemented later).
@@ -61,8 +63,8 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - 2026-10-08 **[RESOLVED] Case-sensitive CSS import:** Fixed `modules/sketchManager/index.jsx` import from `./sketchManager.css` to `./sketchmanager.css`.
 - 2026-10-08 **[RESOLVED] Empty Playlist NaN Navigation & Index Mismatch:** Fixed arithmetic bug in `bundle.min.js` where `(0 + 1) % 0` corrupted `sketchIdx` to `NaN` when an empty playlist was active. Added empty list guards in `gallery:nextSketch` and `gallery:randomSketch`, sanitized `sketchIdx` in `gallery:updateLocalSketches`, and properly mapped playlist index in `gallery:loadSketch`.
 - 2026-10-07 **Automutate never swaps transforms from keys or MIDI:** `changeTransformChance = 1` unless `evt.metaKey`, and `Math.random() > 1` is never true. Only a Cmd-click on 💩 gives a 25% swap chance.
-- 2026-10-07 **Automutate interval is fixed at start.** Tap tempo during a run has no effect until it is re-triggered. (Although in practise, the beatsynced automation is used mostly, the time doesn't really matter.)
-- 2026-10-07 **Speed stuck at 0:** `Math.sign(0) = 0`, so slower/faster can't leave 0 (the MIDI speed bind can set 0). Also `getCurrentSpeedIdx` checks `undefined`, but `findIndex` returns `-1`.
+- 2026-10-10 **[RESOLVED] Automutate live BPM sync:** Added `bpm:change` and `taptempo` event listeners to dynamically re-time active automutate intervals without interrupting execution.
+- 2026-10-10 **[RESOLVED] Speed stuck at 0:** Updated `getCurrentSpeedIdx` and `gfx:speedSlower`/`gfx:speedFaster`/`gfx:speedReverse` handlers to step cleanly out of 0 (0 -> 0.01) and preserve direction sign.
 - 2026-10-07 **Loading a sketch mutates the source objects:** `delete sketch.metadata.bpm/date/local/index/type`.
 - 2026-10-07 `Mutator.glitchRelToInit` calls `glitchNumber()` without `this.`, so it throws a ReferenceError if `initVal` is undefined (rare).
 - 2026-10-07 `xxx()` parses the `<anonymous>:L:C` stack format, so it only works in Chrome/V8.
@@ -80,6 +82,8 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - 2026-10-08: Refined Setlist Collecting workflow: simplified `CollectionsPanel` (Setlists tab) to Load, Delete, Create actions; added Target Setlist collector dropdown with `+ All` and `- All` buttons plus per-sketch `+`/`-` buttons in `SketchesList`.
 - 2026-10-08: Implemented non-blocking `ConfirmModal` component and promise-based `dialogService` (`window.hydraDialog.confirm()` / `prompt()`) replacing native blocking `window.confirm`/`window.prompt` dialogs without pausing WebGL canvas rendering.
 - 2026-10-08: Fixed `NaN` empty playlist navigation bug and playlist index mapping in `bundle.min.js`. Next/prev navigation now safely guards empty setlists and recovers instantly when switching setlists.
+- 2026-10-10: Added `OblivionGuard` module ([modules/oblivionGuard.js](file:///Users/web/Git/hydralisk/modules/oblivionGuard.js)) with WebGL `readPixels` sampling, 2D OffscreenCanvas fallback, consecutive revert rate limiting, and non-intrusive toast feedback UI. Verified via unit test suite.
+- 2026-10-10: Fixed speed control edge cases (`speed=0` freeze, direction preservation) and implemented live beat re-timing for running automutate intervals in [`modules/editorActions.js`](file:///Users/web/Git/hydralisk/modules/editorActions.js) and [`modules/automutate.js`](file:///Users/web/Git/hydralisk/modules/automutate.js). Verified via unit test suite.
 
 
 
