@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Amakit Workbench</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.111.0.min.js"></script>
+    <script src="amakit.js"></script>
+</head>
+<body>
+    <h1>Amakit DynamoDB Workbench</h1>
+
+    <h2>Login</h2>
+    <button onclick="login()">Login</button>
+    <pre id="loginResult"></pre>
+
+    <!-- Create Draft -->
+    <h2>Create Draft</h2>
+    <textarea id="draftContent" placeholder="Enter draft content here..."></textarea><br>
+    <button onclick="createDraft()">Create Draft</button>
+
+    <!-- Get Draft -->
+    <h2>Get Draft</h2>
+    <input type="text" id="getDraftId" placeholder="Enter draft name">
+    <button onclick="getDraft()">Get Draft</button>
+    <pre id="getDraftResult"></pre>
+
+    <!-- Update Draft -->
+    <h2>Update Draft</h2>
+    <input type="text" id="updateDraftId" placeholder="Enter draft ID">
+    <textarea id="updateDraftContent" placeholder="Enter new draft content here..."></textarea><br>
+    <button onclick="updateDraft()">Update Draft</button>
+
+    <!-- Delete Draft -->
+    <h2>Delete Draft</h2>
+    <input type="text" id="deleteDraftId" placeholder="Enter draft ID">
+    <button onclick="deleteDraft()">Delete Draft</button>
+
+    <script>
+        const amakit = window.amakit;
+
+        function createDraft() {
+            const content = document.getElementById('draftContent').value;
+            amakit.addDraft(content)
+                .then(response => alert('Draft created successfully!'))
+                .catch(error => alert('Error creating draft: ' + error));
+        }
+
+        function getDraft() {
+            const name = document.getElementById('getDraftId').value;
+            amakit.getDraft({name})
+                .then(draft => document.getElementById('getDraftResult').textContent = JSON.stringify(draft, null, 2))
+                .catch(error => alert('Error fetching draft: ' + error));
+        }
+
+        function updateDraft() {
+            const id = document.getElementById('updateDraftId').value;
+            const content = document.getElementById('updateDraftContent').value;
+            // Assuming there's a method to update drafts which is not present in the provided class
+            // This is a placeholder for actual update logic
+            alert('Update functionality needs to be implemented in Amakit class.');
+        }
+
+        function deleteDraft() {
+            const id = document.getElementById('deleteDraftId').value;
+            amakit.dropDraft({id})
+                .then(response => alert('Draft deleted successfully!'))
+                .catch(error => alert('Error deleting draft: ' + error));
+        }
+
+        function login() {
+            amakit.login()
+                .then(response => document.getElementById('loginResult').textContent = 'Login successful!')
+                .catch(error => document.getElementById('loginResult').textContent = 'Error logging in: ' + error);
+        }
+    </script>
+</body>
+</html>

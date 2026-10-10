@@ -309,6 +309,8 @@ html, body {
   background: var(--bg-glass-hover);
 }
 
+=======
+>>>>>>> gh-pages
 /* Navigation Tabs */
 .panel-tabs {
   display: flex;
@@ -609,7 +611,6 @@ html, body {
   color: var(--color-accent);
   background: rgba(0, 242, 254, 0.08);
 }
-
 .control-icon-btn {
   background: transparent;
   border: none;
@@ -763,7 +764,7 @@ html, body {
 }
 
 .touch-actions-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 18;
@@ -776,25 +777,48 @@ html, body {
 }
 
 .touch-actions-card {
-  position: absolute;
+  position: fixed;
   right: 16px;
   bottom: 16px;
-  width: min(340px, calc(100vw - 32px));
+  width: min(360px, calc(100vw - 32px));
   border-radius: 14px;
   border: 1px solid var(--border-glass);
   background: var(--bg-glass-heavy);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
   box-shadow: var(--shadow-premium);
-  padding: 12px;
+  padding: 14px;
   pointer-events: auto;
+}
+
+.touch-actions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .touch-actions-title {
   font-size: 0.72rem;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-bottom: 8px;
+}
+
+.touch-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: var(--transition-smooth);
+}
+
+.touch-close-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .touch-actions-grid {
@@ -806,24 +830,26 @@ html, body {
 .touch-action-btn {
   border: 1px solid var(--border-glass);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--text-primary);
-  padding: 8px 6px;
-  font-size: 0.78rem;
+  padding: 10px 6px;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition-smooth);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.touch-action-btn:hover {
+.touch-action-btn:active, .touch-action-btn:hover {
   border-color: var(--color-accent);
   color: var(--color-accent);
+  background: rgba(0, 242, 254, 0.12);
 }
 
 .touch-action-wide {
-  grid-column: span 4;
+  grid-column: span 2;
 }
-
 /* Custom Scrollbars */
 .sketches-list::-webkit-scrollbar, .panel-body::-webkit-scrollbar, .code-textarea::-webkit-scrollbar {
   width: 6px;

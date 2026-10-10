@@ -47,11 +47,8 @@
     <!-- Grab ojack's hydra player engine -->
     <script src="https://unpkg.com/hydra-synth"></script>
     
-    <!-- Local app kits -->
-    <script src="./amakit.js" defer></script>
-    <script src="./hydrakit.js" defer></script>
-    <script src="./midi-mapping.js" defer></script>
-    <script src="./hyper-hydra.convolutions.js" defer></script>
+    <!-- Local app plugins & modules -->
+    <script src="./modules.dist.js" defer></script>
     
     <!-- Main player controller -->
     <script src="./player.js" defer></script>
@@ -351,19 +348,24 @@
       <span><span class="shortcut-key">F</span> Fullscreen</span>
     </div>
 
+    <!-- Mobile UI & Touch Performance Overlay -->
     <div id="touch-actions-overlay" class="touch-actions-overlay">
       <div class="touch-actions-card">
-        <div class="touch-actions-title">Touch Actions</div>
+        <div class="touch-actions-header">
+          <div class="touch-actions-title">TOUCH PERFORMANCE OVERLAY</div>
+          <button class="touch-close-btn" onclick="toggleTouchActions()">✕</button>
+        </div>
         <div class="touch-actions-grid">
-          <button class="touch-action-btn" onclick="playPrevSketch()">Prev</button>
-          <button class="touch-action-btn" onclick="togglePlayPause()">Play</button>
-          <button class="touch-action-btn" onclick="playNextSketch()">Next</button>
-          <button class="touch-action-btn" onclick="playRandomSketch()">Random</button>
+          <button class="touch-action-btn" onclick="playPrevSketch()">◄ Prev</button>
+          <button class="touch-action-btn" onclick="togglePlayPause()">⏸ / ▶</button>
+          <button class="touch-action-btn" onclick="playNextSketch()">Next ►</button>
+          <button class="touch-action-btn" onclick="playRandomSketch()">🔀 Random</button>
           <button class="touch-action-btn" onclick="nudgeTempo(-2)">BPM -</button>
           <button class="touch-action-btn" onclick="nudgeTempo(2)">BPM +</button>
           <button class="touch-action-btn" onclick="nudgeSpeed(-0.1)">Speed -</button>
           <button class="touch-action-btn" onclick="nudgeSpeed(0.1)">Speed +</button>
-          <button class="touch-action-btn touch-action-wide" onclick="toggleUI()">Show HUD</button>
+          <button class="touch-action-btn touch-action-wide" onclick="triggerMutation()">💩 Glitch / Mutate</button>
+          <button class="touch-action-btn touch-action-wide" onclick="toggleUI()">👁 Toggle HUD</button>
         </div>
       </div>
     </div>

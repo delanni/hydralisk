@@ -1,0 +1,399 @@
+[
+    {
+        "name": "Eye of the nigh",
+        "type": "code",
+        "code": "\nvar hori = osc(1,1,1)\n\t.scale([1, 1.5])\nvar verti = osc(1)\n\t.rotate([Math.PI / 2, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 4 * -3])\n\nhori.blend(verti, [0.1, 0.9].fast(6 / 8)\n\t\t.smooth())\n\t.out(o0)\n\nsrc(o0)\n\t.modulate(hori.blend(verti, [-1, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 10)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [3, 1, -1, 3, -6])\n\t.blend(src(o3)\n\t\t.scale(1.2).rotate(() => mouse.x / 100))\n\t.sub(src(o3).scale(1.1).mask(shape([10, 100].smooth()).scale(() => 3*Math.sin(time/4))))\n\t.brightness(() => mouse.y/1000)\n\t.saturate(1.2)\n\t.hue(() => 1)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Eye of the nigh 4d",
+        "type": "code",
+        "code": "\nvar hori = osc(1,1,1)\n\t.scale([1, 1.5])\nvar verti = osc(1)\n\t.rotate([Math.PI / 2, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 4 * -3])\n\nhori.blend(verti, [0.1, 0.9].fast(6 / 8)\n\t\t.smooth())\n\t.out(o0)\n\nsrc(o0)\n\t.modulate(hori.blend(verti, [-1, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 10)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [3, 1, -1, 3, -6])\n\t.blend(src(o3)\n           .kaleid(5)\n\t\t.scale(1.2).rotate(() => mouse.x / 100))\n\t.sub(src(o3).scale(1.1).mask(shape([10, 100].smooth()).scale(() => 9*Math.sin(time/8))),0.7)\n\t.sub(src(o3).scale(1.13).mask(shape([5, 10].smooth()).scale(() => 7*Math.sin(time/7))),0.3)\n\t.brightness(() => mouse.y/1000)\n\t.saturate(1.2)\n\t.hue(() => Math.sin(time))\n\t.blend(src(o3), 0.9)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Eye of the nigh 43d",
+        "type": "code",
+        "code": "\nvar hori = osc(2, 2, 5)\n\t.scale([1, 1.5]);\nvar verti = osc(1.95, 2,2)\n\t.rotate([Math.PI / 2.104, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 6.636 * -1.758]);\nhori.blend(verti, [0.014, 1.013].fast(6 / 0.441)\n\t\t.smooth())\n\t.out(o0);\nsrc(o0)\n\t.modulate(hori.blend(verti, [-0.14, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1);\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 6.66)))\n\t.out(o2);\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [5.21, 1, -1.565, 3, -1.233])\n\t.blend(src(o3)\n\t\t.kaleid(Math.random() * 5 + 3)\n\t\t.scale(0.549)\n\t\t.rotate(() => mouse.x / 134.588))\n\t.sub(src(o3)\n\t\t.scale(1.028)\n\t\t.mask(shape([10, 58.096].smooth())\n\t\t\t.scale(() => 9 * Math.sin(time / 15.154))), 0.7)\n\t.sub(src(o3)\n\t\t.scale(0.158)\n\t\t.mask(shape([5, 18.356].smooth())\n\t\t\t.scale(() => 7 * Math.sin(time / 12.192))), 0.35)\n\t.brightness(() => mouse.y / 1000)\n\t.saturate(1.626)\n\t.hue(() => Math.sin(time))\n\t.blend(src(o3), 0.9)\n\t.out(o3);\nrender(o3);",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Glitch crystals",
+        "type": "code",
+        "code": "\nconst COORDS = [\n\t[-1, -1],\n\t[0, -1],\n\t[1, -1],\n\t[-1, 0],\n\t[0, 0],\n\t[1, 0],\n\t[-1, 1],\n\t[0, 1],\n\t[1, 1]\n]\n\nvar c = (r = Math.random() * Math.PI - Math.PI / 2) => shape(Math.random() * 4 + 3)\n\t.scale(1, 2)\n\t.rotate(r, 0.1 * r)\n\t.color(() => Math.sin(time * r), 1 - r, (r + Math.random()) % 1)\n\t.hue(() => time * r / 10)\n\nc(Math.random())\n\t.blend(c())\n\t.blend(c())\n\t.out(o0)\n\nvar zy = (i) => src(o0)\n\t.scale(1 / 3)\n\t.rotate(0, Math.random() * i - 3)\n\t.mask(shape(4)\n\t\t.scale(1.093))\n\t.scrollX(1 / 3 * COORDS[i][0])\n\t.scrollY(1 / 3 * COORDS[i][1])\n\t.scrollX(0, 0.2)\n\nzy(0)\n\t.add(zy(1))\n\t.add(zy(2))\n\t.add(zy(3))\n\t.add(zy(4))\n\t.add(zy(5))\n\t.add(zy(6))\n\t.add(zy(7))\n\t.add(zy(8))\n\t.out(o1)\n\nsrc(o0)\n\t.mult(o1, 0.8)\n\t.diff(src(o2)\n\t\t.blend(src(o2)\n\t\t\t.scale(0.7)), [1, 0, -2].fast(1 / 10)\n\t\t.smooth())\n\t.out(o2)\n\nsrc(o2)\n\t.scale(-1.01)\n\t.scrollX(0, 0.1)\n\t.brightness(0.3)\n\t.diff(o2)\n\t.mult(src(o0)\n\t\t.brightness(0.3))\n\t.add(o2)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Alley crystals",
+        "type": "code",
+        "code": "const r = () => Math.random() * 5 - 2.5;\nconst COORDS = [\n\t[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],[r(), r()],\n];\nvar c = (r = Math.random() * Math.PI - Math.PI / 1.566) => shape(Math.random() * 4 + 3)\n\t.scale(1.832, 3.921)\n\t.rotate(r, 0.128 * r)\n\t.color(() => Math.sin(time * r), 1 - r, (r + Math.random()) % 1.817)\n\t.hue(() => time * r / 7.517);\nc(Math.random())\n\t.blend(c())\n\t.blend(c())\n\t.out(o0);\nvar zy = i => src(o0)\n\t.scale(0.514 / 4.27)\n\t.rotate(0.123, Math.random() * i - 3)\n\t.mask(shape(4)\n\t\t.scale(0.613))\n\t.scrollX(0.742 / 0.097 * COORDS[i][0])\n\t.scrollY(0.139 / 3 * COORDS[i][1])\n\t.scrollX(0.973, 0.059);\nzy(0)\n\t.add(zy(1))\n\t.add(zy(2))\n\t.add(zy(3))\n\t.add(zy(4))\n\t.add(zy(5))\n\t.add(zy(6))\n\t.add(zy(7))\n\t.add(zy(8))\n\t.out(o1);\nsrc(o0)\n\t.mult(o1, 0.96)\n\t.diff(src(o2)\n\t\t.blend(src(o2)\n\t\t\t.scale(1.201)), [1.771, 0.59, -2].fast(1.613 / 15.721)\n\t\t.smooth())\n\t.out(o2);\nsrc(o2)\n\t.scale(-0.639)\n\t.scrollX(0.865, 0.022)\n\t.brightness(0.3)\n\t.diff(o2)\n\t.mult(src(o0)\n\t\t.brightness(0.251))\n\t.add(o2)\n\t.add(o1)\n\t.out(o3);\nrender(o3);",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Zumicubi",
+        "type": "code",
+        "code": "\nvar c1 = shape(4)\n\t.scale(() => Math.sin(time /60 * Math.tan(time/69))*3)\n\t.mult(osc(1, 1, 1)\n\t\t.rotate(Math.PI / 2))\n\nc1.out(o0)\n\nsrc(o0)\n\t.diff(src(o0)\n\t\t.scale(1.1))\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o1)\n\t\t.scale(0.1, 3), 0.91)\n\t.blend(src(o2), 0.8)\n\t.blend(src(o2)\n\t\t.rotate(Math.PI / 2))\n\t.diff(src(o2)\n\t\t.mult(osc(1, 1, 2)))\n\t.add(src(o1))\n\t.sub(src(o0))\n\t.out(o2)\n\nsrc(o2)\n\t.add(src(o3)\n\t\t.scale(0.9)\n         .scrollX(() => Math.sin(time))\n         \n         .scrollY(() => Math.cos(time*.9))\n\t\t.rotate(0.0, Math.random() * 0.1 - 0.05), [-1, 1].fast(0.4)\n\t\t.smooth(0.9))\n.add(src(o2))\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Welcome to the yungle",
+        "type": "code",
+        "code": "\nosc(1.1, -1, 4)\n\t.rotate(0, 0.2)\n\t.out(o0)\n\nsrc(o0)\n\t.repeat(10, 10)\n\t.diff(o0)\n\t.out(o1)\n\nsrc(o1)\n\t.scale(() => Math.sin(time / 10) * 100)\n\t.out(o2)\n\nsrc(o1)\n\t.mult(src(o1)\n\t\t.rotate(Math.PI / 2))\n\t.add(o1)\n\t.rotate(0, -0.2)\n\t.out(o2)\n\n\nsrc(o2)\n\t.blend(src(o2)\n\t\t.scale(4), [0.1, 0.9].fast(0.1).smooth())\n\t.diff(src(o2)\n\t\t.scrollY(0, Math.PI / 10)\n\t\t.scale(0.3))\n\t.diff(src(o0)).diff(o1)\n\t.mult(src(o0)\n\t\t.rotate(0, 0.2))\n\t.diff(o1)\n\t.out(o3)\n\nrender()",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Burning squares",
+        "type": "code",
+        "code": "shape(4)\n\t.scale(1, height / width)\n\t.modulate(noise(4,2,4), [0,1].fast(0.1).smooth())\n\t.mult(osc(1,0.1,1).kaleid(10))\n\t.rotate(0,-0.15)\n\t.out(o0)\n\nsrc(o0)\n\t.blend(src(o0)\n\t\t.scale(0.8)\n\t\t.rotate(0.3, 0.4))\n\t.blend(src(o1)\n\t\t.scroll(0.2)\n\t\t.kaleid(4))\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o1)\n\t\t.scale(0.9))\n\t.add(src(o1)\n\t\t.scale(0.8))\n\t.add(src(o1)\n\t\t.scale(0.7))\n\t.rotate(0, -0.2)\n\t.diff(src(o1)\n\t\t.scale(() => Math.log(Math.min(3000, Math.max(0.4, Math.tan(time / 10)*Math.cos(time/10/2))))))\n\t.out(o2)\n\nsrc(o2).diff(src(o3).repeat(3,3).kaleid(4).rotate(0.1,0.1)).out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Golyok",
+        "type": "code",
+        "code": "\nfunction generateFMWave(time, periodLength) {\n  // Calculate the angular frequency (2 * pi / periodLength)\n  const angularFrequency = (2 * Math.PI + periodLength) / periodLength;\n\n  // Calculate the frequency modulation factor (sin(time))\n  const modulationFactor = Math.sin(time*2+periodLength)/60;\n\n  // Calculate the instantaneous frequency\n  const instantaneousFrequency = angularFrequency * modulationFactor;\n\n  // Calculate the value of the sinusoid at the current time\n  const amplitude = 1; // You can adjust the amplitude as needed\n  const waveValue = amplitude * Math.sin(instantaneousFrequency * time);\n\n  return waveValue;\n}\n\nconst o = (periodLength) => ({time}) => generateFMWave(time/5, periodLength) / 4;\n\nshape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10))\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n\n.add(shape(60).scale(0.4).scrollX(o(Math.random()*10)).scrollY(o(Math.random()*10)))\n  \n  \n  .out(o0)\n\n\nrender(o0)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Golyok 2",
+        "type": "code",
+        "code": "\nfunction generateFMWave(time, periodLength) {\n\t// Calculate the angular frequency (2 * pi / periodLength)\n\tconst angularFrequency = (2 * Math.PI + periodLength) / periodLength;\n\n\t// Calculate the frequency modulation factor (sin(time))\n\tconst modulationFactor = Math.sin(time * 2 + periodLength) / 60;\n\n\t// Calculate the instantaneous frequency\n\tconst instantaneousFrequency = angularFrequency * modulationFactor;\n\n\t// Calculate the value of the sinusoid at the current time\n\tconst amplitude = 1; // You can adjust the amplitude as needed\n\tconst waveValue = amplitude * Math.sin(instantaneousFrequency * time);\n\n\treturn waveValue;\n}\n\nconst o = (periodLength, r = 1) => ({\n\ttime\n}) => generateFMWave(time / 5, periodLength) / 4 * r;\n\nshape(60)\n\t.scale([0.4 * Math.random(), 0.7])\n\t.scrollX(o(Math.random() * 10, Math.random() + 1))\n\t.scrollY(o(Math.random() * 10, Math.random() + 1))\n\t.add(shape(60)\n\t\t.scale(0.4)\n\t\t.scrollX(o(Math.random() * 10, Math.random()))\n\t\t.scrollY(o(Math.random() * 10, Math.random())))\n\n\t.add(shape(60)\n\t\t.scale(0.4 * Math.random())\n\t\t.scrollX(o(Math.random() * 10))\n\t\t.scrollY(o(Math.random() * 10)))\n\n\t.add(shape(60)\n\t\t.scale(0.4 * Math.random())\n\t\t.scrollX(o(Math.random() * 10))\n\t\t.scrollY(o(Math.random() * 10)))\n\n\t.out(o0)\n\nsrc(o0)\n\t.scale([0.5, 1, 0.8, 1, 0.7].smooth())\n\t.blend(src(o0))\n\t.blend(src(o1)\n\t\t.color(0.8, 0.6, 0.3)\n\t\t.hue(() => mouse.y / height))\n\t.add(o1, () => mouse.x / width - 0.2)\n\t.blend(shape(3)\n\t\t.kaleid(5), () => mouse.y / height - 1)\n\t.out(o1)\n\nsrc(o1)\n\t.scale([0.9, 0.99].smooth())\n\t.blend(src(o2)\n\t\t.rotate([0.1, -0.3].smooth(), 0.01))\n\t.out(o2)\n\nsrc(o1)\n\t.mult(src(o2)\n\t\t.scale(1.1), 0.1)\n\t.diff(src(o2)\n\t\t//.kaleid(4)\n    )\n\t.out(o2)\n\nsrc(o2)\n\t.invert()\n\t.diff(src(o2)\n\t\t.scale(1.1)\n\t\t.rotate(0.2, 0.1))\n\t.invert()\n\t.blend(o3)\n\t.scale([1, 1.1])\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "windyred",
+        "type": "code",
+        "code": "\nbpm = 140\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\n\n\nshape(4)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t//.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.diff(src(o0)\n\t\t.scale([0.8, 1].fast(0.2)\n\t\t\t.smooth()))\n\t.scroll(() => -mouse.x / width*2, () => -mouse.y / height + 0.5)\n\t.diff(shape(4)\n\t\t.scale([0.3, 0.7].smooth(2)))\n\t.sub(shape(4)\n\t\t.scale(saw({\n\t\t\tmin: 0.7,\n\t\t\tmax: 1.1\n\t\t})), [0, 1].smooth())\n\t.out(o0)\n\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.mult(osc(1, 1, 1)\n\t\t\t.kaleid(10)), () => mouse.x / width)\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n\t.out(o1)\n\nsrc(o1)\n\t.add(src(o2), 0.1)\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2)\n\t\t.kaleid(6))\n\t.diff(o0)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "django x pigeon",
+        "type": "code",
+        "code": "\nbpm = 140\n\nbpm = bpm/4\n\ns0.initImage(\"https://cataas.com/cat/says/DJANGO%20x%20PIGEON?a=x\")\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\n\n\nshape(4)\n\t.scale(1.5)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.out(o0)\n\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.mult(osc([10,5,2,-1, 15], [10, 1, 4,0], 2)\n\t\t\t.kaleid(10)))\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.add(src(s0).scale(0.3).mask(shape(4)).scale(1.5).rotate(-0.2), 0.8)\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n  .out(o1)\n\n\nrender(o1)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "catshit",
+        "type": "code",
+        "code": "\nbpm = 140 / 4\n\ns0.initImage(\"https://cataas.com/cat/says/DJANGO%20x%20PIGEON?a=x\")\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\n\n\nshape(rand([3,4,5,6]))\n\t.scale(1.5)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t.hue([0, 2].fast(0.05).smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.out(o0)\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.diff(osc([10,5,2,-1, 15], [10, 1, 4,0], 2).saturate(0.4)\n\t\t\t.kaleid(10)).brightness(0.1), 0.8)\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.blend(o0,0.1)\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n\t.add(src(s0).scale(0.3).mask(shape(4)).scale(1.9, 0.9).rotate(-0.2, [Math.random()/10, Math.random()/10].fast(0.25)), 0.99)\n  .out(o1)\n\n\nrender(o1)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "freezenoize",
+        "type": "code",
+        "code": "\nbpm = 140\n\nnoise([4,10].fast(0.01).smooth(), 1, 4)\n\t.diff(src(o0)\n\t\t.mult(osc(1, 1, 0.9)\n\t\t\t.kaleid(10)))\n\t.out(o0)\n\nsrc(o0)\n\t.diff(src(o0)\n\t\t.rotate(1, 1))\n\t.mult(osc(1, 1, 0.4)\n\t\t.kaleid(10).brightness(0.8))\n\t.modulate(noise(4, 4, 4))\n\t.scale(0.6)\n\t.out(o1)\n\nsrc(o1)\n\t.rotate(0, -1)\n\t.diff(src(o1)\n\t\t.pixelate(()=> Math.sin(time/5) * width / 20, ()=> Math.sin(time/6) * height / 20))\n\t.out(o2)\n\nsrc(o2)\n\t.diff(src(o2).rotate(1,1))\n\t.mult(src(o0).invert([0,1].fast(0.25).smooth()), -1)\n\t.blend(o3, () => Math.sin(time/2)/2 + 0.5)\n\t.blend(o0, () => (mouse.x/width-0.5) % 1)\n  .out(o3)\n\nrender(o3)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "zomething else",
+        "type": "code",
+        "code": "\nbpm = 140\n\nnoise([4, 10].fast(0.01)\n\t\t.smooth(), 1, 4)\n\t.diff(src(o0)\n\t\t.mult(osc(1, [-1, 1].smooth(), 0.9)))\n\t.blend(src(o0)\n\t\t.rotate(() => a.fft[0]))\n\t.mask(shape(100)\n\t\t.scale(2.4))\n\t.out(o0)\n\nsrc(o0)\n\t.scale(-1)\n\t.modulate(src(o1)\n\t\t.scale([1, 1.1])\n\t\t.rotate([0, Math.PI].fast(0.25)))\n\t.out(o1)\n\nsrc(o1)\n\t.repeat(4, 4)\n\t.scale(1.5)\n\t.scroll(() => Math.sin(time * 0.4), () => Math.cos(time * 0.33))\n\t.diff(src(o0)\n\t\t.mask(shape(4)\n\t\t\t.scale(1.2, 0.6)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(o3, 0.9)\n\t\t.add(src(o0)\n\t\t.mask(shape(4)\n\t\t\t.scale(1.2, 0.6)), 0.8)\n\t.diff(o2)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": "140",
+        "midi": null
+    },
+    {
+        "name": "colors and rotating rhombuses",
+        "type": "code",
+        "code": "\nbpm = 170\n\nshape(4).mult(osc(8,() => Math.sin(time/10)/10,2)).out(o0)\n\nsrc(o0).scale(() => Math.sin(time) + 1).out(o1)\n\nsrc(o0).diff(src(o1).scale(() => Math.sin(time/4) + 1).rotate(1.1, 0.9)).out(o2)\n\nsrc(o2).blend(src(o3), 0.9).scale([0.5,2]).add(o2, 0.1).scrollX(0,0.2).layer(o2).out(o3)\n\nrender(o3)",
+        "bpm": "170",
+        "midi": null
+    },
+    {
+        "name": "Random 54961",
+        "type": "code",
+        "code": "noise(4, 0.2)\n\t.color(0.8, 0.7, 0.2)\n\t.invert()\n\t.colorama(2, 3)\n\t.mult(osc(1, 1, 1)\n\t\t.kaleid(10))\n\t.kaleid(4)\n\t.modulateHue(noise(10, 0.2))\n\t.out(o0)\n\nrender(o0)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "Hosszasan valtozo",
+        "type": "code",
+        "code": "\nbpm=140\n\nconst s = osc([10,100].fast(0.125).ease(\"easeInOutCubic\"), -0.1, 1)\n\t.g()\n\t.color(1, [0, 0.5, 0, 0].fast(0.125)\n\t\t.smooth(), [0, 0, 0.5].smooth())\n\nconst ripples = s.kaleid([1,5,2,9,3,30].fast(0.125)).invert()\n\nconst noize = voronoi([10, 40].fast(0.125)\n\t\t.smooth(), 10, 1).modulate(shape([3,4,5]))\n\t.scale([3, 4])\n\t.scrollY(0, -0.5)\n\t.kaleid()\n\t.rotate(0, 0.1)\n\t.brightness(0.1)\n\nnoize.out(o1)\n\nripples.out(o0)\n\nnoize.mult(ripples,0.3)\n\t.out(o3)\n\nsrc(o0)\n\t.diff(src(o3)\n\t\t.scale([0.5, 1.5].fast(0.25).ease(\"easeInOut\"))\n\t\t.modulateRotate(src(o1)\n\t\t\t.rotate(0, -0.2)\n\t\t\t.scale([0.2, 3].fast(0.125).smooth())), 0.1)\n\t\t.diff(src(o2).brightness([0,0.4].fast(0.01).smooth()), 1)\n  .contrast([0.9,1].ease(\"easeInCubic\"))\n\t.scale(1)\n  .out(o2)\n\nrender(o2)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "macska midi",
+        "type": "code",
+        "code": "\nbpm = 140 / 4\n\ns0.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\nsrc(s0).colorama( midi(\"b0\", {min: -0.001, max: 1}) ).modulate(noise( midi(\"b1\", {min: 0, max: 6}) )).out(o0)\n\n",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "rotacats midi",
+        "type": "code",
+        "code": "\nbpm = 140\n\ns0.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\n\ns1.initImage(\"https://cataas.com/cat/says/MEOW?a=x\")\n\nsrc(s0).colorama( midi(\"green\", {min: -0.001, max: 1}) ).modulate(noise( midi(\"blue\", {min: 0, max: 6}) )).out(o0)\n\n\nsrc(s1).scale([0.7, 1.1].fast(2).smooth()).rotate(midi(\"red\", {min: 0, max:Math.PI*4})).out(o1)\n\nsrc(o0).mult(o1, midi(\"yellow\")).out(o2);\n\nsrc(o2).blend(src(o3).scale([1,1.06]),  midi(65, {min: 0.2, max:0.95})).out(o3)\n\nrender();\n\n",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "piros pokol midi",
+        "type": "code",
+        "code": "voronoi(1, 2)\n\t.color(-1, 200, 300)\n\t.rotate(1, -0.5)\n\t.pixelate(8)\n\t.out(o0)\n\nosc(5, 0.01, 3)\n\t.rotate(2, 3)\n\t.kaleid(2)\n\t.repeat(6)\n\t.pixelate(midi(\"green\", {min: 10, max: 100}))\n\t.out(o1)\n\nnoise(2)\n\t.color(-29, 1)\n\t.colorama()\n\t.out(o3)\n\nsrc(o0)\n\t.modulateRotate(o3, midi(\"red\", {min: 1, max: 10}))\n\t.diff(o0)\n\t.mult(src(o1).color(100,0,0), midi(65, {max: 1/0.76}))\n\t.blend(src(o1).color(3,0,0), midi(66, {max: 1/0.76}))\n\t.diff(shape(100).mult(src(o1)).scale(midi(\"green\", {min: 0.001, max: 6})))\n  .out(o2)\n\nrender(o2)",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Eye of the nigh 43d midi",
+        "type": "code",
+        "code": "\nvar hori = osc(2, 2, 5)\n\t.scale([1, 1.5]);\nvar verti = osc(1.95, 2, 2)\n\t.rotate([Math.PI / 2.104, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 6.636 * -1.758]);\nhori.blend(verti, [0.014, 1.013].fast(6 / 0.441)\n\t\t.smooth())\n\t.out(o0);\nsrc(o0)\n\t.modulate(hori.blend(verti, [-0.14, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1);\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 6.66)))\n\t.out(o2);\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [5.21, 1, -1.565, 3, -1.233])\n\t.blend(src(o3)\n\t\t.kaleid(midi('yellow', {min: 1, max: 8}))\n        .kaleid(2)\n\t\t.scale(0.549))\n\t.sub(src(o3)\n\t\t.scale(1.028)\n\t\t.mask(shape([10, 58.096].smooth())\n\t\t\t.scale(() => 9 * Math.sin(time / 15.154))), 0.7)\n\t.sub(src(o3)\n\t\t.scale(0.158)\n\t\t.mask(shape([5, 18.356].smooth())\n\t\t\t.scale(() => 7 * Math.sin(time / 12.192))), 0.35)\n\t.brightness(midi(\"red\", {min: -0.1, max: 1}))\n\t.saturate(1.626)\n\t.hue(() => Math.sin(time))\n\t.blend(src(o3), 0.9)\n\t.out(o3);\nrender(o3);",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "BKK uleshuzat midi",
+        "type": "code",
+        "code": "const noiseC = 10 + (Math.random() * 10)\nconst moveSpeed = 1\n\nconst a = Math.random() / 2;\nconst b = 0.8 - a;\n\nbpm = 140\n\nn1 = noise(noiseC, moveSpeed)\n\t.color(1, a, b)\n\t.rotate(0, 0.3)\nn2 = noise(noiseC, moveSpeed)\n\t.color(a, 1, b)\n\t.rotate(0, 0.2)\nn3 = noise(noiseC, moveSpeed)\n\t.color(a, b, 1)\n\t.rotate(0, 0.1)\n\nnoise(noiseC, moveSpeed)\n\t.color(0, 0, 1)\n\t.rotate(0, 0.1)\n\t.out(o2)\n\ncx = solid()\n\t.blend(n1, [1, 1, 0, 1, 1, 0].offset(0)\n\t\t.smooth())\n\t.blend(n2, [0, 1, 1, 0, 1, 1].offset(1)\n\t\t.smooth())\n\t.blend(n3, [1, 0, 1, 0, 1].offset(2)\n\t\t.smooth())\n\nsolid()\n\t.add(cx)\n\t.blend(src(o3)\n\t\t.scale([0.9, 3].fast(2 ** -4)\n\t\t\t.smooth(), 0.9))\n\t.saturate(1.1)\n\t.colorama()\n\t.diff(src(o3).blend(o2, [0,1].fast(0.1).smooth()))\n\t.invert(() => Math.sin(time/20))\n\t.blend(src(o3).scale(1.1).rotate(midi(\"red\", {min:-0.1, max:0.2})), midi(65, {min: 0.0, max:0.9}))\n\t.out(o3)\n\n\nrender(o3)",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "BKK uleshuzat",
+        "type": "code",
+        "code": "const noiseC = 10 + (Math.random() * 10)\nconst moveSpeed = 1\n\nconst a = Math.random() / 2;\nconst b = 0.8 - a;\n\nbpm = 140\n\nn1 = noise(noiseC, moveSpeed)\n\t.color(1, a, b)\n\t.rotate(0, 0.3)\nn2 = noise(noiseC, moveSpeed)\n\t.color(a, 1, b)\n\t.rotate(0, 0.2)\nn3 = noise(noiseC, moveSpeed)\n\t.color(a, b, 1)\n\t.rotate(0, 0.1)\n\nnoise(noiseC, moveSpeed)\n\t.color(0, 0, 1)\n\t.rotate(0, 0.1)\n\t.out(o2)\n\ncx = solid()\n\t.blend(n1, [1, 1, 0, 1, 1, 0].offset(0)\n\t\t.smooth())\n\t.blend(n2, [0, 1, 1, 0, 1, 1].offset(1)\n\t\t.smooth())\n\t.blend(n3, [1, 0, 1, 0, 1].offset(2)\n\t\t.smooth())\n\nsolid()\n\t.add(cx)\n\t.blend(src(o3)\n\t\t.scale([0.9, 3].fast(2 ** -4)\n\t\t\t.smooth(), 0.9))\n\t.saturate(1.1)\n\t.colorama()\n\t.diff(src(o3).blend(o2, [0,1].fast(0.1).smooth()))\n\t.invert(() => Math.sin(time/20))\n\t.blend(src(o3).scale(1.1).rotate(midi(\"red\", {min:-0.1, max:0.2})), midi(65, {min: 0.0, max:0.9}))\n\t.out(o3)\n\n\nrender(o3)",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "django x pigeon midi",
+        "type": "code",
+        "code": "\nbpm = 140\nbpm = bpm / 4\n\ns0.initImage(\"https://cataas.com/cat/says/DJANGO%20x%20PIGEON?afx=\" + Math.random())\n\nconst saw = ({\n\tmin = 0,\n\tmax = 1,\n\tx = 1,\n\tt\n} = {}) => ({\n\ttime\n}) => {\n\tconst spb = 60 / bpm * x;\n\tconst p = (time % spb) / spb * (max - min) + min;\n\n\tif (t) {\n\t\treturn t(p);\n\t} else {\n\t\treturn p;\n\t}\n}\n\n\nshape(4)\n\t.scale(1.5)\n\t.scale(saw({\n\t\tmin: 0.7,\n\t\tmax: 1.1\n\t}))\n\t.rotate(0, 0.1)\n\t.color(0.3, 0.03, 0.09)\n\t.hue([0, 2].fast(0.05)\n\t\t.smooth())\n\t.add(src(o0)\n\t\t.scale([0.8, 1].fast(0.1)\n\t\t\t.smooth()), 0.99)\n\t.out(o0)\n\nconst mode = [\n\tMath.sin,\n\tMath.cos,\n\tMath.tan,\n\tx => Math.random()\n]\nconst rand = (e) => e[Math.floor(Math.random() * e.length)];\n\nsrc(o0)\n\t.scale(0.8)\n\t.add(src(o1)\n\t\t.mult(osc([10, 5, 2, -1, 15], [10, 1, 4, 0], 2)\n\t\t\t.kaleid(10)))\n\t.scale(saw({\n\t\tmax: 1.7,\n\t\tmin: 0.7,\n\t\tx: 10\n\t}))\n\t.diff(src(o0))\n\t.add(src(s0)\n\t\t.scale(0.3)\n\t\t.mask(shape(4))\n\t\t.scale(midi(\"red\", {\n\t\t\tmin: 1,\n\t\t\tmax: 3,\n\t\t\ttransform: a => 1.5 ** a\n\t\t}))\n\t\t.rotate(-0.2), 0.8)\n\t.rotate([Math.random(), Math.random(), Math.random() - 0.5, Math.random(), Math.random() - 0.5], 0.1)\n\t.rotate(midi(\"yellow\", {min: -10, max: 10}))\n\t.out(o1)\n\n\nrender(o1)",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Kartyak szines, midi",
+        "type": "code",
+        "code": "speed = 1\nconst horizontal = shape(4)\n\t.scrollX(100, 0.11112)\nconst vertical = shape(4)\n\t.rotate(0, 0.3)\n\t.scrollY(100, 0.8)\n\nhorizontal.blend(vertical, ({\n\t\ttime\n\t}) => Math.sqrt(Math.sin(time) + 1) / 2)\n\t.blend(o0, 0.9)\n\t.out(o0)\n\nshape(4)\n\t.rotate(Math.PI / 8)\n\t.repeat([4, 6].fast(0.01)\n\t\t.smooth(), [6, 4].fast(0.01)\n\t\t.smooth())\n\t.scrollX(0, 0.25)\n\t.add(\n\t\tshape(4)\n\t\t.repeat(4, 4)\n\t\t.rotate(Math.PI / 4)\n\t\t.scrollY(0, 0.5))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o1)\n\t\t.scale(({\n\t\t\ttime\n\t\t}) => (1 / Math.sin(time / 10)))\n\t\t.rotate(({\n\t\t\ttime\n\t\t}) => time / 10000 % Math.PI))\n\t.pixelate(midi(\"red\", {min:3, max:400}), midi(\"red\", {min: 3, max: 400}))\n\t.mult(shape(4).scale(30).color(1,0.4,0.1).colorama(midi(\"yellow\", {min: 0, max: 1})), midi(\"yellow\", {min: 0, max: 1}))\n\t.out(o2)\n\nsrc(o0)\n\t.modulateKaleid(o3)\n\t.add(o2)\n\t.diff(o1)\n\t.blend(o3,midi(65, {max: 1.2}))\n\t.out(o3)\n\nrender()",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Bubbles midi",
+        "type": "code",
+        "code": "/*Bubbles:*/\nvar x = 0;\nvar y = 0;\nbpm = 140;\nn1 = noise(14, 2, 10)\n\t.contrast(5)\n\t.invert([0, 0.1, 0, 0.2].fast(0.2)\n\t\t.ease(\"easeInOutQuart\"))\n\t.scale([1.542, 1.2, 1, 0.37].fast(2)\n\t\t.ease(\"easeInOutCubic\"))\n\t.kaleid(3)\n\t.rotate(3.14 / 8, 0.1);\nn2 = noise(7, 2, 10)\n\t.invert([0, 0.1, 0, 0.6].fast(0.008)\n\t\t.ease(\"easeInOutQuart\"))\n\t.scale([1, 1.2].fast(2)\n\t\t.ease(\"easeInOutCubic\"))\n\t.rotate(-3.14 / 8, -0.12);\nn1.blend(n2, [0.855, 1].fast(1.204 ** -5)\n\t\t.smooth())\n\t.out(o0);\nvoronoi(15.386, 2, [1, 2, 3, 5, 10].fast(0.125)\n\t\t.smooth())\n\t.mult(osc(1, 0.084, 1))\n\t.saturate([0.1, 0.9].fast(0.2)\n\t\t.smooth())\n\t.brightness(0.4)\n\t.blend(src(o1), [0.95, 0.99].fast(0.125)\n\t\t.smooth())\n\t.out(o1);\nsrc(o0)\n\t.modulateScale(src(o1))\n\t.modulateRotate(src(o1)\n\t\t.rotate(0.1, 0.1))\n\t.add(src(o2), 0.5)\n\t.mult(src(o1))\n\t.out(o2);\nsrc(o2)\n\t.rotate(0, 0.1)\n\t.scale(midi(\"red\", {min:0, max: 3, transform: Math.sin}))\n\t.add(src(o2), 0.453)\n\t.out(o3);\nrender(o3);",
+        "bpm": "140",
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Eye of the night midi",
+        "type": "code",
+        "code": "\nvar hori = osc(1,1,1)\n\t.scale([1, 1.5])\nvar verti = osc(1)\n\t.rotate([Math.PI / 2, Math.random(), Math.PI / -2, Math.PI / 3, Math.PI / 4 * -3])\n\nhori.blend(verti, [0.1, 0.9].fast(6 / 8)\n\t\t.smooth())\n\t.out(o0)\n\nsrc(o0)\n\t.modulate(hori.blend(verti, [-1, 1].fast(0.01)\n\t\t.smooth()))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(src(o0)\n\t\t.scale(() => Math.sin(time / 10)))\n\t.out(o2)\n\nsrc(o2)\n\t.blend(src(o2))\n\t.repeat([3, 6], [3, 1, -1, 3, -6])\n\t.blend(src(o3)\n\t\t.scale(1.2).rotate(midi(\"red\", {min: -Math.PI+0.1, max: Math.PI-0.1})))\n\t.sub(src(o3).scale(1.1).mask(shape([10, 100].smooth()).scale(() => 3*Math.sin(time/4))))\n\t.brightness(midi(\"yellow\", {min: -0.001, max: 1}))\n\t.saturate(1.2)\n\t.hue(() => 1)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "Random 54961 nemko",
+        "type": "code",
+        "code": "noise(4, 0.2)\n\t.color(0.8, 0.7, 0.2)\n\t.invert()\n\t.colorama(2, 3)\n\t.mult(osc(1, 1, 1)\n\t\t.kaleid(10))\n\t.kaleid(4)\n\t.modulateHue(noise(10, 0.2))\n\t.out(o0)\n\nrender(o0)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "csik midi",
+        "type": "code",
+        "code": "a.setCutoff(4)\nosc()\n\t.modulate(noise(3), () => a.fft[0])\n\t.out(o0)\nshape(1, 1)\n\t.mult(voronoi(1000, 2)\n\t\t.blend(o0)\n\t\t.luma())\n\t.add(shape(2, 0.125)\n\t\t.rotate(1, 1)\n\t\t.mult(voronoi(1000, 1)\n\t\t\t.luma())\n\t\t.rotate(1.5))\n\t.scrollX([0.1, -0.0625, 0.005, 0.00001], 0)\n\t.scrollY([0.1, -0.0625, 0.005, 0.00001], 0)\n\t.modulate(noise(5), () => a.fft[0])\n\t.modulateHue(src(o0)\n\t\t.scale(1.04), 1)\n\t.layer(osc(8, midi(\"yellow\", {min: 0, max: 3}), 10)\n\t\t.mask(shape(midi(\"blue\", {min: 2, max: 8}), midi(\"green\", {min: 0.05, max: 1}) , 0.1)))\n\t.modulate(noise(0.5), () => a.fft[0])\n\t.out()",
+        "bpm": 0,
+        "midi": [
+            "midi("
+        ]
+    },
+    {
+        "name": "sargazsolt midi",
+        "type": "code",
+        "code": "await s0.initImage(\"https://mir-s3-cdn-cf.behance.net/project_modules/max_3840/41cb4d174834185.64a933ad1680c.png\")\n\nvar cc = Array(128)\n\t.fill(0.5);\n\ncol=0.1\npressed=0\n\nsrc(s0)\n\t.scale(midi(\"red\", {min:0.1, max:2}))\n\t.color(-1, 200, 300)\n\t.rotate(1, -0.5)\n\t.pixelate(midi(\"blue\", {min: 10, max:800}))\n\t.colorama(0.1)\n\t.out(o0)\n\nosc(5, 0.01, 3)\n\t.rotate(2, 3)\n\t.kaleid(2)\n\t.repeat(midi(\"yellow\", {min: 1, max:6}))\n\t.pixelate(10)\n\t.colorama(0.0003)\n\t.diff(shape(4)\n\t\t.rotate(2, -2, ))\n\t.out(o1)\n\nsrc(o0)\n\t.modulateRotate(o1, 5)\n\t.blend(o2,() =>cc[4] )\n\t.modulate(shape(4)\n\t\t.rotate(2, -2))\n\t.out(o2)\n\nrender(o2)\n",
+        "bpm": 0,
+        "midi": [
+            "cc["
+        ]
+    },
+    {
+        "name": "Midget spinner, CC-vel",
+        "type": "code",
+        "code": "bpm = 170\n\nshape(midi(\"yellow\", {min: 3, max: 10, transform: Math.floor}))\n\t.rotate(0, [0.3, -0.3].fast(0.01).smooth())\n\t.diff(shape(3)\n\t\t.scale([0.4,0.6].fast(2).smooth())\n\t\t.rotate(0, -2))\n\t.mult(osc(2, 0.1, 1)\n\t\t.kaleid(10))\n\t.scale(midi(\"red\", {min:0, max: 3}))\n\t.out(o0)\n\n\nconst saw = (period, min, max) => ({\n\ttime\n}) => {}\n\nsrc(o0)\n\t.blend(src(o1)\n\t\t.scale(1), 0.9)\n\t.diff(src(o0)\n\t\t.scale(1.4))\n\t.add(o1, 0.1)\n\t.invert(() => cc[65]>0.5 ? 1: 0)\n\t.out(o1)\n\nsrc(o1)\n\t.blend(src(o2)\n\t\t.scale([1.01,0.99].ease(\"easeInOutCubic\")), 0.99)\n\t.diff(src(o1)\n\t\t.blend(solid()\n\t\t\t.brightness(0), [0.0, 0.3].fast(0.1)\n\t\t\t.smooth()))\n\t.out(o2)\n\nsrc(o2).add(src(o1)).diff(o0).blend(src(o3).scale(0.99),[0.9,0.99].fast(0.1).smooth()).rotate(0,[0, 0.01].fast(0.01).smooth()).out(o3)\n\nrender(o3)",
+        "bpm": "170",
+        "midi": [
+            "cc["
+        ]
+    },
+    {
+        "name": "Pumpin 5",
+        "type": "code",
+        "code": "bpm = 170\n\nshape(4).scrollX(0,0.23239).scrollY(0,0.3).kaleid(5)\n  .diff(shape(5).scrollX(0, -0.1111).scrollY(0,-Math.random()/10).kaleid(7))\n  .rotate(0.3, 0.01)\n  .repeat(2,1)\n  .out(o0)\n\nsrc(o0).blend(o1,0.99).rotate(0,[0.001, -0.001].fast(0.004).smooth()).add(o0,0.1).out(o1)\n\nox = osc(6,-0.1,[0,2].fast(0.01).smooth()).brightness(0.1)\n\nsrc(o1)\n  .mult(ox.saturate(0.2))\n  .diff(shape(2).scale(({time})=> 2*(time%(60/bpm))))\n  .out(o2)\n\n\nsrc(o2).blend(src(o2).scale(0.99).diff(o1).diff(ox.kaleid(10)), [0,1].fast(0.1).smooth()).out(o3) \n\nrender(o3)",
+        "bpm": "170",
+        "midi": null
+    },
+    {
+        "name": "Fraktal",
+        "type": "code",
+        "code": "\nsetResolution(2000, 1600)\nbpm = 129\nshape(4)\n\t.scale(1.7)\n\t.diff(shape(4)\n\t\t.scale(1.5))\n\t.out(o0)\n\nsrc(o1)\n\t.add(src(o1)\n\t\t.repeat(3, 3)\n\t\t.scale(0.54), .2)\n\t.add(o0)\n\t.mask(shape(4)\n\t\t.scale(1.7))\n\t.out(o1)\n\nsrc(o1).mult(noise(4,1).mult(osc(1,1,1))).scale(() => {\n\t\tvar v = (time % p / p);\n\t\treturn Math.sin(v) * 4.7 + 1\n\t}).rotate([Math.PI,0].fast(0.3).smooth()).saturate(4).out(o2)\n\nvar p = 60 / bpm * 2;\nsrc(o1).mult(noise(5,1).mult(osc(3,1.1,1.1).brightness(0.1)))\n\t.scale(() => {\n\t\tvar v = (time % p / p);\n\t\treturn Math.sin(v) * 4.7 + 1\n\t})\n\t.add(o3, 0.9)\n\t.mult(src(o2).invert().brightness(0.01))\n\t//.diff(src(o0).scale([0,1].smooth()))\n\t.out(o3)\n\n\nrender(o3)",
+        "bpm": "129",
+        "midi": null
+    },
+    {
+        "name": "Colorful glitches 2",
+        "type": "code",
+        "code": "/*Colorful glitches*/\nbpm = 135.429;\nconst beats = b => 31.097 / bpm * b;\nconst linear = (min, max) => v => min + (max - min) * v;\nconst exponential = (min, max) => v => min + (max - min) ** v;\nconst saw = (period, fn) => ({\n\ttime\n}) => {\n\treturn fn(time % period / period);\n};\nshape(31.878)\n\t.diff(shape(3)\n\t\t.rotate(0.473, 0.004)\n\t\t.scale(saw(beats(32), linear(0, 0.043))))\n\t.scale(0.3)\n\t.blend(src(o0)\n\t\t.scale(1.694), [0.93, 1.648, 0.98].smooth())\n\t.out(o0);\nsrc(o0)\n\t.mult(osc(1.272, 1, 10))\n\t.modulateRotate(src(o1)\n\t\t.scale([0.1, .4].fast(0.1)\n\t\t\t.smooth())\n\t\t.rotate(0.1, 0.2)\n\t\t.invert())\n\t.out(o1);\nsrc(o1)\n\t.scale([-.2, 0.1].fast(0.05)\n\t\t.smooth())\n\t.rotate(0.1, 0.1)\n\t.modulate(noise(40, 0.3))\n\t.add(o1, -0.2)\n\t.diff(src(o2)\n\t\t.scale(-0.3))\n\t.out(o2);\nsrc(o1)\n\t.add(o2, 0.7)\n\t.out(o3);\nrender(o3);",
+        "bpm": "135",
+        "midi": null
+    },
+    {
+        "name": "TV Static",
+        "type": "code",
+        "code": "const longRandomQueue = (n, d = 0) => new Array(n)\n\t.fill(0)\n\t.map(_ => Math.random() + d);\n\nconst jumpyCircle = (s = 0.4, a = 0.4, b = 0.2, r = 0.1, d = 0.5) => shape(100, 0.4, a)\n\t.diff(shape(100, s, b))\n\t.scale(longRandomQueue(31)\n\t\t.smooth(r))\n\t.scrollX(longRandomQueue(11, -d)\n\t\t.smooth(r))\n\t.scrollY(longRandomQueue(13, -d)\n\t\t.smooth(r))\n\nconst combine = (...x) => {\n\tconst [h, ...t] = x;\n\tif (t.length) {\n\t\treturn h.diff(combine(...t));\n\t} else {\n\t\treturn h;\n\t}\n}\n\nconst repeat = (n, f) => {\n\tconst ox = [];\n\twhile (n-- > 0) {\n\t\tox.push(f());\n\t}\n\treturn ox;\n}\n\ncombine(...repeat(8, () => jumpyCircle(0.2, 0.1, 0.3, 0.3)))\n\t.out(o0)\n\nconst oscColor = 4;\n\nosc(3, 1, oscColor)\n\t.mult(osc([2, 5].fast(2 ** -3)\n\t\t\t.smooth(), -2, oscColor / 3)\n\t\t.rotate(Math.PI / 2, 0.1))\n\t.scale(-0.01)\n\t//.kaleid(6)\n\t.modulateRotate(src(o0)\n\t\t.scale(-1))\n\t.out(o1)\n\nsrc(o1)\n\t.repeat(3, 3)\n\t.rotate(Math.PI / 2)\n\t.blend(src(o0), 0.9)\n\t.mult(o1, 1.5)\n\t.add(o2, 0.9)\n\t.out(o2)\n\nsrc(o2)\n\t.add(shape(100, 0.3, 0.3)\n\t\t.diff(shape(100, 0.2, 0.3)))\n\t.diff(src(o3)\n\t\t.scale([0.99, 1.01])\n\t\t.modulateHue(src(o1)))\n\t.out(o3)\n\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "smooth 4d",
+        "type": "code",
+        "code": "gradient(1, [0.4, 0.2].fast(0.3)\n\t\t.smooth(), [0.2, 0.3].smooth())\n\t.scroll(0, 0, 0.1, 0.21)\n\t.rotate(0, 0.1)\n\t.kaleid(100)\n\t//.pixelate(20, 20)\n\t.scale([4, 1].fast(0.2).smooth(0.8),[1,2].fast(0.1).smooth(0.3))\n\t.scroll(0,0, 0.1)\n\t.blend(o0,0.95)\n\t.out(o0)\n\nsrc(o0)\n\t.diff(shape(4, 0.8, 0.4)\n\t\t.pixelate(10, 10)\n\t\t.repeat(3,3)\n\t\t.rotate(Math.PI / 2, 0.1))\n\t.out(o1)\n\n\nsrc(o1)\n\t.diff(src(o1)\n\t\t.rotate(0, -0.1))\n\t.diff(src(o1)\n\t\t.scale(0.15))\n\t.out(o2)\n\nsrc(o2)\n\t.mask(shape(4, 0.4, 0.6))\n\t.modulateScale(src(o2).contrast(0.9).scale(10))\n\t.diff(o2)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "nemtom",
+        "type": "code",
+        "code": "speed=1\n\nshape(4,[1,0.7].fast(2.1).smooth(), 0.1).diff(shape(4,0.9)).scroll(0,0,0.1,-0.12).scale(0.2).kaleid(4).out(o0)\n\nsrc(o0).blend(src(o1).rotate(0.1,0.21).scale([0.8,0.99].fast(0.9).smooth()), [0.8, 0.99].smooth()).out(o1)\n\nconst ring = shape(50,0.4, 0.7).diff(shape(50,0.3, 0.7)).scale([0.8,1].fast(2).smooth(0.8))\n\nsrc(o1).diff(ring).scale(0.9).diff(o1).brightness(0.2).out(o2)\n\nsrc(o2).repeat(3,3).diff(o1).diff(o0).out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "not something watchable",
+        "type": "code",
+        "code": "speed = 1\n\nshape(4, 1, 0.1)\n\t.diff(shape(4, 0.9))\n\t.mult(osc(1,1,1).kaleid(10))\n\t.scroll(0, 0, 0.1, -0.12)\n\t.scale(0.2)\n\t.kaleid(4)\n\t.rotate(0, -0.2)\n\t.kaleid(6)\n\t.repeat(2, 1)\n\t.blend(o0, 0.9)\n\t.out(o0)\n\nsrc(o0)\n\t.rotate(Math.PI / 2)\n\t.diff(src(o0))\n\t.kaleid(4)\n\t.out(o1)\n\nsrc(o1)\n\t.diff(o2)\n\t.diff(src(o0).repeat(4,4))\n\t.add(src(o0)\n\t\t.scale(0.5))\n\t.out(o2)\n\nsrc(o2).modulateHue(noise(3,3)).scroll(0,0,0.01).diff(src(o3).scale(-1)).out(o3)\n\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "random textures",
+        "type": "code",
+        "code": "const occasionalArray = (length, occasions, a, b) => {\n\tconst arr = new Array(length)\n\t\t.fill(a);\n\n\twhile (occasions-- > 0) {\n\t\tconst i = Math.floor(Math.random() * length);\n\t\tif (arr[i] !== b) arr[i] = b;\n\t\telse occasions++;\n\t}\n\n\treturn arr;\n}\n\nosc(100, 0.01, [0.5, 0.1].fast(0.3)\n\t\t.smooth())\n\t.rotate(occasionalArray(16, 3, 0, Math.PI / 2)\n\t\t.fast(4))\n\t.contrast([0, 4].fast(0.1)\n\t\t.smooth())\n\t.scroll(0, 0, 0.1)\n\t.out(o0)\n\n\nsolid()\n\t.add(shape([3, 5, 2, 4, 3, 7])\n\t\t.rotate(0, 0.3))\n\t.kaleid([1, 3, 2])\n\t.scroll(0, 0, [0.1, 0, -0.1], [0, 0, 0, -0.05, 0, 0.1])\n\t.add(src(o1)\n\t\t.scroll(0.5, [0.5, 0.25, 0, -0.25].smooth(), 0.1), [0, 1].fast(0.25)\n\t\t.smooth())\n\t.out(o1)\n\nsrc(o1)\n\t.mult(o0)\n\t.out(o2)\nsrc(o2)\n\t.mult(src(o0)\n\t\t.rotate(Math.PI / 2))\n\t.diff(src(o3)\n\t\t.scroll([Math.random() / 10, 0, 0, 0, -Math.random() / 10, 0, 0], [0, 0, Math.random() / 10, -Math.random / 10])\n\t\t.scale(1.01))\n\t.contrast([0.6, 1.4].fast(0.1)\n\t\t.smooth())\n\t.scale([0.7, 1, 1.3].fast(1 / 16))\n\t.out(o3)\n\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "crystaline",
+        "type": "code",
+        "code": "shape(4).rotate(0,-0.05).diff(shape(4).rotate(0,0.1).scale(0.9)).blend(src(o0).scroll(0.3).kaleid(2), 0.8).out(o0)\n\nosc(1,1,[1, -1]).kaleid(30).brightness(1.5).mult(src(o0)).out(o1)\n\nosc(200, 0.01, [0.5, 0.1, -0.5].fast(0.3)\n\t\t.smooth())\n\t.rotate([0,0,0,0,0,Math.PI/2, Math.PI/3])\n\t.contrast([0, 4].fast(0.1)\n\t\t.smooth())\n\t.mult(o1)\n\t.add(o1)\n\t.out(o2)\n\nsrc(o2).repeat(3,3).modulate(src(o2).invert().diff(o0)).out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "friki fraki",
+        "type": "code",
+        "code": "const r = () => Math.floor(Math.random() * Math.random() * Math.random() * 40);\nconst rd = () => Math.random() - 0.5;\n\nconst s = new Array(10)\n\t.fill(0)\n\t.map(_ => shape(r())\n\t\t.scale(rd())\n\t\t.rotate(rd(), rd())\n        .scroll(0,0,rd(),rd())\n\t\t.mult(osc(r(), rd(), Math.random())));\n\nconst all = (blendMode, head, x) => {\n\tlet rx = head;\n\n\tfor (var i = 0; i < x.length; i++) {\n\t\trx = rx[blendMode](x[i], 0.4);\n\t}\n\treturn rx;\n}\n\nall('add', solid(), s)\n\t.out(o0);\n\nsrc(o0).add(o1,0.4).mult(src(o0).rotate(0, rd())).out(o1)\n\nsrc(o1).diff(src(o1).scale([0.9,1].fast(20).smooth(0.5))).add(o1).out(o2)\n\nsrc(o2).scroll(0,0,rd(),rd()).rotate(rd()/10).scale(({t}) => t/10%3).diff(o2).add(src(o0).kaleid([4,8,16,32,64,128]), 0.3).out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "magic",
+        "type": "code",
+        "code": "osc(50, (Math.random() - 0.5)/4, 0.9)\n\t.mult(src(o0)\n\t\t.rotate(0.2, 0.3), 0.4)\n\t.out(o0)\n\nsrc(o0)\n\t.diff(src(o0)\n\t\t.scale(1.3)\n\t\t.rotate(0, -0.3))\n\t.scale(({\n\t\ttime\n\t}) => Math.sin(time / 10) + 1.5)\n\t.diff(src(o1)\n\t\t.modulateRotate(o0))\n\t.modulate(noise(0.3, 0.3))\n\t.out(o1)\n\nsrc(o1)\n\t.diff(shape(({\n\t\ttime\n\t}) => shape(Math.cos(time) * 3 + 3)))\n\t.blend(o2, 0.9)\n\t.out(o2)\n\nsrc(o2)\n\t.add(shape([4,7,4,5],0.3,0.1).rotate(0, 5).repeat(3,3).modulate(noise(0.3,0.3).rotate(0, 0.3)))\n\t.mult(src(o0).scroll(0,0,-0.1,0.2), [0,2].fast(0.3).smooth())\n\t.diff(src(o1).modulateHue(src(o1)))\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "colorful balls",
+        "type": "code",
+        "code": "shape(4)\n\t.scale(1, 0.6)\n\t.add(shape(100, 0.6, 0.3)\n\t\t.scale(1, 0.7)\n\t\t.repeat(3, 3))\n\t.diff(shape(4)\n\t\t.scale(1, 0.6)\n\t\t.scale(0.7))\n\t.mult(osc(10, 0.1, Math.random()+0.5)\n\t\t.kaleid(100))\n\t.out(o0)\n\nsrc(o0).blend(src(o1)\n\t\t.scale(({\n\t\t\ttime\n\t\t}) => Math.abs(Math.sin(time/3) + 1)+0.3), ({time}) => Math.sin(time)).out(o1)\n\nsrc(o1).mult(src(o0).add(src(o0).rotate(Math.PI/4,0.3).scale(0.3))).modulateScale(src(o1).scale([1,0.7].fast(0.1).smooth(0.6))).out(o2)\n\nsrc(o2).add(src(o2).blend(src(o3)).scale(0.98)).out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "hexaclad",
+        "type": "code",
+        "code": "shape(6)\n\t.diff(shape(6, [0.1, 0.5].smooth(), 0.1))\n\t.scale(0.8)\n\t.rotate(Math.PI / 2)\n\t.add(src(o0)\n         .invert([0,0,1,0].smooth(0.1))\n\t\t.scroll([1, 1.2, 1.3333].fast(Math.random())\n\t\t\t.smooth(), [2, 3].fast(Math.random())\n\t\t\t.smooth(), Math.random() - 0.5, Math.random() - 0.5)\n\t\t.rotate(-Math.PI / 3)\n\t\t.repeat(3, 3)\n\t\t.kaleid([3, 6, -3, 12].fast(1/8).smooth(0.2))\n\t\t.rotate(Math.PI / 4, Math.random() - 0.5),\n\t\t[0.6, 0.99].fast(0.1)\n\t\t.smooth())\n\t.mask(shape(6)\n\t\t.scale(2.5))\n\t.out(o0)\n\nosc(5, 0.4, [0.5, 1.5].fast(1 / 16)\n\t\t.smooth())\n\t.kaleid(10)\n\t.scroll(0.5, 5)\n\t.rotate(0, 0.3)\n\t.diff(src(o1)\n\t\t.repeat(4, 4))\n\t.out(o1)\n\nsrc(o1)\n\t.scale([8, 0.8].fast(0.25)\n\t\t.smooth(0.5))\n\t.blend(src(o2)\n\t\t.kaleid(6)\n\t\t.scale([1.01, 0.99].smooth(0.6)), 0.90)\n\t.out(o2)\n\nsrc(o2)\n\t.mult(o0)\n\t.add(o3, 0.4)\n\t.add(src(o2)\n\t\t.diff(o3)\n\t\t.mult(shape(6, 0.3, 1)\n\t\t\t.invert()), 0.3)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "cvrdwell official",
+        "type": "code",
+        "code": "shape(6, [0.3, 1].smooth(0.1), [0.9, 0.8, 0.7, 0.6])\n\t.mult(osc(10 * Math.random(), [0.5, -1, 1.5, -3], [0.3, 0.8, 2].smooth())\n\t\t.kaleid([1, 10, 2].fast(1 / 8)))\n\t.rotate(Math.PI / 2)\n\t.diff(src(o0)\n\t\t.repeat(3, 3)\n\t\t.rotate(Math.PI, [Math.random()/2, -Math.random()/2].fast(1/6))\n\t\t.mask(shape(6)\n\t\t\t.invert()))\n\t.out(o0)\n\nrender(o0)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "red triangle",
+        "type": "code",
+        "code": "shape(3)\n\t.diff(shape(3)\n\t\t.scale(0.9))\n\t.add(src(o0)\n         .scroll(0,0,0.05)\n         .kaleid(4)\n\t\t.repeat(3, 3)\n\t\t.scroll([-0.2, 0, 0.3].ease('linear'), [0.3, 0.6, 0.9, 0.6].ease('linear'), 0.3, -0.2)\n\t\t.rotate(0, 0.1), [0.4,0.6].smooth())\n\t.add(src(o0)\n\t\t.scale(0.5)\n\t\t.rotate([0, 0.3, .68, 0.89, 1.3, 1.6]), 0.3)\n\t.out(o0)\n\nsrc(o0)\n\t.contrast(2)\n\t.modulateScale(o0,[-10,10].ease('linear'))\n\t.modulateRotate(o0,[-4,4].fast(0.8).smooth())\n\t.add(shape(3))\n\t.mult(osc(1, 1, 0).mult(solid(1,0,0)))\n\t.blend(o1,0.9)\n\t.add(o0,0.4)\n\t.out(o1)\n\nrender(o1)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "something",
+        "type": "code",
+        "code": "const r = () => Math.random() - 0.5;\nosc(40, .002, 0.34)\n\t.blend(src(o0)\n\t\t.rotate(() => Math.sin((time * Math.PI / 3) % Math.PI / 2), 0.02)\n\t\t.scroll(0.2, 0, 0.1)\n\t\t.scale([1.0, 1.1].ease('linear')))\n\t.out(o0);\n\nsrc(o0)\n\t.repeat([1.5, 1, 1, 1, 1, 1, 1, 1, 3, 4], [1, 2])\n\t.mult(osc(40, -0.02, 1.0)\n\t\t.scale(4)\n\t\t.rotate([1, 2, 3, 4, 5, 6].map(e => e * Math.PI / 6)))\n\t.modulateScale(noise(30, 0.3, 3), [0, 0, 0, 0.3].smooth(0.3))\n\t.out(o1)\n\nconst sx =()=> shape([4, 3],0.3,() => time%0.3)\n\t\t.rotate(r(),0.3)\n\t\t.scale(r())\n\t\t.scroll(0, 0, r(), r()).sub(o3);\n\nsolid(r(), r(), r())\n\t.add(sx())\n.add(sx())\n.add(sx())\n.add(sx())\n.add(sx())\n.add(sx())\n.add(sx())\n.add(sx())\n\t.blend(src(o2).scale(0.4).rotate(Math.PI/3),[0,0.4,0.2,0.5].smooth(0.2))\n\t.out(o2)\n\n\n//src(o0).add(o2).out(o3)\n//src(o1).add(o2).out(o3)\nsrc(o1).mult(src(o2).invert()).blend(src(o2),0.3).out(o3)\nsrc(o3).add(o1).diff(src(o3).modulate(o0)).out(o3)\n//src(o3).blend(o0).diff(o1).out(o3)\nsrc(o2).diff(src(o1).scale(() => time%(60/bpm*1)/1).mult(o0,0.4)).out(o3)\nsrc(o2).blend(src(o2).scale(() => time%(60/bpm*1)/1).mult(o0,0.1)).out(o3)\n\nsrc(o2).add(shape(100,0.5).invert(()=>Math.sin(time%3))).scale(() => time%(60/bpm*1)/1-0.5).blend(src(o0).repeat(4).rotate(0,3)).modulateRotate(src(o3),-1).out(o3)\n\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "minimalista fraktal",
+        "type": "code",
+        "code": "shape(6, 0.05,[0,0.1,0.4,1.0].fast(1/8).smooth(0.1))\n\t.color(1,0,0)\n\t.hue(() => Math.sin(time/10))\n\t.add(src(o0)\n\t//.diff(src(o0)\n\t\t.scroll(0.005, 0.002, 0.1)\n         .hue(0.98)\n         .scale(0.95)\n\t\t.rotate(Math.PI / 3), 0.8)\n\t.rotate(0, 0.1)\n\t.scale([0.99,1, 1.01].smooth())\n\t// .kaleid(4)\n\t.out(o0);\n\nsrc(o0).repeat(3).kaleid(4).out(o1);\n\nrender(o1);",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "rosy",
+        "type": "code",
+        "code": "shape(40, 0.4, 0.4)\n\t.contrast(1)\n\t.add(src(o1)\n\t\t.repeat(2, 2)\n\t\t.scale([0.3, 0.9, 1.3].smooth(0.1))\n\t\t.scale(() => Math.sin(time / 1000)), 0.6)\n\t.out(o1)\n\nshape(6)\n\t.diff(src(o1)\n\t\t.scale(0.5)\n\t\t.mask(shape(6)))\n\t.diff(src(o1)\n\t\t.scale(0.9))\n\t.invert()\n\t.mult(gradient(0)\n\t\t.invert()\n\t\t.hue([0.2, 0.4, 0.6, 0.8])\n\t\t.hue(() => (time % 3.14) / 100)\n\t\t.kaleid(10))\n\t.out(o0)\n\nsrc(o0)\n\t.diff(src(o2)\n\t\t.mask(shape(6, 0.6))\n\t\t.scale([0.4, 0.9, 0.4, 0.9, 0.4, 0.9, 0.7, 1.2].smooth(0.1)))\n\t.rotate([0, Math.PI/4, 2*Math.PI/4, Math.PI/4*3, Math.PI])\n\t.out(o2)\n\nsrc(o2)\n\t.repeat(3, 3)\n\t//.mult(src(o2).scroll(0,0,0.1).kaleid(4),.8)\n\t//.add(src(o2).scroll(0,0,0.1).kaleid(2),.4)\n\t//.diff(src(o2).scroll(0,0,0.1).kaleid(2),.4)\n\t.blend(src(o2),0.7)\n\t.out(o3)\n\nrender(o3)",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "rotisz",
+        "type": "code",
+        "code": "osc(5, 0.1, 1.1)\n\t.rotate(0,0.1)\n\t.pixelate(50,50)\n\t.hue(() => time/10)\n\t.out(o0)\n\nsrc(o0).diff(src(o0).rotate(Math.PI/2)).kaleid(6).brightness(0.5).mult(src(o0)).invert().out(o1)\n\nsrc(o0).rotate(Math.PI).out(o3)\n\nsrc(o1).rotate(Math.PI).out(o2)\n\n\nrender()",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "fire in my pants",
+        "type": "code",
+        "code": "\nosc(5,.1).modulate(noise(6),.22).diff(o0)\n  \t.modulateScrollY(osc(2).modulate(osc().rotate(),.11))\n\t.scale(.72).color(0.99,1.014,1)\n\t.mult(osc(8,0.1,[0.7,1.3].fast(0.1).smooth()).kaleid(10))\n  \t.out(o0);\n\nsrc(o0).mask(shape(6,0.5,0.1)).out(o1);\n\nsrc(o1).scale([1, 1/3, 1/9, 1/27].fast(0.5).smooth(0.1)).rotate([0, Math.PI/4, Math.PI/2, Math.PI/4*3].smooth(0.1)).out(o2);\n\n//src(o2).add(o3,0.6).add(o0,0.1).mask(shape(6,0.8, 0.2)).out(o3)\nsrc(o3).diff(o0, 0.1).add(src(o2).mask(shape(6,0.8, [-0.3, 0.5].smooth(0.1)))).contrast(() => 0.8+Math.sin(time)/10).out(o3)\n\nrender(o3)\n  ",
+        "bpm": 0,
+        "midi": null
+    },
+    {
+        "name": "ants in my pants2 ",
+        "type": "code",
+        "code": "\nosc(5,.1).modulate(noise(6),.22).diff(o0)\n  \t.modulateScrollY(osc(2).modulate(osc().rotate(),.11))\n\t.scale(.72).color(0.99,1.014,1)\n\t.kaleid([1,2,2,3,3,3,4,4,4,4,10].fast(0.1).ease('easeInOut'))\n\t.mult(osc(8,0.1,[0.7,1.3].fast(0.1).smooth()).kaleid(10))\n  \t.out(o0);\n\nsrc(o0).mask(shape(6,0.5,0.1)).out(o1);\n\nsrc(o1).scale([1, 1/3, 1/9, 1/27].fast(0.5).smooth(0.1)).rotate([0, Math.PI/4, Math.PI/2, Math.PI/4*3].smooth(0.1)).out(o2);\n\n//src(o2).add(o3,0.6).add(o0,0.1).mask(shape(6,0.8, 0.2)).out(o3)\nsrc(o3).diff(o0, 0.1).add(src(o2).mask(shape(6,0.8, [-0.3, 0.5].smooth(0.1)))).contrast(() => 0.8+Math.sin(time)/10).out(o3)\n\nrender(o3)\n  ",
+        "bpm": 0,
+        "midi": null
+    }
+]

@@ -1,0 +1,29 @@
+{
+  "name": "hydralisk",
+  "version": "0.0.1",
+  "description": "Hydralisk is a tool for managing sketches",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "start": "serve -l 1984 .",
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "dev": "concurrently \"npm:watch\" \"npm:start\"",
+    "encode-credentials": "node scripts/encode-credentials.js"
+  },
+  "_dependencies": "DEPENDENCIES SHOULD BE EMPTY, IT'S A STATIC SITE",
+  "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "acorn": "^8.18.0",
+    "astravel": "^0.6.1",
+    "astring": "^1.9.0",
+    "concurrently": "^10.0.5",
+    "js-beautify": "^2.0.3",
+    "rollup": "^3.10.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "serve": "^14.0.1"
+  }
+}

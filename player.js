@@ -87,6 +87,11 @@ async function startExperience() {
       if (hydraAudioCanvas) {
         hydraAudioCanvas.id = 'audio-canvas';
       }
+      if (window.HydraliskPlugins) {
+        window.HydraliskPlugins.init({ hydra: hydraInstance });
+        window.HydraliskPlugins.onHydraReady(hydraInstance);
+      }
+      }
     } else {
       throw new Error('Hydra player engine library not loaded. Check CDN link.');
     }
@@ -853,6 +858,15 @@ function toggleTouchActions() {
   showToast(touchActionsEnabled ? "Touch actions enabled" : "Touch actions disabled");
 }
 
+function triggerMutation() {
+  if (window.xemitter) {
+    window.xemitter.emit("editor:randomize");
+    showToast("Mutated sketch GLSL!");
+  } else {
+    playRandomSketch();
+  }
+}
+
 function nudgeTempo(delta) {
   const bpmInput = document.getElementById('bpm-number-input');
   const current = parseInt(bpmInput?.value || baseBpm || 120, 10) || 120;
@@ -875,6 +889,8 @@ function nudgeSpeed(delta) {
     window.speed = rounded;
   }
   speedVal.innerText = `${rounded.toFixed(1)}x`;
+=======
+>>>>>>> gh-pages
 }
 
 // Toggle entire UI (hide all control bars for clean installation viewing)
@@ -1107,6 +1123,5 @@ document.addEventListener('DOMContentLoaded', () => {
       updateAuthUI(false);
     }
   }
-
   updateTouchActionsUI();
 });

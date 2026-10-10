@@ -1,0 +1,19 @@
+/* valami wip */
+shape([4, 3, 45, 6, 7, 4, 5, 6].fast(800), 0.1)
+	.diff(shape([4, 3, 45, 6, 7, 4, 5, 6].fast(800), 0.1/2))
+	.scale([0.9, 4].ease('easeInOutCubic'))
+	.out(o0)
+
+src(o0)
+	.mult(osc(1, 10, 10))
+	.scroll(() => Math.random() - 0.5, () => Math.random() - 0.5)
+	.rotate(() => Math.PI * 2 * Math.random())
+	.out(o1)
+
+src(o1)
+	.add(src(o2), 0.97)
+	.out(o2)
+
+render()
+
+metadata = {"index":83,"type":"code","bpm":0,"midi":false,"heat":5,"author":"Alex Szabo"}
