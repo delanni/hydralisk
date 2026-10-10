@@ -17,6 +17,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - **2026-10-10**: Resolved Speed Controls & BPM-sync Automutate issues ([modules/editorActions.js](file:///Users/web/Git/hydralisk/modules/editorActions.js), [modules/automutate.js](file:///Users/web/Git/hydralisk/modules/automutate.js)): Fixed speed `0` freeze bug, preserved direction sign on reverse, and implemented live re-timing of running automutate intervals when BPM or tap-tempo changes occur.
 - **2026-10-10**: Configured Netlify Deploys ([`netlify.toml`](file:///Users/web/Git/hydralisk/netlify.toml)): Production deploys from `gh-pages` branch, automated Rollup build preview deploys for PRs and branch builds, custom caching headers, and Node 20 environment settings.
 - **2026-10-10**: Completed Touch/Mobile HUD & Remote Performance Overlay on branch [`copilot/add-touch-actions-buttons`](https://github.com/delanni/hydralisk/tree/copilot/add-touch-actions-buttons). Integrated latest `gh-pages` plugins into player, built responsive glassmorphism overlay controls (`Prev`/`Next`/`Random`, `Play`/`Pause`, `BPM ±`, `Speed ±`, `Glitch / Mutate`, `Toggle HUD`), hotkey `T`, and pushed updated branch to remote.
+- **2026-10-10**: Fixed `CTRL-Shift-H` and `Shift-Ctrl-*` Keyboard Shortcuts ([modules/editorActions.js](file:///Users/web/Git/hydralisk/modules/editorActions.js)): Resolved modifier key prefix sorting bug (`.sort()`) that produced `"Ctrl-Shift-H"` while checks expected `"Shift-Ctrl-H"`, fixed `Shift-Ctrl-F` triggering `fullscreen` instead of `editor:formatCode`, and implemented `matchCombo` helper supporting modifier permutations.
 
 ## 3. Architecture & Technical Decisions (ADRs)
 
@@ -67,6 +68,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - 2026-10-07 **Automutate never swaps transforms from keys or MIDI:** `changeTransformChance = 1` unless `evt.metaKey`, and `Math.random() > 1` is never true. Only a Cmd-click on 💩 gives a 25% swap chance.
 - 2026-10-10 **[RESOLVED] Automutate live BPM sync:** Added `bpm:change` and `taptempo` event listeners to dynamically re-time active automutate intervals without interrupting execution.
 - 2026-10-10 **[RESOLVED] Speed stuck at 0:** Updated `getCurrentSpeedIdx` and `gfx:speedSlower`/`gfx:speedFaster`/`gfx:speedReverse` handlers to step cleanly out of 0 (0 -> 0.01) and preserve direction sign.
+- 2026-10-10 **[RESOLVED] `Ctrl-Shift-H` & `Shift-Ctrl-*` hotkey mismatch:** Fixed modifier array sorting (`.sort()`) in `modules/editorActions.js` that converted `Ctrl`+`Shift` to `"Ctrl-Shift-H"` while event listeners looked for `"Shift-Ctrl-H"`. Implemented permutation matching helper `matchCombo` and fixed `Shift-Ctrl-F` action mapping.
 - 2026-10-07 **Loading a sketch mutates the source objects:** `delete sketch.metadata.bpm/date/local/index/type`.
 - 2026-10-07 `Mutator.glitchRelToInit` calls `glitchNumber()` without `this.`, so it throws a ReferenceError if `initVal` is undefined (rare).
 - 2026-10-07 `xxx()` parses the `<anonymous>:L:C` stack format, so it only works in Chrome/V8.
