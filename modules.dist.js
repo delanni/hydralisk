@@ -18756,7 +18756,8 @@
 	class OblivionGuard {
 	  constructor(app) {
 	    this.app = app;
-	    this.enabled = true;
+	    // Disabled for now pending retuning; code retained and toggleable via oblivion:toggle
+	    this.enabled = false;
 	    this.checkTimeout = null;
 	    this.consecutiveReverts = 0;
 	    this.maxConsecutiveReverts = 3;
