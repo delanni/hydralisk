@@ -2644,42 +2644,58 @@
 	 */
 	class TapTempo {
 	  constructor({
-	    maxTaps = 16,
-	    idleTimeoutMs = 5000,
-	    minTaps = 4
+	    maxTaps = 128,
+	    idleTimeoutMs = 3000
 	  } = {}) {
 	    this.taps = [];
+	    this.totalTaps = 0;
 	    this.maxTaps = maxTaps;
 	    this.idleTimeoutMs = idleTimeoutMs;
-	    this.minTaps = minTaps;
 	    this.resetTimer = null;
 	    this.currentBpm = 120;
+	    this.lastTapTime = null;
 	    this.appContext = null;
 	  }
 	  setAppContext(app) {
 	    this.appContext = app;
 	  }
+	  reset = () => {
+	    this.taps = [];
+	    this.totalTaps = 0;
+	    this.lastTapTime = null;
+	    if (this.resetTimer) {
+	      clearTimeout(this.resetTimer);
+	      this.resetTimer = null;
+	    }
+	  };
 	  tap = (timestamp = Date.now()) => {
-	    // Reset 5s idle timer
+	    // 1. If more than 3 seconds elapsed since the last tap, clear buffer and counters first
+	    if (this.lastTapTime && timestamp - this.lastTapTime >= this.idleTimeoutMs) {
+	      this.reset();
+	    }
+	    this.lastTapTime = timestamp;
+
+	    // 2. Reset 3-second idle timer
 	    if (this.resetTimer) {
 	      clearTimeout(this.resetTimer);
 	    }
 	    this.resetTimer = setTimeout(() => {
 	      this.reset();
 	    }, this.idleTimeoutMs);
-	    this.taps.push(timestamp);
 
-	    // Keep rolling history up to maxTaps
+	    // 3. Record tap and increment total tap counter
+	    this.taps.push(timestamp);
+	    this.totalTaps++;
+
+	    // 4. Retain buffer history up to maxTaps without emptying on recalculations
 	    if (this.taps.length > this.maxTaps) {
 	      this.taps.shift();
 	    }
 
-	    // Calculate rolling average BPM ONLY on every 4th tap (4, 8, 12, 16...)
-	    if (this.taps.length >= 4 && this.taps.length % 4 === 0) {
-	      const first = this.taps[0];
-	      const last = this.taps[this.taps.length - 1];
+	    // 5. Only recalculate when the recorded tempo taps count is divisible by 4 (4, 8, 12, 16...)
+	    if (this.totalTaps >= 4 && this.totalTaps % 4 === 0) {
 	      const count = this.taps.length - 1;
-	      const totalIntervalMs = last - first;
+	      const totalIntervalMs = this.taps[this.taps.length - 1] - this.taps[0];
 	      if (totalIntervalMs > 0 && count > 0) {
 	        const avgIntervalMs = totalIntervalMs / count;
 	        const calculatedBpm = Math.round(60000 / avgIntervalMs);
@@ -2691,7 +2707,11 @@
 	          if (this.appContext) {
 	            this.appContext.bpm = calculatedBpm;
 	            this.appContext.emit("bpm:change", calculatedBpm);
+	            this.appContext.emit("taptempo", {
+	              bpm: calculatedBpm
+	            });
 	          } else if (typeof window !== "undefined" && window.xemitter) {
+	            window.xemitter.emit("bpm:change", calculatedBpm);
 	            window.xemitter.emit("taptempo", {
 	              bpm: calculatedBpm
 	            });
@@ -2700,13 +2720,6 @@
 	      }
 	    }
 	    return this.currentBpm;
-	  };
-	  reset = () => {
-	    this.taps = [];
-	    if (this.resetTimer) {
-	      clearTimeout(this.resetTimer);
-	      this.resetTimer = null;
-	    }
 	  };
 	  getBpm = () => {
 	    return this.currentBpm;
@@ -2724,6 +2737,10 @@
 	      return;
 	    }
 	    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+	      return;
+	    }
+	    // Only bare '[' and ']' without Cmd/Ctrl/Alt modifier keys should navigate setlist; ignore repeats
+	    if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) {
 	      return;
 	    }
 	    if (e.key === "[") {
@@ -2933,8 +2950,14 @@
 	    init(app) {
 	      tapTempo.setAppContext(app);
 	      if (app.on) {
-	        app.on("taptempo", () => tapTempo.tap());
-	        app.on("bpm:taptempo", () => tapTempo.tap());
+	        app.on("taptempo", (evt = {}) => {
+	          if (evt && typeof evt.bpm === "number") return;
+	          tapTempo.tap();
+	        });
+	        app.on("bpm:taptempo", (evt = {}) => {
+	          if (evt && typeof evt.bpm === "number") return;
+	          tapTempo.tap();
+	        });
 	        app.on("bpm:change", bpmVal => {
 	          if (typeof window !== "undefined") window.bpm = bpmVal;
 	        });
@@ -17959,11 +17982,84 @@
 	        app.expose("sketchIdx", sketchIdx);
 	        app.emit("gallery:nextSketch", e);
 	      });
+
+	      // Cross-navigation helper to launch player with active sketch
+	      const openPlayerWithCurrentSketch = e => {
+	        if (e && e.preventDefault) e.preventDefault();
+	        let sketchName = "";
+	        if (Array.isArray(mySketches) && typeof sketchIdx === "number" && mySketches[sketchIdx]) {
+	          sketchName = mySketches[sketchIdx].name;
+	        }
+	        if (!sketchName) {
+	          try {
+	            sketchName = localStorage.getItem("lastSelectedSketchName") || "";
+	          } catch (err) {}
+	        }
+	        const targetUrl = sketchName ? `player.html?sketch=${encodeURIComponent(sketchName)}` : "player.html";
+	        window.location.href = targetUrl;
+	      };
+	      window.openPlayerWithCurrentSketch = openPlayerWithCurrentSketch;
+	      app.expose("openPlayerWithCurrentSketch", openPlayerWithCurrentSketch);
+
+	      // Inject white toolbar icon "Visual Player" in editor DOM (suppressed on player page)
+	      if (typeof document !== "undefined") {
+	        const isPlayerPage = Boolean(window.location.pathname.endsWith("player.html") || window.location.pathname.endsWith("/player") || document.getElementById("hydra-player-dashboard"));
+	        if (!isPlayerPage) {
+	          const injectNavIcon = () => {
+	            // Remove old text button if present
+	            const oldBtn = document.getElementById("nav-to-player-btn");
+	            if (oldBtn) oldBtn.remove();
+	            let navIcon = document.getElementById("nav-to-player-icon");
+	            if (!navIcon) {
+	              navIcon = document.createElement("i");
+	              navIcon.id = "nav-to-player-icon";
+	              navIcon.className = "fa fa-tv icon";
+	              navIcon.title = "Visual Player";
+	              navIcon.onclick = evt => openPlayerWithCurrentSketch(evt);
+
+	              // Attach to editor toolbar container alongside other white menu icons
+	              const existingIcon = document.querySelector("i.icon");
+	              if (existingIcon && existingIcon.parentNode) {
+	                existingIcon.parentNode.appendChild(navIcon);
+	              } else {
+	                navIcon.style.cssText = "position: fixed; top: 12px; right: 20px; z-index: 99999; color: #fff; cursor: pointer; font-size: 20px;";
+	                (document.body || document.documentElement).appendChild(navIcon);
+	              }
+	            }
+	          };
+	          if (document.readyState === "loading") {
+	            document.addEventListener("DOMContentLoaded", injectNavIcon);
+	          } else {
+	            injectNavIcon();
+	          }
+	          setTimeout(injectNavIcon, 300);
+	          setTimeout(injectNavIcon, 1000);
+	          setTimeout(injectNavIcon, 2500);
+	        } else {
+	          // If on player page, ensure any old button/icon is removed
+	          const oldBtn = document.getElementById("nav-to-player-btn");
+	          if (oldBtn) oldBtn.remove();
+	          const oldIcon = document.getElementById("nav-to-player-icon");
+	          if (oldIcon) oldIcon.remove();
+	        }
+	      }
 	      app.on("gallery:loadSketch", sketchInfo => {
 	        if (!sketchInfo) return;
 	        const targetIdx = Array.isArray(mySketches) ? mySketches.findIndex(s => s.name === sketchInfo.name || s.id && s.id === sketchInfo.id) : -1;
 	        const sketch = targetIdx >= 0 ? mySketches[targetIdx] : sketchInfo;
 	        if (!sketch) return;
+
+	        // Save sketch name protocol in localStorage and URL querystring
+	        if (sketch && sketch.name) {
+	          try {
+	            localStorage.setItem("lastSelectedSketchName", sketch.name);
+	            if (window.history && window.history.replaceState) {
+	              const url = new URL(window.location);
+	              url.searchParams.set("sketch", sketch.name);
+	              window.history.replaceState({}, "", url.toString());
+	            }
+	          } catch (e) {}
+	        }
 	        let formattedCode = "";
 	        if (sketch.metadata) {
 	          const metaCopy = {
@@ -17997,6 +18093,23 @@
 	          app.memory.autoSave(formattedCode, true);
 	        }
 	      });
+
+	      // Query parameter & localStorage sketch loading protocol on initialization
+	      const loadSketchFromProtocol = () => {
+	        try {
+	          const urlParams = new URLSearchParams(window.location.search);
+	          const targetName = urlParams.get("sketch") || localStorage.getItem("lastSelectedSketchName");
+	          if (targetName && Array.isArray(mySketches) && mySketches.length > 0) {
+	            const foundIdx = mySketches.findIndex(s => s.name && s.name.toLowerCase() === targetName.toLowerCase());
+	            if (foundIdx >= 0) {
+	              sketchIdx = foundIdx;
+	              sPut("sketchIdx", sketchIdx);
+	              app.expose("sketchIdx", sketchIdx);
+	              app.emit("gallery:loadSketch", mySketches[foundIdx]);
+	            }
+	          }
+	        } catch (e) {}
+	      };
 	      app.on("gallery:updateLocalSketches", sketchList => {
 	        mySketches = Array.isArray(sketchList) ? sketchList : [];
 	        app.expose("mySketches", mySketches);
@@ -18005,6 +18118,7 @@
 	          sPut("sketchIdx", sketchIdx);
 	          app.expose("sketchIdx", sketchIdx);
 	        }
+	        loadSketchFromProtocol();
 	      });
 	      app.on("gallery:saveMyExample", () => {
 	        const editor = getEditor();
@@ -18350,15 +18464,13 @@
 	        }
 	      });
 
-	      // Hide All UI
+	      // Hide All UI: synchronize CodeMirror element styling with state.showUI without double-mutating state
 	      app.on("hideAll", () => {
-	        if (app.state) {
-	          app.state.showUI = !app.state.showUI;
-	        }
 	        const cmEl = document.querySelector(".CodeMirror");
 	        if (cmEl) {
-	          cmEl.style.opacity = app.state && app.state.showUI === false ? "0" : "1";
-	          cmEl.style.pointerEvents = app.state && app.state.showUI === false ? "none" : "all";
+	          const isHidden = app.state && typeof app.state.showUI === "boolean" ? !app.state.showUI : cmEl.style.opacity === "1" || cmEl.style.opacity === "";
+	          cmEl.style.opacity = isHidden ? "0" : "1";
+	          cmEl.style.pointerEvents = isHidden ? "none" : "all";
 	        }
 	      });
 
@@ -18405,125 +18517,129 @@
 	        console.log(`Speed is ${window.speed}`);
 	      });
 
-	      // Global Keydown Listener & Prevention List
-	      const PREVENT_LIST = ["Cmd-H", "Shift-Ctrl-H", "Ctrl-Shift-H", "Cmd-Q", "Cmd-[", "Cmd-O", "Cmd-P", "Cmd-S", "Shift-Ctrl-S", "Ctrl-Shift-S", "Cmd-W", "Cmd-T", "Cmd-N", "Cmd-M", "Cmd-A", "Shift-Ctrl-F", "Ctrl-Shift-F", "Shift-Ctrl-G", "Ctrl-Shift-G"];
+	      // Global Keydown Listener
+	      // Combos are normalized (modifier order-independent) and matched on the PHYSICAL key
+	      // (evt.code), because with Option/Shift held macOS reports altered characters in evt.key
+	      // (e.g. Option-Shift-H => "Ó", Shift-[ => "{", Shift-8 => "*").
+	      const MOD_ORDER = ["Cmd", "Ctrl", "Alt", "Shift"];
+	      const MOD_ALIASES = {
+	        Meta: "Cmd",
+	        Command: "Cmd",
+	        Control: "Ctrl",
+	        Option: "Alt",
+	        Opt: "Alt"
+	      };
+	      const normalizeCombo = combo => {
+	        // Split on "-" but keep a trailing "-" key intact (e.g. "Cmd--").
+	        const parts = combo.split(/-(?!$)/);
+	        const key = parts.pop().toUpperCase();
+	        const mods = parts.map(m => MOD_ALIASES[m] || m).sort((a, b) => MOD_ORDER.indexOf(a) - MOD_ORDER.indexOf(b));
+	        return [...mods, key].join("-");
+	      };
+	      const CODE_KEYS = {
+	        BracketLeft: "[",
+	        BracketRight: "]",
+	        Backslash: "\\",
+	        Slash: "/",
+	        Minus: "-",
+	        Equal: "=",
+	        Comma: ",",
+	        Period: ".",
+	        Semicolon: ";",
+	        Quote: "'",
+	        Backquote: "`",
+	        Enter: "ENTER",
+	        Space: "SPACE"
+	      };
+	      const keyFromEvent = evt => {
+	        const code = evt.code || "";
+	        if (/^Key[A-Z]$/.test(code)) return code.slice(3);
+	        if (/^Digit[0-9]$/.test(code)) return code.slice(5);
+	        if (CODE_KEYS[code]) return CODE_KEYS[code];
+	        return (evt.key || "").toUpperCase();
+	      };
+	      const comboFromEvent = evt => {
+	        const mods = [evt.metaKey && "Cmd", evt.ctrlKey && "Ctrl", evt.altKey && "Alt", evt.shiftKey && "Shift"].filter(Boolean);
+	        return [...mods, keyFromEvent(evt)].join("-");
+	      };
+
+	      // combo => [eventName, payloadFactory?]
+	      const SHORTCUTS = {
+	        "Cmd-S": ["editor:quickSave"],
+	        "Cmd-L": ["editor:quickLoad"],
+	        "Cmd-]": ["gallery:nextSketch", evt => evt],
+	        "Cmd-\\": ["gallery:prevSketch", evt => evt],
+	        "Cmd-[": ["editor:jumpBack1", evt => evt],
+	        "Cmd-Shift-[": ["editor:jumpBack5", evt => evt],
+	        "Cmd-O": ["gallery:toggleSketchManager"],
+	        "Shift-Ctrl-F": ["editor:formatCode"],
+	        "Shift-Ctrl-G": ["fullscreen"],
+	        "Shift-Ctrl-H": ["hideAll"],
+	        "Alt-Shift-H": ["hideAll"],
+	        "Cmd-H": ["hideAll"],
+	        // Full combo strings are passed: automutate parses the mode via /-(.)$/.
+	        "Shift-Ctrl-X": ["editor:toggleAutomutate", () => ({
+	          lastCombo: "Shift-Ctrl-X"
+	        })],
+	        "Shift-Ctrl-0": ["editor:toggleAutomutate", () => ({
+	          lastCombo: "Shift-Ctrl-0"
+	        })],
+	        "Shift-Ctrl-1": ["editor:toggleAutomutate", () => ({
+	          lastCombo: "Shift-Ctrl-1"
+	        })],
+	        "Shift-Ctrl-2": ["editor:toggleAutomutate", () => ({
+	          lastCombo: "Shift-Ctrl-2"
+	        })],
+	        "Shift-Ctrl-3": ["editor:toggleAutomutate", () => ({
+	          lastCombo: "Shift-Ctrl-3"
+	        })],
+	        "Shift-Ctrl-4": ["editor:toggleAutomutate", () => ({
+	          lastCombo: "Shift-Ctrl-4"
+	        })],
+	        "Shift-Ctrl-5": ["editor:toggleAutomutate", () => ({
+	          lastCombo: "Shift-Ctrl-5"
+	        })],
+	        "Shift-Ctrl-7": ["gfx:speedSlower"],
+	        "Shift-Ctrl-8": ["gfx:speedDefault"],
+	        "Shift-Ctrl-9": ["gfx:speedFaster"],
+	        "Shift-Cmd-8": ["gfx:speedReverse"],
+	        "Cmd-D": ["editor:duplicateLine"],
+	        "Shift-Ctrl-K": ["editor:commentLine"],
+	        "Shift-Ctrl-C": ["gallery:search"],
+	        "Shift-Ctrl-S": ["screencap"],
+	        "Shift-Ctrl-L": ["gallery:saveToURL"]
+	      };
+	      const SHORTCUT_MAP = new Map(Object.entries(SHORTCUTS).map(([combo, action]) => [normalizeCombo(combo), action]));
+
+	      // Browser/OS defaults to swallow even though they have no app action.
+	      const PREVENT_SET = new Set(["Cmd-Q", "Cmd-P", "Cmd-W", "Cmd-T", "Cmd-N", "Cmd-M", "Cmd-A"].map(normalizeCombo));
+
+	      // Capture phase on document: runs BEFORE CodeMirror's own keydown handler (which still has
+	      // the same combos in its extraKeys map in bundle.min.js). Stopping propagation here makes this
+	      // listener the single dispatcher, so each press emits exactly once.
 	      document.addEventListener("keydown", evt => {
-	        if (!evt.key) return;
+	        if (!evt.key && !evt.code) return;
 	        const isOptionSpace = evt.altKey && (evt.code === "Space" || evt.key === " " || evt.key === "Spacebar");
 	        if (isOptionSpace) {
 	          evt.preventDefault();
 	          evt.stopPropagation();
-	          app.emit("taptempo");
+	          if (!evt.repeat) app.emit("taptempo");
 	          return;
 	        }
-	        const prefixes = [evt.shiftKey && "Shift", evt.ctrlKey && "Ctrl", evt.metaKey && "Cmd", evt.altKey && "Alt"].filter(Boolean);
-	        const altPrefixes = [evt.ctrlKey && "Ctrl", evt.shiftKey && "Shift", evt.metaKey && "Cmd", evt.altKey && "Alt"].filter(Boolean);
-	        const prefix = prefixes.join("-");
-	        const altPrefix = altPrefixes.join("-");
-	        const key = evt.key.toUpperCase();
-	        const combo = prefix ? `${prefix}-${key}` : key;
-	        const altCombo = altPrefix ? `${altPrefix}-${key}` : key;
-	        const matchCombo = (...targets) => targets.some(t => t === combo || t === altCombo);
-	        if (PREVENT_LIST.includes(combo) || PREVENT_LIST.includes(altCombo)) {
-	          evt.preventDefault();
-	          evt.stopPropagation();
+	        const combo = normalizeCombo(comboFromEvent(evt));
+	        const action = SHORTCUT_MAP.get(combo);
+	        if (!action) {
+	          if (PREVENT_SET.has(combo)) evt.preventDefault();
+	          return;
 	        }
+	        evt.preventDefault();
+	        evt.stopPropagation();
 
-	        // Custom keyboard shortcuts map
-	        if (matchCombo("Cmd-S")) {
-	          evt.preventDefault();
-	          app.emit("editor:quickSave");
-	        } else if (matchCombo("Cmd-L")) {
-	          evt.preventDefault();
-	          app.emit("editor:quickLoad");
-	        } else if (matchCombo("Cmd-]")) {
-	          evt.preventDefault();
-	          app.emit("gallery:nextSketch", evt);
-	        } else if (matchCombo("Cmd-\\")) {
-	          evt.preventDefault();
-	          app.emit("gallery:prevSketch", evt);
-	        } else if (matchCombo("Cmd-[")) {
-	          evt.preventDefault();
-	          app.emit("editor:jumpBack1", evt);
-	        } else if (matchCombo("Cmd-Shift-[", "Shift-Cmd-[")) {
-	          evt.preventDefault();
-	          app.emit("editor:jumpBack5", evt);
-	        } else if (matchCombo("Cmd-O")) {
-	          evt.preventDefault();
-	          app.emit("gallery:toggleSketchManager");
-	        } else if (matchCombo("Shift-Ctrl-F")) {
-	          evt.preventDefault();
-	          app.emit("editor:formatCode");
-	        } else if (matchCombo("Shift-Ctrl-G")) {
-	          evt.preventDefault();
-	          app.emit("fullscreen");
-	        } else if (matchCombo("Shift-Ctrl-H", "Cmd-H")) {
-	          evt.preventDefault();
-	          app.emit("hideAll");
-	        } else if (matchCombo("Shift-Ctrl-X")) {
-	          evt.preventDefault();
-	          app.emit("editor:toggleAutomutate", {
-	            lastCombo: combo
-	          });
-	        } else if (matchCombo("Shift-Ctrl-0")) {
-	          evt.preventDefault();
-	          app.emit("editor:toggleAutomutate", {
-	            lastCombo: "0"
-	          });
-	        } else if (matchCombo("Shift-Ctrl-1")) {
-	          evt.preventDefault();
-	          app.emit("editor:toggleAutomutate", {
-	            lastCombo: "1"
-	          });
-	        } else if (matchCombo("Shift-Ctrl-2")) {
-	          evt.preventDefault();
-	          app.emit("editor:toggleAutomutate", {
-	            lastCombo: "2"
-	          });
-	        } else if (matchCombo("Shift-Ctrl-3")) {
-	          evt.preventDefault();
-	          app.emit("editor:toggleAutomutate", {
-	            lastCombo: "3"
-	          });
-	        } else if (matchCombo("Shift-Ctrl-4")) {
-	          evt.preventDefault();
-	          app.emit("editor:toggleAutomutate", {
-	            lastCombo: "4"
-	          });
-	        } else if (matchCombo("Shift-Ctrl-5")) {
-	          evt.preventDefault();
-	          app.emit("editor:toggleAutomutate", {
-	            lastCombo: "5"
-	          });
-	        } else if (matchCombo("Shift-Ctrl-7")) {
-	          evt.preventDefault();
-	          app.emit("gfx:speedSlower");
-	        } else if (matchCombo("Shift-Ctrl-8")) {
-	          evt.preventDefault();
-	          app.emit("gfx:speedDefault");
-	        } else if (matchCombo("Shift-Ctrl-9")) {
-	          evt.preventDefault();
-	          app.emit("gfx:speedFaster");
-	        } else if (matchCombo("Shift-Cmd-8", "Cmd-Shift-8")) {
-	          evt.preventDefault();
-	          app.emit("gfx:speedReverse");
-	        } else if (matchCombo("Cmd-D")) {
-	          evt.preventDefault();
-	          app.emit("editor:duplicateLine");
-	        } else if (matchCombo("Shift-Ctrl-K")) {
-	          evt.preventDefault();
-	          app.emit("editor:commentLine");
-	        } else if (matchCombo("Shift-Ctrl-C")) {
-	          evt.preventDefault();
-	          app.emit("gallery:search");
-	        } else if (matchCombo("Shift-Ctrl-S")) {
-	          evt.preventDefault();
-	          app.emit("screencap");
-	        } else if (matchCombo("Shift-Ctrl-L")) {
-	          evt.preventDefault();
-	          app.emit("gallery:saveToURL");
-	        }
-	      });
+	        // Holding a combo produces auto-repeat keydowns: trigger once per physical press.
+	        if (evt.repeat) return;
+	        const [eventName, payload] = action;
+	        if (payload) app.emit(eventName, payload(evt));else app.emit(eventName);
+	      }, true);
 	    }
 	  });
 	}
@@ -18640,7 +18756,8 @@
 	class OblivionGuard {
 	  constructor(app) {
 	    this.app = app;
-	    this.enabled = true;
+	    // Disabled for now pending retuning; code retained and toggleable via oblivion:toggle
+	    this.enabled = false;
 	    this.checkTimeout = null;
 	    this.consecutiveReverts = 0;
 	    this.maxConsecutiveReverts = 3;
@@ -18814,6 +18931,116 @@
 	      });
 	    }
 	  });
+	}
+
+	/**
+	 * Performance State Hash Fragment Settings Module for Hydralisk
+	 * Encodes/decodes player performance state (BPM, HUD visibility, Automutate mode, Speed)
+	 * Protocol format: #(<key>[a-z])(<value>[a-z0-9][0-9]*)|(<key>[a-z])(<value>[a-z0-9][0-9]*)
+	 */
+
+	class PlayerSettings {
+	  constructor() {
+	    this.keyMap = {
+	      b: "bpm",
+	      h: "hud",
+	      m: "automutate",
+	      s: "speed"
+	    };
+	    this.reverseKeyMap = {
+	      bpm: "b",
+	      hud: "h",
+	      automutate: "m",
+	      speed: "s"
+	    };
+	  }
+
+	  /**
+	   * Decode URL fragment string into a settings object
+	   * @param {string} hashStr e.g. "#b120|h1|m4|s10"
+	   * @returns {object} decoded settings object e.g. { bpm: 120, hud: 1, automutate: '4', speed: 1.0 }
+	   */
+	  decode(hashStr = typeof window !== "undefined" ? window.location.hash : "") {
+	    const settings = {};
+	    if (!hashStr) return settings;
+	    let raw = hashStr.startsWith("#") ? hashStr.substring(1) : hashStr;
+	    if (!raw) return settings;
+	    const pairs = raw.split("|");
+	    for (const pair of pairs) {
+	      if (!pair) continue;
+	      // Match protocol: key [a-z] followed by value [a-z0-9][0-9]*
+	      const match = pair.match(/^([a-z])([a-z0-9][0-9]*)$/i);
+	      if (match) {
+	        const keyChar = match[1].toLowerCase();
+	        const rawVal = match[2];
+	        const settingsKey = this.keyMap[keyChar] || keyChar;
+	        if (settingsKey === "bpm") {
+	          const num = parseInt(rawVal, 10);
+	          if (!isNaN(num)) settings[settingsKey] = num;
+	        } else if (settingsKey === "hud") {
+	          settings[settingsKey] = rawVal === "1" ? 1 : 0;
+	        } else if (settingsKey === "automutate") {
+	          settings[settingsKey] = rawVal;
+	        } else if (settingsKey === "speed") {
+	          const num = parseInt(rawVal, 10);
+	          if (!isNaN(num)) settings[settingsKey] = num / 10;
+	        } else {
+	          settings[settingsKey] = rawVal;
+	        }
+	      }
+	    }
+	    return settings;
+	  }
+
+	  /**
+	   * Encode settings object into a URL fragment string
+	   * @param {object} settings e.g. { bpm: 120, hud: 1, automutate: '4', speed: 1.0 }
+	   * @returns {string} e.g. "#b120|h1|m4|s10"
+	   */
+	  encode(settings = {}) {
+	    const pairs = [];
+	    if (typeof settings.bpm === "number" && !isNaN(settings.bpm)) {
+	      pairs.push(`b${settings.bpm}`);
+	    }
+	    if (typeof settings.hud !== "undefined") {
+	      pairs.push(`h${settings.hud ? 1 : 0}`);
+	    }
+	    if (settings.automutate) {
+	      pairs.push(`m${settings.automutate}`);
+	    }
+	    if (typeof settings.speed === "number" && !isNaN(settings.speed)) {
+	      const speedVal = Math.round(settings.speed * 10);
+	      pairs.push(`s${speedVal}`);
+	    }
+	    return "#" + pairs.join("|");
+	  }
+
+	  /**
+	   * Update browser location.hash with current settings without reloading/scrolling
+	   * @param {object} settings
+	   */
+	  syncToHash(settings = {}) {
+	    if (typeof window === "undefined" || !window.history || !window.history.replaceState) return;
+	    const hash = this.encode(settings);
+	    const url = new URL(window.location);
+	    url.hash = hash;
+	    window.history.replaceState(null, "", url.toString());
+	  }
+	}
+
+	// Instantiate singleton
+	const playerSettings = new PlayerSettings();
+	if (typeof window !== "undefined") {
+	  window.playerSettings = playerSettings;
+	  if (window.HydraliskPlugins) {
+	    window.HydraliskPlugins.register({
+	      id: "player-settings",
+	      name: "Player Performance State Fragment Encoder/Decoder",
+	      init(app) {
+	        app.expose("playerSettings", playerSettings);
+	      }
+	    });
+	  }
 	}
 
 	// Barrel file for all Hydralisk modules, plugin registry, and extension plugins

@@ -102,13 +102,14 @@ midiEngine.init();
  * TapTempo — Rolling average BPM calculator & tap manager
  */
 export class TapTempo {
-  constructor({ maxTaps = 16, idleTimeoutMs = 5000, minTaps = 4 } = {}) {
+  constructor({ maxTaps = 128, idleTimeoutMs = 3000 } = {}) {
     this.taps = [];
+    this.totalTaps = 0;
     this.maxTaps = maxTaps;
     this.idleTimeoutMs = idleTimeoutMs;
-    this.minTaps = minTaps;
     this.resetTimer = null;
     this.currentBpm = 120;
+    this.lastTapTime = null;
     this.appContext = null;
   }
 
@@ -116,8 +117,24 @@ export class TapTempo {
     this.appContext = app;
   }
 
+  reset = () => {
+    this.taps = [];
+    this.totalTaps = 0;
+    this.lastTapTime = null;
+    if (this.resetTimer) {
+      clearTimeout(this.resetTimer);
+      this.resetTimer = null;
+    }
+  };
+
   tap = (timestamp = Date.now()) => {
-    // Reset 5s idle timer
+    // 1. If more than 3 seconds elapsed since the last tap, clear buffer and counters first
+    if (this.lastTapTime && (timestamp - this.lastTapTime >= this.idleTimeoutMs)) {
+      this.reset();
+    }
+    this.lastTapTime = timestamp;
+
+    // 2. Reset 3-second idle timer
     if (this.resetTimer) {
       clearTimeout(this.resetTimer);
     }
@@ -125,19 +142,19 @@ export class TapTempo {
       this.reset();
     }, this.idleTimeoutMs);
 
+    // 3. Record tap and increment total tap counter
     this.taps.push(timestamp);
+    this.totalTaps++;
 
-    // Keep rolling history up to maxTaps
+    // 4. Retain buffer history up to maxTaps without emptying on recalculations
     if (this.taps.length > this.maxTaps) {
       this.taps.shift();
     }
 
-    // Calculate rolling average BPM ONLY on every 4th tap (4, 8, 12, 16...)
-    if (this.taps.length >= 4 && this.taps.length % 4 === 0) {
-      const first = this.taps[0];
-      const last = this.taps[this.taps.length - 1];
+    // 5. Only recalculate when the recorded tempo taps count is divisible by 4 (4, 8, 12, 16...)
+    if (this.totalTaps >= 4 && this.totalTaps % 4 === 0) {
       const count = this.taps.length - 1;
-      const totalIntervalMs = last - first;
+      const totalIntervalMs = this.taps[this.taps.length - 1] - this.taps[0];
 
       if (totalIntervalMs > 0 && count > 0) {
         const avgIntervalMs = totalIntervalMs / count;
@@ -151,7 +168,9 @@ export class TapTempo {
           if (this.appContext) {
             this.appContext.bpm = calculatedBpm;
             this.appContext.emit("bpm:change", calculatedBpm);
+            this.appContext.emit("taptempo", { bpm: calculatedBpm });
           } else if (typeof window !== "undefined" && window.xemitter) {
+            window.xemitter.emit("bpm:change", calculatedBpm);
             window.xemitter.emit("taptempo", { bpm: calculatedBpm });
           }
         }
@@ -159,14 +178,6 @@ export class TapTempo {
     }
 
     return this.currentBpm;
-  };
-
-  reset = () => {
-    this.taps = [];
-    if (this.resetTimer) {
-      clearTimeout(this.resetTimer);
-      this.resetTimer = null;
-    }
   };
 
   getBpm = () => {
@@ -187,6 +198,10 @@ if (typeof window !== "undefined") {
       return;
     }
     if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+      return;
+    }
+    // Only bare '[' and ']' without Cmd/Ctrl/Alt modifier keys should navigate setlist; ignore repeats
+    if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) {
       return;
     }
     if (e.key === "[") {
@@ -385,8 +400,14 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
     init(app) {
       tapTempo.setAppContext(app);
       if (app.on) {
-        app.on("taptempo", () => tapTempo.tap());
-        app.on("bpm:taptempo", () => tapTempo.tap());
+        app.on("taptempo", (evt = {}) => {
+          if (evt && typeof evt.bpm === "number") return;
+          tapTempo.tap();
+        });
+        app.on("bpm:taptempo", (evt = {}) => {
+          if (evt && typeof evt.bpm === "number") return;
+          tapTempo.tap();
+        });
         app.on("bpm:change", (bpmVal) => {
           if (typeof window !== "undefined") window.bpm = bpmVal;
         });

@@ -15,6 +15,7 @@ import './sketchLibrary.js';
 import './editorActions.js';
 import './hydraliskExtras.js';
 import './oblivionGuard.js';
+import './settings.js';
 
 window.Modules = {
     SketchManager
