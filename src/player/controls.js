@@ -32,26 +32,11 @@ export function handleTapTempo(evt = {}) {
     return;
   }
 
-  const now = performance.now();
-  state.tapTimes.push(now);
-  if (state.tapTimes.length > 4) {
-    state.tapTimes.shift();
-  }
-
-  if (state.tapTimes.length >= 2) {
-    let sum = 0;
-    for (let i = 1; i < state.tapTimes.length; i++) {
-      sum += (state.tapTimes[i] - state.tapTimes[i - 1]);
-    }
-    const avgMs = sum / (state.tapTimes.length - 1);
-    const calculatedBPM = Math.round(60000 / avgMs);
-    const clampedBPM = Math.max(20, Math.min(240, calculatedBPM));
-
-    state.baseBpm = clampedBPM;
-    updateBPM(clampedBPM);
-    const bpmInput = document.getElementById('bpm-number-input');
-    if (bpmInput) bpmInput.value = clampedBPM;
-    intercomNotify(`Tap Tempo: ${clampedBPM} BPM`);
+  // Delegate tap to unified TapTempo engine
+  if (window.tapTempo && typeof window.tapTempo.tap === "function") {
+    window.tapTempo.tap();
+  } else if (window.xemitter) {
+    window.xemitter.emit("taptempo");
   }
 
   // Flash TAP button element if available

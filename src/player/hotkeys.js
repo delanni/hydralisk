@@ -41,6 +41,8 @@ export function setupHotkeysAndEvents() {
       return;
     }
 
+    if (e.repeat) return;
+
     switch (e.code) {
       case 'ArrowLeft':
         e.preventDefault();

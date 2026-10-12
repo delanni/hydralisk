@@ -468,24 +468,21 @@ function updateBPM(newBpm) {
 }
 
 // Tap Tempo logic
-function handleTapTempo() {
-  const now = performance.now();
-  tapTimes.push(now);
-  if (tapTimes.length > 4) {
-    tapTimes.shift();
+function handleTapTempo(evt = {}) {
+  if (evt && typeof evt.bpm === "number") {
+    baseBpm = evt.bpm;
+    updateBPM(evt.bpm);
+    const bpmInput = document.getElementById('bpm-number-input');
+    if (bpmInput) bpmInput.value = evt.bpm;
+    if (typeof showToast === 'function') showToast(`Tap Tempo: ${evt.bpm} BPM`);
+    return;
   }
 
-  if (tapTimes.length >= 2) {
-    let sum = 0;
-    for (let i = 1; i < tapTimes.length; i++) {
-      sum += (tapTimes[i] - tapTimes[i - 1]);
-    }
-    const avgMs = sum / (tapTimes.length - 1);
-    const calculatedBPM = Math.round(60000 / avgMs);
-    const clampedBPM = Math.max(20, Math.min(240, calculatedBPM));
-
-    baseBpm = clampedBPM;
-    updateBPM(clampedBPM);
+  // Delegate tap to unified TapTempo engine
+  if (window.tapTempo && typeof window.tapTempo.tap === "function") {
+    window.tapTempo.tap();
+  } else if (window.xemitter) {
+    window.xemitter.emit("taptempo");
   }
 
   // Flash TAP button
@@ -1179,39 +1176,6 @@ function updateAuthUI(isAuthenticated) {
   }
 }
 
-// Tap tempo calculator for Option+Space / Alt+Space & xemitter
-function handleTapTempo(evt = {}) {
-  if (evt && typeof evt.bpm === "number") {
-    baseBpm = evt.bpm;
-    updateBPM(evt.bpm);
-    const bpmInput = document.getElementById('bpm-number-input');
-    if (bpmInput) bpmInput.value = evt.bpm;
-    showToast(`Tap Tempo: ${evt.bpm} BPM`);
-    return;
-  }
-
-  const now = Date.now();
-  tapTimes.push(now);
-  if (tapTimes.length > 4) tapTimes.shift();
-
-  if (tapTimes.length > 1) {
-    const intervals = [];
-    for (let i = 1; i < tapTimes.length; i++) {
-      intervals.push(tapTimes[i] - tapTimes[i - 1]);
-    }
-    const avgMs = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    const calculatedBpm = Math.round(60000 / avgMs);
-
-    if (calculatedBpm >= 30 && calculatedBpm <= 300) {
-      baseBpm = calculatedBpm;
-      updateBPM(calculatedBpm);
-      const bpmInput = document.getElementById('bpm-number-input');
-      if (bpmInput) bpmInput.value = calculatedBpm;
-      showToast(`Tap Tempo: ${calculatedBpm} BPM`);
-    }
-  }
-}
-
 // Hook up Event Emitter for core editor hotkeys & midi-mapping.js integration
 if (window.xemitter) {
   window.xemitter.on("taptempo", (data) => handleTapTempo(data));
@@ -1247,6 +1211,8 @@ document.addEventListener('keydown', (e) => {
   if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') {
     return;
   }
+
+  if (e.repeat) return;
 
   switch (e.code) {
     case 'ArrowLeft':
