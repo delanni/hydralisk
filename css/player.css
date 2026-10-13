@@ -865,6 +865,10 @@ body {
 }
 
 @media (max-width: 768px) {
+  #shortcuts-panel {
+    display: none;
+  }
+
   .sidebar-panel {
     top: 10px;
     left: 10px;
