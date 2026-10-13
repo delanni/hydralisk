@@ -910,6 +910,11 @@ var HydraliskPlayer = (function (exports) {
     const isMobile = isMobileDevice();
     const hidden = isUIHidden();
 
+    // Mobile browsers can keep a wider layout viewport than the visible emulator.
+    // Size the fixed sheet from the visual viewport so its grid cannot trail off-screen.
+    const viewportWidth = window.visualViewport?.width || document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--player-viewport-width', `${viewportWidth}px`);
+
     // If HUD is closed / hidden, hide the intercom bar as part of the HUD
     if (intercomBar) {
       intercomBar.classList.toggle('hidden', hidden);
@@ -1552,6 +1557,7 @@ var HydraliskPlayer = (function (exports) {
     }
     updateTouchActionsUI();
     window.addEventListener('resize', updateTouchActionsUI);
+    window.visualViewport?.addEventListener('resize', updateTouchActionsUI);
 
     // Auto-launch player experience if welcome screen was previously closed
     try {

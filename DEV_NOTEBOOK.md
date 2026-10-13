@@ -28,6 +28,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - **2026-10-12**: Disabled Oblivion Guard by Default ([modules/oblivionGuard.js](file:///Users/web/Git/hydralisk/modules/oblivionGuard.js)): Set `this.enabled = false` in `OblivionGuard` constructor pending retuning of blackout/whiteout sampling thresholds. All module code remains intact and can still be manually enabled via `app.emit('oblivion:toggle')` or `window.oblivionGuard.enabled = true`.
 - **2026-10-13**: Redesigned the mobile playability overlay on the `gh-pages`-based player branch: full-width 50%-height bottom sheet, transparent panel, compact four-row controls, independent visibility preference, and modular player bundle updates (`player.html`, `css/player.css`, `src/player/{controls,main,ui}.js`, `player.dist.js`).
 - **2026-10-13**: Refined the mobile overlay after emulator review: fixed the bottom sheet to the viewport edges without width over-constraint, forced zero-minimum grid tracks and button sizing, removed persistent hover styling, reduced button padding, and preserved the selected automutate interval while stopped.
+- **2026-10-13**: Corrected a remaining mobile layout-viewport mismatch by sizing the fixed overlay from `visualViewport.width` and refreshing that CSS variable on visual viewport resize; the 3-column grid is now capped by the same measured width.
 
 
 
@@ -104,4 +105,3 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - 2026-10-10: Developer preference recorded: When tasked with working on a specific branch, switch directly to that branch and stay on it for execution instead of switching back and forth, preventing merge conflict markers. Rule updated in `.agents/AGENTS.md`.
 - 2026-10-10: Built User Feedback & Bug Reporting Modal system on branch `add-feedback`: implemented `FeedbackDiagnosticService`, `FeedbackModal` React component, WebGL hardware probe, recent error log buffer, `Cmd+Shift+F` global shortcut, `xemitter` event integration, and header trigger in `player.html`. Verified with standalone Node test suite.
 - 2026-10-13: Repository guidance review for the mobile overlay: confirmed `gh-pages` is the deployed application branch and `master` contains only the README. `npm run build` completed successfully after `npm ci`; the latest `gh-pages` Pages workflow (run 38368151585) also completed build, status, and deploy jobs successfully. Per `DEVELOPER_HANDBOOK.md` and `.agents/AGENTS.md`, subsequent changes are left uncommitted for review unless explicitly requested.
-

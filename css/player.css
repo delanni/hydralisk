@@ -824,8 +824,8 @@ body {
 .touch-actions-overlay {
   position: fixed;
   inset: 0;
-  width: auto;
-  max-width: none;
+  width: var(--player-viewport-width, 100dvw);
+  max-width: var(--player-viewport-width, 100dvw);
   overflow: hidden;
   pointer-events: none;
   z-index: 18;
@@ -846,10 +846,11 @@ body {
 
 .touch-actions-card {
   position: fixed;
-  inset-inline: 0;
+  left: 0;
+  right: auto;
   bottom: 0;
-  width: auto;
-  max-width: none;
+  width: var(--player-viewport-width, 100dvw);
+  max-width: var(--player-viewport-width, 100dvw);
   height: 50vh;
   height: 50dvh;
   box-sizing: border-box;
@@ -922,6 +923,7 @@ body {
   grid-template-rows: repeat(4, minmax(0, 1fr));
   width: 100%;
   min-width: 0;
+  max-width: 100%;
   gap: 8px;
   height: calc(100% - 28px);
 }

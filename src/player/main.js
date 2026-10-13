@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   updateTouchActionsUI();
   window.addEventListener('resize', updateTouchActionsUI);
+  window.visualViewport?.addEventListener('resize', updateTouchActionsUI);
 
   // Auto-launch player experience if welcome screen was previously closed
   try {
