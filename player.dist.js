@@ -26,6 +26,7 @@ var HydraliskPlayer = (function (exports) {
     // Mutation state & history
     automutateIntervalId: null,
     automutateMode: 'off',
+    selectedAutomutateMode: '1',
     mutationHistory: [],
     mutationHistoryIndex: -1
   };
@@ -216,6 +217,9 @@ var HydraliskPlayer = (function (exports) {
 
   function setAutomutateMode(mode, quiet = false) {
     state.automutateMode = mode;
+    if (mode !== 'off') {
+      state.selectedAutomutateMode = mode;
+    }
 
     if (state.automutateIntervalId) {
       clearInterval(state.automutateIntervalId);
@@ -236,6 +240,9 @@ var HydraliskPlayer = (function (exports) {
     if (statusLabel) {
       statusLabel.innerText = mode.toUpperCase() + (mode === 'off' ? '' : ' ACTIVE');
       statusLabel.style.color = mode === 'off' ? 'var(--text-muted)' : 'var(--color-accent)';
+    }
+    if (typeof window.updateTouchActionsUI === 'function') {
+      window.updateTouchActionsUI();
     }
 
     if (mode === 'off') {
@@ -469,6 +476,15 @@ var HydraliskPlayer = (function (exports) {
       window.speed = rounded;
     }
     speedVal.innerText = `${rounded.toFixed(1)}x`;
+    syncPerformanceSettingsToHash();
+  }
+
+  function resetSpeed() {
+    const speedSlider = document.getElementById('speed-slider');
+    const speedVal = document.getElementById('speed-val');
+    if (speedSlider) speedSlider.value = '1.0';
+    window.speed = 1.0;
+    if (speedVal) speedVal.innerText = '1.0x';
     syncPerformanceSettingsToHash();
   }
 
@@ -890,8 +906,14 @@ var HydraliskPlayer = (function (exports) {
     const floatingBtn = document.getElementById('touch-actions-floating-btn');
     const shortcuts = document.getElementById('shortcuts-panel');
     const intercomBar = document.getElementById('intercom-bar');
+    const mobileMutateToggle = document.getElementById('mobile-mutate-toggle');
     const isMobile = isMobileDevice();
     const hidden = isUIHidden();
+
+    // Mobile browsers can keep a wider layout viewport than the visible emulator.
+    // Size the fixed sheet from the visual viewport so its grid cannot trail off-screen.
+    const viewportWidth = window.visualViewport?.width || document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--player-viewport-width', `${viewportWidth}px`);
 
     // If HUD is closed / hidden, hide the intercom bar as part of the HUD
     if (intercomBar) {
@@ -917,6 +939,10 @@ var HydraliskPlayer = (function (exports) {
     if (floatingBtn) {
       floatingBtn.classList.toggle('active', state.touchActionsEnabled);
     }
+    if (mobileMutateToggle) {
+      mobileMutateToggle.textContent = `~${state.selectedAutomutateMode}b`;
+      mobileMutateToggle.classList.toggle('active', state.automutateMode !== 'off');
+    }
   }
 
   function toggleCollapse() {
@@ -938,8 +964,17 @@ var HydraliskPlayer = (function (exports) {
 
   function toggleTouchActions() {
     state.touchActionsEnabled = !state.touchActionsEnabled;
+    try {
+      localStorage.setItem('touchActionsEnabled', String(state.touchActionsEnabled));
+    } catch (e) {}
     updateTouchActionsUI();
     intercomNotify(state.touchActionsEnabled ? "Touch actions enabled" : "Touch actions disabled");
+  }
+
+  function toggleMobileAutomutate() {
+    const nextMode = state.automutateMode === 'off' ? state.selectedAutomutateMode : 'off';
+    if (window.setAutomutateMode) window.setAutomutateMode(nextMode);
+    updateTouchActionsUI();
   }
 
   function toggleUI() {
@@ -1419,6 +1454,7 @@ var HydraliskPlayer = (function (exports) {
   window.handleTapTempo = handleTapTempo;
   window.nudgeTempo = nudgeTempo;
   window.nudgeSpeed = nudgeSpeed;
+  window.resetSpeed = resetSpeed;
 
   window.setAutomutateMode = setAutomutateMode;
   window.triggerMutation = triggerMutation;
@@ -1429,6 +1465,8 @@ var HydraliskPlayer = (function (exports) {
   window.toggleCollapse = toggleCollapse;
   window.toggleUI = toggleUI;
   window.toggleTouchActions = toggleTouchActions;
+  window.toggleMobileAutomutate = toggleMobileAutomutate;
+  window.updateTouchActionsUI = updateTouchActionsUI;
   window.toggleFullscreen = toggleFullscreen;
   window.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
   window.handleCloudLogin = handleCloudLogin;
@@ -1510,10 +1548,16 @@ var HydraliskPlayer = (function (exports) {
     }
 
     if (isMobileDevice()) {
-      state.touchActionsEnabled = true;
+      try {
+        const savedTouchActions = localStorage.getItem('touchActionsEnabled');
+        state.touchActionsEnabled = savedTouchActions === null ? true : savedTouchActions === 'true';
+      } catch (e) {
+        state.touchActionsEnabled = true;
+      }
     }
     updateTouchActionsUI();
     window.addEventListener('resize', updateTouchActionsUI);
+    window.visualViewport?.addEventListener('resize', updateTouchActionsUI);
 
     // Auto-launch player experience if welcome screen was previously closed
     try {

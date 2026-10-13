@@ -88,18 +88,6 @@
         <path d="M9 18l6-6-6-6" />
       </svg>
     </div>
-    <div id="floating-hud-actions" class="floating-hud-actions">
-      <button id="hud-toggle-floating-btn" class="floating-hud-btn" onclick="toggleUI()" title="Toggle HUD">
-        HUD
-      </button>
-      <button id="touch-actions-floating-btn" class="floating-hud-btn" onclick="toggleTouchActions()" title="Toggle Touch Actions">
-        TOUCH
-      </button>
-      <button id="floating-editor-btn" class="floating-hud-btn" onclick="openEditorWithCurrentSketch()" title="Open Full Editor">
-        EDITOR ↗
-      </button>
-    </div>
-
     <!-- Floating Controls Panel Drawer -->
     <div id="sidebar-panel" class="sidebar-panel">
       <!-- Header -->
@@ -366,23 +354,25 @@
     </div>
 
     <!-- Mobile UI & Touch Performance Overlay -->
-    <div id="touch-actions-overlay" class="touch-actions-overlay">
+    <div id="touch-actions-overlay" class="touch-actions-overlay" role="toolbar" aria-label="Playability controls">
       <div class="touch-actions-card">
         <div class="touch-actions-header">
-          <div class="touch-actions-title">TOUCH PERFORMANCE OVERLAY</div>
-          <button class="touch-close-btn" onclick="toggleTouchActions()">✕</button>
+          <div class="touch-actions-title">PLAYABILITY</div>
+          <button class="touch-close-btn" onclick="toggleTouchActions()" aria-label="Hide playability overlay">×</button>
         </div>
         <div class="touch-actions-grid">
-          <button class="touch-action-btn" onclick="playPrevSketch()">◄ Prev</button>
-          <button class="touch-action-btn" onclick="togglePlayPause()">⏸ / ▶</button>
-          <button class="touch-action-btn" onclick="playNextSketch()">Next ►</button>
-          <button class="touch-action-btn" onclick="playRandomSketch()">🔀 Random</button>
-          <button class="touch-action-btn" onclick="nudgeTempo(-2)">BPM -</button>
-          <button class="touch-action-btn" onclick="nudgeTempo(2)">BPM +</button>
-          <button class="touch-action-btn" onclick="nudgeSpeed(-0.1)">Speed -</button>
-          <button class="touch-action-btn" onclick="nudgeSpeed(0.1)">Speed +</button>
-          <button class="touch-action-btn touch-action-wide" onclick="triggerMutation()">💩 Glitch / Mutate</button>
-          <button class="touch-action-btn touch-action-wide" onclick="toggleUI()">👁 Toggle HUD</button>
+          <button class="touch-action-btn" onclick="nudgeSpeed(-0.1)" aria-label="Decrease speed">−</button>
+          <button class="touch-action-btn" onclick="resetSpeed()" aria-label="Reset speed">0</button>
+          <button class="touch-action-btn" onclick="nudgeSpeed(0.1)" aria-label="Increase speed">+</button>
+          <button class="touch-action-btn" onclick="playPrevSketch()" aria-label="Previous sketch">‹</button>
+          <button class="touch-action-btn" onclick="playRandomSketch()" aria-label="Random sketch">[~]</button>
+          <button class="touch-action-btn" onclick="playNextSketch()" aria-label="Next sketch">›</button>
+          <button class="touch-action-btn" onclick="setAutomutateMode('1')" aria-label="Automutate every beat">≈</button>
+          <button id="mobile-mutate-toggle" class="touch-action-btn" data-mutate-mode="mobile" onclick="toggleMobileAutomutate()" aria-label="Toggle current automutate setting">~</button>
+          <button class="touch-action-btn" onclick="setAutomutateMode('off')" aria-label="Disable automutate">≈</button>
+          <button class="touch-action-btn" onclick="nudgeTempo(-2)" aria-label="Decrease tempo">BPM−</button>
+          <button class="touch-action-btn" onclick="togglePlayPause()" aria-label="Play or pause">Ⅱ/▶</button>
+          <button class="touch-action-btn" onclick="nudgeTempo(2)" aria-label="Increase tempo">BPM+</button>
         </div>
       </div>
     </div>

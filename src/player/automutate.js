@@ -69,6 +69,9 @@ export function mutateCode(code, changeTransform = false) {
 
 export function setAutomutateMode(mode, quiet = false) {
   state.automutateMode = mode;
+  if (mode !== 'off') {
+    state.selectedAutomutateMode = mode;
+  }
 
   if (state.automutateIntervalId) {
     clearInterval(state.automutateIntervalId);
@@ -89,6 +92,9 @@ export function setAutomutateMode(mode, quiet = false) {
   if (statusLabel) {
     statusLabel.innerText = mode.toUpperCase() + (mode === 'off' ? '' : ' ACTIVE');
     statusLabel.style.color = mode === 'off' ? 'var(--text-muted)' : 'var(--color-accent)';
+  }
+  if (typeof window.updateTouchActionsUI === 'function') {
+    window.updateTouchActionsUI();
   }
 
   if (mode === 'off') {

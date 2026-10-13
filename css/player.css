@@ -47,6 +47,7 @@ body {
 
 /* Audio visualizer canvas inside hydra */
 #audio-canvas {
+  display: none;
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -824,6 +825,9 @@ body {
 .touch-actions-overlay {
   position: fixed;
   inset: 0;
+  width: var(--player-viewport-width, 100dvw);
+  max-width: var(--player-viewport-width, 100dvw);
+  overflow: hidden;
   pointer-events: none;
   z-index: 18;
   opacity: 0;
@@ -843,19 +847,29 @@ body {
 
 .touch-actions-card {
   position: fixed;
-  right: 16px;
-  bottom: 16px;
-  width: min(360px, calc(100vw - 32px));
-  border-radius: 14px;
+  left: 0;
+  right: auto;
+  bottom: 0;
+  width: var(--player-viewport-width, 100dvw);
+  max-width: var(--player-viewport-width, 100dvw);
+  height: 50vh;
+  height: 50dvh;
+  box-sizing: border-box;
+  border-radius: 14px 14px 0 0;
   border: 1px solid var(--border-glass);
-  background: var(--bg-glass-heavy);
+  background: rgba(8, 8, 12, 0.3);
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow-premium);
-  padding: 14px;
+  padding: 12px max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
   pointer-events: auto;
+  overflow: hidden;
 }
 
 @media (max-width: 768px) {
+  #shortcuts-panel {
+    display: none;
+  }
+
   .sidebar-panel {
     top: 10px;
     left: 10px;
@@ -910,17 +924,25 @@ body {
 
 .touch-actions-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   gap: 8px;
+  height: calc(100% - 28px);
 }
 
 .touch-action-btn {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--border-glass);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
-  padding: 10px 6px;
-  font-size: 0.82rem;
+  background: rgba(255, 255, 255, 0.8);
+  color: #08080c;
+  padding: 4px;
+  font-size: clamp(0.8rem, 3vw, 1rem);
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -928,15 +950,19 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.touch-action-btn:active,
-.touch-action-btn:hover {
+.touch-action-btn:active {
   border-color: var(--color-accent);
   color: var(--color-accent);
   background: rgba(0, 242, 254, 0.12);
 }
 
-.touch-action-wide {
-  grid-column: span 2;
+.touch-action-btn:focus {
+  outline: none;
+}
+
+.touch-action-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
 }
 
 /* Custom Scrollbars */

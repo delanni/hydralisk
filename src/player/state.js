@@ -23,6 +23,7 @@ export const state = {
   // Mutation state & history
   automutateIntervalId: null,
   automutateMode: 'off',
+  selectedAutomutateMode: '1',
   mutationHistory: [],
   mutationHistoryIndex: -1
 };

@@ -46,8 +46,14 @@ export function updateTouchActionsUI() {
   const floatingBtn = document.getElementById('touch-actions-floating-btn');
   const shortcuts = document.getElementById('shortcuts-panel');
   const intercomBar = document.getElementById('intercom-bar');
+  const mobileMutateToggle = document.getElementById('mobile-mutate-toggle');
   const isMobile = isMobileDevice();
   const hidden = isUIHidden();
+
+  // Mobile browsers can keep a wider layout viewport than the visible emulator.
+  // Size the fixed sheet from the visual viewport so its grid cannot trail off-screen.
+  const viewportWidth = window.visualViewport?.width || document.documentElement.clientWidth;
+  document.documentElement.style.setProperty('--player-viewport-width', `${viewportWidth}px`);
 
   // If HUD is closed / hidden, hide the intercom bar as part of the HUD
   if (intercomBar) {
@@ -73,6 +79,10 @@ export function updateTouchActionsUI() {
   if (floatingBtn) {
     floatingBtn.classList.toggle('active', state.touchActionsEnabled);
   }
+  if (mobileMutateToggle) {
+    mobileMutateToggle.textContent = `~${state.selectedAutomutateMode}b`;
+    mobileMutateToggle.classList.toggle('active', state.automutateMode !== 'off');
+  }
 }
 
 export function toggleCollapse() {
@@ -94,8 +104,17 @@ export function toggleCollapse() {
 
 export function toggleTouchActions() {
   state.touchActionsEnabled = !state.touchActionsEnabled;
+  try {
+    localStorage.setItem('touchActionsEnabled', String(state.touchActionsEnabled));
+  } catch (e) {}
   updateTouchActionsUI();
   intercomNotify(state.touchActionsEnabled ? "Touch actions enabled" : "Touch actions disabled");
+}
+
+export function toggleMobileAutomutate() {
+  const nextMode = state.automutateMode === 'off' ? state.selectedAutomutateMode : 'off';
+  if (window.setAutomutateMode) window.setAutomutateMode(nextMode);
+  updateTouchActionsUI();
 }
 
 export function toggleUI() {
