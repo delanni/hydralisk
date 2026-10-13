@@ -472,6 +472,15 @@ var HydraliskPlayer = (function (exports) {
     syncPerformanceSettingsToHash();
   }
 
+  function resetSpeed() {
+    const speedSlider = document.getElementById('speed-slider');
+    const speedVal = document.getElementById('speed-val');
+    if (speedSlider) speedSlider.value = '1.0';
+    window.speed = 1.0;
+    if (speedVal) speedVal.innerText = '1.0x';
+    syncPerformanceSettingsToHash();
+  }
+
   /**
    * Hydralisk Sketch Manager & Gallery Module
    * Handles loading, search filtering, tag categorization, DOM rendering, code execution, and history tracking.
@@ -890,6 +899,7 @@ var HydraliskPlayer = (function (exports) {
     const floatingBtn = document.getElementById('touch-actions-floating-btn');
     const shortcuts = document.getElementById('shortcuts-panel');
     const intercomBar = document.getElementById('intercom-bar');
+    const mobileMutateToggle = document.getElementById('mobile-mutate-toggle');
     const isMobile = isMobileDevice();
     const hidden = isUIHidden();
 
@@ -917,6 +927,10 @@ var HydraliskPlayer = (function (exports) {
     if (floatingBtn) {
       floatingBtn.classList.toggle('active', state.touchActionsEnabled);
     }
+    if (mobileMutateToggle) {
+      mobileMutateToggle.textContent = state.automutateMode === 'off' ? '~' : `~${state.automutateMode}b`;
+      mobileMutateToggle.classList.toggle('active', state.automutateMode !== 'off');
+    }
   }
 
   function toggleCollapse() {
@@ -938,8 +952,17 @@ var HydraliskPlayer = (function (exports) {
 
   function toggleTouchActions() {
     state.touchActionsEnabled = !state.touchActionsEnabled;
+    try {
+      localStorage.setItem('touchActionsEnabled', String(state.touchActionsEnabled));
+    } catch (e) {}
     updateTouchActionsUI();
     intercomNotify(state.touchActionsEnabled ? "Touch actions enabled" : "Touch actions disabled");
+  }
+
+  function toggleMobileAutomutate() {
+    const nextMode = state.automutateMode === 'off' ? '1' : 'off';
+    if (window.setAutomutateMode) window.setAutomutateMode(nextMode);
+    updateTouchActionsUI();
   }
 
   function toggleUI() {
@@ -1419,6 +1442,7 @@ var HydraliskPlayer = (function (exports) {
   window.handleTapTempo = handleTapTempo;
   window.nudgeTempo = nudgeTempo;
   window.nudgeSpeed = nudgeSpeed;
+  window.resetSpeed = resetSpeed;
 
   window.setAutomutateMode = setAutomutateMode;
   window.triggerMutation = triggerMutation;
@@ -1429,6 +1453,7 @@ var HydraliskPlayer = (function (exports) {
   window.toggleCollapse = toggleCollapse;
   window.toggleUI = toggleUI;
   window.toggleTouchActions = toggleTouchActions;
+  window.toggleMobileAutomutate = toggleMobileAutomutate;
   window.toggleFullscreen = toggleFullscreen;
   window.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
   window.handleCloudLogin = handleCloudLogin;
@@ -1510,7 +1535,12 @@ var HydraliskPlayer = (function (exports) {
     }
 
     if (isMobileDevice()) {
-      state.touchActionsEnabled = true;
+      try {
+        const savedTouchActions = localStorage.getItem('touchActionsEnabled');
+        state.touchActionsEnabled = savedTouchActions === null ? true : savedTouchActions === 'true';
+      } catch (e) {
+        state.touchActionsEnabled = true;
+      }
     }
     updateTouchActionsUI();
     window.addEventListener('resize', updateTouchActionsUI);
