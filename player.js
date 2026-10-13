@@ -785,6 +785,7 @@ function setAutomutateMode(mode, quiet = false) {
     statusLabel.innerText = mode.toUpperCase() + (mode === 'off' ? '' : ' ACTIVE');
     statusLabel.style.color = mode === 'off' ? 'var(--text-muted)' : 'var(--color-accent)';
   }
+  updateTouchActionsUI();
 
   if (mode === 'off') {
     if (!quiet) showToast("Auto-Mutate disabled");
@@ -1007,6 +1008,7 @@ function updateTouchActionsUI() {
   const floatingBtn = document.getElementById('touch-actions-floating-btn');
   const shortcuts = document.getElementById('shortcuts-panel');
   const intercomBar = document.getElementById('intercom-bar');
+  const mobileMutateToggle = document.getElementById('mobile-mutate-toggle');
   const isMobile = isMobileDevice();
   const hidden = isUIHidden();
 
@@ -1035,6 +1037,10 @@ function updateTouchActionsUI() {
   if (floatingBtn) {
     floatingBtn.classList.toggle('active', touchActionsEnabled);
   }
+  if (mobileMutateToggle) {
+    mobileMutateToggle.textContent = automutateMode === 'off' ? '~' : `~${automutateMode}b`;
+    mobileMutateToggle.classList.toggle('active', automutateMode !== 'off');
+  }
 }
 
 function openEditorWithCurrentSketch() {
@@ -1054,6 +1060,9 @@ window.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
 
 function toggleTouchActions() {
   touchActionsEnabled = !touchActionsEnabled;
+  try {
+    localStorage.setItem('touchActionsEnabled', String(touchActionsEnabled));
+  } catch (e) {}
   updateTouchActionsUI();
   showToast(touchActionsEnabled ? "Touch actions enabled" : "Touch actions disabled");
 }
@@ -1090,6 +1099,20 @@ function nudgeSpeed(delta) {
   }
   speedVal.innerText = `${rounded.toFixed(1)}x`;
   syncPerformanceSettingsToHash();
+}
+
+function resetSpeed() {
+  const speedSlider = document.getElementById('speed-slider');
+  const speedVal = document.getElementById('speed-val');
+  if (speedSlider) speedSlider.value = '1.0';
+  window.speed = 1.0;
+  if (speedVal) speedVal.innerText = '1.0x';
+  syncPerformanceSettingsToHash();
+}
+
+function toggleMobileAutomutate() {
+  const nextMode = automutateMode === 'off' ? '1' : 'off';
+  setAutomutateMode(nextMode);
 }
 
 // Toggle entire UI (hide all control bars for clean installation viewing)
@@ -1337,7 +1360,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (isMobileDevice()) {
-    touchActionsEnabled = true;
+    try {
+      const savedTouchActions = localStorage.getItem('touchActionsEnabled');
+      touchActionsEnabled = savedTouchActions === null ? true : savedTouchActions === 'true';
+    } catch (e) {
+      touchActionsEnabled = true;
+    }
   }
   updateTouchActionsUI();
   window.addEventListener('resize', updateTouchActionsUI);
