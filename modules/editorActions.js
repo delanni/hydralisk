@@ -103,10 +103,18 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
       });
 
       // Clear All
-      app.on("editor:clearAll", (ev = {}) => {
+      app.on("editor:clearAll", async (ev = {}) => {
         const editor = getEditor();
         if (ev.altKey || ev.shiftKey || ev.ctrlKey) {
-          const shouldDelete = confirm("Do you really want to delete this sketch locally?");
+          const shouldDelete = window.hydraDialog?.confirm
+            ? await window.hydraDialog.confirm({
+                title: "Delete Sketch Locally",
+                message: "Do you really want to delete this sketch locally?",
+                confirmText: "Delete",
+                cancelText: "Cancel",
+                isDanger: true,
+              })
+            : confirm("Do you really want to delete this sketch locally?");
           if (!shouldDelete) return;
 
           if (editor) {

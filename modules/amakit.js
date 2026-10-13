@@ -89,14 +89,21 @@ class Amakit {
    * Store pre-encoded credentials blob from scripts/encode-credentials.js.
    * Login will prompt for password to decrypt.
    */
-  saveEncodedCredentials = (blob) => {
+  saveEncodedCredentials = async (blob) => {
     if (!blob || !blob.credentialsCiphertext || !blob.salt || !blob.iv) {
       throw new Error("Invalid encoded credentials blob");
     }
-    const machineId =
-      localStorage.getItem("machineId") ||
-      prompt("What is the name of this machine?") ||
-      "unknown";
+    let machineId = localStorage.getItem("machineId");
+    if (!machineId) {
+      machineId = window.hydraDialog?.prompt
+        ? await window.hydraDialog.prompt({
+            title: "Machine Setup",
+            message: "What is the name of this machine?",
+            defaultValue: "laptop",
+          })
+        : (prompt("What is the name of this machine?") || "unknown");
+    }
+    machineId = machineId || "unknown";
     localStorage.setItem("machineId", machineId);
     const stored = {
       ...blob,
@@ -149,17 +156,59 @@ class Amakit {
     return new TextDecoder().decode(decrypted);
   };
 
-  saveCredentials = (name, accessKeyId, secretAccessKey, persist = true) => {
-    let machineId =
-      localStorage.getItem("machineId") ||
-      prompt("What is the name of this machine?") ||
-      "unknown";
-    localStorage.setItem("machineId", machineId);
+  promptCredentials = async (persist = true) => {
+    let machineId = localStorage.getItem("machineId");
+    if (!machineId) {
+      machineId = window.hydraDialog?.prompt
+        ? await window.hydraDialog.prompt({
+            title: "Machine Setup",
+            message: "What is the name of this machine?",
+            defaultValue: "laptop",
+          })
+        : prompt("What is the name of this machine?");
+      machineId = machineId || "unknown";
+      localStorage.setItem("machineId", machineId);
+    }
 
-    name = name || prompt("What is your name?");
-    accessKeyId = accessKeyId || prompt("What is your AWS Access Key ID?");
-    secretAccessKey =
-      secretAccessKey || prompt("What is your AWS Secret Access Key?");
+    const name = window.hydraDialog?.prompt
+      ? await window.hydraDialog.prompt({
+          title: "User Profile",
+          message: "What is your name?",
+          defaultValue: "User",
+        })
+      : prompt("What is your name?");
+
+    const accessKeyId = window.hydraDialog?.prompt
+      ? await window.hydraDialog.prompt({
+          title: "AWS Access Key",
+          message: "What is your AWS Access Key ID?",
+          placeholder: "AKIA...",
+        })
+      : prompt("What is your AWS Access Key ID?");
+
+    const secretAccessKey = window.hydraDialog?.prompt
+      ? await window.hydraDialog.prompt({
+          title: "AWS Secret Key",
+          message: "What is your AWS Secret Access Key?",
+          inputType: "password",
+        })
+      : prompt("What is your AWS Secret Access Key?");
+
+    if (!accessKeyId || !secretAccessKey) {
+      return null;
+    }
+
+    const credentials = { name: name || "User", machineId, accessKeyId, secretAccessKey };
+    if (persist) {
+      localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+    }
+
+    return credentials;
+  };
+
+  saveCredentials = (name, accessKeyId, secretAccessKey, persist = true) => {
+    let machineId = localStorage.getItem("machineId") || "unknown";
+    localStorage.setItem("machineId", machineId);
 
     if (!accessKeyId || !secretAccessKey) {
       return null;
@@ -196,7 +245,14 @@ class Amakit {
       if (!doPrompt) {
         return Promise.reject("No plain credentials found. Decryption password required.");
       }
-      const pwd = prompt("Enter password for AWS credentials:");
+      const pwd = window.hydraDialog?.prompt
+        ? await window.hydraDialog.prompt({
+            title: "AWS Credentials",
+            message: "Enter password for AWS credentials:",
+            inputType: "password",
+            confirmText: "Unlock",
+          })
+        : prompt("Enter password for AWS credentials:");
       if (!pwd) {
         return Promise.reject("Login cancelled: no password provided.");
       }
@@ -224,7 +280,7 @@ class Amakit {
       if (!doPrompt) {
         return Promise.reject("No credentials found.");
       }
-      credentials = this.saveCredentials(undefined, undefined, undefined, false);
+      credentials = await this.promptCredentials(false);
     }
 
     if (!credentials || !credentials.accessKeyId || !credentials.secretAccessKey) {
