@@ -43,6 +43,7 @@ window.toggleCollapse = toggleCollapse;
 window.toggleUI = toggleUI;
 window.toggleTouchActions = toggleTouchActions;
 window.toggleMobileAutomutate = toggleMobileAutomutate;
+window.updateTouchActionsUI = updateTouchActionsUI;
 window.toggleFullscreen = toggleFullscreen;
 window.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
 window.handleCloudLogin = handleCloudLogin;

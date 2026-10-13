@@ -824,6 +824,9 @@ body {
 .touch-actions-overlay {
   position: fixed;
   inset: 0;
+  width: auto;
+  max-width: none;
+  overflow: hidden;
   pointer-events: none;
   z-index: 18;
   opacity: 0;
@@ -843,10 +846,10 @@ body {
 
 .touch-actions-card {
   position: fixed;
-  left: 0;
-  right: 0;
+  inset-inline: 0;
   bottom: 0;
-  width: 100%;
+  width: auto;
+  max-width: none;
   height: 50vh;
   height: 50dvh;
   box-sizing: border-box;
@@ -857,6 +860,7 @@ body {
   box-shadow: var(--shadow-premium);
   padding: 12px max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
   pointer-events: auto;
+  overflow: hidden;
 }
 
 @media (max-width: 768px) {
@@ -916,16 +920,21 @@ body {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  min-width: 0;
   gap: 8px;
   height: calc(100% - 28px);
 }
 
 .touch-action-btn {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--border-glass);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.8);
   color: #08080c;
-  padding: 6px;
+  padding: 4px;
   font-size: clamp(0.8rem, 3vw, 1rem);
   font-weight: 600;
   cursor: pointer;
@@ -934,15 +943,19 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.touch-action-btn:active,
-.touch-action-btn:hover {
+.touch-action-btn:active {
   border-color: var(--color-accent);
   color: var(--color-accent);
   background: rgba(0, 242, 254, 0.12);
 }
 
-.touch-action-btn[data-mutate-mode="mobile"] {
-  border-color: var(--color-accent);
+.touch-action-btn:focus {
+  outline: none;
+}
+
+.touch-action-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
 }
 
 /* Custom Scrollbars */

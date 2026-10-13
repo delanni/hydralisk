@@ -75,7 +75,7 @@ export function updateTouchActionsUI() {
     floatingBtn.classList.toggle('active', state.touchActionsEnabled);
   }
   if (mobileMutateToggle) {
-    mobileMutateToggle.textContent = state.automutateMode === 'off' ? '~' : `~${state.automutateMode}b`;
+    mobileMutateToggle.textContent = `~${state.selectedAutomutateMode}b`;
     mobileMutateToggle.classList.toggle('active', state.automutateMode !== 'off');
   }
 }
@@ -107,7 +107,7 @@ export function toggleTouchActions() {
 }
 
 export function toggleMobileAutomutate() {
-  const nextMode = state.automutateMode === 'off' ? '1' : 'off';
+  const nextMode = state.automutateMode === 'off' ? state.selectedAutomutateMode : 'off';
   if (window.setAutomutateMode) window.setAutomutateMode(nextMode);
   updateTouchActionsUI();
 }

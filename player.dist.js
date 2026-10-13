@@ -26,6 +26,7 @@ var HydraliskPlayer = (function (exports) {
     // Mutation state & history
     automutateIntervalId: null,
     automutateMode: 'off',
+    selectedAutomutateMode: '1',
     mutationHistory: [],
     mutationHistoryIndex: -1
   };
@@ -216,6 +217,9 @@ var HydraliskPlayer = (function (exports) {
 
   function setAutomutateMode(mode, quiet = false) {
     state.automutateMode = mode;
+    if (mode !== 'off') {
+      state.selectedAutomutateMode = mode;
+    }
 
     if (state.automutateIntervalId) {
       clearInterval(state.automutateIntervalId);
@@ -236,6 +240,9 @@ var HydraliskPlayer = (function (exports) {
     if (statusLabel) {
       statusLabel.innerText = mode.toUpperCase() + (mode === 'off' ? '' : ' ACTIVE');
       statusLabel.style.color = mode === 'off' ? 'var(--text-muted)' : 'var(--color-accent)';
+    }
+    if (typeof window.updateTouchActionsUI === 'function') {
+      window.updateTouchActionsUI();
     }
 
     if (mode === 'off') {
@@ -928,7 +935,7 @@ var HydraliskPlayer = (function (exports) {
       floatingBtn.classList.toggle('active', state.touchActionsEnabled);
     }
     if (mobileMutateToggle) {
-      mobileMutateToggle.textContent = state.automutateMode === 'off' ? '~' : `~${state.automutateMode}b`;
+      mobileMutateToggle.textContent = `~${state.selectedAutomutateMode}b`;
       mobileMutateToggle.classList.toggle('active', state.automutateMode !== 'off');
     }
   }
@@ -960,7 +967,7 @@ var HydraliskPlayer = (function (exports) {
   }
 
   function toggleMobileAutomutate() {
-    const nextMode = state.automutateMode === 'off' ? '1' : 'off';
+    const nextMode = state.automutateMode === 'off' ? state.selectedAutomutateMode : 'off';
     if (window.setAutomutateMode) window.setAutomutateMode(nextMode);
     updateTouchActionsUI();
   }
@@ -1454,6 +1461,7 @@ var HydraliskPlayer = (function (exports) {
   window.toggleUI = toggleUI;
   window.toggleTouchActions = toggleTouchActions;
   window.toggleMobileAutomutate = toggleMobileAutomutate;
+  window.updateTouchActionsUI = updateTouchActionsUI;
   window.toggleFullscreen = toggleFullscreen;
   window.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
   window.handleCloudLogin = handleCloudLogin;
