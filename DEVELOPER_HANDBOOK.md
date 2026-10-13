@@ -62,7 +62,7 @@ npm run watch        # same, in watch mode
 | [hyper-hydra.convolutions.js](file:///Users/web/Git/hydralisk/hyper-hydra.convolutions.js) | Convolution kernel functions registered into Hydra. Registered as plugin. | by hand |
 | [three.objects.js](file:///Users/web/Git/hydralisk/three.objects.js) | Three.js scene helpers. Registered as plugin. | by hand |
 | [modules/](file:///Users/web/Git/hydralisk/modules) → `modules.dist.js` | React (global, UMD) **Sketch Manager** modal. Registered as plugin. | `npm run build` |
-| [player.html](file:///Users/web/Git/hydralisk/player.html) / [player.js](file:///Users/web/Git/hydralisk/player.js) / `css/player.css` | Separate "Visual Player" dashboard. Uses `plugins.js` for extension wiring. | by hand |
+| [player.html](file:///Users/web/Git/hydralisk/player.html) / [src/player/](file:///Users/web/Git/hydralisk/src/player) → `player.dist.js` / `css/player.css` | Separate "Visual Player" dashboard: a React app (`main.jsx` → `App.jsx`) mounted on `#player-root`. Uses `plugins.js` for extension wiring. `player.js` is the legacy vanilla version and is no longer loaded. | `npm run build` |
 | [sketches.json](file:///Users/web/Git/hydralisk/sketches.json) | Default public sketch set. Loaded when not logged in to AWS. | `scripts/compile.js` |
 | [sketches/](file:///Users/web/Git/hydralisk/sketches) | One-file-per-sketch exploded form of `sketches.json` (`trashbin/` holds rejected ones) | `scripts/explode.js` |
 | [scripts/](file:///Users/web/Git/hydralisk/scripts) | `explode.js`, `compile.js`, `encode-credentials.js`, `pre-push.cjs` | — |
@@ -292,7 +292,7 @@ Both layers register their listeners using `input.addEventListener('midimessage'
 
 ### 6.9 Visual Player ([player.html](file:///Users/web/Git/hydralisk/player.html))
 
-A standalone dashboard: library with tag filters, now-playing, BPM / tap tempo, automutate modes with its own mutation history (undo/redo), a custom-code tab, a volume meter, and cloud login. It loads `hydra-synth` from unpkg (**unpinned**) and reuses amakit, hydrakit, midi-mapping, and convolutions. **It reimplements the mutator** in `mutateCode()` instead of sharing module 267.
+A standalone dashboard: library with tag filters, now-playing, BPM / tap tempo, automutate modes with its own mutation history (undo/redo), a custom-code tab, a volume meter, and cloud login. Source layout in `src/player/`: `store/` (state + selectors), `services/` (side effects), `actions/` (state transitions, also exposed as legacy `window.*` functions by `globalApi.js`), `hooks/` (hotkeys, viewport, automutate clock, URL-hash sync, MIDI, audio level) and `components/` (UI). It loads `hydra-synth` from unpkg (**unpinned**) and reuses amakit, hydrakit, midi-mapping, and convolutions. **It reimplements the mutator** in `mutateCode()` instead of sharing module 267.
 
 ---
 
