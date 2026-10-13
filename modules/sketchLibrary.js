@@ -131,6 +131,72 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         app.emit("gallery:nextSketch", e);
       });
 
+      // Cross-navigation helper to launch player with active sketch
+      const openPlayerWithCurrentSketch = (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        let sketchName = "";
+        if (Array.isArray(mySketches) && typeof sketchIdx === "number" && mySketches[sketchIdx]) {
+          sketchName = mySketches[sketchIdx].name;
+        }
+        if (!sketchName) {
+          try { sketchName = localStorage.getItem("lastSelectedSketchName") || ""; } catch (err) {}
+        }
+        const targetUrl = sketchName ? `player.html?sketch=${encodeURIComponent(sketchName)}` : "player.html";
+        window.location.href = targetUrl;
+      };
+      window.openPlayerWithCurrentSketch = openPlayerWithCurrentSketch;
+      app.expose("openPlayerWithCurrentSketch", openPlayerWithCurrentSketch);
+
+      // Inject white toolbar icon "Visual Player" in editor DOM (suppressed on player page)
+      if (typeof document !== "undefined") {
+        const isPlayerPage = Boolean(
+          window.location.pathname.endsWith("player.html") ||
+          window.location.pathname.endsWith("/player") ||
+          document.getElementById("hydra-player-dashboard")
+        );
+
+        if (!isPlayerPage) {
+          const injectNavIcon = () => {
+            // Remove old text button if present
+            const oldBtn = document.getElementById("nav-to-player-btn");
+            if (oldBtn) oldBtn.remove();
+
+            let navIcon = document.getElementById("nav-to-player-icon");
+            if (!navIcon) {
+              navIcon = document.createElement("i");
+              navIcon.id = "nav-to-player-icon";
+              navIcon.className = "fa fa-tv icon";
+              navIcon.title = "Visual Player";
+              navIcon.onclick = (evt) => openPlayerWithCurrentSketch(evt);
+
+              // Attach to editor toolbar container alongside other white menu icons
+              const existingIcon = document.querySelector("i.icon");
+              if (existingIcon && existingIcon.parentNode) {
+                existingIcon.parentNode.appendChild(navIcon);
+              } else {
+                navIcon.style.cssText = "position: fixed; top: 12px; right: 20px; z-index: 99999; color: #fff; cursor: pointer; font-size: 20px;";
+                (document.body || document.documentElement).appendChild(navIcon);
+              }
+            }
+          };
+
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", injectNavIcon);
+          } else {
+            injectNavIcon();
+          }
+          setTimeout(injectNavIcon, 300);
+          setTimeout(injectNavIcon, 1000);
+          setTimeout(injectNavIcon, 2500);
+        } else {
+          // If on player page, ensure any old button/icon is removed
+          const oldBtn = document.getElementById("nav-to-player-btn");
+          if (oldBtn) oldBtn.remove();
+          const oldIcon = document.getElementById("nav-to-player-icon");
+          if (oldIcon) oldIcon.remove();
+        }
+      }
+
       app.on("gallery:loadSketch", (sketchInfo) => {
         if (!sketchInfo) return;
         const targetIdx = Array.isArray(mySketches)
@@ -139,6 +205,18 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         const sketch = targetIdx >= 0 ? mySketches[targetIdx] : sketchInfo;
 
         if (!sketch) return;
+
+        // Save sketch name protocol in localStorage and URL querystring
+        if (sketch && sketch.name) {
+          try {
+            localStorage.setItem("lastSelectedSketchName", sketch.name);
+            if (window.history && window.history.replaceState) {
+              const url = new URL(window.location);
+              url.searchParams.set("sketch", sketch.name);
+              window.history.replaceState({}, "", url.toString());
+            }
+          } catch (e) {}
+        }
 
         let formattedCode = "";
         if (sketch.metadata) {
@@ -175,6 +253,23 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         }
       });
 
+      // Query parameter & localStorage sketch loading protocol on initialization
+      const loadSketchFromProtocol = () => {
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          const targetName = urlParams.get("sketch") || localStorage.getItem("lastSelectedSketchName");
+          if (targetName && Array.isArray(mySketches) && mySketches.length > 0) {
+            const foundIdx = mySketches.findIndex(s => s.name && s.name.toLowerCase() === targetName.toLowerCase());
+            if (foundIdx >= 0) {
+              sketchIdx = foundIdx;
+              sPut("sketchIdx", sketchIdx);
+              app.expose("sketchIdx", sketchIdx);
+              app.emit("gallery:loadSketch", mySketches[foundIdx]);
+            }
+          }
+        } catch (e) {}
+      };
+
       app.on("gallery:updateLocalSketches", (sketchList) => {
         mySketches = Array.isArray(sketchList) ? sketchList : [];
         app.expose("mySketches", mySketches);
@@ -183,6 +278,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
           sPut("sketchIdx", sketchIdx);
           app.expose("sketchIdx", sketchIdx);
         }
+        loadSketchFromProtocol();
       });
 
       app.on("gallery:saveMyExample", () => {
