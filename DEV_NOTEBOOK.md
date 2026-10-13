@@ -30,6 +30,7 @@ Hydralisk is a performance-oriented fork of Hydra. All app code is hand-edited i
 - **2026-10-13**: Refined the mobile overlay after emulator review: fixed the bottom sheet to the viewport edges without width over-constraint, forced zero-minimum grid tracks and button sizing, removed persistent hover styling, reduced button padding, and preserved the selected automutate interval while stopped.
 - **2026-10-13**: Corrected a remaining mobile layout-viewport mismatch by sizing the fixed overlay from `visualViewport.width` and refreshing that CSS variable on visual viewport resize; the 3-column grid is now capped by the same measured width.
 - **2026-10-13**: Hidden `#shortcuts-panel` with `display: none` at phone widths so its intrinsic flex width cannot contribute to the mobile document width; desktop shortcut behavior remains unchanged.
+- **2026-10-13**: Removed the floating HUD action buttons from `player.html` and hid Hydra's generated `#audio-canvas` so neither auxiliary UI obscures the mobile player view.
 
 
 

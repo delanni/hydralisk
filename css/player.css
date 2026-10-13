@@ -47,6 +47,7 @@ body {
 
 /* Audio visualizer canvas inside hydra */
 #audio-canvas {
+  display: none;
   position: absolute;
   bottom: 20px;
   right: 20px;
