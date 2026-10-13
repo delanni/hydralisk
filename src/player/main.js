@@ -4,9 +4,9 @@ import { intercomNotify, showToast, showError } from './intercom.js';
 import { playerSettings, syncPerformanceSettingsToHash, applySettingsFromHash } from './settingsSync.js';
 import { resizeCanvas, startExperience, playBackupVisual } from './engine.js';
 import { loadAllSketches, filterSketches, renderSketchesList, renderTagFilters, playSketch, updateNowPlaying, runCustomCode, resetCustomCode } from './sketchManager.js';
-import { updateBPM, handleTapTempo, updatePlayPauseButton, togglePlayPause, playPrevSketch, playNextSketch, playRandomSketch, nudgeTempo, nudgeSpeed } from './controls.js';
+import { updateBPM, handleTapTempo, updatePlayPauseButton, togglePlayPause, playPrevSketch, playNextSketch, playRandomSketch, nudgeTempo, nudgeSpeed, resetSpeed } from './controls.js';
 import { mutateCode, setAutomutateMode, triggerMutation, saveMutationToHistory, undoMutation, redoMutation, updateMutationUndoRedoButtons } from './automutate.js';
-import { switchTab, isMobileDevice, isUIHidden, updateTouchActionsUI, toggleCollapse, toggleTouchActions, toggleUI, openEditorWithCurrentSketch, toggleFullscreen, handleCloudLogin, updateAuthUI, startVolumeMeter } from './ui.js';
+import { switchTab, isMobileDevice, isUIHidden, updateTouchActionsUI, toggleCollapse, toggleTouchActions, toggleMobileAutomutate, toggleUI, openEditorWithCurrentSketch, toggleFullscreen, handleCloudLogin, updateAuthUI, startVolumeMeter } from './ui.js';
 import { setupHotkeysAndEvents } from './hotkeys.js';
 
 // Attach player settings to window
@@ -31,6 +31,7 @@ window.updateBPM = updateBPM;
 window.handleTapTempo = handleTapTempo;
 window.nudgeTempo = nudgeTempo;
 window.nudgeSpeed = nudgeSpeed;
+window.resetSpeed = resetSpeed;
 
 window.setAutomutateMode = setAutomutateMode;
 window.triggerMutation = triggerMutation;
@@ -41,6 +42,7 @@ window.switchTab = switchTab;
 window.toggleCollapse = toggleCollapse;
 window.toggleUI = toggleUI;
 window.toggleTouchActions = toggleTouchActions;
+window.toggleMobileAutomutate = toggleMobileAutomutate;
 window.toggleFullscreen = toggleFullscreen;
 window.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
 window.handleCloudLogin = handleCloudLogin;
@@ -122,7 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (isMobileDevice()) {
-    state.touchActionsEnabled = true;
+    try {
+      const savedTouchActions = localStorage.getItem('touchActionsEnabled');
+      state.touchActionsEnabled = savedTouchActions === null ? true : savedTouchActions === 'true';
+    } catch (e) {
+      state.touchActionsEnabled = true;
+    }
   }
   updateTouchActionsUI();
   window.addEventListener('resize', updateTouchActionsUI);

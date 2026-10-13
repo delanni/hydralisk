@@ -46,6 +46,7 @@ export function updateTouchActionsUI() {
   const floatingBtn = document.getElementById('touch-actions-floating-btn');
   const shortcuts = document.getElementById('shortcuts-panel');
   const intercomBar = document.getElementById('intercom-bar');
+  const mobileMutateToggle = document.getElementById('mobile-mutate-toggle');
   const isMobile = isMobileDevice();
   const hidden = isUIHidden();
 
@@ -73,6 +74,10 @@ export function updateTouchActionsUI() {
   if (floatingBtn) {
     floatingBtn.classList.toggle('active', state.touchActionsEnabled);
   }
+  if (mobileMutateToggle) {
+    mobileMutateToggle.textContent = state.automutateMode === 'off' ? '~' : `~${state.automutateMode}b`;
+    mobileMutateToggle.classList.toggle('active', state.automutateMode !== 'off');
+  }
 }
 
 export function toggleCollapse() {
@@ -94,8 +99,17 @@ export function toggleCollapse() {
 
 export function toggleTouchActions() {
   state.touchActionsEnabled = !state.touchActionsEnabled;
+  try {
+    localStorage.setItem('touchActionsEnabled', String(state.touchActionsEnabled));
+  } catch (e) {}
   updateTouchActionsUI();
   intercomNotify(state.touchActionsEnabled ? "Touch actions enabled" : "Touch actions disabled");
+}
+
+export function toggleMobileAutomutate() {
+  const nextMode = state.automutateMode === 'off' ? '1' : 'off';
+  if (window.setAutomutateMode) window.setAutomutateMode(nextMode);
+  updateTouchActionsUI();
 }
 
 export function toggleUI() {

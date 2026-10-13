@@ -129,3 +129,12 @@ export function nudgeSpeed(delta) {
   speedVal.innerText = `${rounded.toFixed(1)}x`;
   syncPerformanceSettingsToHash();
 }
+
+export function resetSpeed() {
+  const speedSlider = document.getElementById('speed-slider');
+  const speedVal = document.getElementById('speed-val');
+  if (speedSlider) speedSlider.value = '1.0';
+  window.speed = 1.0;
+  if (speedVal) speedVal.innerText = '1.0x';
+  syncPerformanceSettingsToHash();
+}
