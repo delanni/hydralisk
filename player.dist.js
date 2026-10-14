@@ -1,1071 +1,951 @@
-var HydraliskPlayer = (function (exports) {
+var HydraliskPlayer = (function (exports, React, reactDom) {
   'use strict';
 
   /**
-   * Hydralisk Player State Store
-   * Centralized state object for live performance player context.
+   * Minimal observable store.
+   * Holds an immutable state snapshot and notifies subscribers on every change.
+   * Designed to plug straight into React's `useSyncExternalStore`.
    */
+  function createStore(initialState) {
+    let state = initialState;
+    const listeners = new Set();
+    const getState = () => state;
+    const setState = partial => {
+      const patch = typeof partial === 'function' ? partial(state) : partial;
+      if (!patch) return;
+      const next = {
+        ...state,
+        ...patch
+      };
+      const changed = Object.keys(patch).some(key => !Object.is(state[key], next[key]));
+      if (!changed) return;
+      state = next;
+      listeners.forEach(listener => listener());
+    };
+    const subscribe = listener => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    };
+    return {
+      getState,
+      setState,
+      subscribe
+    };
+  }
 
-  const state = {
-    hydraInstance: null,
-    sketchesList: [],
-    filteredSketchesList: [],
-    currentSketchIndex: 0,
+  /**
+   * Hydralisk Player state.
+   * Single source of truth for the player UI. Components read it through
+   * `useStore`; actions (src/player/actions) are the only writers.
+   */
+  const DEFAULT_BPM = 120;
+  const MIN_BPM = 20;
+  const MAX_BPM = 240;
+  const MIN_SPEED = 0;
+  const MAX_SPEED = 4;
+  const MUTATION_HISTORY_LIMIT = 50;
+  const initialState = {
+    // Engine lifecycle
+    splash: 'visible',
+    // 'visible' | 'fading' | 'hidden'
+    engineReady: false,
     isPlaying: false,
-    currentTab: 'library',
-    activeTags: new Set(),
-    isPanelCollapsed: false,
-    touchActionsEnabled: false,
-
-    // BPM & Pitch bend state
-    baseBpm: 120,
-
-    // TAP tempo state
-    tapTimes: [],
-
-    // Mutation state & history
-    automutateIntervalId: null,
+    // Sketch library
+    sketches: [],
+    currentSketchIndex: 0,
+    searchQuery: '',
+    activeTags: [],
+    // Now playing / editor
+    nowPlaying: null,
+    // { name, author, bpm, tags, midi }
+    editorCode: '',
+    mutationPulse: 0,
+    // Tempo & speed
+    bpm: DEFAULT_BPM,
+    baseBpm: DEFAULT_BPM,
+    speed: 1.0,
+    tapPulse: 0,
+    // Automutate & mutation history
     automutateMode: 'off',
     selectedAutomutateMode: '1',
     mutationHistory: [],
-    mutationHistoryIndex: -1
+    mutationHistoryIndex: -1,
+    // Layout / HUD
+    currentTab: 'library',
+    panelCollapsed: false,
+    hudHidden: false,
+    isMobile: false,
+    touchActionsEnabled: false,
+    // Integrations
+    midiAvailable: false,
+    cloudAuthenticated: false,
+    hashSettingsApplied: false
+  };
+  const store = createStore(initialState);
+  const getState = store.getState;
+  const setState = store.setState;
+
+  // Derived selectors
+  const selectCurrentSketch = s => s.sketches[s.currentSketchIndex] || null;
+  const selectShortcutsHidden = s => s.hudHidden || s.isMobile;
+  const selectIsUIHidden = s => s.panelCollapsed && selectShortcutsHidden(s);
+  const selectExpandTriggerVisible = s => s.panelCollapsed && !s.hudHidden;
+  const selectTouchOverlayVisible = s => (s.isMobile || selectIsUIHidden(s)) && s.touchActionsEnabled;
+  const selectCanUndo = s => s.mutationHistoryIndex > 0;
+  const selectCanRedo = s => s.mutationHistoryIndex < s.mutationHistory.length - 1;
+  const selectAllTags = s => {
+    const tags = new Set();
+    s.sketches.forEach(sketch => (sketch.metadata?.tags || []).forEach(t => tags.add(t)));
+    return [...tags];
   };
 
   /**
-   * Hydralisk Player Intercom Notification System
-   * Single-pass marquee ticker queue system for live performance feedback.
+   * Intercom notification service.
+   * Queues ticker messages; the <IntercomBar> component drains the queue
+   * and animates each message as a single-pass marquee.
    */
 
-  const intercomQueue = [];
-  let isIntercomBusy = false;
-  let intercomActiveTimeout = null;
-
-  /**
-   * Dispatch a message to the Intercom Marquee Queue System
-   * @param {string} message 
-   * @param {boolean} isError 
-   */
-  function showToast(message, isError = false) {
-    intercomNotify(message, isError);
-  }
-
-  function intercomNotify(message, isError = false) {
+  const queue = [];
+  const listeners = new Set();
+  function notify(message, isError = false) {
     if (!message) return;
-    intercomQueue.push({ message: String(message), isError: Boolean(isError) });
-    if (!isIntercomBusy) {
-      processIntercomQueue();
-    }
+    queue.push({
+      message: String(message),
+      isError: Boolean(isError)
+    });
+    listeners.forEach(listener => listener());
+  }
+  function notifyError(error) {
+    notify(error && error.message || error, true);
+  }
+  function takeNext() {
+    return queue.shift() || null;
+  }
+  function subscribe(listener) {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
   }
 
-  function processIntercomQueue() {
-    if (intercomQueue.length === 0) {
-      isIntercomBusy = false;
-      const badge = document.getElementById('intercom-badge');
-      const track = document.getElementById('intercom-track');
-      if (badge) {
-        badge.classList.remove('error');
-        badge.textContent = "HYDRA // SYS";
-      }
-      if (track) {
-        track.style.transition = 'none';
-        track.style.transform = 'translateX(0)';
-        track.textContent = '';
-      }
-      return;
-    }
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const roundTo = (value, decimals) => {
+    const factor = 10 ** decimals;
+    return Math.round(value * factor) / factor;
+  };
+  const formatSpeed = speed => `${Number(speed || 0).toFixed(1)}x`;
 
-    isIntercomBusy = true;
-    const current = intercomQueue.shift();
+  /**
+   * Tempo & speed actions.
+   * Hydra reads the globals `window.bpm` and `window.speed`; these actions keep
+   * them in sync with the store.
+   */
+  function setBpm(bpm) {
+    window.bpm = bpm;
+    setState({
+      bpm,
+      baseBpm: bpm
+    });
+  }
+  function setBpmFromInput(rawValue) {
+    setBpm(clamp(parseInt(rawValue, 10) || DEFAULT_BPM, MIN_BPM, MAX_BPM));
+  }
+  function nudgeTempo(delta) {
+    const current = getState().bpm || DEFAULT_BPM;
+    setBpm(clamp(current + delta, MIN_BPM, MAX_BPM));
+  }
 
-    const badge = document.getElementById('intercom-badge');
-    const viewport = document.getElementById('intercom-viewport');
-    const track = document.getElementById('intercom-track');
+  /** Temporarily bend the tempo by a percentage of the base BPM (pitch fader). */
+  function bendTempo(offsetPercent) {
+    const bent = Math.round(getState().baseBpm * (1 + offsetPercent / 100));
+    window.bpm = bent;
+    setState({
+      bpm: bent
+    });
+  }
 
-    if (!viewport || !track) {
-      isIntercomBusy = false;
-      return;
-    }
-
-    if (badge) {
-      badge.textContent = current.isError ? "HYDRA // ERR" : "HYDRA // SYS";
-      if (current.isError) {
-        badge.classList.add('error');
-      } else {
-        badge.classList.remove('error');
-      }
-    }
-
-    if (current.isError) {
-      track.classList.add('error');
-    } else {
-      track.classList.remove('error');
-    }
-
-    track.textContent = current.message;
-
-    // Calculate scroll distance and timing for single-pass left marquee scroll
-    const viewportWidth = viewport.offsetWidth || window.innerWidth;
-    const textWidth = track.offsetWidth || (current.message.length * 8);
-
-    const startX = viewportWidth;
-    const endX = -textWidth - 20;
-    const totalDistance = startX - endX;
-
-    // 140px per second speed ensures smooth, crisp readability across all screen sizes
-    const speedPxPerSec = 140;
-    const durationSec = Math.max(2.2, totalDistance / speedPxPerSec);
-
-    // Position track at right boundary
-    track.style.transition = 'none';
-    track.style.transform = `translateX(${startX}px)`;
-
-    // Force layout reflow
-    void track.offsetWidth;
-
-    // Start smooth left marquee scroll
-    track.style.transition = `transform ${durationSec}s linear`;
-    track.style.transform = `translateX(${endX}px)`;
-
-    let hasEnded = false;
-    const onEnd = () => {
-      if (hasEnded) return;
-      hasEnded = true;
-      if (intercomActiveTimeout) clearTimeout(intercomActiveTimeout);
-      track.removeEventListener('transitionend', onEnd);
-      setTimeout(() => {
-        processIntercomQueue();
-      }, 150);
-    };
-
-    track.addEventListener('transitionend', onEnd);
-    intercomActiveTimeout = setTimeout(onEnd, (durationSec * 1000) + 200);
+  /** Release the pitch fader: the bent tempo becomes the new base. */
+  function releaseTempoBend() {
+    setState({
+      baseBpm: window.bpm || DEFAULT_BPM
+    });
   }
 
   /**
-   * Log error to intercom system
-   * @param {Error|string} error 
+   * Tap tempo. Called with `{ bpm }` when the shared TapTempo engine reports a
+   * new tempo, or without arguments when the user taps.
    */
-  function showError(error) {
-    showToast((error && error.message) || error, true);
-  }
-
-  // src/player/automutate.js - Auto-Mutate AST & regex engine and mutation history stack
-
-  function mutateCode(code, changeTransform = false) {
-    if (changeTransform) {
-      const categories = {
-        sources: ["osc", "shape", "noise", "voronoi", "gradient", "solid"],
-        geometry: ["rotate", "scale", "pixelate", "repeat", "repeatX", "repeatY", "kaleid", "scroll", "scrollX", "scrollY"],
-        color: ["posterize", "shift", "invert", "contrast", "luma", "thresh", "color", "saturate", "hue", "colorama"],
-        blends: ["add", "sub", "mult", "diff", "blend", "mask"],
-        modulators: ["modulate", "modulateScale", "modulatePixelate", "modulateRotate", "modulateKaleid", "modulateScrollX", "modulateScrollY", "modulateHue"]
-      };
-
-      const foundFuncs = [];
-      for (const catName in categories) {
-        categories[catName].forEach(func => {
-          const regex = new RegExp(`\\b${func}\\b`, 'g');
-          let match;
-          while ((match = regex.exec(code)) !== null) {
-            foundFuncs.push({
-              name: func,
-              index: match.index,
-              category: catName
-            });
-          }
-        });
-      }
-
-      if (foundFuncs.length > 0) {
-        const selected = foundFuncs[Math.floor(Math.random() * foundFuncs.length)];
-        const others = categories[selected.category].filter(f => f !== selected.name);
-        if (others.length > 0) {
-          const become = others[Math.floor(Math.random() * others.length)];
-          const before = code.substring(0, selected.index);
-          const after = code.substring(selected.index + selected.name.length);
-          console.log(`Mutator: changing function ${selected.name} to ${become}`);
-          return before + become + after;
-        }
-      }
-    }
-
-    // Literal numerical mutation fallback
-    const numRegex = /(?<![\w'"`])(?:\b-?\d+(?:\.\d+)?\b)/g;
-    const matches = [...code.matchAll(numRegex)];
-
-    if (matches.length > 0) {
-      const selected = matches[Math.floor(Math.random() * matches.length)];
-      const index = selected.index;
-      const oldStr = selected[0];
-      const oldVal = parseFloat(oldStr);
-
-      let newVal;
-      if (oldVal === 0) {
-        newVal = Math.random() > 0.5 ? 0.5 : -0.5;
-      } else {
-        newVal = Math.round((Math.random() * oldVal * 2) * 1000) / 1000;
-      }
-
-      const before = code.substring(0, index);
-      const after = code.substring(index + oldStr.length);
-      console.log(`Mutator: changing number ${oldStr} to ${newVal}`);
-      return before + String(newVal) + after;
-    }
-
-    return code;
-  }
-
-  function setAutomutateMode(mode, quiet = false) {
-    state.automutateMode = mode;
-    if (mode !== 'off') {
-      state.selectedAutomutateMode = mode;
-    }
-
-    if (state.automutateIntervalId) {
-      clearInterval(state.automutateIntervalId);
-      state.automutateIntervalId = null;
-    }
-
-    // Update mode buttons UI
-    const buttons = document.querySelectorAll('[data-mutate-mode]');
-    buttons.forEach(btn => {
-      if (btn.getAttribute('data-mutate-mode') === mode) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-
-    const statusLabel = document.getElementById('mutation-status-label');
-    if (statusLabel) {
-      statusLabel.innerText = mode.toUpperCase() + (mode === 'off' ? '' : ' ACTIVE');
-      statusLabel.style.color = mode === 'off' ? 'var(--text-muted)' : 'var(--color-accent)';
-    }
-    if (typeof window.updateTouchActionsUI === 'function') {
-      window.updateTouchActionsUI();
-    }
-
-    if (mode === 'off') {
-      if (!quiet) intercomNotify("Auto-Mutate disabled");
+  function tapTempo(evt = {}) {
+    if (evt && typeof evt.bpm === 'number') {
+      setBpm(evt.bpm);
+      notify(`Tap Tempo: ${evt.bpm} BPM`);
       return;
     }
-
-    const msPerBeat = 60000 / (window.bpm || state.baseBpm || 120);
-    let multiplier = 1;
-    switch (mode) {
-      case '1': multiplier = 1; break;
-      case '2': multiplier = 2; break;
-      case '4': multiplier = 4; break;
-      case '8': multiplier = 8; break;
-      case '16': multiplier = 16; break;
-    }
-
-    const timeoutMs = msPerBeat * multiplier;
-    if (!quiet) {
-      intercomNotify(`Auto-Mutate active (every ${multiplier === 1 ? 'beat' : multiplier + ' beats'})`);
-    }
-
-    state.automutateIntervalId = setInterval(() => {
-      triggerMutation();
-    }, timeoutMs);
-
-    syncPerformanceSettingsToHash();
-  }
-
-  function triggerMutation() {
-    const textarea = document.getElementById('editor-textarea');
-    if (!textarea) return;
-    const currentCode = textarea.value;
-
-    const changeTransform = Math.random() > 0.5;
-    const newCode = mutateCode(currentCode, changeTransform);
-
-    if (newCode !== currentCode) {
-      try {
-        if (typeof hush === 'function') hush();
-        const wrappedCode = `(() => {
-        ${newCode}
-      })()
-//# sourceURL=hydra-mutated-sketch.js\n`;
-        eval(wrappedCode);
-
-        textarea.value = newCode;
-        saveMutationToHistory(newCode);
-
-        const nameEl = document.getElementById('playing-sketch-name');
-        if (nameEl) {
-          nameEl.style.color = 'var(--color-accent)';
-          nameEl.style.textShadow = '0 0 10px var(--color-accent-glowing)';
-          setTimeout(() => {
-            nameEl.style.color = '';
-            nameEl.style.textShadow = '';
-          }, 300);
-        }
-      } catch (err) {
-        console.error("Mutation evaluation failed:", err);
-      }
-    }
-  }
-
-  function saveMutationToHistory(code) {
-    if (state.mutationHistoryIndex < state.mutationHistory.length - 1) {
-      state.mutationHistory = state.mutationHistory.slice(0, state.mutationHistoryIndex + 1);
-    }
-    state.mutationHistory.push(code);
-    if (state.mutationHistory.length > 50) {
-      state.mutationHistory.shift();
-    }
-    state.mutationHistoryIndex = state.mutationHistory.length - 1;
-    updateMutationUndoRedoButtons();
-  }
-
-  function undoMutation() {
-    if (state.mutationHistoryIndex > 0) {
-      state.mutationHistoryIndex--;
-      const code = state.mutationHistory[state.mutationHistoryIndex];
-      if (typeof hush === 'function') hush();
-      eval(`(() => { ${code} })()`);
-      const textarea = document.getElementById('editor-textarea');
-      if (textarea) textarea.value = code;
-      intercomNotify("Mutation undone");
-      updateMutationUndoRedoButtons();
-    }
-  }
-
-  function redoMutation() {
-    if (state.mutationHistoryIndex < state.mutationHistory.length - 1) {
-      state.mutationHistoryIndex++;
-      const code = state.mutationHistory[state.mutationHistoryIndex];
-      if (typeof hush === 'function') hush();
-      eval(`(() => { ${code} })()`);
-      const textarea = document.getElementById('editor-textarea');
-      if (textarea) textarea.value = code;
-      intercomNotify("Mutation redone");
-      updateMutationUndoRedoButtons();
-    }
-  }
-
-  function updateMutationUndoRedoButtons() {
-    const undoBtn = document.getElementById('mutation-undo-btn');
-    const redoBtn = document.getElementById('mutation-redo-btn');
-    if (undoBtn) undoBtn.disabled = state.mutationHistoryIndex <= 0;
-    if (redoBtn) redoBtn.disabled = state.mutationHistoryIndex >= state.mutationHistory.length - 1;
-  }
-
-  // src/player/controls.js - Playback, tempo, and fader controls for Hydralisk Player
-
-  function updateBPM(newBpm) {
-    window.bpm = newBpm;
-    state.baseBpm = newBpm;
-
-    const numInput = document.getElementById('bpm-number-input');
-    if (numInput) numInput.value = newBpm;
-
-    // Re-adjust automutate interval if active
-    if (state.automutateMode !== 'off') {
-      // Import dynamically or pass down if needed
-      if (window.setAutomutateMode) {
-        window.setAutomutateMode(state.automutateMode, true);
-      }
-    }
-    syncPerformanceSettingsToHash();
-  }
-
-  function handleTapTempo(evt = {}) {
-    if (evt && typeof evt.bpm === "number") {
-      state.baseBpm = evt.bpm;
-      updateBPM(evt.bpm);
-      const bpmInput = document.getElementById('bpm-number-input');
-      if (bpmInput) bpmInput.value = evt.bpm;
-      intercomNotify(`Tap Tempo: ${evt.bpm} BPM`);
-      return;
-    }
-
-    // Delegate tap to unified TapTempo engine
-    if (window.tapTempo && typeof window.tapTempo.tap === "function") {
+    if (window.tapTempo && typeof window.tapTempo.tap === 'function') {
       window.tapTempo.tap();
     } else if (window.xemitter) {
-      window.xemitter.emit("taptempo");
+      window.xemitter.emit('taptempo');
     }
-
-    // Flash TAP button element if available
-    const btn = document.getElementById('tap-tempo-btn');
-    if (btn) {
-      btn.style.background = 'rgba(0, 242, 254, 0.4)';
-      btn.style.borderColor = 'var(--color-accent)';
-      setTimeout(() => {
-        btn.style.background = '';
-        btn.style.borderColor = '';
-      }, 100);
-    }
+    setState(s => ({
+      tapPulse: s.tapPulse + 1
+    }));
   }
-
-  function updatePlayPauseButton() {
-    const btn = document.getElementById('play-pause-btn');
-    if (!btn) return;
-
-    if (state.isPlaying) {
-      btn.innerHTML = `
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-      </svg>
-    `;
-      btn.title = "Pause Loop (Space)";
-    } else {
-      btn.innerHTML = `
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
-    `;
-      btn.title = "Resume Loop (Space)";
-    }
+  function setSpeed(speed) {
+    if (getState().isPlaying) window.speed = speed;
+    setState({
+      speed
+    });
   }
-
-  function togglePlayPause() {
-    if (!state.hydraInstance) return;
-    state.isPlaying = !state.isPlaying;
-
-    if (state.isPlaying) {
-      window.speed = parseFloat(document.getElementById('speed-slider')?.value || '1.0') || 1.0;
-      intercomNotify("Visuals resumed");
-    } else {
-      window.speed = 0;
-      intercomNotify("Visuals paused");
-    }
-    updatePlayPauseButton();
-  }
-
-  function playPrevSketch() {
-    if (state.sketchesList.length === 0) return;
-    let prevIdx = state.currentSketchIndex - 1;
-    if (prevIdx < 0) prevIdx = state.sketchesList.length - 1;
-    playSketch(prevIdx);
-  }
-
-  function playNextSketch() {
-    if (state.sketchesList.length === 0) return;
-    let nextIdx = (state.currentSketchIndex + 1) % state.sketchesList.length;
-    playSketch(nextIdx);
-  }
-
-  function playRandomSketch() {
-    if (state.sketchesList.length === 0) return;
-    const randIdx = Math.floor(Math.random() * state.sketchesList.length);
-    playSketch(randIdx);
-  }
-
-  function nudgeTempo(delta) {
-    const bpmInput = document.getElementById('bpm-number-input');
-    const current = parseInt(bpmInput?.value || state.baseBpm || 120, 10) || 120;
-    const next = Math.max(20, Math.min(240, current + delta));
-    state.baseBpm = next;
-    updateBPM(next);
-    if (bpmInput) bpmInput.value = next;
-  }
-
   function nudgeSpeed(delta) {
-    const speedSlider = document.getElementById('speed-slider');
-    const speedVal = document.getElementById('speed-val');
-    if (!speedSlider || !speedVal) return;
-
-    const current = parseFloat(speedSlider.value || '1');
-    const next = Math.max(0, Math.min(4, current + delta));
-    const rounded = Math.round(next * 10) / 10;
-    speedSlider.value = rounded.toFixed(1);
-    if (state.isPlaying) {
-      window.speed = rounded;
-    }
-    speedVal.innerText = `${rounded.toFixed(1)}x`;
-    syncPerformanceSettingsToHash();
+    setSpeed(roundTo(clamp(getState().speed + delta, MIN_SPEED, MAX_SPEED), 1));
   }
-
-  function resetSpeed() {
-    const speedSlider = document.getElementById('speed-slider');
-    const speedVal = document.getElementById('speed-val');
-    if (speedSlider) speedSlider.value = '1.0';
+  function resetSpeed({
+    announce = false
+  } = {}) {
     window.speed = 1.0;
-    if (speedVal) speedVal.innerText = '1.0x';
-    syncPerformanceSettingsToHash();
+    setState({
+      speed: 1.0
+    });
+    if (announce) notify('Speed: 1.0x');
+  }
+  function reverseSpeed() {
+    window.speed = -1 * (window.speed || 1.0);
+    setState({
+      speed: window.speed
+    });
+    notify(`Speed: ${window.speed.toFixed(1)}x`);
   }
 
   /**
-   * Hydralisk Sketch Manager & Gallery Module
-   * Handles loading, search filtering, tag categorization, DOM rendering, code execution, and history tracking.
+   * Hydra engine service.
+   * Owns the Hydra synth instance and the evaluation of sketch code on the canvas.
    */
 
+  let canvasEl = null;
+  let hydraInstance = null;
+  const FALLBACK_SKETCH = {
+    name: 'Default Oscillation',
+    author: 'System',
+    bpm: 120,
+    code: 'osc(10, 0.1, 1.2).color(0.2, 0.7, 0.9).rotate(0.1, 0.05).out(o0);'
+  };
+  function registerCanvas(el) {
+    canvasEl = el;
+  }
+  function getHydra() {
+    return hydraInstance;
+  }
+  function resizeCanvas() {
+    if (!canvasEl) return;
+    canvasEl.width = window.innerWidth;
+    canvasEl.height = window.innerHeight;
+    if (typeof window.setResolution === 'function') {
+      window.setResolution(window.innerWidth, window.innerHeight);
+    }
+  }
 
   /**
-   * Load all sketches from Cloud drafts, sketches.json, and localStorage
+   * Create the Hydra synth bound to the registered canvas.
+   * Throws if the hydra-synth library is not available.
    */
-  async function loadAllSketches() {
-    state.sketchesList = [];
-    let sourceSketches = [];
-
-    // 1. Fetch from Amakit (if authenticated)
-    if (window.amakit && window.amakit.isAuthenticated) {
-      try {
-        showToast("Syncing sketches from Cloud...");
-        await window.amakit.loadDrafts();
-        sourceSketches = window.amakit.draftCache || [];
-        showToast(`Loaded ${sourceSketches.length} remote sketches`);
-      } catch (e) {
-        console.error("Failed to load drafts from Amakit", e);
-        showToast("Cloud sync failed. Loading backup.", true);
-      }
+  function initHydra() {
+    if (hydraInstance) return hydraInstance;
+    if (typeof window.Hydra === 'undefined') {
+      throw new Error('Hydra player engine library not loaded.');
     }
-
-    // 2. Fetch from sketches.json
-    if (sourceSketches.length === 0) {
-      try {
-        const response = await fetch('sketches.json');
-        if (response.ok) {
-          sourceSketches = await response.json();
-        }
-      } catch (e) {
-        console.warn("Could not fetch sketches.json", e);
-      }
+    if (canvasEl) {
+      canvasEl.width = window.innerWidth;
+      canvasEl.height = window.innerHeight;
     }
-
-    // 3. Load custom sketches from local storage
-    let localSketches = [];
-    try {
-      const localRaw = localStorage.getItem('mySketches');
-      if (localRaw) {
-        localSketches = JSON.parse(localRaw);
-      }
-    } catch (e) {
-      console.warn("Could not load mySketches from localStorage", e);
-    }
-
-    // 4. Merge by name
-    const mergedMap = {};
-
-    sourceSketches.forEach(s => {
-      s.isLocal = false;
-      s.author = s.author || "Hydralisk Team";
-      s.bpm = s.bpm || 120;
-      s.metadata = s.metadata || { tags: [] };
-      s.metadata.tags = s.metadata.tags || [];
-      mergedMap[s.name] = s;
+    hydraInstance = new window.Hydra({
+      canvas: canvasEl,
+      detectAudio: true,
+      makeGlobal: true,
+      width: window.innerWidth,
+      height: window.innerHeight
     });
+    window.addEventListener('resize', resizeCanvas);
 
-    localSketches.forEach(s => {
-      const sketchCopy = { ...s };
-      sketchCopy.isLocal = true;
-      sketchCopy.author = sketchCopy.author || "You (Local)";
-      sketchCopy.bpm = sketchCopy.bpm || 120;
-      sketchCopy.metadata = sketchCopy.metadata || { tags: ["local"] };
-      sketchCopy.metadata.tags = sketchCopy.metadata.tags || ["local"];
-
-      if (!sketchCopy.code && sketchCopy.fullDraft) {
-        try {
-          sketchCopy.code = atob(sketchCopy.fullDraft);
-        } catch (e) {
-          sketchCopy.code = sketchCopy.fullDraft;
-        }
-      }
-
-      mergedMap[sketchCopy.name] = sketchCopy;
-    });
-
-    state.sketchesList = Object.values(mergedMap);
-
-    if (state.sketchesList.length === 0) {
-      state.sketchesList.push({
-        name: "Nebula Glitch",
-        author: "Hydra Synth",
-        bpm: 120,
-        code: "osc(40, 0.05, 1.5).modulate(noise(4), 0.5).colorama(0.4).out(o0);",
-        metadata: { tags: ["glitch", "colorful"] }
+    // Hydra appends its audio analyser canvas next to ours; tag it so CSS can hide it.
+    const hydraAudioCanvas = (canvasEl?.parentElement || document.body).querySelector(':scope > canvas:not(#hydra-canvas)');
+    if (hydraAudioCanvas) hydraAudioCanvas.id = 'audio-canvas';
+    if (window.HydraliskPlugins) {
+      window.HydraliskPlugins.init({
+        hydra: hydraInstance
       });
+      window.HydraliskPlugins.onHydraReady(hydraInstance);
     }
-
-    state.filteredSketchesList = [...state.sketchesList];
-    renderSketchesList();
-    renderTagFilters();
+    return hydraInstance;
+  }
+  function hush() {
+    if (typeof window.hush === 'function') window.hush();
   }
 
   /**
-   * Render tag pills in the Library tab
+   * Evaluate Hydra code in the global scope (Hydra exposes its API globally).
+   * Throws on evaluation errors.
    */
-  function renderTagFilters() {
-    const container = document.getElementById('tag-filters-list');
-    if (!container) return;
+  function evaluate(code, sourceName = 'hydra-sketch') {
+    hush();
+    const wrappedCode = `(() => {
+      ${code}
+    })()
+//# sourceURL=${sourceName}.js\n`;
+    // Indirect eval runs in global scope where Hydra functions live.
+    (0, eval)(wrappedCode);
+  }
 
-    const tags = new Set();
-    state.sketchesList.forEach(s => {
-      if (s.metadata && s.metadata.tags) {
-        s.metadata.tags.forEach(t => tags.add(t));
-      }
-    });
+  /** Render a red error pattern after a failed evaluation. */
+  function showErrorPattern() {
+    hush();
+    if (typeof window.osc === 'function') {
+      window.osc(10, 0, 1.5).color(1, 0, 0).diff(window.noise(2)).out();
+    }
+  }
 
-    container.innerHTML = '';
+  /** Render the built-in fallback pattern. */
+  function playFallbackPattern() {
+    hush();
+    if (typeof window.osc === 'function') {
+      window.osc(10, 0.1, 1.2).color(0.2, 0.7, 0.9).rotate(0.1, 0.05).out(typeof window.o0 !== 'undefined' ? window.o0 : undefined);
+    }
+  }
 
-    const allTagBtn = document.createElement('div');
-    allTagBtn.className = `filter-tag ${state.activeTags.size === 0 ? 'active' : ''}`;
-    allTagBtn.innerText = "All";
-    allTagBtn.onclick = () => {
-      state.activeTags.clear();
-      filterSketches();
-      renderTagFilters();
-    };
-    container.appendChild(allTagBtn);
+  /**
+   * Code mutator.
+   * Pure function that randomly swaps a Hydra function for a sibling of the same
+   * category, or perturbs a numeric literal.
+   */
 
-    tags.forEach(tag => {
-      const tagBtn = document.createElement('div');
-      tagBtn.className = `filter-tag ${state.activeTags.has(tag) ? 'active' : ''}`;
-      tagBtn.innerText = tag;
-      tagBtn.onclick = () => {
-        if (state.activeTags.has(tag)) {
-          state.activeTags.delete(tag);
-        } else {
-          state.activeTags.add(tag);
+  const CATEGORIES = {
+    sources: ['osc', 'shape', 'noise', 'voronoi', 'gradient', 'solid'],
+    geometry: ['rotate', 'scale', 'pixelate', 'repeat', 'repeatX', 'repeatY', 'kaleid', 'scroll', 'scrollX', 'scrollY'],
+    color: ['posterize', 'shift', 'invert', 'contrast', 'luma', 'thresh', 'color', 'saturate', 'hue', 'colorama'],
+    blends: ['add', 'sub', 'mult', 'diff', 'blend', 'mask'],
+    modulators: ['modulate', 'modulateScale', 'modulatePixelate', 'modulateRotate', 'modulateKaleid', 'modulateScrollX', 'modulateScrollY', 'modulateHue']
+  };
+  const pick = list => list[Math.floor(Math.random() * list.length)];
+  function mutateFunction(code) {
+    const found = [];
+    Object.entries(CATEGORIES).forEach(([category, funcs]) => {
+      funcs.forEach(name => {
+        const regex = new RegExp(`\\b${name}\\b`, 'g');
+        let match;
+        while ((match = regex.exec(code)) !== null) {
+          found.push({
+            name,
+            index: match.index,
+            category
+          });
         }
-        filterSketches();
-        renderTagFilters();
-      };
-      container.appendChild(tagBtn);
+      });
     });
+    if (found.length === 0) return null;
+    const selected = pick(found);
+    const others = CATEGORIES[selected.category].filter(f => f !== selected.name);
+    if (others.length === 0) return null;
+    const become = pick(others);
+    console.log(`Mutator: changing function ${selected.name} to ${become}`);
+    return code.substring(0, selected.index) + become + code.substring(selected.index + selected.name.length);
+  }
+  function mutateNumber(code) {
+    const numRegex = /(?<![\w'"`])(?:\b-?\d+(?:\.\d+)?\b)/g;
+    const matches = [...code.matchAll(numRegex)];
+    if (matches.length === 0) return code;
+    const selected = pick(matches);
+    const oldStr = selected[0];
+    const oldVal = parseFloat(oldStr);
+    const newVal = oldVal === 0 ? Math.random() > 0.5 ? 0.5 : -0.5 : Math.round(Math.random() * oldVal * 2 * 1000) / 1000;
+    console.log(`Mutator: changing number ${oldStr} to ${newVal}`);
+    return code.substring(0, selected.index) + String(newVal) + code.substring(selected.index + oldStr.length);
+  }
+  function mutateCode(code, changeTransform = false) {
+    if (changeTransform) {
+      const mutated = mutateFunction(code);
+      if (mutated !== null) return mutated;
+    }
+    return mutateNumber(code);
   }
 
   /**
-   * Filter sketches list based on search query and active tags
+   * Automutate & mutation history actions.
+   * The automutate clock itself lives in the `useAutomutateClock` hook, which
+   * re-schedules whenever the mode or the BPM changes.
    */
-  function filterSketches() {
-    const searchInput = document.getElementById('sketch-search-input');
-    const query = (searchInput?.value || '').toLowerCase();
+  const AUTOMUTATE_MODES = [{
+    mode: 'off',
+    label: 'Off'
+  }, {
+    mode: '1',
+    label: '1b',
+    title: '1x per beat'
+  }, {
+    mode: '2',
+    label: '2b',
+    title: '1x per 1/2 bar (2 beats)'
+  }, {
+    mode: '4',
+    label: '4b',
+    title: '1x per 1 bar (4 beats)'
+  }, {
+    mode: '8',
+    label: '8b',
+    title: '1x per 2 bars (8 beats)'
+  }, {
+    mode: '16',
+    label: '16b',
+    title: '1x per 4 bars (16 beats)'
+  }];
+  function beatsForMode(mode) {
+    const beats = parseInt(mode, 10);
+    return [1, 2, 4, 8, 16].includes(beats) ? beats : 1;
+  }
+  function setAutomutateMode(mode, quiet = false) {
+    setState(s => ({
+      automutateMode: mode,
+      selectedAutomutateMode: mode !== 'off' ? mode : s.selectedAutomutateMode
+    }));
+    if (quiet) return;
+    if (mode === 'off') {
+      notify('Auto-Mutate disabled');
+    } else {
+      const beats = beatsForMode(mode);
+      notify(`Auto-Mutate active (every ${beats === 1 ? 'beat' : beats + ' beats'})`);
+    }
+  }
+  function toggleMobileAutomutate() {
+    const {
+      automutateMode,
+      selectedAutomutateMode
+    } = getState();
+    setAutomutateMode(automutateMode === 'off' ? selectedAutomutateMode : 'off');
+  }
 
-    state.filteredSketchesList = state.sketchesList.filter(s => {
-      const nameMatch = s.name.toLowerCase().includes(query) || s.author.toLowerCase().includes(query);
+  /** Start a fresh history for a newly loaded sketch. */
+  function resetMutationHistory(code) {
+    setState({
+      mutationHistory: [code],
+      mutationHistoryIndex: 0
+    });
+  }
+  function pushMutationHistory(code) {
+    const {
+      mutationHistory,
+      mutationHistoryIndex
+    } = getState();
+    const history = mutationHistory.slice(0, mutationHistoryIndex + 1);
+    history.push(code);
+    if (history.length > MUTATION_HISTORY_LIMIT) history.shift();
+    setState({
+      mutationHistory: history,
+      mutationHistoryIndex: history.length - 1
+    });
+  }
+  function triggerMutation() {
+    const currentCode = getState().editorCode;
+    const newCode = mutateCode(currentCode, Math.random() > 0.5);
+    if (newCode === currentCode) return;
+    try {
+      evaluate(newCode, 'hydra-mutated-sketch');
+      setState(s => ({
+        editorCode: newCode,
+        mutationPulse: s.mutationPulse + 1
+      }));
+      pushMutationHistory(newCode);
+    } catch (err) {
+      console.error('Mutation evaluation failed:', err);
+    }
+  }
+  function jumpHistory(offset, message) {
+    const {
+      mutationHistory,
+      mutationHistoryIndex
+    } = getState();
+    const index = mutationHistoryIndex + offset;
+    if (index < 0 || index >= mutationHistory.length) return;
+    const code = mutationHistory[index];
+    setState({
+      mutationHistoryIndex: index
+    });
+    evaluate(code, 'hydra-mutated-sketch');
+    setState({
+      editorCode: code
+    });
+    notify(message);
+  }
+  const undoMutation = () => jumpHistory(-1, 'Mutation undone');
+  const redoMutation = () => jumpHistory(1, 'Mutation redone');
 
-      let tagMatch = true;
-      if (state.activeTags.size > 0) {
-        tagMatch = s.metadata && s.metadata.tags && s.metadata.tags.some(t => state.activeTags.has(t));
+  /**
+   * Safe localStorage helpers (storage may be unavailable, e.g. private mode).
+   */
+
+  function readString(key, fallback = null) {
+    try {
+      const value = localStorage.getItem(key);
+      return value === null ? fallback : value;
+    } catch (e) {
+      return fallback;
+    }
+  }
+  function writeString(key, value) {
+    try {
+      localStorage.setItem(key, String(value));
+    } catch (e) {}
+  }
+  function remove(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {}
+  }
+  function readJSON(key, fallback) {
+    const raw = readString(key);
+    if (!raw) return fallback;
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      console.warn(`Could not parse ${key} from localStorage`, e);
+      return fallback;
+    }
+  }
+  const PREF_KEYS = {
+    lastSketch: 'lastSelectedSketchName',
+    welcomeClosed: 'welcomeScreenClosed',
+    touchActions: 'touchActionsEnabled',
+    awsCredentials: 'awsCredentials'
+  };
+
+  /**
+   * Sketch repository.
+   * Loads sketches from Cloud drafts (Amakit), sketches.json and localStorage,
+   * then merges them by name into a normalized list.
+   */
+  const PLACEHOLDER_SKETCH = {
+    name: 'Nebula Glitch',
+    author: 'Hydra Synth',
+    bpm: 120,
+    code: 'osc(40, 0.05, 1.5).modulate(noise(4), 0.5).colorama(0.4).out(o0);',
+    metadata: {
+      tags: ['glitch', 'colorful']
+    }
+  };
+  async function fetchCloudSketches() {
+    const amakit = window.amakit;
+    if (!amakit || !amakit.isAuthenticated) return [];
+    try {
+      notify('Syncing sketches from Cloud...');
+      await amakit.loadDrafts();
+      const drafts = amakit.draftCache || [];
+      notify(`Loaded ${drafts.length} remote sketches`);
+      return drafts;
+    } catch (e) {
+      console.error('Failed to load drafts from Amakit', e);
+      notify('Cloud sync failed. Loading backup.', true);
+      return [];
+    }
+  }
+  async function fetchBuiltInSketches() {
+    try {
+      const response = await fetch('sketches.json');
+      if (response.ok) return await response.json();
+    } catch (e) {
+      console.warn('Could not fetch sketches.json', e);
+    }
+    return [];
+  }
+  function normalizeRemote(sketch) {
+    const metadata = sketch.metadata || {
+      tags: []
+    };
+    return {
+      ...sketch,
+      isLocal: false,
+      author: sketch.author || 'Hydralisk Team',
+      bpm: sketch.bpm || 120,
+      metadata: {
+        ...metadata,
+        tags: metadata.tags || []
       }
-
+    };
+  }
+  function normalizeLocal(sketch) {
+    const metadata = sketch.metadata || {
+      tags: ['local']
+    };
+    let code = sketch.code;
+    if (!code && sketch.fullDraft) {
+      try {
+        code = atob(sketch.fullDraft);
+      } catch (e) {
+        code = sketch.fullDraft;
+      }
+    }
+    return {
+      ...sketch,
+      code,
+      isLocal: true,
+      author: sketch.author || 'You (Local)',
+      bpm: sketch.bpm || 120,
+      metadata: {
+        ...metadata,
+        tags: metadata.tags || ['local']
+      }
+    };
+  }
+  async function loadAllSketches() {
+    let sourceSketches = await fetchCloudSketches();
+    if (sourceSketches.length === 0) {
+      sourceSketches = await fetchBuiltInSketches();
+    }
+    const localSketches = readJSON('mySketches', []);
+    const merged = {};
+    sourceSketches.forEach(s => {
+      const sketch = normalizeRemote(s);
+      merged[sketch.name] = sketch;
+    });
+    (Array.isArray(localSketches) ? localSketches : []).forEach(s => {
+      const sketch = normalizeLocal(s);
+      merged[sketch.name] = sketch;
+    });
+    const sketches = Object.values(merged);
+    return sketches.length > 0 ? sketches : [PLACEHOLDER_SKETCH];
+  }
+  function findSketchIndexByName(sketches, name) {
+    if (!name) return -1;
+    const target = name.toLowerCase();
+    return sketches.findIndex(s => s.name && s.name.toLowerCase() === target);
+  }
+  function filterSketches(sketches, query, activeTags) {
+    const q = (query || '').toLowerCase();
+    return sketches.filter(s => {
+      const nameMatch = (s.name || '').toLowerCase().includes(q) || (s.author || '').toLowerCase().includes(q);
+      const tagMatch = activeTags.length === 0 || (s.metadata?.tags || []).some(t => activeTags.includes(t));
       return nameMatch && tagMatch;
     });
-
-    renderSketchesList();
   }
 
   /**
-   * Render the filtered sketches into sidebar list container
+   * Sketch playback actions: selecting, navigating and evaluating sketches.
    */
-  function renderSketchesList() {
-    const container = document.getElementById('sketches-list-container');
-    if (!container) return;
-
-    container.innerHTML = '';
-
-    const builtIns = state.filteredSketchesList.filter(s => !s.isLocal);
-    const locals = state.filteredSketchesList.filter(s => s.isLocal);
-
-    if (locals.length > 0) {
-      const title = document.createElement('div');
-      title.className = 'sketches-section-title';
-      title.innerText = "Your Sketches (Local)";
-      container.appendChild(title);
-
-      locals.forEach(s => {
-        const idx = state.sketchesList.indexOf(s);
-        container.appendChild(createSketchItemNode(s, idx));
-      });
-    }
-
-    if (builtIns.length > 0) {
-      const title = document.createElement('div');
-      title.className = 'sketches-section-title';
-      title.innerText = "Built-in Library";
-      container.appendChild(title);
-
-      builtIns.forEach(s => {
-        const idx = state.sketchesList.indexOf(s);
-        container.appendChild(createSketchItemNode(s, idx));
-      });
-    }
-
-    if (state.filteredSketchesList.length === 0) {
-      container.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">No sketches found</div>';
-    }
+  const toNowPlaying = sketch => ({
+    name: sketch.name,
+    author: sketch.author,
+    bpm: sketch.bpm || 120,
+    tags: sketch.metadata?.tags || [],
+    midi: Boolean(sketch.midi)
+  });
+  const sourceNameFor = sketch => `hydra-sketch-${sketch.name.replace(/\s+/g, '-').toLowerCase()}`;
+  function rememberSketch(name) {
+    writeString(PREF_KEYS.lastSketch, name);
+    try {
+      if (window.history && window.history.replaceState) {
+        const url = new URL(window.location);
+        url.searchParams.set('sketch', name);
+        window.history.replaceState({}, '', url.toString());
+      }
+    } catch (e) {}
   }
 
   /**
-   * Create DOM node for sketch item in library list
+   * Play a sketch by index in the full list, or by (case-insensitive) name.
    */
-  function createSketchItemNode(sketch, index) {
-    const div = document.createElement('div');
-    div.className = `sketch-item ${state.currentSketchIndex === index ? 'active' : ''}`;
-    div.onclick = () => playSketch(index);
-
-    const tagsStr = (sketch.metadata && sketch.metadata.tags) ? sketch.metadata.tags.join(', ') : '';
-
-    div.innerHTML = `
-    <div class="sketch-item-info">
-      <span class="sketch-item-name">${sketch.name}</span>
-      <span class="sketch-item-meta">by ${sketch.author} ${tagsStr ? '• ' + tagsStr : ''}</span>
-    </div>
-    <div class="sketch-item-indicator"></div>
-  `;
-    return div;
-  }
-
-  /**
-   * Play sketch by index
-   * @param {number} index 
-   */
-  function playSketch(index) {
+  function playSketch(indexOrName) {
+    const {
+      sketches
+    } = getState();
+    let index = indexOrName;
     if (typeof index === 'string') {
-      const foundIdx = state.sketchesList.findIndex(s => s.name && s.name.toLowerCase() === index.toLowerCase());
-      if (foundIdx >= 0) {
-        index = foundIdx;
-      } else {
-        console.warn(`Sketch not found: ${index}`);
+      index = findSketchIndexByName(sketches, indexOrName);
+      if (index < 0) {
+        console.warn(`Sketch not found: ${indexOrName}`);
         return;
       }
     }
-
-    if (typeof index !== 'number' || index < 0 || index >= state.sketchesList.length) return;
-
-    state.currentSketchIndex = index;
-    const sketch = state.sketchesList[index];
-
-    if (sketch && sketch.name) {
-      try {
-        localStorage.setItem('lastSelectedSketchName', sketch.name);
-        if (window.history && window.history.replaceState) {
-          const url = new URL(window.location);
-          url.searchParams.set('sketch', sketch.name);
-          window.history.replaceState({}, '', url.toString());
-        }
-      } catch (e) {}
-    }
-
-    renderSketchesList();
-
-    state.baseBpm = sketch.bpm || 120;
-    updateBPM(state.baseBpm);
-
-    window.speed = 1.0;
-    const speedSlider = document.getElementById('speed-slider');
-    const speedVal = document.getElementById('speed-val');
-    if (speedSlider) speedSlider.value = "1.0";
-    if (speedVal) speedVal.innerText = '1.0x';
-
-    state.mutationHistory = [sketch.code];
-    state.mutationHistoryIndex = 0;
-    updateMutationUndoRedoButtons();
-
-    if (typeof hush === 'function') hush();
-
+    if (typeof index !== 'number' || index < 0 || index >= sketches.length) return;
+    const sketch = sketches[index];
+    if (sketch.name) rememberSketch(sketch.name);
+    setState({
+      currentSketchIndex: index
+    });
+    setBpm(sketch.bpm || 120);
+    resetSpeed();
+    resetMutationHistory(sketch.code);
     try {
-      const wrappedCode = `(() => {
-      ${sketch.code}
-    })()
-//# sourceURL=hydra-sketch-${sketch.name.replace(/\s+/g, '-').toLowerCase()}.js\n`;
-
-      eval(wrappedCode);
-      updateNowPlaying(sketch);
-      showToast(`Loaded: ${sketch.name}`);
+      evaluate(sketch.code, sourceNameFor(sketch));
+      setState({
+        nowPlaying: toNowPlaying(sketch),
+        editorCode: sketch.code || ''
+      });
+      notify(`Loaded: ${sketch.name}`);
     } catch (err) {
-      console.error("Evaluation error:", err);
-      showError(err);
-      if (typeof hush === 'function') hush();
-      if (typeof osc === 'function') osc(10, 0, 1.5).color(1, 0, 0).diff(noise(2)).out();
+      console.error('Evaluation error:', err);
+      notifyError(err);
+      showErrorPattern();
     }
   }
-
-  /**
-   * Update HUD metadata card and code textarea
-   */
-  function updateNowPlaying(sketch) {
-    const nameEl = document.getElementById('playing-sketch-name');
-    const authorEl = document.getElementById('playing-sketch-author');
-    const bpmEl = document.getElementById('playing-sketch-bpm');
-    const tagsContainer = document.getElementById('playing-sketch-tags');
-    const codeBox = document.getElementById('editor-textarea');
-    const midiDot = document.getElementById('midi-status-dot');
-
-    if (nameEl) nameEl.innerText = sketch.name;
-    if (authorEl) authorEl.innerText = sketch.author;
-    if (bpmEl) bpmEl.innerText = (sketch.bpm || 120) + " BPM";
-
-    if (tagsContainer) {
-      tagsContainer.innerHTML = '';
-      if (sketch.metadata && sketch.metadata.tags) {
-        sketch.metadata.tags.forEach(tag => {
-          const span = document.createElement('span');
-          span.className = 'sketch-tag';
-          span.innerText = tag;
-          tagsContainer.appendChild(span);
-        });
-      }
-    }
-
-    if (codeBox) {
-      codeBox.value = sketch.code || '';
-    }
-
-    if (midiDot) {
-      if (sketch.midi) {
-        midiDot.classList.add('midi-active');
-        midiDot.title = "Uses MIDI input";
-      } else {
-        midiDot.classList.remove('midi-active');
-        midiDot.title = "No MIDI required";
-      }
+  function playPrevSketch() {
+    const {
+      sketches,
+      currentSketchIndex
+    } = getState();
+    if (sketches.length === 0) return;
+    playSketch(currentSketchIndex - 1 < 0 ? sketches.length - 1 : currentSketchIndex - 1);
+  }
+  function playNextSketch() {
+    const {
+      sketches,
+      currentSketchIndex
+    } = getState();
+    if (sketches.length === 0) return;
+    playSketch((currentSketchIndex + 1) % sketches.length);
+  }
+  function playRandomSketch() {
+    const {
+      sketches
+    } = getState();
+    if (sketches.length === 0) return;
+    playSketch(Math.floor(Math.random() * sketches.length));
+  }
+  function playFallbackSketch() {
+    playFallbackPattern();
+    setState({
+      nowPlaying: toNowPlaying(FALLBACK_SKETCH),
+      editorCode: FALLBACK_SKETCH.code
+    });
+  }
+  function togglePlayPause() {
+    if (!getHydra()) return;
+    const isPlaying = !getState().isPlaying;
+    setState({
+      isPlaying
+    });
+    if (isPlaying) {
+      window.speed = getState().speed || 1.0;
+      notify('Visuals resumed');
+    } else {
+      window.speed = 0;
+      notify('Visuals paused');
     }
   }
+  function setEditorCode(code) {
+    setState({
+      editorCode: code
+    });
+  }
 
-  /**
-   * Run modified custom code from editor tab
-   */
+  /** Evaluate the code currently in the editor tab. */
   function runCustomCode() {
-    const codeBox = document.getElementById('editor-textarea');
-    if (!codeBox) return;
-    const code = codeBox.value;
-    if (typeof hush === 'function') hush();
-
+    const code = getState().editorCode;
     try {
-      const wrappedCode = `(() => {
-      ${code}
-    })()
-//# sourceURL=hydra-custom-sketch.js\n`;
-
-      eval(wrappedCode);
-      showToast("Code updated & running");
-
-      const nameEl = document.getElementById('playing-sketch-name');
-      const authorEl = document.getElementById('playing-sketch-author');
-      if (nameEl) nameEl.innerText = "Custom Edit";
-      if (authorEl) authorEl.innerText = "Developer Session";
-
-      saveMutationToHistory(code);
+      evaluate(code, 'hydra-custom-sketch');
+      notify('Code updated & running');
+      setState(s => ({
+        nowPlaying: {
+          ...(s.nowPlaying || {}),
+          name: 'Custom Edit',
+          author: 'Developer Session'
+        }
+      }));
+      pushMutationHistory(code);
     } catch (err) {
-      console.error("Evaluation error:", err);
-      showError(err);
-      if (typeof hush === 'function') hush();
-      if (typeof osc === 'function') osc(10, 0, 1.5).color(1, 0, 0).diff(noise(2)).out();
+      console.error('Evaluation error:', err);
+      notifyError(err);
+      showErrorPattern();
     }
+  }
+
+  /** Restore and replay the original code of the active sketch. */
+  function resetCustomCode() {
+    const sketch = selectCurrentSketch(getState());
+    if (!sketch) return;
+    setState({
+      editorCode: sketch.code
+    });
+    playSketch(getState().currentSketchIndex);
+    notify('Sketch code reset');
   }
 
   /**
-   * Reset custom code back to original active sketch code
+   * Library browsing actions: search and tag filtering.
    */
-  function resetCustomCode() {
-    if (state.currentSketchIndex >= 0 && state.currentSketchIndex < state.sketchesList.length) {
-      const originalCode = state.sketchesList[state.currentSketchIndex].code;
-      const codeBox = document.getElementById('editor-textarea');
-      if (codeBox) codeBox.value = originalCode;
-      playSketch(state.currentSketchIndex);
-      showToast("Sketch code reset");
-    }
-  }
-
-  // src/player/ui.js - Tab switching, collapse panels, mobile HUD detection, Cloud auth UI
-
-  function switchTab(tabId) {
-    state.currentTab = tabId;
-
-    const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(btn => {
-      if (btn.getAttribute('data-tab') === tabId) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
+  async function reloadSketches() {
+    const sketches = await loadAllSketches();
+    setState({
+      sketches
     });
-
-    const contents = document.querySelectorAll('.tab-content');
-    contents.forEach(content => {
-      if (content.id === `${tabId}-tab`) {
-        content.classList.add('active');
-      } else {
-        content.classList.remove('active');
-      }
+    return sketches;
+  }
+  function setSearchQuery(searchQuery) {
+    setState({
+      searchQuery
+    });
+  }
+  function toggleTag(tag) {
+    setState(s => ({
+      activeTags: s.activeTags.includes(tag) ? s.activeTags.filter(t => t !== tag) : [...s.activeTags, tag]
+    }));
+  }
+  function clearTags() {
+    setState({
+      activeTags: []
     });
   }
 
+  /**
+   * Layout / HUD actions: tabs, sidebar, HUD visibility, touch overlay, fullscreen.
+   */
+  const TABS = [{
+    id: 'library',
+    label: 'Library'
+  }, {
+    id: 'editor',
+    label: 'Editor'
+  }, {
+    id: 'performance',
+    label: 'Performance'
+  }];
   function isMobileDevice() {
-    return window.matchMedia('(max-width: 768px)').matches ||
-           ('ontouchstart' in window && window.innerWidth <= 1024) ||
-           /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    return window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window && window.innerWidth <= 1024 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
-
   function isUIHidden() {
-    const panel = document.getElementById('sidebar-panel');
-    const shortcuts = document.getElementById('shortcuts-panel');
-    if (!panel || !shortcuts) return false;
-    return panel.classList.contains('collapsed') && shortcuts.classList.contains('hidden');
+    return selectIsUIHidden(getState());
   }
-
-  function updateTouchActionsUI() {
-    const overlay = document.getElementById('touch-actions-overlay');
-    const floatingActions = document.getElementById('floating-hud-actions');
-    const hudBtn = document.getElementById('touch-actions-hud-btn');
-    const floatingBtn = document.getElementById('touch-actions-floating-btn');
-    const shortcuts = document.getElementById('shortcuts-panel');
-    const intercomBar = document.getElementById('intercom-bar');
-    const mobileMutateToggle = document.getElementById('mobile-mutate-toggle');
-    const isMobile = isMobileDevice();
-    const hidden = isUIHidden();
-
-    // Mobile browsers can keep a wider layout viewport than the visible emulator.
-    // Size the fixed sheet from the visual viewport so its grid cannot trail off-screen.
-    const viewportWidth = window.visualViewport?.width || document.documentElement.clientWidth;
-    document.documentElement.style.setProperty('--player-viewport-width', `${viewportWidth}px`);
-
-    // If HUD is closed / hidden, hide the intercom bar as part of the HUD
-    if (intercomBar) {
-      intercomBar.classList.toggle('hidden', hidden);
-    }
-
-    // On mobile screens, hide QWERTY keyboard shortcuts guide and auto-enable touch mode
-    if (isMobile) {
-      if (shortcuts) {
-        shortcuts.classList.add('hidden');
-      }
-    }
-
-    if (floatingActions) {
-      floatingActions.classList.toggle('visible', hidden || isMobile);
-    }
-    if (overlay) {
-      overlay.classList.toggle('visible', (isMobile || hidden) && state.touchActionsEnabled);
-    }
-    if (hudBtn) {
-      hudBtn.classList.toggle('active', state.touchActionsEnabled);
-    }
-    if (floatingBtn) {
-      floatingBtn.classList.toggle('active', state.touchActionsEnabled);
-    }
-    if (mobileMutateToggle) {
-      mobileMutateToggle.textContent = `~${state.selectedAutomutateMode}b`;
-      mobileMutateToggle.classList.toggle('active', state.automutateMode !== 'off');
-    }
+  function switchTab(currentTab) {
+    setState({
+      currentTab
+    });
   }
-
   function toggleCollapse() {
-    state.isPanelCollapsed = !state.isPanelCollapsed;
-    const panel = document.getElementById('sidebar-panel');
-    const trigger = document.getElementById('expand-trigger');
-
-    if (state.isPanelCollapsed) {
-      panel.classList.add('collapsed');
-      trigger.classList.add('visible');
-    } else {
-      panel.classList.remove('collapsed');
-      trigger.classList.remove('visible');
-    }
-
-    updateTouchActionsUI();
-    syncPerformanceSettingsToHash();
+    setState(s => ({
+      panelCollapsed: !s.panelCollapsed
+    }));
   }
 
-  function toggleTouchActions() {
-    state.touchActionsEnabled = !state.touchActionsEnabled;
-    try {
-      localStorage.setItem('touchActionsEnabled', String(state.touchActionsEnabled));
-    } catch (e) {}
-    updateTouchActionsUI();
-    intercomNotify(state.touchActionsEnabled ? "Touch actions enabled" : "Touch actions disabled");
-  }
-
-  function toggleMobileAutomutate() {
-    const nextMode = state.automutateMode === 'off' ? state.selectedAutomutateMode : 'off';
-    if (window.setAutomutateMode) window.setAutomutateMode(nextMode);
-    updateTouchActionsUI();
-  }
-
+  /** Hide/show the whole HUD (sidebar + shortcuts guide). */
   function toggleUI() {
-    const panel = document.getElementById('sidebar-panel');
-    const shortcuts = document.getElementById('shortcuts-panel');
-    const trigger = document.getElementById('expand-trigger');
-
-    const hidden = isUIHidden();
-
-    if (hidden) {
-      panel.classList.remove('collapsed');
-      shortcuts.classList.remove('hidden');
-      trigger.classList.remove('visible');
-      state.isPanelCollapsed = false;
-      intercomNotify("Interface shown");
+    if (isUIHidden()) {
+      setState({
+        panelCollapsed: false,
+        hudHidden: false
+      });
+      notify('Interface shown');
     } else {
-      panel.classList.add('collapsed');
-      shortcuts.classList.add('hidden');
-      trigger.classList.remove('visible');
-      state.isPanelCollapsed = true;
-      intercomNotify("Interface hidden. Press 'H' to show again.");
+      setState({
+        panelCollapsed: true,
+        hudHidden: true
+      });
+      notify("Interface hidden. Press 'H' to show again.");
     }
-
-    updateTouchActionsUI();
-    syncPerformanceSettingsToHash();
+  }
+  function setUIHidden(hidden) {
+    if (hidden !== isUIHidden()) toggleUI();
+  }
+  function updateViewport() {
+    setState({
+      isMobile: isMobileDevice()
+    });
   }
 
-  function openEditorWithCurrentSketch() {
-    let sketchName = '';
-    if (state.sketchesList && state.sketchesList[state.currentSketchIndex]) {
-      sketchName = state.sketchesList[state.currentSketchIndex].name;
-    }
-    if (!sketchName) {
-      try {
-        sketchName = localStorage.getItem('lastSelectedSketchName') || '';
-      } catch (e) {}
-    }
-    const targetUrl = sketchName ? `index.html?sketch=${encodeURIComponent(sketchName)}` : 'index.html';
-    window.location.href = targetUrl;
+  /** On mobile, the touch overlay defaults to enabled unless the user turned it off. */
+  function restoreTouchActionsPreference() {
+    if (!isMobileDevice()) return;
+    const saved = readString(PREF_KEYS.touchActions);
+    setState({
+      touchActionsEnabled: saved === null ? true : saved === 'true'
+    });
   }
-
+  function toggleTouchActions() {
+    const touchActionsEnabled = !getState().touchActionsEnabled;
+    setState({
+      touchActionsEnabled
+    });
+    writeString(PREF_KEYS.touchActions, touchActionsEnabled);
+    notify(touchActionsEnabled ? 'Touch actions enabled' : 'Touch actions disabled');
+  }
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(err => {
-        showError(`Error enabling fullscreen: ${err.message}`);
+        notifyError(`Error enabling fullscreen: ${err.message}`);
       });
     } else {
       document.exitFullscreen();
     }
   }
-
-  function handleCloudLogin() {
-    if (!window.amakit) {
-      showError("Amakit module not loaded");
-      return;
+  function openEditorWithCurrentSketch() {
+    const sketchName = selectCurrentSketch(getState())?.name || readString(PREF_KEYS.lastSketch, '');
+    window.location.href = sketchName ? `index.html?sketch=${encodeURIComponent(sketchName)}` : 'index.html';
+  }
+  function toggleFeedback() {
+    if (window.hydraFeedback) {
+      window.hydraFeedback.toggle();
+    } else if (window.xemitter) {
+      window.xemitter.emit('feedback:toggle');
     }
-
-    window.amakit.login(true)
-      .then(() => {
-        intercomNotify("Successfully authenticated with Cloud!");
-        updateAuthUI(true);
-        loadAllSketches();
-      })
-      .catch((err) => {
-        showError(err || "Login failed");
-        updateAuthUI(false);
-      });
+  }
+  function openMidiMapping() {
+    if (window.midiMapping) window.midiMapping.open();
   }
 
-  function updateAuthUI(isAuthenticated) {
-    const dot = document.getElementById('cloud-status-dot');
-    const btn = document.getElementById('cloud-login-btn');
-    if (dot && btn) {
-      if (isAuthenticated) {
-        dot.classList.add('active');
-        dot.title = "Connected to Cloud";
-        btn.innerText = "Disconnect";
-        btn.onclick = () => {
-          localStorage.removeItem("awsCredentials");
-          if (window.amakit) window.amakit.isAuthenticated = false;
-          updateAuthUI(false);
-          intercomNotify("Disconnected from Cloud");
-          loadAllSketches();
-        };
-      } else {
-        dot.classList.remove('active');
-        dot.title = "Not connected to Cloud";
-        btn.innerText = "Login to Cloud";
-        btn.onclick = () => handleCloudLogin();
-      }
+  /**
+   * Cloud (Amakit) authentication service.
+   */
+  function isCloudAvailable() {
+    return Boolean(window.amakit);
+  }
+
+  /** Resolve to true if stored credentials can log in silently. */
+  async function restoreSession() {
+    const amakit = window.amakit;
+    if (!amakit || !amakit.getCredentials()) return false;
+    try {
+      await amakit.login(false);
+      return true;
+    } catch (e) {
+      return false;
     }
+  }
+
+  /** Interactive login; rejects on failure. */
+  function login() {
+    return window.amakit.login(true);
+  }
+  function logout() {
+    remove(PREF_KEYS.awsCredentials);
+    if (window.amakit) window.amakit.isAuthenticated = false;
+  }
+
+  /**
+   * Cloud synchronisation actions.
+   */
+  async function restoreCloudSession() {
+    if (!isCloudAvailable()) return;
+    setState({
+      cloudAuthenticated: await restoreSession()
+    });
+  }
+  function loginToCloud() {
+    if (!isCloudAvailable()) {
+      notifyError('Amakit module not loaded');
+      return;
+    }
+    login().then(() => {
+      notify('Successfully authenticated with Cloud!');
+      setState({
+        cloudAuthenticated: true
+      });
+      reloadSketches();
+    }).catch(err => {
+      notifyError(err || 'Login failed');
+      setState({
+        cloudAuthenticated: false
+      });
+    });
+  }
+  function logoutFromCloud() {
+    logout();
+    setState({
+      cloudAuthenticated: false
+    });
+    notify('Disconnected from Cloud');
+    reloadSketches();
   }
 
   /**
@@ -1098,12 +978,9 @@ var HydraliskPlayer = (function (exports) {
     decode(hashStr = typeof window !== "undefined" ? window.location.hash : "") {
       const settings = {};
       if (!hashStr) return settings;
-
       let raw = hashStr.startsWith("#") ? hashStr.substring(1) : hashStr;
       if (!raw) return settings;
-
       const pairs = raw.split("|");
-
       for (const pair of pairs) {
         if (!pair) continue;
         // Match protocol: key [a-z] followed by value [a-z0-9][0-9]*
@@ -1112,7 +989,6 @@ var HydraliskPlayer = (function (exports) {
           const keyChar = match[1].toLowerCase();
           const rawVal = match[2];
           const settingsKey = this.keyMap[keyChar] || keyChar;
-
           if (settingsKey === "bpm") {
             const num = parseInt(rawVal, 10);
             if (!isNaN(num)) settings[settingsKey] = num;
@@ -1128,7 +1004,6 @@ var HydraliskPlayer = (function (exports) {
           }
         }
       }
-
       return settings;
     }
 
@@ -1139,24 +1014,19 @@ var HydraliskPlayer = (function (exports) {
      */
     encode(settings = {}) {
       const pairs = [];
-
       if (typeof settings.bpm === "number" && !isNaN(settings.bpm)) {
         pairs.push(`b${settings.bpm}`);
       }
-
       if (typeof settings.hud !== "undefined") {
         pairs.push(`h${settings.hud ? 1 : 0}`);
       }
-
       if (settings.automutate) {
         pairs.push(`m${settings.automutate}`);
       }
-
       if (typeof settings.speed === "number" && !isNaN(settings.speed)) {
         const speedVal = Math.round(settings.speed * 10);
         pairs.push(`s${speedVal}`);
       }
-
       return "#" + pairs.join("|");
     }
 
@@ -1175,10 +1045,8 @@ var HydraliskPlayer = (function (exports) {
 
   // Instantiate singleton
   const playerSettings = new PlayerSettings();
-
   if (typeof window !== "undefined") {
     window.playerSettings = playerSettings;
-
     if (window.HydraliskPlugins) {
       window.HydraliskPlugins.register({
         id: "player-settings",
@@ -1191,392 +1059,1192 @@ var HydraliskPlayer = (function (exports) {
   }
 
   /**
-   * Hydralisk Performance Settings Hash Sync & Protocol Handler
-   * Manages encoding and decoding performance state in URL hash fragments.
+   * URL hash performance settings (protocol: #b120|h1|m4|s10).
+   * Thin wrapper around the shared PlayerSettings codec from modules/settings.js.
    */
-
-
-  /**
-   * Sync current live performance state to URL location.hash fragment according to protocol: #b120|h1|m4|s10
-   */
-  function syncPerformanceSettingsToHash() {
-    if (window.playerSettings && typeof window.playerSettings.syncToHash === 'function') {
-      window.playerSettings.syncToHash({
-        bpm: window.bpm || state.baseBpm || 120,
-        hud: isUIHidden() ? 0 : 1,
-        automutate: state.automutateMode || 'off',
-        speed: window.speed || 1.0
-      });
-    }
+  function readHashSettings() {
+    return playerSettings.decode(window.location.hash);
+  }
+  function writeHashSettings({
+    bpm,
+    hud,
+    automutate,
+    speed
+  }) {
+    playerSettings.syncToHash({
+      bpm,
+      hud,
+      automutate,
+      speed
+    });
   }
 
   /**
-   * Decode performance state from location.hash fragment and apply to player state
+   * Player lifecycle: engine start-up and URL hash settings.
    */
-  function applySettingsFromHash() {
-    if (!window.playerSettings || typeof window.playerSettings.decode !== 'function') return;
-    const settings = window.playerSettings.decode(window.location.hash);
+  const SPLASH_FADE_MS = 500;
+  function shouldAutoLaunch() {
+    return readString(PREF_KEYS.welcomeClosed) === 'true';
+  }
 
-    if (typeof settings.bpm === 'number') {
-      state.baseBpm = settings.bpm;
-      updateBPM(settings.bpm);
-    }
-
-    if (typeof settings.hud === 'number') {
-      const isHidden = isUIHidden();
-      if (settings.hud === 0 && !isHidden) {
-        toggleUI();
-      } else if (settings.hud === 1 && isHidden) {
-        toggleUI();
-      }
-    }
-
-    if (settings.automutate) {
-      setAutomutateMode(settings.automutate, true);
-    }
-
+  /** Apply performance settings encoded in the URL hash (#b120|h1|m4|s10). */
+  function applyHashSettings() {
+    const settings = readHashSettings();
+    if (typeof settings.bpm === 'number') setBpm(settings.bpm);
+    if (typeof settings.hud === 'number') setUIHidden(settings.hud === 0);
+    if (settings.automutate) setAutomutateMode(settings.automutate, true);
     if (typeof settings.speed === 'number') {
       window.speed = settings.speed;
-      const speedSlider = document.getElementById('speed-slider');
-      const speedVal = document.getElementById('speed-val');
-      if (speedSlider) speedSlider.value = settings.speed.toFixed(1);
-      if (speedVal) speedVal.innerText = `${settings.speed.toFixed(1)}x`;
+      setState({
+        speed: settings.speed
+      });
     }
+    setState({
+      hashSettingsApplied: true
+    });
+  }
+  function pickInitialSketchIndex(sketches) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetName = urlParams.get('sketch') || readString(PREF_KEYS.lastSketch);
+    return Math.max(0, findSketchIndexByName(sketches, targetName));
   }
 
-  /**
-   * Hydralisk Engine & Canvas Lifecycle Module
-   * Handles Hydra engine initialization, audio context startup, resolution updates, and backup pattern fallback.
-   */
-
-
-  /**
-   * Resize Hydra canvas to fit current viewport resolution
-   */
-  function resizeCanvas() {
-    const canvas = document.getElementById('hydra-canvas');
-    if (canvas) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      if (typeof setResolution === 'function') {
-        setResolution(window.innerWidth, window.innerHeight);
-      }
-    }
-  }
-
-  /**
-   * Initialise Hydra synth and start the experience
-   */
+  /** Initialise Hydra, load the library and start playing. */
   async function startExperience() {
-    const splash = document.getElementById('splash-screen');
-    const canvas = document.getElementById('hydra-canvas');
-
+    if (getState().engineReady) return;
     try {
-      if (canvas) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-
-      if (typeof Hydra !== 'undefined') {
-        state.hydraInstance = new Hydra({
-          canvas: canvas,
-          detectAudio: true,
-          makeGlobal: true,
-          width: window.innerWidth,
-          height: window.innerHeight
+      initHydra();
+      setState({
+        engineReady: true
+      });
+      writeString(PREF_KEYS.welcomeClosed, 'true');
+      if (getState().splash === 'visible') setState({
+        splash: 'fading'
+      });
+      setTimeout(() => {
+        setState({
+          splash: 'hidden',
+          isPlaying: true
         });
-
-        window.addEventListener('resize', resizeCanvas);
-
-        const hydraAudioCanvas = document.querySelector('body > canvas:not(#hydra-canvas)');
-        if (hydraAudioCanvas) {
-          hydraAudioCanvas.id = 'audio-canvas';
-        }
-        if (window.HydraliskPlugins) {
-          window.HydraliskPlugins.init({ hydra: state.hydraInstance });
-          window.HydraliskPlugins.onHydraReady(state.hydraInstance);
-        }
+        if (window.xemitter) window.xemitter.emit('engine:ready');
+      }, SPLASH_FADE_MS);
+      const sketches = await reloadSketches();
+      if (sketches.length > 0) {
+        playSketch(pickInitialSketchIndex(sketches));
       } else {
-        throw new Error('Hydra player engine library not loaded.');
+        playFallbackSketch();
       }
-
-      // Persist welcome screen closed in localStorage
-      try {
-        localStorage.setItem('welcomeScreenClosed', 'true');
-      } catch (e) {}
-
-      // Fade out splash
-      if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => {
-          splash.style.display = 'none';
-          state.isPlaying = true;
-          updatePlayPauseButton();
-          if (window.xemitter) window.xemitter.emit('engine:ready');
-        }, 500);
-      }
-
-      // Load sketches
-      await loadAllSketches();
-
-      // Check URL querystring or localStorage for sketch protocol
-      const urlParams = new URLSearchParams(window.location.search);
-      const targetName = urlParams.get('sketch') || localStorage.getItem('lastSelectedSketchName');
-
-      let initialIdx = 0;
-      if (targetName && state.sketchesList.length > 0) {
-        const foundIdx = state.sketchesList.findIndex(s => s.name && s.name.toLowerCase() === targetName.toLowerCase());
-        if (foundIdx >= 0) initialIdx = foundIdx;
-      }
-
-      if (state.sketchesList.length > 0) {
-        playSketch(initialIdx);
-      } else {
-        playBackupVisual();
-      }
-
-      applySettingsFromHash();
-      window.addEventListener('hashchange', applySettingsFromHash);
-
-      showToast("Visual engine initialized successfully");
+      applyHashSettings();
+      window.addEventListener('hashchange', applyHashSettings);
+      notify('Visual engine initialized successfully');
     } catch (err) {
       console.error(err);
-      showError(err);
+      notifyError(err);
     }
+  }
+
+  const KEY_BINDINGS = {
+    ArrowLeft: {
+      action: playPrevSketch,
+      preventDefault: true
+    },
+    ArrowRight: {
+      action: playNextSketch,
+      preventDefault: true
+    },
+    KeyR: {
+      action: playRandomSketch
+    },
+    KeyH: {
+      action: toggleUI
+    },
+    KeyT: {
+      action: toggleTouchActions
+    },
+    KeyF: {
+      action: toggleFullscreen
+    }
+  };
+
+  /** Global single-key performance shortcuts (ignored while typing). */
+  function useHotkeys() {
+    React.useEffect(() => {
+      const onKeyDown = e => {
+        const tag = document.activeElement?.tagName;
+        if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+        if (e.repeat) return;
+        const binding = KEY_BINDINGS[e.code];
+        if (!binding) return;
+        if (binding.preventDefault) e.preventDefault();
+        binding.action();
+      };
+      document.addEventListener('keydown', onKeyDown);
+      return () => document.removeEventListener('keydown', onKeyDown);
+    }, []);
   }
 
   /**
-   * Backup visual pattern if sketch fetching fails
+   * Tracks mobile mode and exposes the visual viewport width as a CSS variable.
+   * Mobile browsers can keep a wider layout viewport than the visible one, so the
+   * touch sheet is sized from the visual viewport to avoid trailing off-screen.
    */
-  function playBackupVisual() {
-    if (typeof hush === 'function') hush();
-    if (typeof osc === 'function') {
-      osc(10, 0.1, 1.2)
-        .color(0.2, 0.7, 0.9)
-        .rotate(0.1, 0.05)
-        .out(typeof o0 !== 'undefined' ? o0 : undefined);
-    }
+  function useViewport() {
+    React.useEffect(() => {
+      const update = () => {
+        const width = window.visualViewport?.width || document.documentElement.clientWidth;
+        document.documentElement.style.setProperty('--player-viewport-width', `${width}px`);
+        updateViewport();
+      };
+      update();
+      window.addEventListener('resize', update);
+      window.visualViewport?.addEventListener('resize', update);
+      return () => {
+        window.removeEventListener('resize', update);
+        window.visualViewport?.removeEventListener('resize', update);
+      };
+    }, []);
+  }
 
-    updateNowPlaying({
-      name: "Default Oscillation",
-      author: "System",
-      bpm: 120,
-      code: "osc(10, 0.1, 1.2).color(0.2, 0.7, 0.9).rotate(0.1, 0.05).out(o0);"
+  /**
+   * Subscribe a component to a slice of the player store.
+   * The selector must return a stable value (primitive or a reference held in state)
+   * so React can skip re-renders when the slice is unchanged.
+   */
+  function useStore(selector) {
+    return React.useSyncExternalStore(store.subscribe, () => selector(store.getState()));
+  }
+
+  /** Runs `triggerMutation` on a beat-synced interval while automutate is on. */
+  function useAutomutateClock() {
+    const mode = useStore(s => s.automutateMode);
+    const bpm = useStore(s => s.bpm);
+    React.useEffect(() => {
+      if (mode === 'off') return undefined;
+      const msPerBeat = 60000 / (bpm || DEFAULT_BPM);
+      const id = setInterval(triggerMutation, msPerBeat * beatsForMode(mode));
+      return () => clearInterval(id);
+    }, [mode, bpm]);
+  }
+
+  /**
+   * Mirrors live performance settings into the URL hash (#b120|h1|m4|s10).
+   * Starts only after the incoming hash has been applied, so it is never overwritten.
+   */
+  function useHashSync() {
+    const ready = useStore(s => s.hashSettingsApplied);
+    const bpm = useStore(s => s.bpm);
+    const hidden = useStore(selectIsUIHidden);
+    const automutate = useStore(s => s.automutateMode);
+    const speed = useStore(s => s.speed);
+    React.useEffect(() => {
+      if (!ready) return;
+      writeHashSettings({
+        bpm,
+        hud: hidden ? 0 : 1,
+        automutate,
+        speed: speed || 1.0
+      });
+    }, [ready, bpm, hidden, automutate, speed]);
+  }
+
+  /** Flags MIDI availability once the browser grants Web MIDI access. */
+  function useMidiAccess() {
+    React.useEffect(() => {
+      if (!navigator.requestMIDIAccess) return;
+      navigator.requestMIDIAccess().then(() => setState({
+        midiAvailable: true
+      })).catch(() => {});
+    }, []);
+  }
+
+  /** Launch screen: the click gesture unlocks AudioContext & WebMIDI. */
+  function SplashScreen() {
+    const splash = useStore(s => s.splash);
+    if (splash === 'hidden') return null;
+    return /*#__PURE__*/React.createElement("div", {
+      id: "splash-screen",
+      className: "splash-screen",
+      style: splash === 'fading' ? {
+        opacity: 0
+      } : undefined
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "splash-card"
+    }, /*#__PURE__*/React.createElement("h1", {
+      className: "splash-logo"
+    }, "HYDRALISK"), /*#__PURE__*/React.createElement("p", {
+      className: "splash-description"
+    }, "A dedicated presentation player for live-coded Hydra visuals. Feed scripts directly to the canvas, map physical MIDI controls, and run audio-reactive synthesizers in fullscreen."), /*#__PURE__*/React.createElement("button", {
+      id: "start-experience-btn",
+      className: "start-btn",
+      onClick: startExperience
+    }, "Launch Player & Engine"), /*#__PURE__*/React.createElement("div", {
+      className: "splash-footer"
+    }, "Requires microphone access for audio-reactive visuals.")));
+  }
+
+  /** Fullscreen background canvas Hydra renders into. */
+  function HydraCanvas() {
+    const ref = React.useCallback(el => {
+      if (el) registerCanvas(el);
+    }, []);
+    return /*#__PURE__*/React.createElement("canvas", {
+      id: "hydra-canvas",
+      ref: ref
     });
   }
 
-  // src/player/hotkeys.js - Keybindings and xemitter event listener setup for Hydralisk Player
+  /** Join truthy class names. */
+  const cx = (...classes) => classes.filter(Boolean).join(' ');
 
-  function setupHotkeysAndEvents() {
-    // Wire xemitter event handlers
-    if (window.xemitter) {
-      window.xemitter.on("taptempo", (data) => handleTapTempo(data));
-      window.xemitter.on("bpm:taptempo", (data) => handleTapTempo(data));
-      window.xemitter.on("gallery:nextSketch", () => playNextSketch());
-      window.xemitter.on("gallery:prevSketch", () => playPrevSketch());
-      window.xemitter.on("gallery:randomSketch", () => playRandomSketch());
-      window.xemitter.on("editor:randomize", () => triggerMutation());
-      window.xemitter.on("editor:jumpBack1", () => undoMutation());
-      window.xemitter.on("gfx:speedSlower", () => nudgeSpeed(-0.1));
-      window.xemitter.on("gfx:speedFaster", () => nudgeSpeed(0.1));
-      window.xemitter.on("gfx:speedDefault", () => {
-        window.speed = 1.0;
-        const speedSlider = document.getElementById('speed-slider');
-        const speedVal = document.getElementById('speed-val');
-        if (speedSlider) speedSlider.value = "1.0";
-        if (speedVal) speedVal.innerText = "1.0x";
-        intercomNotify("Speed: 1.0x");
-      });
-      window.xemitter.on("gfx:speedReverse", () => {
-        window.speed = -1 * (window.speed || 1.0);
-        const speedVal = document.getElementById('speed-val');
-        if (speedVal) speedVal.innerText = window.speed.toFixed(1) + "x";
-        intercomNotify(`Speed: ${window.speed.toFixed(1)}x`);
-      });
-      window.xemitter.on("hideAll", () => toggleUI());
-      window.xemitter.on("fullscreen", () => toggleFullscreen());
-    }
+  const SCROLL_SPEED_PX_PER_SEC = 140;
+  const MIN_DURATION_SEC = 2.2;
+  const GAP_BETWEEN_MESSAGES_MS = 150;
 
-    // Keyboard shortcut listeners
-    document.addEventListener('keydown', (e) => {
-      if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') {
-        return;
+  /** Thin top ticker that scrolls queued intercom messages one at a time. */
+  function IntercomBar() {
+    const hidden = useStore(selectIsUIHidden);
+    const [current, setCurrent] = React.useState(null);
+    const busyRef = React.useRef(false);
+    const viewportRef = React.useRef(null);
+    const trackRef = React.useRef(null);
+    const pump = React.useCallback(() => {
+      if (busyRef.current) return;
+      const next = takeNext();
+      busyRef.current = Boolean(next);
+      setCurrent(next);
+    }, []);
+    React.useEffect(() => {
+      pump();
+      return subscribe(pump);
+    }, [pump]);
+    React.useLayoutEffect(() => {
+      const track = trackRef.current;
+      const viewport = viewportRef.current;
+      if (!track || !viewport) return undefined;
+      if (!current) {
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(0)';
+        return undefined;
       }
-
-      if (e.repeat) return;
-
-      switch (e.code) {
-        case 'ArrowLeft':
-          e.preventDefault();
-          playPrevSketch();
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          playNextSketch();
-          break;
-        case 'KeyR':
-          playRandomSketch();
-          break;
-        case 'KeyH':
-          toggleUI();
-          break;
-        case 'KeyT':
-          toggleTouchActions();
-          break;
-        case 'KeyF':
-          toggleFullscreen();
-          break;
-      }
-    });
+      const viewportWidth = viewport.offsetWidth || window.innerWidth;
+      const textWidth = track.offsetWidth || current.message.length * 8;
+      const startX = viewportWidth;
+      const endX = -textWidth - 20;
+      const durationSec = Math.max(MIN_DURATION_SEC, (startX - endX) / SCROLL_SPEED_PX_PER_SEC);
+      track.style.transition = 'none';
+      track.style.transform = `translateX(${startX}px)`;
+      void track.offsetWidth; // force reflow before starting the transition
+      track.style.transition = `transform ${durationSec}s linear`;
+      track.style.transform = `translateX(${endX}px)`;
+      let ended = false;
+      let gapTimer = null;
+      const onEnd = () => {
+        if (ended) return;
+        ended = true;
+        clearTimeout(fallbackTimer);
+        track.removeEventListener('transitionend', onEnd);
+        gapTimer = setTimeout(() => {
+          busyRef.current = false;
+          pump();
+        }, GAP_BETWEEN_MESSAGES_MS);
+      };
+      track.addEventListener('transitionend', onEnd);
+      const fallbackTimer = setTimeout(onEnd, durationSec * 1000 + 200);
+      return () => {
+        clearTimeout(fallbackTimer);
+        clearTimeout(gapTimer);
+        track.removeEventListener('transitionend', onEnd);
+      };
+    }, [current, pump]);
+    const isError = Boolean(current?.isError);
+    return /*#__PURE__*/React.createElement("div", {
+      id: "intercom-bar",
+      className: cx('intercom-bar', hidden && 'hidden')
+    }, /*#__PURE__*/React.createElement("div", {
+      id: "intercom-badge",
+      className: cx('intercom-badge', isError && 'error')
+    }, isError ? 'HYDRA // ERR' : 'HYDRA // SYS'), /*#__PURE__*/React.createElement("div", {
+      id: "intercom-viewport",
+      className: "intercom-viewport",
+      ref: viewportRef
+    }, /*#__PURE__*/React.createElement("div", {
+      id: "intercom-track",
+      className: cx('intercom-track', isError && 'error'),
+      ref: trackRef
+    }, current ? current.message : '')));
   }
 
-  // src/player/main.js - Entry point for modular Hydralisk Visual Player
+  const Svg = ({
+    size = 18,
+    filled = true,
+    children
+  }) => /*#__PURE__*/React.createElement("svg", {
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: filled ? 'currentColor' : 'none',
+    stroke: filled ? undefined : 'currentColor',
+    strokeWidth: filled ? undefined : 2
+  }, children);
+  const ChevronRightIcon = ({
+    size = 20
+  }) => /*#__PURE__*/React.createElement(Svg, {
+    size: size,
+    filled: false
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M9 18l6-6-6-6"
+  }));
+  const ChevronLeftIcon = ({
+    size = 18
+  }) => /*#__PURE__*/React.createElement(Svg, {
+    size: size,
+    filled: false
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M15 18l-6-6 6-6"
+  }));
+  const PrevIcon = () => /*#__PURE__*/React.createElement(Svg, null, /*#__PURE__*/React.createElement("path", {
+    d: "M6 6h2v12H6zm3.5 6l8.5 6V6z"
+  }));
+  const NextIcon = () => /*#__PURE__*/React.createElement(Svg, null, /*#__PURE__*/React.createElement("path", {
+    d: "M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"
+  }));
+  const PlayIcon = () => /*#__PURE__*/React.createElement(Svg, null, /*#__PURE__*/React.createElement("path", {
+    d: "M8 5v14l11-7z"
+  }));
+  const PauseIcon = () => /*#__PURE__*/React.createElement(Svg, null, /*#__PURE__*/React.createElement("path", {
+    d: "M6 19h4V5H6v14zm8-14v14h4V5h-4z"
+  }));
+  const ShuffleIcon = () => /*#__PURE__*/React.createElement(Svg, null, /*#__PURE__*/React.createElement("path", {
+    d: "M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"
+  }));
 
-  // Attach player settings to window
-  window.playerSettings = playerSettings;
+  /** Floating button that re-opens the collapsed sidebar. */
+  function ExpandTrigger() {
+    const visible = useStore(selectExpandTriggerVisible);
+    return /*#__PURE__*/React.createElement("div", {
+      id: "expand-trigger",
+      className: cx('expand-trigger', visible && 'visible'),
+      onClick: toggleCollapse,
+      title: "Show Controls"
+    }, /*#__PURE__*/React.createElement(ChevronRightIcon, null));
+  }
 
-  // Bind all global functions to window for backward compatibility and inline HTML onclick handlers
-  window.startExperience = startExperience;
-  window.showToast = showToast;
-  window.intercomNotify = intercomNotify;
-  window.showError = showError;
-
-  window.playSketch = playSketch;
-  window.playPrevSketch = playPrevSketch;
-  window.playNextSketch = playNextSketch;
-  window.playRandomSketch = playRandomSketch;
-  window.togglePlayPause = togglePlayPause;
-  window.updatePlayPauseButton = updatePlayPauseButton;
-  window.runCustomCode = runCustomCode;
-  window.resetCustomCode = resetCustomCode;
-
-  window.updateBPM = updateBPM;
-  window.handleTapTempo = handleTapTempo;
-  window.nudgeTempo = nudgeTempo;
-  window.nudgeSpeed = nudgeSpeed;
-  window.resetSpeed = resetSpeed;
-
-  window.setAutomutateMode = setAutomutateMode;
-  window.triggerMutation = triggerMutation;
-  window.undoMutation = undoMutation;
-  window.redoMutation = redoMutation;
-
-  window.switchTab = switchTab;
-  window.toggleCollapse = toggleCollapse;
-  window.toggleUI = toggleUI;
-  window.toggleTouchActions = toggleTouchActions;
-  window.toggleMobileAutomutate = toggleMobileAutomutate;
-  window.updateTouchActionsUI = updateTouchActionsUI;
-  window.toggleFullscreen = toggleFullscreen;
-  window.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
-  window.handleCloudLogin = handleCloudLogin;
-
-  // Initialize event handlers & DOM hooks on DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', () => {
-    setupHotkeysAndEvents();
-
-    // Wire tab buttons
-    const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(btn => {
-      btn.onclick = () => switchTab(btn.getAttribute('data-tab'));
-    });
-
-    // Wire BPM Number Input
-    const bpmInput = document.getElementById('bpm-number-input');
-    if (bpmInput) {
-      bpmInput.onchange = (e) => {
-        const val = Math.max(20, Math.min(240, parseInt(e.target.value) || 120));
-        state.baseBpm = val;
-        updateBPM(val);
-      };
-    }
-
-    // Wire Pitch Bend Fader
-    const bendSlider = document.getElementById('bpm-bend-slider');
-    if (bendSlider) {
-      bendSlider.oninput = (e) => {
-        const offsetPercent = parseFloat(e.target.value);
-        const bentBpm = Math.round(state.baseBpm * (1 + offsetPercent / 100));
-        updateBPM(bentBpm);
-      };
-
-      const resetBend = () => {
-        state.baseBpm = window.bpm || 120;
-        bendSlider.value = 0;
-      };
-      bendSlider.onmouseup = resetBend;
-      bendSlider.ontouchend = resetBend;
-    }
-
-    // Wire Speed Slider
-    const speedSlider = document.getElementById('speed-slider');
-    const speedVal = document.getElementById('speed-val');
-    if (speedSlider && speedVal) {
-      speedSlider.oninput = (e) => {
-        const speed = parseFloat(e.target.value);
-        if (state.isPlaying) {
-          window.speed = speed;
+  /**
+   * Drives an element's scale from Hydra's audio volume (`window.a.vol`).
+   * Updates the DOM directly from requestAnimationFrame to avoid per-frame re-renders.
+   */
+  function useAudioLevel(ref) {
+    React.useEffect(() => {
+      let frameId;
+      const update = () => {
+        const el = ref.current;
+        if (el) {
+          if (window.a && typeof window.a.vol !== 'undefined') {
+            const vol = window.a.vol;
+            el.classList.add('active');
+            if (vol > 0.01) {
+              el.style.transform = `scale(${1 + vol * 0.15})`;
+              el.title = `Audio reactive active (Vol: ${vol.toFixed(2)})`;
+            } else {
+              el.style.transform = 'scale(1)';
+            }
+          } else {
+            el.classList.remove('active');
+          }
         }
-        speedVal.innerText = speed.toFixed(1) + 'x';
+        frameId = requestAnimationFrame(update);
       };
-    }
+      update();
+      return () => cancelAnimationFrame(frameId);
+    }, [ref]);
+  }
 
-    // Wire sketch search input
-    const searchInput = document.getElementById('sketch-search-input');
-    if (searchInput) {
-      searchInput.oninput = () => filterSketches();
-    }
-
-    // Request MIDI Access if supported
-    if (navigator.requestMIDIAccess) {
-      navigator.requestMIDIAccess().then(() => {
-        const midiDot = document.getElementById('midi-indicator-dot');
-        if (midiDot) midiDot.classList.add('active');
-      }).catch(() => { });
-    }
-
-    // Check Amakit cloud credentials
-    if (window.amakit) {
-      const creds = window.amakit.getCredentials();
-      if (creds) {
-        window.amakit.login(false)
-          .then(() => updateAuthUI(true))
-          .catch(() => updateAuthUI(false));
-      } else {
-        updateAuthUI(false);
-      }
-    }
-
-    if (isMobileDevice()) {
-      try {
-        const savedTouchActions = localStorage.getItem('touchActionsEnabled');
-        state.touchActionsEnabled = savedTouchActions === null ? true : savedTouchActions === 'true';
-      } catch (e) {
-        state.touchActionsEnabled = true;
-      }
-    }
-    updateTouchActionsUI();
-    window.addEventListener('resize', updateTouchActionsUI);
-    window.visualViewport?.addEventListener('resize', updateTouchActionsUI);
-
-    // Auto-launch player experience if welcome screen was previously closed
-    try {
-      if (localStorage.getItem('welcomeScreenClosed') === 'true') {
-        const splash = document.getElementById('splash-screen');
-        if (splash) splash.style.display = 'none';
-        startExperience();
-      }
-    } catch (e) {}
+  const StatusDot = /*#__PURE__*/React.forwardRef(function StatusDot({
+    active,
+    midiActive,
+    title,
+    id
+  }, ref) {
+    return /*#__PURE__*/React.createElement("div", {
+      ref: ref,
+      id: id,
+      className: cx('status-dot', active && 'active', midiActive && 'midi-active'),
+      title: title
+    });
   });
 
+  function AudioIndicator() {
+    const ref = React.useRef(null);
+    useAudioLevel(ref);
+    return /*#__PURE__*/React.createElement(StatusDot, {
+      ref: ref,
+      id: "audio-indicator-dot",
+      title: "Audio Reactive Ready"
+    });
+  }
+  function PanelHeader() {
+    const midiAvailable = useStore(s => s.midiAvailable);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "panel-header"
+    }, /*#__PURE__*/React.createElement("h2", {
+      className: "panel-title"
+    }, "HYDRALISK"), /*#__PURE__*/React.createElement("div", {
+      className: "header-status"
+    }, /*#__PURE__*/React.createElement("button", {
+      id: "nav-editor-btn",
+      className: "nav-editor-btn",
+      onClick: openEditorWithCurrentSketch,
+      title: "Open Full Editor"
+    }, "Editor \u2197"), /*#__PURE__*/React.createElement(AudioIndicator, null), /*#__PURE__*/React.createElement(StatusDot, {
+      id: "midi-indicator-dot",
+      active: midiAvailable,
+      title: "MIDI Access Active"
+    }), /*#__PURE__*/React.createElement("button", {
+      className: "collapse-btn feedback-toggle",
+      onClick: toggleFeedback,
+      title: "Report Bug / Send Feedback (Cmd+Shift+F)"
+    }, "\uD83D\uDCAC"), /*#__PURE__*/React.createElement("button", {
+      className: "collapse-btn",
+      onClick: toggleCollapse,
+      title: "Hide Sidebar"
+    }, /*#__PURE__*/React.createElement(ChevronLeftIcon, null))));
+  }
+
+  function PanelTabs() {
+    const currentTab = useStore(s => s.currentTab);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "panel-tabs"
+    }, TABS.map(({
+      id,
+      label
+    }) => /*#__PURE__*/React.createElement("button", {
+      key: id,
+      className: cx('tab-btn', currentTab === id && 'active'),
+      "data-tab": id,
+      onClick: () => switchTab(id)
+    }, label)));
+  }
+
+  /** Tab body wrapper; all tabs stay mounted so their state survives switching. */
+  function TabPanel({
+    id,
+    children
+  }) {
+    const currentTab = useStore(s => s.currentTab);
+    return /*#__PURE__*/React.createElement("div", {
+      id: `${id}-tab`,
+      className: cx('tab-content', currentTab === id && 'active')
+    }, children);
+  }
+
+  function SearchBar() {
+    const query = useStore(s => s.searchQuery);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "search-wrapper"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      id: "sketch-search-input",
+      className: "search-input",
+      placeholder: "Search sketches or authors...",
+      value: query,
+      onChange: e => setSearchQuery(e.target.value)
+    }));
+  }
+
+  /** Pill-shaped toggle used for tag filters and mode selectors. */
+  function FilterTag({
+    active,
+    onClick,
+    title,
+    className,
+    children
+  }) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: cx('filter-tag', active && 'active', className),
+      onClick: onClick,
+      title: title
+    }, children);
+  }
+
+  function TagFilters() {
+    const sketches = useStore(s => s.sketches);
+    const activeTags = useStore(s => s.activeTags);
+    const tags = React.useMemo(() => selectAllTags({
+      sketches
+    }), [sketches]);
+    return /*#__PURE__*/React.createElement("div", {
+      id: "tag-filters-list",
+      className: "tag-filters"
+    }, sketches.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FilterTag, {
+      active: activeTags.length === 0,
+      onClick: clearTags
+    }, "All"), tags.map(tag => /*#__PURE__*/React.createElement(FilterTag, {
+      key: tag,
+      active: activeTags.includes(tag),
+      onClick: () => toggleTag(tag)
+    }, tag))));
+  }
+
+  const SketchItem = /*#__PURE__*/React.memo(function SketchItem({
+    sketch,
+    index,
+    active
+  }) {
+    const tags = (sketch.metadata?.tags || []).join(', ');
+    return /*#__PURE__*/React.createElement("div", {
+      className: cx('sketch-item', active && 'active'),
+      onClick: () => playSketch(index)
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "sketch-item-info"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "sketch-item-name"
+    }, sketch.name), /*#__PURE__*/React.createElement("span", {
+      className: "sketch-item-meta"
+    }, `by ${sketch.author} ${tags ? `• ${tags}` : ''}`)), /*#__PURE__*/React.createElement("div", {
+      className: "sketch-item-indicator"
+    }));
+  });
+
+  function SketchSection({
+    title,
+    entries,
+    currentIndex
+  }) {
+    if (entries.length === 0) return null;
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "sketches-section-title"
+    }, title), entries.map(({
+      sketch,
+      index
+    }) => /*#__PURE__*/React.createElement(SketchItem, {
+      key: `${index}-${sketch.name}`,
+      sketch: sketch,
+      index: index,
+      active: index === currentIndex
+    })));
+  }
+  function SketchList() {
+    const sketches = useStore(s => s.sketches);
+    const query = useStore(s => s.searchQuery);
+    const activeTags = useStore(s => s.activeTags);
+    const currentIndex = useStore(s => s.currentSketchIndex);
+    const {
+      locals,
+      builtIns,
+      total
+    } = React.useMemo(() => {
+      const visible = new Set(filterSketches(sketches, query, activeTags));
+      const entries = sketches.map((sketch, index) => ({
+        sketch,
+        index
+      })).filter(({
+        sketch
+      }) => visible.has(sketch));
+      return {
+        locals: entries.filter(({
+          sketch
+        }) => sketch.isLocal),
+        builtIns: entries.filter(({
+          sketch
+        }) => !sketch.isLocal),
+        total: entries.length
+      };
+    }, [sketches, query, activeTags]);
+    return /*#__PURE__*/React.createElement("div", {
+      id: "sketches-list-container",
+      className: "sketches-list"
+    }, /*#__PURE__*/React.createElement(SketchSection, {
+      title: "Your Sketches (Local)",
+      entries: locals,
+      currentIndex: currentIndex
+    }), /*#__PURE__*/React.createElement(SketchSection, {
+      title: "Built-in Library",
+      entries: builtIns,
+      currentIndex: currentIndex
+    }), sketches.length > 0 && total === 0 && /*#__PURE__*/React.createElement("div", {
+      className: "sketches-empty"
+    }, "No sketches found"));
+  }
+
+  function LibraryTab() {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(SearchBar, null), /*#__PURE__*/React.createElement(TagFilters, null), /*#__PURE__*/React.createElement(SketchList, null));
+  }
+
+  /** Lightweight code view to inspect/modify the running sketch. */
+  function EditorTab() {
+    const code = useStore(s => s.editorCode);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "code-container"
+    }, /*#__PURE__*/React.createElement("textarea", {
+      id: "editor-textarea",
+      className: "code-textarea",
+      spellCheck: false,
+      placeholder: "// Write or modify Hydra synth code here...",
+      value: code,
+      onChange: e => setEditorCode(e.target.value)
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "code-actions"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "action-btn",
+      onClick: resetCustomCode
+    }, "Reset"), /*#__PURE__*/React.createElement("button", {
+      className: "action-btn accent",
+      onClick: runCustomCode
+    }, "Run Code")));
+  }
+
+  /**
+   * Returns true for `durationMs` every time `trigger` changes (ignoring the initial value).
+   * Used for short visual flashes (tap tempo button, mutation highlight).
+   */
+  function usePulse(trigger, durationMs) {
+    const [active, setActive] = React.useState(false);
+    React.useEffect(() => {
+      if (!trigger) return undefined;
+      setActive(true);
+      const id = setTimeout(() => setActive(false), durationMs);
+      return () => clearTimeout(id);
+    }, [trigger, durationMs]);
+    return active;
+  }
+
+  const BEND_RANGE_PERCENT = 15;
+
+  /**
+   * BPM number input. Commits on the native `change` event (blur, Enter, spinner)
+   * rather than on every keystroke, and mirrors external tempo changes.
+   */
+  function BpmInput() {
+    const bpm = useStore(s => s.bpm);
+    const ref = React.useRef(null);
+    React.useEffect(() => {
+      if (ref.current) ref.current.value = bpm;
+    }, [bpm]);
+    React.useEffect(() => {
+      const input = ref.current;
+      const onChange = e => setBpmFromInput(e.target.value);
+      input.addEventListener('change', onChange);
+      return () => input.removeEventListener('change', onChange);
+    }, []);
+    return /*#__PURE__*/React.createElement("input", {
+      ref: ref,
+      type: "number",
+      id: "bpm-number-input",
+      className: "search-input bpm-input",
+      min: MIN_BPM,
+      max: MAX_BPM,
+      defaultValue: bpm
+    });
+  }
+  function TapButton() {
+    const tapPulse = useStore(s => s.tapPulse);
+    const flashing = usePulse(tapPulse, 100);
+    return /*#__PURE__*/React.createElement("button", {
+      id: "tap-tempo-btn",
+      className: cx('filter-tag', 'tap-btn', flashing && 'flash'),
+      onClick: () => tapTempo()
+    }, "TAP");
+  }
+
+  /** Spring-loaded pitch fader: bends tempo while held, snaps back to center on release. */
+  function PitchBendFader() {
+    const [offset, setOffset] = React.useState(0);
+    const onChange = e => {
+      const value = parseFloat(e.target.value);
+      setOffset(value);
+      bendTempo(value);
+    };
+    const onRelease = () => {
+      releaseTempoBend();
+      setOffset(0);
+    };
+    return /*#__PURE__*/React.createElement("div", {
+      className: "pitch-bend"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "pitch-bend-labels"
+    }, /*#__PURE__*/React.createElement("span", null, `-${BEND_RANGE_PERCENT}%`), /*#__PURE__*/React.createElement("span", null, "PITCH CORRECTION (FADER)"), /*#__PURE__*/React.createElement("span", null, `+${BEND_RANGE_PERCENT}%`)), /*#__PURE__*/React.createElement("input", {
+      type: "range",
+      id: "bpm-bend-slider",
+      className: "slider-input bend-slider",
+      min: -BEND_RANGE_PERCENT,
+      max: BEND_RANGE_PERCENT,
+      step: "0.1",
+      value: offset,
+      onChange: onChange,
+      onMouseUp: onRelease,
+      onTouchEnd: onRelease
+    }));
+  }
+  function TempoControl() {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "slider-group"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "slider-header centered"
+    }, /*#__PURE__*/React.createElement("span", null, "Tempo (BPM)"), /*#__PURE__*/React.createElement("div", {
+      className: "bpm-controls"
+    }, /*#__PURE__*/React.createElement(BpmInput, null), /*#__PURE__*/React.createElement(TapButton, null))), /*#__PURE__*/React.createElement(PitchBendFader, null));
+  }
+
+  function SpeedControl() {
+    const speed = useStore(s => s.speed);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "slider-group"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "slider-header"
+    }, /*#__PURE__*/React.createElement("span", null, "Visual Speed Rate"), /*#__PURE__*/React.createElement("span", {
+      id: "speed-val"
+    }, formatSpeed(speed))), /*#__PURE__*/React.createElement("input", {
+      type: "range",
+      id: "speed-slider",
+      className: "slider-input",
+      min: MIN_SPEED,
+      max: MAX_SPEED,
+      step: "0.1",
+      value: speed,
+      onChange: e => setSpeed(parseFloat(e.target.value))
+    }));
+  }
+
+  /** Glass card with an optional title row, status slot and description. */
+  function InfoCard({
+    title,
+    status,
+    description,
+    spaced,
+    children
+  }) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: cx('info-card', spaced && 'spaced')
+    }, title && /*#__PURE__*/React.createElement("div", {
+      className: "card-header"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "info-label card-title"
+    }, title), status), description && /*#__PURE__*/React.createElement("p", {
+      className: "card-description"
+    }, description), children);
+  }
+
+  function AutomutateCard() {
+    const mode = useStore(s => s.automutateMode);
+    const canUndo = useStore(selectCanUndo);
+    const canRedo = useStore(selectCanRedo);
+    const isOff = mode === 'off';
+    const status = /*#__PURE__*/React.createElement("span", {
+      id: "mutation-status-label",
+      className: cx('sketch-tag', 'status-label', !isOff && 'active')
+    }, mode.toUpperCase() + (isOff ? '' : ' ACTIVE'));
+    return /*#__PURE__*/React.createElement(InfoCard, {
+      spaced: true,
+      title: "Automutate / Mutation Modes",
+      status: status,
+      description: "Automatically modify visual parameters and functions over time."
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "card-field"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "field-label"
+    }, "AUTO-MUTATE INTERVAL"), /*#__PURE__*/React.createElement("div", {
+      className: "tag-filters compact"
+    }, AUTOMUTATE_MODES.map(({
+      mode: m,
+      label,
+      title
+    }) => /*#__PURE__*/React.createElement(FilterTag, {
+      key: m,
+      active: mode === m,
+      title: title,
+      onClick: () => setAutomutateMode(m)
+    }, label)))), /*#__PURE__*/React.createElement("div", {
+      className: "code-actions compact"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "action-btn compact",
+      id: "mutation-undo-btn",
+      onClick: undoMutation,
+      disabled: !canUndo
+    }, "Undo"), /*#__PURE__*/React.createElement("button", {
+      className: "action-btn accent compact grow",
+      onClick: triggerMutation
+    }, "Mutate Now"), /*#__PURE__*/React.createElement("button", {
+      className: "action-btn compact",
+      id: "mutation-redo-btn",
+      onClick: redoMutation,
+      disabled: !canRedo
+    }, "Redo")));
+  }
+
+  function InfoRow({
+    label,
+    children,
+    stacked
+  }) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: cx('info-row', stacked && 'stacked')
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "info-label"
+    }, label), children);
+  }
+  function NowPlayingCard() {
+    const nowPlaying = useStore(s => s.nowPlaying);
+    const mutationPulse = useStore(s => s.mutationPulse);
+    const flashing = usePulse(mutationPulse, 300);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "info-card"
+    }, /*#__PURE__*/React.createElement(InfoRow, {
+      label: "Active Sketch"
+    }, /*#__PURE__*/React.createElement("span", {
+      id: "playing-sketch-name",
+      className: cx('info-value', flashing && 'flash')
+    }, nowPlaying?.name ?? '—')), /*#__PURE__*/React.createElement(InfoRow, {
+      label: "Author"
+    }, /*#__PURE__*/React.createElement("span", {
+      id: "playing-sketch-author",
+      className: "info-value"
+    }, nowPlaying?.author ?? '—')), /*#__PURE__*/React.createElement(InfoRow, {
+      label: "Base Tempo"
+    }, /*#__PURE__*/React.createElement("span", {
+      id: "playing-sketch-bpm",
+      className: "info-value"
+    }, nowPlaying ? `${nowPlaying.bpm} BPM` : '—')), /*#__PURE__*/React.createElement(InfoRow, {
+      label: "Tags",
+      stacked: true
+    }, /*#__PURE__*/React.createElement("div", {
+      id: "playing-sketch-tags",
+      className: "sketch-tags"
+    }, (nowPlaying?.tags || []).map(tag => /*#__PURE__*/React.createElement("span", {
+      key: tag,
+      className: "sketch-tag"
+    }, tag)))));
+  }
+
+  function CloudSyncCard() {
+    const authenticated = useStore(s => s.cloudAuthenticated);
+    return /*#__PURE__*/React.createElement(InfoCard, {
+      spaced: true,
+      title: "Cloud Synchronization",
+      status: /*#__PURE__*/React.createElement(StatusDot, {
+        id: "cloud-status-dot",
+        active: authenticated,
+        title: authenticated ? 'Connected to Cloud' : 'Not connected to Cloud'
+      }),
+      description: "Access your saved sketches from the cloud database."
+    }, /*#__PURE__*/React.createElement("button", {
+      id: "cloud-login-btn",
+      className: "action-btn",
+      onClick: authenticated ? logoutFromCloud : loginToCloud
+    }, authenticated ? 'Disconnect' : 'Login to Cloud'));
+  }
+
+  function MidiMappingCard() {
+    const sketchUsesMidi = useStore(s => Boolean(s.nowPlaying?.midi));
+    return /*#__PURE__*/React.createElement(InfoCard, {
+      spaced: true,
+      title: "MIDI Mapping System",
+      status: /*#__PURE__*/React.createElement(StatusDot, {
+        id: "midi-status-dot",
+        midiActive: sketchUsesMidi,
+        title: sketchUsesMidi ? 'Uses MIDI input' : 'No MIDI required'
+      }),
+      description: "Map physical MIDI dials/keys directly to speed, sketches, or custom LFO parameters."
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "action-btn",
+      onClick: openMidiMapping
+    }, "Configure MIDI Keys"));
+  }
+
+  function PerformanceTab() {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TempoControl, null), /*#__PURE__*/React.createElement(SpeedControl, null), /*#__PURE__*/React.createElement(AutomutateCard, null), /*#__PURE__*/React.createElement(NowPlayingCard, null), /*#__PURE__*/React.createElement(CloudSyncCard, null), /*#__PURE__*/React.createElement(MidiMappingCard, null));
+  }
+
+  function PlayPauseButton() {
+    const isPlaying = useStore(s => s.isPlaying);
+    return /*#__PURE__*/React.createElement("button", {
+      id: "play-pause-btn",
+      className: "control-icon-btn play-pause",
+      onClick: togglePlayPause,
+      title: isPlaying ? 'Pause Loop (Space)' : 'Resume Loop (Space)'
+    }, isPlaying ? /*#__PURE__*/React.createElement(PauseIcon, null) : /*#__PURE__*/React.createElement(PlayIcon, null));
+  }
+
+  /** Sidebar footer: transport controls and touch overlay toggle. */
+  function PlaybackControls() {
+    const touchActionsEnabled = useStore(s => s.touchActionsEnabled);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "playback-controls"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "controls-row"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "control-icon-btn",
+      onClick: playPrevSketch,
+      title: "Previous Sketch (Left Arrow)"
+    }, /*#__PURE__*/React.createElement(PrevIcon, null)), /*#__PURE__*/React.createElement(PlayPauseButton, null), /*#__PURE__*/React.createElement("button", {
+      className: "control-icon-btn",
+      onClick: playNextSketch,
+      title: "Next Sketch (Right Arrow)"
+    }, /*#__PURE__*/React.createElement(NextIcon, null)), /*#__PURE__*/React.createElement("button", {
+      className: "control-icon-btn",
+      onClick: playRandomSketch,
+      title: "Shuffle/Random Sketch (R)"
+    }, /*#__PURE__*/React.createElement(ShuffleIcon, null))), /*#__PURE__*/React.createElement("div", {
+      className: "touch-toggle-row"
+    }, /*#__PURE__*/React.createElement("button", {
+      id: "touch-actions-hud-btn",
+      className: cx('action-btn', 'touch-actions-hud-btn', touchActionsEnabled && 'active'),
+      onClick: toggleTouchActions
+    }, "Touch Actions Overlay")));
+  }
+
+  /** Floating control drawer: header, tabs and playback footer. */
+  function Sidebar() {
+    const collapsed = useStore(s => s.panelCollapsed);
+    return /*#__PURE__*/React.createElement("div", {
+      id: "sidebar-panel",
+      className: cx('sidebar-panel', collapsed && 'collapsed')
+    }, /*#__PURE__*/React.createElement(PanelHeader, null), /*#__PURE__*/React.createElement(PanelTabs, null), /*#__PURE__*/React.createElement("div", {
+      className: "panel-body"
+    }, /*#__PURE__*/React.createElement(TabPanel, {
+      id: "library"
+    }, /*#__PURE__*/React.createElement(LibraryTab, null)), /*#__PURE__*/React.createElement(TabPanel, {
+      id: "editor"
+    }, /*#__PURE__*/React.createElement(EditorTab, null)), /*#__PURE__*/React.createElement(TabPanel, {
+      id: "performance"
+    }, /*#__PURE__*/React.createElement(PerformanceTab, null))), /*#__PURE__*/React.createElement(PlaybackControls, null));
+  }
+
+  const SHORTCUTS = [{
+    keys: ['Alt+Space'],
+    label: 'Tap Tempo'
+  }, {
+    keys: ['←', '→'],
+    label: 'Navigate'
+  }, {
+    keys: ['Cmd+]'],
+    label: 'Next'
+  }, {
+    keys: ['R'],
+    label: 'Shuffle'
+  }, {
+    keys: ['H'],
+    label: 'Toggle HUD'
+  }, {
+    keys: ['T'],
+    label: 'Touch Actions'
+  }, {
+    keys: ['F'],
+    label: 'Fullscreen'
+  }, {
+    keys: ['⌘⇧F'],
+    label: 'Feedback'
+  }];
+
+  /** Floating keyboard shortcuts guide (desktop only). */
+  function ShortcutsPanel() {
+    const hidden = useStore(selectShortcutsHidden);
+    return /*#__PURE__*/React.createElement("div", {
+      id: "shortcuts-panel",
+      className: cx('shortcuts-panel', hidden && 'hidden')
+    }, SHORTCUTS.map(({
+      keys,
+      label
+    }) => /*#__PURE__*/React.createElement("span", {
+      key: label
+    }, keys.map((key, i) => /*#__PURE__*/React.createElement(React.Fragment, {
+      key: key
+    }, i > 0 && ' ', /*#__PURE__*/React.createElement("span", {
+      className: "shortcut-key"
+    }, key))), ` ${label}`)));
+  }
+
+  const TEMPO_STEP = 2;
+  const SPEED_STEP = 0.1;
+  function TouchButton({
+    label,
+    onClick,
+    children,
+    id,
+    active
+  }) {
+    return /*#__PURE__*/React.createElement("button", {
+      id: id,
+      className: cx('touch-action-btn', active && 'active'),
+      onClick: onClick,
+      "aria-label": label
+    }, children);
+  }
+  function MobileAutomutateToggle() {
+    const selectedMode = useStore(s => s.selectedAutomutateMode);
+    const active = useStore(s => s.automutateMode !== 'off');
+    return /*#__PURE__*/React.createElement(TouchButton, {
+      id: "mobile-mutate-toggle",
+      label: "Toggle current automutate setting",
+      active: active,
+      onClick: toggleMobileAutomutate
+    }, "~", selectedMode, "b");
+  }
+
+  /** Mobile / hidden-HUD bottom sheet with large performance buttons. */
+  function TouchActionsOverlay() {
+    const visible = useStore(selectTouchOverlayVisible);
+    return /*#__PURE__*/React.createElement("div", {
+      id: "touch-actions-overlay",
+      className: cx('touch-actions-overlay', visible && 'visible'),
+      role: "toolbar",
+      "aria-label": "Playability controls"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "touch-actions-card"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "touch-actions-header"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "touch-actions-title"
+    }, "PLAYABILITY"), /*#__PURE__*/React.createElement("button", {
+      className: "touch-close-btn",
+      onClick: toggleTouchActions,
+      "aria-label": "Hide playability overlay"
+    }, "\xD7")), /*#__PURE__*/React.createElement("div", {
+      className: "touch-actions-grid"
+    }, /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Decrease speed",
+      onClick: () => nudgeSpeed(-SPEED_STEP)
+    }, "\u2212"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Reset speed",
+      onClick: () => resetSpeed()
+    }, "0"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Increase speed",
+      onClick: () => nudgeSpeed(SPEED_STEP)
+    }, "+"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Previous sketch",
+      onClick: playPrevSketch
+    }, "\u2039"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Random sketch",
+      onClick: playRandomSketch
+    }, "[~]"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Next sketch",
+      onClick: playNextSketch
+    }, "\u203A"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Automutate every beat",
+      onClick: () => setAutomutateMode('1')
+    }, "\u2248"), /*#__PURE__*/React.createElement(MobileAutomutateToggle, null), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Disable automutate",
+      onClick: () => setAutomutateMode('off')
+    }, "\u2248"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Decrease tempo",
+      onClick: () => nudgeTempo(-TEMPO_STEP)
+    }, "BPM\u2212"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Play or pause",
+      onClick: togglePlayPause
+    }, "\u2161/\u25B6"), /*#__PURE__*/React.createElement(TouchButton, {
+      label: "Increase tempo",
+      onClick: () => nudgeTempo(TEMPO_STEP)
+    }, "BPM+"))));
+  }
+
+  function App() {
+    useViewport();
+    useHotkeys();
+    useMidiAccess();
+    useAutomutateClock();
+    useHashSync();
+    React.useEffect(() => {
+      restoreCloudSession();
+      restoreTouchActionsPreference();
+      // Skip the splash if the user launched the player before.
+      if (shouldAutoLaunch()) startExperience();
+    }, []);
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(SplashScreen, null), /*#__PURE__*/React.createElement(HydraCanvas, null), /*#__PURE__*/React.createElement(IntercomBar, null), /*#__PURE__*/React.createElement(ExpandTrigger, null), /*#__PURE__*/React.createElement(Sidebar, null), /*#__PURE__*/React.createElement(ShortcutsPanel, null), /*#__PURE__*/React.createElement(TouchActionsOverlay, null));
+  }
+
+  /**
+   * Legacy global API.
+   * Keeps the `window.*` functions the vanilla player exposed so that plugins,
+   * MIDI mappings and console users keep working.
+   */
+  function exposeGlobalApi() {
+    Object.assign(window, {
+      playerSettings,
+      startExperience: startExperience,
+      showToast: notify,
+      intercomNotify: notify,
+      showError: notifyError,
+      playSketch: playSketch,
+      playPrevSketch: playPrevSketch,
+      playNextSketch: playNextSketch,
+      playRandomSketch: playRandomSketch,
+      togglePlayPause: togglePlayPause,
+      runCustomCode: runCustomCode,
+      resetCustomCode: resetCustomCode,
+      updateBPM: setBpm,
+      handleTapTempo: tapTempo,
+      nudgeTempo: nudgeTempo,
+      nudgeSpeed: nudgeSpeed,
+      resetSpeed: resetSpeed,
+      setAutomutateMode: setAutomutateMode,
+      triggerMutation: triggerMutation,
+      undoMutation: undoMutation,
+      redoMutation: redoMutation,
+      toggleMobileAutomutate: toggleMobileAutomutate,
+      switchTab: switchTab,
+      toggleCollapse: toggleCollapse,
+      toggleUI: toggleUI,
+      toggleTouchActions: toggleTouchActions,
+      toggleFullscreen: toggleFullscreen,
+      openEditorWithCurrentSketch: openEditorWithCurrentSketch,
+      handleCloudLogin: loginToCloud
+    });
+  }
+
+  /**
+   * Bridges the global `window.xemitter` bus (used by Hydralisk plugins such as
+   * hydrakit, midi-mapping and editorActions) to player actions.
+   * The SimpleEmitter has no `off`, so this must only be bound once.
+   */
+  let bound = false;
+  function bindEmitterEvents(emitter = window.xemitter) {
+    if (bound || !emitter) return;
+    bound = true;
+    emitter.on('taptempo', data => tapTempo(data));
+    emitter.on('bpm:taptempo', data => tapTempo(data));
+    emitter.on('gallery:nextSketch', () => playNextSketch());
+    emitter.on('gallery:prevSketch', () => playPrevSketch());
+    emitter.on('gallery:randomSketch', () => playRandomSketch());
+    emitter.on('editor:randomize', () => triggerMutation());
+    emitter.on('editor:jumpBack1', () => undoMutation());
+    emitter.on('gfx:speedSlower', () => nudgeSpeed(-0.1));
+    emitter.on('gfx:speedFaster', () => nudgeSpeed(0.1));
+    emitter.on('gfx:speedDefault', () => resetSpeed({
+      announce: true
+    }));
+    emitter.on('gfx:speedReverse', () => reverseSpeed());
+    emitter.on('hideAll', () => toggleUI());
+    emitter.on('fullscreen', () => toggleFullscreen());
+  }
+
+  /**
+   * Hydralisk Visual Player — entry point.
+   * Bundled by Rollup into ./player.dist.js; React and ReactDOM are provided as
+   * globals by ./react.min.js and ./react-dom.min.js.
+   */
+  exposeGlobalApi();
+  function mount() {
+    bindEmitterEvents();
+    if (shouldAutoLaunch()) setState({
+      splash: 'hidden'
+    });
+    const container = document.getElementById('player-root');
+    reactDom.createRoot(container).render(/*#__PURE__*/React.createElement(App, null));
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mount);
+  } else {
+    mount();
+  }
+
+  exports.getState = getState;
   exports.openEditorWithCurrentSketch = openEditorWithCurrentSketch;
   exports.playSketch = playSketch;
-  exports.showToast = showToast;
+  exports.showToast = notify;
   exports.startExperience = startExperience;
-  exports.state = state;
+  exports.store = store;
   exports.toggleUI = toggleUI;
 
   return exports;
 
-})({});
+})({}, React, ReactDOM);
 //# sourceMappingURL=player.dist.js.map

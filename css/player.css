@@ -1027,3 +1027,134 @@ body {
   font-family: var(--font-sans) !important;
   color: var(--text-primary) !important;
 }
+/* ==========================================================================
+   Component styles (formerly inline styles in player.html)
+   ========================================================================== */
+#player-root {
+  display: contents;
+}
+
+.collapse-btn.feedback-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.slider-header.centered {
+  align-items: center;
+}
+
+.bpm-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-input.bpm-input {
+  width: 70px;
+  padding: 4px 6px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.filter-tag.tap-btn {
+  margin: 0;
+  padding: 4px 10px;
+  font-weight: bold;
+}
+
+.filter-tag.tap-btn.flash {
+  background: rgba(0, 242, 254, 0.4);
+  border-color: var(--color-accent);
+}
+
+.pitch-bend {
+  margin-top: 10px;
+}
+
+.pitch-bend-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.slider-input.bend-slider {
+  background: linear-gradient(to right, rgba(255,255,255,0.05) 48%, var(--color-accent) 49%, var(--color-accent) 51%, rgba(255,255,255,0.05) 52%);
+}
+
+.info-card.spaced {
+  gap: 12px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-label.card-title {
+  font-weight: 600;
+}
+
+.sketch-tag.status-label {
+  color: var(--text-muted);
+}
+
+.sketch-tag.status-label.active {
+  color: var(--color-accent);
+}
+
+.card-description {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.card-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.tag-filters.compact {
+  gap: 4px;
+}
+
+.code-actions.compact {
+  gap: 8px;
+}
+
+.action-btn.compact {
+  padding: 8px;
+}
+
+.action-btn.grow {
+  flex: 2;
+}
+
+.info-row.stacked {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-value.flash {
+  color: var(--color-accent);
+  text-shadow: 0 0 10px var(--color-accent-glowing);
+}
+
+.sketches-empty {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px;
+}
