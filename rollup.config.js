@@ -35,18 +35,29 @@ export default [
         ],
     },
     {
-        input: './src/player/main.js', // Entry point for player module
+        input: './src/player/main.jsx', // Entry point for the React player app
         output: {
             file: './player.dist.js', // Output artifact for player
             format: 'iife',
             name: 'HydraliskPlayer',
-            sourcemap: true
+            sourcemap: true,
+            globals: {
+                react: 'React',
+                'react-dom': 'ReactDOM'
+            }
         },
+        external: ['react', 'react-dom'],
         plugins: [
             resolve({
-                extensions: ['.js'],
+                extensions: ['.js', '.jsx'],
             }),
-            commonjs()
+            commonjs(),
+            babel({
+                presets: ['@babel/preset-react'],
+                babelHelpers: 'bundled',
+                exclude: 'node_modules/**',
+                extensions: ['.js', '.jsx'],
+            })
         ]
     }
 ];
