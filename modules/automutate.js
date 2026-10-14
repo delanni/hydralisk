@@ -349,8 +349,14 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
             return;
           } else {
             let promptVal = guessedMsPerBeat;
-            if (window.hydraDialog && window.hydraDialog.prompt) {
-              promptVal = await window.hydraDialog.prompt("How fast would you like to go? (in ms)", guessedMsPerBeat);
+            if (window.hydraDialog?.prompt) {
+              promptVal = await window.hydraDialog.prompt({
+                title: "Automutate Speed",
+                message: "How fast would you like to go? (in ms)",
+                defaultValue: String(guessedMsPerBeat),
+                inputType: "number",
+                confirmText: "Set Speed",
+              });
             } else if (typeof window.prompt === "function") {
               promptVal = window.prompt("How fast would you like to go? (in ms)", guessedMsPerBeat);
             }

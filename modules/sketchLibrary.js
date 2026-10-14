@@ -281,7 +281,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         loadSketchFromProtocol();
       });
 
-      app.on("gallery:saveMyExample", () => {
+      app.on("gallery:saveMyExample", async () => {
         const editor = getEditor();
         if (!editor) return;
         let code = editor.getValue();
@@ -294,10 +294,18 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         }
 
         const nameInCode = firstLine.match(/\/\*\s*(.*)\s+\*\//)?.[1]?.trim();
-        const name = prompt(
-          "What's a fantasy name for this creation?",
-          nameInCode || "My sketch"
-        );
+        const name = window.hydraDialog?.prompt
+          ? await window.hydraDialog.prompt({
+              title: "Save Sketch",
+              message: "What's a fantasy name for this creation?",
+              defaultValue: nameInCode || "My sketch",
+              confirmText: "Save",
+              cancelText: "Cancel",
+            })
+          : prompt(
+              "What's a fantasy name for this creation?",
+              nameInCode || "My sketch"
+            );
         if (!name) return;
 
         if (nameInCode) {
@@ -371,10 +379,36 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
           };
         });
 
-        if (window.copy) {
-          window.copy(JSON.stringify(sketchList));
-        } else {
-          console.log("[sketchLibrary] Exported Sketches:", sketchList);
+        const jsonStr = JSON.stringify(sketchList, null, 2);
+
+        // 1. Copy to clipboard
+        if (navigator.clipboard?.writeText) {
+          navigator.clipboard.writeText(jsonStr).catch(() => {});
+        } else if (window.copy) {
+          window.copy(jsonStr);
+        }
+
+        // 2. Trigger file download
+        try {
+          const blob = new Blob([jsonStr], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `hydralisk-sketches-${new Date().toISOString().slice(0, 10)}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (err) {
+          console.warn("[sketchLibrary] Export file download error:", err);
+        }
+
+        if (window.hydraDialog?.alert) {
+          window.hydraDialog.alert({
+            title: "Sketches Exported",
+            message: `Exported ${sketchList.length} sketches. Downloaded .json file and copied JSON to clipboard.`,
+            confirmText: "Done",
+          });
         }
       });
 
@@ -417,48 +451,133 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
       });
 
       app.on("gallery:import", () => {
-        const importInput = document.createElement("textarea");
-        importInput.style.cssText = "display:block; background:#1e1e2e; color:#cdd6f4; width:100%; border:1px solid #45475a; padding:8px; border-radius:4px;";
-        importInput.rows = 6;
+        const overlay = document.createElement("div");
+        overlay.className = "confirm-modal-overlay";
+        overlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.7);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;animation:confirmFadeIn 0.15s ease-out;";
 
-        const container = document.createElement("div");
-        container.style.cssText = "z-index:1000; position:fixed; top:20%; left:50%; transform:translateX(-50%); width:400px; background:#181825; padding:16px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.5);";
+        const card = document.createElement("div");
+        card.className = "confirm-modal-card";
+        card.style.cssText = "background:#181825;border:1px solid #313244;border-radius:12px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.7);width:100%;max-width:480px;padding:24px;color:#cdd6f4;font-family:system-ui,-apple-system,sans-serif;box-sizing:border-box;";
 
-        const btnRow = document.createElement("div");
-        btnRow.style.cssText = "display:flex; justify-content:flex-end; gap:8px; margin-top:12px;";
+        const title = document.createElement("h3");
+        title.style.cssText = "margin:0 0 16px 0;font-size:16px;font-weight:700;color:#cdd6f4;";
+        title.textContent = "Import Sketches";
+        card.appendChild(title);
 
-        const sendButton = document.createElement("button");
-        sendButton.textContent = "Import";
-        sendButton.style.cssText = "padding:6px 16px; background:#89b4fa; color:#11111b; border:none; border-radius:4px; cursor:pointer;";
+        const closeDialog = () => {
+          if (document.body.contains(overlay)) {
+            document.body.removeChild(overlay);
+          }
+        };
 
-        const cancelButton = document.createElement("button");
-        cancelButton.textContent = "Cancel";
-        cancelButton.style.cssText = "padding:6px 16px; background:#45475a; color:#cdd6f4; border:none; border-radius:4px; cursor:pointer;";
-
-        btnRow.appendChild(cancelButton);
-        btnRow.appendChild(sendButton);
-        container.appendChild(importInput);
-        container.appendChild(btnRow);
-        document.body.appendChild(container);
-
-        cancelButton.onclick = () => document.body.removeChild(container);
-        sendButton.onclick = () => {
+        const processImport = (jsonText) => {
           try {
-            const importedSketches = JSON.parse(importInput.value);
-            localSketches = localSketches.concat(
-              Array.isArray(importedSketches) ? importedSketches : [importedSketches]
-            );
+            const imported = JSON.parse(jsonText);
+            const items = Array.isArray(imported) ? imported : [imported];
+            if (items.length === 0) throw new Error("No sketches found in JSON.");
+            localSketches = localSketches.concat(items);
             localStorage.setItem("mySketches", JSON.stringify(localSketches));
             mySketches = localSketches.slice();
             app.expose("mySketches", mySketches);
+            app.emit("gallery:updateLocalSketches", mySketches);
+            closeDialog();
+            if (window.hydraDialog?.alert) {
+              window.hydraDialog.alert({
+                title: "Import Successful",
+                message: `Successfully imported ${items.length} sketch${items.length === 1 ? "" : "es"}.`,
+                confirmText: "OK",
+              });
+            }
           } catch (e) {
-            alert(e.message);
-          } finally {
-            if (document.body.contains(container)) {
-              document.body.removeChild(container);
+            if (window.hydraDialog?.alert) {
+              window.hydraDialog.alert({
+                title: "Import Error",
+                message: `Failed to parse sketches JSON: ${e.message}`,
+              });
+            } else {
+              alert(`Failed to parse sketches JSON: ${e.message}`);
             }
           }
         };
+
+        // File picker section
+        const fileSection = document.createElement("div");
+        fileSection.style.cssText = "margin-bottom:18px;padding:12px;background:#11111b;border:1px dashed #45475a;border-radius:8px;text-align:center;";
+
+        const fileLabel = document.createElement("label");
+        fileLabel.style.cssText = "display:inline-block;padding:8px 18px;background:#89b4fa;color:#11111b;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;";
+        fileLabel.textContent = "Choose JSON File";
+
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = ".json,application/json";
+        fileInput.style.cssText = "display:none;";
+        fileInput.onchange = (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => processImport(ev.target?.result || "");
+          reader.readAsText(file);
+        };
+        fileLabel.appendChild(fileInput);
+
+        const fileHint = document.createElement("div");
+        fileHint.style.cssText = "font-size:12px;color:#a6adc8;margin-top:6px;";
+        fileHint.textContent = "Load an exported sketches.json file directly from disk";
+
+        fileSection.appendChild(fileLabel);
+        fileSection.appendChild(fileHint);
+        card.appendChild(fileSection);
+
+        // Divider
+        const divider = document.createElement("div");
+        divider.style.cssText = "display:flex;align-items:center;margin-bottom:14px;color:#6c7086;font-size:12px;";
+        divider.innerHTML = '<span style="flex:1;height:1px;background:#313244;"></span><span style="padding:0 8px;">OR PASTE JSON</span><span style="flex:1;height:1px;background:#313244;"></span>';
+        card.appendChild(divider);
+
+        // Textarea
+        const importInput = document.createElement("textarea");
+        importInput.style.cssText = "display:block;width:100%;height:110px;background:#11111b;color:#cdd6f4;border:1px solid #45475a;padding:10px;border-radius:8px;font-family:monospace;font-size:12px;box-sizing:border-box;outline:none;resize:vertical;";
+        importInput.placeholder = '[ { "name": "sketch", "code": "..." } ]';
+        card.appendChild(importInput);
+
+        // Action buttons
+        const btnRow = document.createElement("div");
+        btnRow.style.cssText = "display:flex;justify-content:flex-end;gap:10px;margin-top:18px;";
+
+        const cancelButton = document.createElement("button");
+        cancelButton.textContent = "Cancel";
+        cancelButton.style.cssText = "padding:8px 18px;background:#313244;color:#cdd6f4;border:1px solid #45475a;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;";
+        cancelButton.onclick = closeDialog;
+
+        const sendButton = document.createElement("button");
+        sendButton.textContent = "Import Text";
+        sendButton.style.cssText = "padding:8px 20px;background:#a6e3a1;color:#11111b;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;";
+        sendButton.onclick = () => {
+          if (!importInput.value.trim()) {
+            if (window.hydraDialog?.alert) {
+              window.hydraDialog.alert({ title: "Empty Input", message: "Please choose a JSON file or paste sketch JSON text." });
+            }
+            return;
+          }
+          processImport(importInput.value);
+        };
+
+        btnRow.appendChild(cancelButton);
+        btnRow.appendChild(sendButton);
+        card.appendChild(btnRow);
+
+        overlay.onclick = (e) => {
+          if (e.target === overlay) closeDialog();
+        };
+
+        overlay.onkeydown = (e) => {
+          if (e.key === "Escape") closeDialog();
+        };
+
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+        setTimeout(() => importInput.focus(), 50);
       });
 
       // Simple Search Auto-completer UI
@@ -478,8 +597,8 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         const input = document.createElement("input");
         input.id = "autocompleteInput";
         input.type = "text";
-        input.placeholder = "Type to search sketches...";
-        input.style.cssText = "position:fixed; top:10px; right:10px; z-index:9999; padding:8px 12px; background:#11111b; color:#cdd6f4; border:1px solid #89b4fa; border-radius:6px; outline:none; font-family:monospace;";
+        input.placeholder = "Search sketches (Type & Enter)...";
+        input.style.cssText = "position:fixed;top:16px;right:16px;z-index:99999;padding:10px 16px;background:#181825;color:#cdd6f4;border:1px solid #89b4fa;border-radius:8px;outline:none;font-family:system-ui,-apple-system,sans-serif;font-size:13px;box-shadow:0 10px 25px rgba(0,0,0,0.5);min-width:260px;";
 
         const list = document.createElement("datalist");
         list.id = "autocompleteList";

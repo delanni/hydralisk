@@ -460,8 +460,10 @@ class DialogHost extends React.Component {
 
     handleCancel = () => {
         const resolve = this.state.dialogConfig?.resolve;
+        const isAlert = this.state.dialogConfig?.isAlert;
+        const isPrompt = this.state.dialogConfig?.hasInput;
         this.setState({ dialogConfig: null });
-        if (resolve) resolve(false);
+        if (resolve) resolve(isAlert ? true : (isPrompt ? null : false));
     };
 
     render() {
@@ -476,7 +478,9 @@ class DialogHost extends React.Component {
                 confirmText={dialogConfig.confirmText}
                 cancelText={dialogConfig.cancelText}
                 isDanger={dialogConfig.isDanger}
+                isAlert={dialogConfig.isAlert}
                 hasInput={dialogConfig.hasInput}
+                inputType={dialogConfig.inputType}
                 defaultValue={dialogConfig.defaultValue}
                 placeholder={dialogConfig.placeholder}
                 onConfirm={this.handleConfirm}

@@ -29,6 +29,20 @@ export default function MetadataEditor({ metadata, newField, onFieldChange, onRe
                     <button
                         onClick={() => onRemove(key)}
                         title="Remove field"
+                        style={{
+                            background: '#313244',
+                            color: '#f38ba8',
+                            border: '1px solid #45475a',
+                            borderRadius: 6,
+                            width: 28,
+                            height: 28,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: 12,
+                            flexShrink: 0
+                        }}
                     >✕</button>
                 </div>
             ))}
@@ -49,7 +63,25 @@ export default function MetadataEditor({ metadata, newField, onFieldChange, onRe
                     className="metadata-fields-input"
                     onChange={onNewFieldChange}
                 />
-                <button onClick={onAddField} title="Add field">＋</button>
+                <button
+                    onClick={onAddField}
+                    title="Add field"
+                    style={{
+                        background: '#89b4fa',
+                        color: '#11111b',
+                        border: 'none',
+                        borderRadius: 6,
+                        width: 28,
+                        height: 28,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        flexShrink: 0
+                    }}
+                >＋</button>
             </div>
         </div>
     );

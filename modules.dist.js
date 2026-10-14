@@ -188,7 +188,7 @@
 	  }
 	}
 
-	var css_248z$1 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
+	var css_248z$1 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: #181825;\n    padding: 0;\n    border: 1px solid #313244;\n    border-radius: 12px;\n    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);\n    color: #cdd6f4;\n    width: 520px;           /* Set a fixed width */\n    height: 560px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: #11111b;\n    color: #cdd6f4;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #45475a;\n    border-radius: 6px;\n    padding: 8px;\n    font-family: monospace;\n    font-size: 13px;\n    box-sizing: border-box;\n    outline: none;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: #181825;\n    border-top-left-radius: 12px;\n    border-top-right-radius: 12px;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n    border-bottom: 1px solid #313244;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: 600;\n    color: #a6adc8;\n    transition: all 0.15s ease;\n}\n.modal-tabs button:hover {\n    color: #cdd6f4;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #89b4fa;\n    color: #89b4fa;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: #181825;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 14px;\n    right: 18px;\n    color: #a6adc8;\n    transition: color 0.15s;\n}\n.close-button:hover {\n    color: #f38ba8;\n}\n\n.sketch-tag {\n    background: #313244;\n    color: #89b4fa;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 4px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 100px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 8px 12px;\n    border-bottom: 1px solid #313244;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: #181825;\n    color: #cdd6f4;\n    border-radius: 6px;\n    margin-bottom: 2px;\n}\n.sketch-list-item:hover {\n    background: #1e1e2e;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #182522;\n    border-left: 3px solid #a6e3a1;\n}\n.sketch-list-item--remote:hover {\n    background: #1e302a;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n    color: #a6adc8;\n    font-size: 13px;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 13px;\n    margin-right: 8px;\n    background: #11111b;\n    color: #cdd6f4;\n    border: 1px solid #45475a;\n    border-radius: 6px;\n    padding: 4px 8px;\n    outline: none;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #1e1e2e;\n    color: #a6adc8;\n    border: 1px solid #313244;\n    border-radius: 6px;\n    padding: 4px 8px;\n    outline: none;\n    font-size: 13px;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 8px;\n    color: #cdd6f4;\n    font-size: 14px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: 600;\n    padding: 8px 20px;\n    margin-top: 20px;\n    background: #89b4fa;\n    color: #11111b;\n    border: none;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: opacity 0.15s;\n}\n.save-sketch-btn:hover {\n    opacity: 0.9;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px 12px;\n    border: 1px solid #45475a;\n    border-radius: 6px;\n    font-size: 13px;\n    margin-bottom: 8px;\n    background: #11111b;\n    color: #cdd6f4;\n    box-sizing: border-box;\n    outline: none;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
 	styleInject(css_248z$1);
 
 	// This is a module for managing sketch storage in a web application, through localStorage.
@@ -599,7 +599,21 @@
 	    onChange: e => onFieldChange(key, e.target.value)
 	  }), /*#__PURE__*/React.createElement("button", {
 	    onClick: () => onRemove(key),
-	    title: "Remove field"
+	    title: "Remove field",
+	    style: {
+	      background: '#313244',
+	      color: '#f38ba8',
+	      border: '1px solid #45475a',
+	      borderRadius: 6,
+	      width: 28,
+	      height: 28,
+	      cursor: 'pointer',
+	      display: 'flex',
+	      alignItems: 'center',
+	      justifyContent: 'center',
+	      fontSize: 12,
+	      flexShrink: 0
+	    }
 	  }, "\u2715"))), /*#__PURE__*/React.createElement("div", {
 	    className: "metadata-add-row"
 	  }, /*#__PURE__*/React.createElement("input", {
@@ -618,7 +632,22 @@
 	    onChange: onNewFieldChange
 	  }), /*#__PURE__*/React.createElement("button", {
 	    onClick: onAddField,
-	    title: "Add field"
+	    title: "Add field",
+	    style: {
+	      background: '#89b4fa',
+	      color: '#11111b',
+	      border: 'none',
+	      borderRadius: 6,
+	      width: 28,
+	      height: 28,
+	      cursor: 'pointer',
+	      display: 'flex',
+	      alignItems: 'center',
+	      justifyContent: 'center',
+	      fontSize: 14,
+	      fontWeight: 'bold',
+	      flexShrink: 0
+	    }
 	  }, "\uFF0B")));
 	}
 
@@ -1172,64 +1201,123 @@
 	  const [showEncoded, setShowEncoded] = React.useState(false);
 	  const [encodedBlob, setEncodedBlob] = React.useState('');
 	  const [encodedError, setEncodedError] = React.useState(null);
-	  const handleImportEncoded = () => {
+	  const handleImportEncoded = async () => {
 	    setEncodedError(null);
 	    try {
 	      const blob = JSON.parse(encodedBlob);
-	      window.amakit?.saveEncodedCredentials(blob);
+	      await window.amakit?.saveEncodedCredentials(blob);
 	      setEncodedBlob('');
 	      setShowEncoded(false);
+	      if (window.hydraDialog?.alert) {
+	        window.hydraDialog.alert({
+	          title: 'Credentials Saved',
+	          message: 'Encrypted AWS credentials saved successfully. Click "Remote Login" to decrypt with your password.'
+	        });
+	      }
 	    } catch (e) {
 	      setEncodedError(e.message || 'Invalid JSON');
 	    }
+	  };
+	  const btnStyle = {
+	    background: '#313244',
+	    color: '#cdd6f4',
+	    border: '1px solid #45475a',
+	    padding: '8px 16px',
+	    borderRadius: 8,
+	    fontSize: 13,
+	    fontWeight: 500,
+	    cursor: 'pointer',
+	    display: 'inline-flex',
+	    alignItems: 'center',
+	    gap: 6,
+	    transition: 'all 0.15s ease'
+	  };
+	  const primaryBtnStyle = {
+	    ...btnStyle,
+	    background: '#89b4fa',
+	    color: '#11111b',
+	    border: 'none',
+	    fontWeight: 600
 	  };
 	  return /*#__PURE__*/React.createElement("div", {
 	    style: {
 	      display: 'flex',
 	      flexDirection: 'column',
-	      gap: 12
+	      gap: 16
 	    }
 	  }, /*#__PURE__*/React.createElement("div", {
 	    style: {
 	      display: 'flex',
-	      gap: 12,
+	      gap: 10,
 	      flexWrap: 'wrap'
 	    }
 	  }, /*#__PURE__*/React.createElement("button", {
-	    onClick: () => window.xemitter?.emit('remote:login')
-	  }, "login"), /*#__PURE__*/React.createElement("button", {
-	    onClick: () => setShowEncoded(!showEncoded)
-	  }, showEncoded ? 'hide' : 'import encoded credentials'), /*#__PURE__*/React.createElement("button", {
-	    onClick: () => {/* TODO: import all logic */}
-	  }, "import all"), /*#__PURE__*/React.createElement("button", {
-	    onClick: () => {/* TODO: import single logic */}
-	  }, "import single"), /*#__PURE__*/React.createElement("button", {
-	    onClick: () => {/* TODO: export all logic */}
-	  }, "export all")), showEncoded && /*#__PURE__*/React.createElement("div", {
+	    style: primaryBtnStyle,
+	    onClick: () => window.xemitter?.emit('gallery:import'),
+	    title: "Import sketches from a JSON file or pasted text"
+	  }, "\uD83D\uDCE5 Import Sketches"), /*#__PURE__*/React.createElement("button", {
+	    style: primaryBtnStyle,
+	    onClick: () => window.xemitter?.emit('gallery:export', {
+	      altKey: true
+	    }),
+	    title: "Export sketches as JSON file & clipboard"
+	  }, "\uD83D\uDCE4 Export Sketches"), /*#__PURE__*/React.createElement("button", {
+	    style: btnStyle,
+	    onClick: () => window.xemitter?.emit('remote:login'),
+	    title: "Login to AWS DynamoDB remote draft sync"
+	  }, "\uD83D\uDD11 Remote Login"), /*#__PURE__*/React.createElement("button", {
+	    style: btnStyle,
+	    onClick: () => setShowEncoded(!showEncoded),
+	    title: "Import pre-encoded encrypted credentials"
+	  }, showEncoded ? '✕ Hide Credentials Form' : '🔐 Import Encrypted Credentials')), showEncoded && /*#__PURE__*/React.createElement("div", {
 	    style: {
 	      display: 'flex',
 	      flexDirection: 'column',
-	      gap: 8
+	      gap: 10,
+	      background: '#11111b',
+	      padding: 14,
+	      borderRadius: 8,
+	      border: '1px solid #313244'
 	    }
-	  }, /*#__PURE__*/React.createElement("textarea", {
-	    placeholder: "Paste JSON from: node scripts/encode-credentials.js",
+	  }, /*#__PURE__*/React.createElement("div", {
+	    style: {
+	      fontSize: 12,
+	      color: '#a6adc8'
+	    }
+	  }, "Paste encrypted credentials blob generated from ", /*#__PURE__*/React.createElement("code", null, "node scripts/encode-credentials.js"), ":"), /*#__PURE__*/React.createElement("textarea", {
+	    placeholder: "{ \"credentialsCiphertext\": \"...\", \"salt\": \"...\", \"iv\": \"...\" }",
 	    value: encodedBlob,
 	    onChange: e => setEncodedBlob(e.target.value),
 	    rows: 6,
 	    style: {
 	      fontFamily: 'monospace',
-	      fontSize: 12
+	      fontSize: 12,
+	      background: '#181825',
+	      color: '#cdd6f4',
+	      border: '1px solid #45475a',
+	      borderRadius: 6,
+	      padding: 8,
+	      outline: 'none',
+	      resize: 'vertical'
 	    }
-	  }), /*#__PURE__*/React.createElement("button", {
-	    onClick: handleImportEncoded
-	  }, "save encoded credentials"), encodedError && /*#__PURE__*/React.createElement("span", {
+	  }), /*#__PURE__*/React.createElement("div", {
 	    style: {
-	      color: 'red'
+	      display: 'flex',
+	      justifyContent: 'flex-end',
+	      gap: 8
+	    }
+	  }, /*#__PURE__*/React.createElement("button", {
+	    style: primaryBtnStyle,
+	    onClick: handleImportEncoded
+	  }, "Save Credentials")), encodedError && /*#__PURE__*/React.createElement("span", {
+	    style: {
+	      color: '#f38ba8',
+	      fontSize: 12
 	    }
 	  }, encodedError)));
 	}
 
-	// Singleton promise-based dialog service to trigger non-blocking confirm/prompt modals anywhere in the app
+	// Singleton promise-based dialog service to trigger non-blocking confirm/prompt/alert modals anywhere in the app
 
 	class DialogService {
 	  constructor() {
@@ -1244,15 +1332,20 @@
 
 	  /**
 	   * Show non-blocking confirmation dialog
+	   * @param {string|object} optionsOrMessage
 	   * @returns {Promise<boolean>} Resolves to true if confirmed, false if cancelled
 	   */
-	  confirm({
-	    title = 'Confirm Action',
-	    message = 'Are you sure you want to proceed?',
-	    confirmText = 'Confirm',
-	    cancelText = 'Cancel',
-	    isDanger = false
-	  } = {}) {
+	  confirm(optionsOrMessage = {}) {
+	    const opts = typeof optionsOrMessage === 'string' ? {
+	      message: optionsOrMessage
+	    } : optionsOrMessage || {};
+	    const {
+	      title = 'Confirm Action',
+	      message = 'Are you sure you want to proceed?',
+	      confirmText = 'Confirm',
+	      cancelText = 'Cancel',
+	      isDanger = false
+	    } = opts;
 	    return new Promise(resolve => {
 	      const config = {
 	        isOpen: true,
@@ -1262,24 +1355,33 @@
 	        cancelText,
 	        isDanger,
 	        hasInput: false,
+	        isAlert: false,
 	        resolve
 	      };
-	      this.listeners.forEach(l => l(config));
+	      this._dispatch(config);
 	    });
 	  }
 
 	  /**
 	   * Show non-blocking input prompt dialog
+	   * @param {string|object} optionsOrMessage
+	   * @param {string} [defaultValue]
 	   * @returns {Promise<string|null>} Resolves to string value if confirmed, null if cancelled
 	   */
-	  prompt({
-	    title = 'Enter Value',
-	    message = '',
-	    defaultValue = '',
-	    placeholder = '',
-	    confirmText = 'OK',
-	    cancelText = 'Cancel'
-	  } = {}) {
+	  prompt(optionsOrMessage = {}, defaultValue = '') {
+	    const opts = typeof optionsOrMessage === 'string' ? {
+	      message: optionsOrMessage,
+	      defaultValue
+	    } : optionsOrMessage || {};
+	    const {
+	      title = 'Enter Value',
+	      message = '',
+	      defaultValue: defVal = defaultValue || '',
+	      placeholder = '',
+	      confirmText = 'OK',
+	      cancelText = 'Cancel',
+	      inputType = 'text'
+	    } = opts;
 	    return new Promise(resolve => {
 	      const config = {
 	        isOpen: true,
@@ -1289,12 +1391,137 @@
 	        cancelText,
 	        isDanger: false,
 	        hasInput: true,
-	        defaultValue,
+	        isAlert: false,
+	        inputType,
+	        defaultValue: defVal,
 	        placeholder,
 	        resolve
 	      };
-	      this.listeners.forEach(l => l(config));
+	      this._dispatch(config);
 	    });
+	  }
+
+	  /**
+	   * Show non-blocking alert dialog
+	   * @param {string|object} optionsOrMessage
+	   * @param {string} [title]
+	   * @returns {Promise<boolean>} Resolves to true when acknowledged
+	   */
+	  alert(optionsOrMessage = {}, title = 'Notice') {
+	    const opts = typeof optionsOrMessage === 'string' ? {
+	      message: optionsOrMessage,
+	      title
+	    } : optionsOrMessage || {};
+	    const {
+	      title: t = title || 'Notice',
+	      message = '',
+	      confirmText = 'OK'
+	    } = opts;
+	    return new Promise(resolve => {
+	      const config = {
+	        isOpen: true,
+	        title: t,
+	        message,
+	        confirmText,
+	        cancelText: '',
+	        isDanger: false,
+	        hasInput: false,
+	        isAlert: true,
+	        resolve
+	      };
+	      this._dispatch(config);
+	    });
+	  }
+	  _dispatch(config) {
+	    if (this.listeners.length > 0) {
+	      this.listeners.forEach(l => l(config));
+	    } else if (typeof document !== 'undefined') {
+	      this._renderDomFallback(config);
+	    } else {
+	      config.resolve(config.hasInput ? null : false);
+	    }
+	  }
+	  _renderDomFallback(config) {
+	    const overlay = document.createElement('div');
+	    overlay.className = 'confirm-modal-overlay';
+	    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.7);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;animation:confirmFadeIn 0.15s ease-out;';
+	    const card = document.createElement('div');
+	    card.className = 'confirm-modal-card';
+	    card.style.cssText = 'background:#181825;border:1px solid #313244;border-radius:12px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.7);width:100%;maxWidth:420px;padding:24px;color:#cdd6f4;font-family:system-ui,-apple-system,sans-serif;box-sizing:border-box;';
+	    const titleEl = document.createElement('h3');
+	    titleEl.style.cssText = `margin:0 0 10px 0;font-size:16px;font-weight:700;color:${config.isDanger ? '#f38ba8' : '#cdd6f4'};`;
+	    titleEl.textContent = config.title;
+	    card.appendChild(titleEl);
+	    if (config.message) {
+	      const msgEl = document.createElement('div');
+	      msgEl.style.cssText = `font-size:13px;color:#a6adc8;margin-bottom:${config.hasInput ? '14px' : '20px'};line-height:1.5;word-break:break-word;`;
+	      msgEl.textContent = config.message;
+	      card.appendChild(msgEl);
+	    }
+	    let inputEl = null;
+	    if (config.hasInput) {
+	      inputEl = document.createElement('input');
+	      inputEl.type = config.inputType || 'text';
+	      inputEl.value = config.defaultValue || '';
+	      inputEl.placeholder = config.placeholder || '';
+	      inputEl.style.cssText = 'width:100%;padding:10px 12px;background:#11111b;color:#cdd6f4;border:1px solid #45475a;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;margin-bottom:20px;';
+	      card.appendChild(inputEl);
+	    }
+	    const btnRow = document.createElement('div');
+	    btnRow.style.cssText = 'display:flex;gap:10px;justify-content:flex-end;';
+	    const cleanup = () => {
+	      if (document.body.contains(overlay)) {
+	        document.body.removeChild(overlay);
+	      }
+	    };
+	    if (!config.isAlert) {
+	      const cancelBtn = document.createElement('button');
+	      cancelBtn.textContent = config.cancelText || 'Cancel';
+	      cancelBtn.style.cssText = 'background:#313244;color:#cdd6f4;border:1px solid #45475a;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;';
+	      cancelBtn.onclick = () => {
+	        cleanup();
+	        config.resolve(config.hasInput ? null : false);
+	      };
+	      btnRow.appendChild(cancelBtn);
+	    }
+	    const confirmBtn = document.createElement('button');
+	    confirmBtn.textContent = config.confirmText || 'OK';
+	    confirmBtn.style.cssText = `background:${config.isDanger ? '#f38ba8' : '#89b4fa'};color:#11111b;border:none;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;`;
+	    confirmBtn.onclick = () => {
+	      const val = config.hasInput ? inputEl ? inputEl.value : '' : true;
+	      cleanup();
+	      config.resolve(val);
+	    };
+	    btnRow.appendChild(confirmBtn);
+	    card.appendChild(btnRow);
+	    overlay.onclick = e => {
+	      if (e.target === overlay) {
+	        cleanup();
+	        config.resolve(config.isAlert ? true : config.hasInput ? null : false);
+	      }
+	    };
+	    overlay.onkeydown = e => {
+	      if (e.key === 'Enter') {
+	        e.preventDefault();
+	        const val = config.hasInput ? inputEl ? inputEl.value : '' : true;
+	        cleanup();
+	        config.resolve(val);
+	      } else if (e.key === 'Escape') {
+	        e.preventDefault();
+	        cleanup();
+	        config.resolve(config.isAlert ? true : config.hasInput ? null : false);
+	      }
+	    };
+	    overlay.appendChild(card);
+	    document.body.appendChild(overlay);
+	    setTimeout(() => {
+	      if (inputEl) {
+	        inputEl.focus();
+	        inputEl.select();
+	      } else {
+	        confirmBtn.focus();
+	      }
+	    }, 50);
 	  }
 	}
 	const dialogService = new DialogService();
@@ -1494,7 +1721,7 @@
 	}
 
 	// --- ConfirmModal: Non-blocking custom modal dialog component ---
-	// Replaces window.confirm() and window.prompt() without freezing WebGL/Hydra animations.
+	// Replaces window.confirm(), window.prompt(), and window.alert() without freezing WebGL/Hydra animations.
 
 	function ConfirmModal({
 	  isOpen,
@@ -1503,7 +1730,9 @@
 	  confirmText = 'Confirm',
 	  cancelText = 'Cancel',
 	  isDanger = false,
+	  isAlert = false,
 	  hasInput = false,
+	  inputType = 'text',
 	  defaultValue = '',
 	  placeholder = '',
 	  onConfirm,
@@ -1511,6 +1740,7 @@
 	}) {
 	  const [inputValue, setInputValue] = React$1.useState(defaultValue);
 	  const inputRef = React$1.useRef(null);
+	  const confirmBtnRef = React$1.useRef(null);
 	  React$1.useEffect(() => {
 	    setInputValue(defaultValue);
 	  }, [defaultValue, isOpen]);
@@ -1521,6 +1751,8 @@
 	        if (hasInput && inputRef.current) {
 	          inputRef.current.focus();
 	          inputRef.current.select();
+	        } else if (confirmBtnRef.current) {
+	          confirmBtnRef.current.focus();
 	        }
 	      }, 50);
 	    }
@@ -1544,8 +1776,8 @@
 	      left: 0,
 	      right: 0,
 	      bottom: 0,
-	      backgroundColor: 'rgba(15, 23, 42, 0.6)',
-	      backdropFilter: 'blur(4px)',
+	      backgroundColor: 'rgba(15, 23, 42, 0.7)',
+	      backdropFilter: 'blur(6px)',
 	      zIndex: 99999,
 	      display: 'flex',
 	      alignItems: 'center',
@@ -1558,44 +1790,49 @@
 	    onClick: e => e.stopPropagation(),
 	    onKeyDown: handleKeyDown,
 	    style: {
-	      background: '#ffffff',
-	      borderRadius: 10,
-	      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
+	      background: '#181825',
+	      border: '1px solid #313244',
+	      borderRadius: 12,
+	      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05)',
 	      width: '100%',
 	      maxWidth: 420,
-	      padding: 20,
-	      color: '#0f172a',
-	      fontFamily: 'system-ui, -apple-system, sans-serif'
+	      padding: 24,
+	      color: '#cdd6f4',
+	      fontFamily: 'system-ui, -apple-system, sans-serif',
+	      boxSizing: 'border-box'
 	    }
 	  }, /*#__PURE__*/React$1.createElement("h3", {
 	    style: {
-	      margin: '0 0 8px 0',
+	      margin: '0 0 10px 0',
 	      fontSize: 16,
 	      fontWeight: 700,
-	      color: isDanger ? '#dc2626' : '#0f172a'
+	      color: isDanger ? '#f38ba8' : '#cdd6f4'
 	    }
 	  }, title), message && /*#__PURE__*/React$1.createElement("div", {
 	    style: {
 	      fontSize: 13,
-	      color: '#475569',
-	      marginBottom: hasInput ? 12 : 16,
-	      lineHeight: 1.5
+	      color: '#a6adc8',
+	      marginBottom: hasInput ? 14 : 20,
+	      lineHeight: 1.5,
+	      wordBreak: 'break-word'
 	    }
 	  }, message), hasInput && /*#__PURE__*/React$1.createElement("div", {
 	    style: {
-	      marginBottom: 16
+	      marginBottom: 20
 	    }
 	  }, /*#__PURE__*/React$1.createElement("input", {
 	    ref: inputRef,
-	    type: "text",
+	    type: inputType || 'text',
 	    value: inputValue,
 	    placeholder: placeholder,
 	    onChange: e => setInputValue(e.target.value),
 	    style: {
 	      width: '100%',
-	      padding: '8px 12px',
-	      border: '1px solid #cbd5e1',
-	      borderRadius: 6,
+	      padding: '10px 12px',
+	      background: '#11111b',
+	      color: '#cdd6f4',
+	      border: '1px solid #45475a',
+	      borderRadius: 8,
 	      fontSize: 14,
 	      boxSizing: 'border-box',
 	      outline: 'none',
@@ -1604,29 +1841,30 @@
 	  })), /*#__PURE__*/React$1.createElement("div", {
 	    style: {
 	      display: 'flex',
-	      gap: 8,
+	      gap: 10,
 	      justifyContent: 'flex-end'
 	    }
-	  }, /*#__PURE__*/React$1.createElement("button", {
+	  }, !isAlert && /*#__PURE__*/React$1.createElement("button", {
 	    onClick: onCancel,
 	    style: {
-	      background: '#f1f5f9',
-	      color: '#334155',
-	      border: '1px solid #cbd5e1',
-	      padding: '7px 16px',
-	      borderRadius: 6,
+	      background: '#313244',
+	      color: '#cdd6f4',
+	      border: '1px solid #45475a',
+	      padding: '8px 18px',
+	      borderRadius: 8,
 	      fontSize: 13,
 	      fontWeight: 500,
 	      cursor: 'pointer'
 	    }
 	  }, cancelText), /*#__PURE__*/React$1.createElement("button", {
+	    ref: confirmBtnRef,
 	    onClick: () => onConfirm(hasInput ? inputValue : true),
 	    style: {
-	      background: isDanger ? '#dc2626' : '#3b82f6',
-	      color: '#ffffff',
+	      background: isDanger ? '#f38ba8' : '#89b4fa',
+	      color: '#11111b',
 	      border: 'none',
-	      padding: '7px 18px',
-	      borderRadius: 6,
+	      padding: '8px 20px',
+	      borderRadius: 8,
 	      fontSize: 13,
 	      fontWeight: 600,
 	      cursor: 'pointer'
@@ -2076,10 +2314,12 @@
 	  };
 	  handleCancel = () => {
 	    const resolve = this.state.dialogConfig?.resolve;
+	    const isAlert = this.state.dialogConfig?.isAlert;
+	    const isPrompt = this.state.dialogConfig?.hasInput;
 	    this.setState({
 	      dialogConfig: null
 	    });
-	    if (resolve) resolve(false);
+	    if (resolve) resolve(isAlert ? true : isPrompt ? null : false);
 	  };
 	  render() {
 	    const {
@@ -2093,7 +2333,9 @@
 	      confirmText: dialogConfig.confirmText,
 	      cancelText: dialogConfig.cancelText,
 	      isDanger: dialogConfig.isDanger,
+	      isAlert: dialogConfig.isAlert,
 	      hasInput: dialogConfig.hasInput,
+	      inputType: dialogConfig.inputType,
 	      defaultValue: dialogConfig.defaultValue,
 	      placeholder: dialogConfig.placeholder,
 	      onConfirm: this.handleConfirm,
@@ -2732,11 +2974,19 @@
 	   * Store pre-encoded credentials blob from scripts/encode-credentials.js.
 	   * Login will prompt for password to decrypt.
 	   */
-	  saveEncodedCredentials = blob => {
+	  saveEncodedCredentials = async blob => {
 	    if (!blob || !blob.credentialsCiphertext || !blob.salt || !blob.iv) {
 	      throw new Error("Invalid encoded credentials blob");
 	    }
-	    const machineId = localStorage.getItem("machineId") || prompt("What is the name of this machine?") || "unknown";
+	    let machineId = localStorage.getItem("machineId");
+	    if (!machineId) {
+	      machineId = window.hydraDialog?.prompt ? await window.hydraDialog.prompt({
+	        title: "Machine Setup",
+	        message: "What is the name of this machine?",
+	        defaultValue: "laptop"
+	      }) : prompt("What is the name of this machine?") || "unknown";
+	    }
+	    machineId = machineId || "unknown";
 	    localStorage.setItem("machineId", machineId);
 	    const stored = {
 	      ...blob,
@@ -2768,12 +3018,49 @@
 	    }, key, ciphertext);
 	    return new TextDecoder().decode(decrypted);
 	  };
+	  promptCredentials = async (persist = true) => {
+	    let machineId = localStorage.getItem("machineId");
+	    if (!machineId) {
+	      machineId = window.hydraDialog?.prompt ? await window.hydraDialog.prompt({
+	        title: "Machine Setup",
+	        message: "What is the name of this machine?",
+	        defaultValue: "laptop"
+	      }) : prompt("What is the name of this machine?");
+	      machineId = machineId || "unknown";
+	      localStorage.setItem("machineId", machineId);
+	    }
+	    const name = window.hydraDialog?.prompt ? await window.hydraDialog.prompt({
+	      title: "User Profile",
+	      message: "What is your name?",
+	      defaultValue: "User"
+	    }) : prompt("What is your name?");
+	    const accessKeyId = window.hydraDialog?.prompt ? await window.hydraDialog.prompt({
+	      title: "AWS Access Key",
+	      message: "What is your AWS Access Key ID?",
+	      placeholder: "AKIA..."
+	    }) : prompt("What is your AWS Access Key ID?");
+	    const secretAccessKey = window.hydraDialog?.prompt ? await window.hydraDialog.prompt({
+	      title: "AWS Secret Key",
+	      message: "What is your AWS Secret Access Key?",
+	      inputType: "password"
+	    }) : prompt("What is your AWS Secret Access Key?");
+	    if (!accessKeyId || !secretAccessKey) {
+	      return null;
+	    }
+	    const credentials = {
+	      name: name || "User",
+	      machineId,
+	      accessKeyId,
+	      secretAccessKey
+	    };
+	    if (persist) {
+	      localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+	    }
+	    return credentials;
+	  };
 	  saveCredentials = (name, accessKeyId, secretAccessKey, persist = true) => {
-	    let machineId = localStorage.getItem("machineId") || prompt("What is the name of this machine?") || "unknown";
+	    let machineId = localStorage.getItem("machineId") || "unknown";
 	    localStorage.setItem("machineId", machineId);
-	    name = name || prompt("What is your name?");
-	    accessKeyId = accessKeyId || prompt("What is your AWS Access Key ID?");
-	    secretAccessKey = secretAccessKey || prompt("What is your AWS Secret Access Key?");
 	    if (!accessKeyId || !secretAccessKey) {
 	      return null;
 	    }
@@ -2807,7 +3094,12 @@
 	      if (!doPrompt) {
 	        return Promise.reject("No plain credentials found. Decryption password required.");
 	      }
-	      const pwd = prompt("Enter password for AWS credentials:");
+	      const pwd = window.hydraDialog?.prompt ? await window.hydraDialog.prompt({
+	        title: "AWS Credentials",
+	        message: "Enter password for AWS credentials:",
+	        inputType: "password",
+	        confirmText: "Unlock"
+	      }) : prompt("Enter password for AWS credentials:");
 	      if (!pwd) {
 	        return Promise.reject("Login cancelled: no password provided.");
 	      }
@@ -2829,7 +3121,7 @@
 	      if (!doPrompt) {
 	        return Promise.reject("No credentials found.");
 	      }
-	      credentials = this.saveCredentials(undefined, undefined, undefined, false);
+	      credentials = await this.promptCredentials(false);
 	    }
 	    if (!credentials || !credentials.accessKeyId || !credentials.secretAccessKey) {
 	      return Promise.reject("Login cancelled or invalid AWS credentials provided.");
@@ -18275,8 +18567,14 @@
 	            return;
 	          } else {
 	            let promptVal = guessedMsPerBeat;
-	            if (window.hydraDialog && window.hydraDialog.prompt) {
-	              promptVal = await window.hydraDialog.prompt("How fast would you like to go? (in ms)", guessedMsPerBeat);
+	            if (window.hydraDialog?.prompt) {
+	              promptVal = await window.hydraDialog.prompt({
+	                title: "Automutate Speed",
+	                message: "How fast would you like to go? (in ms)",
+	                defaultValue: String(guessedMsPerBeat),
+	                inputType: "number",
+	                confirmText: "Set Speed"
+	              });
 	            } else if (typeof window.prompt === "function") {
 	              promptVal = window.prompt("How fast would you like to go? (in ms)", guessedMsPerBeat);
 	            }
@@ -18611,7 +18909,7 @@
 	        }
 	        loadSketchFromProtocol();
 	      });
-	      app.on("gallery:saveMyExample", () => {
+	      app.on("gallery:saveMyExample", async () => {
 	        const editor = getEditor();
 	        if (!editor) return;
 	        let code = editor.getValue();
@@ -18622,7 +18920,13 @@
 	          firstLine = lines[0] || "";
 	        }
 	        const nameInCode = firstLine.match(/\/\*\s*(.*)\s+\*\//)?.[1]?.trim();
-	        const name = prompt("What's a fantasy name for this creation?", nameInCode || "My sketch");
+	        const name = window.hydraDialog?.prompt ? await window.hydraDialog.prompt({
+	          title: "Save Sketch",
+	          message: "What's a fantasy name for this creation?",
+	          defaultValue: nameInCode || "My sketch",
+	          confirmText: "Save",
+	          cancelText: "Cancel"
+	        }) : prompt("What's a fantasy name for this creation?", nameInCode || "My sketch");
 	        if (!name) return;
 	        if (nameInCode) {
 	          lines.shift();
@@ -18690,10 +18994,37 @@
 	            author: window.author ?? "Anony Mouse"
 	          };
 	        });
-	        if (window.copy) {
-	          window.copy(JSON.stringify(sketchList));
-	        } else {
-	          console.log("[sketchLibrary] Exported Sketches:", sketchList);
+	        const jsonStr = JSON.stringify(sketchList, null, 2);
+
+	        // 1. Copy to clipboard
+	        if (navigator.clipboard?.writeText) {
+	          navigator.clipboard.writeText(jsonStr).catch(() => {});
+	        } else if (window.copy) {
+	          window.copy(jsonStr);
+	        }
+
+	        // 2. Trigger file download
+	        try {
+	          const blob = new Blob([jsonStr], {
+	            type: "application/json"
+	          });
+	          const url = URL.createObjectURL(blob);
+	          const a = document.createElement("a");
+	          a.href = url;
+	          a.download = `hydralisk-sketches-${new Date().toISOString().slice(0, 10)}.json`;
+	          document.body.appendChild(a);
+	          a.click();
+	          document.body.removeChild(a);
+	          setTimeout(() => URL.revokeObjectURL(url), 1000);
+	        } catch (err) {
+	          console.warn("[sketchLibrary] Export file download error:", err);
+	        }
+	        if (window.hydraDialog?.alert) {
+	          window.hydraDialog.alert({
+	            title: "Sketches Exported",
+	            message: `Exported ${sketchList.length} sketches. Downloaded .json file and copied JSON to clipboard.`,
+	            confirmText: "Done"
+	          });
 	        }
 	      });
 	      app.on("gallery:import-remote", async () => {
@@ -18730,40 +19061,122 @@
 	        }
 	      });
 	      app.on("gallery:import", () => {
-	        const importInput = document.createElement("textarea");
-	        importInput.style.cssText = "display:block; background:#1e1e2e; color:#cdd6f4; width:100%; border:1px solid #45475a; padding:8px; border-radius:4px;";
-	        importInput.rows = 6;
-	        const container = document.createElement("div");
-	        container.style.cssText = "z-index:1000; position:fixed; top:20%; left:50%; transform:translateX(-50%); width:400px; background:#181825; padding:16px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.5);";
-	        const btnRow = document.createElement("div");
-	        btnRow.style.cssText = "display:flex; justify-content:flex-end; gap:8px; margin-top:12px;";
-	        const sendButton = document.createElement("button");
-	        sendButton.textContent = "Import";
-	        sendButton.style.cssText = "padding:6px 16px; background:#89b4fa; color:#11111b; border:none; border-radius:4px; cursor:pointer;";
-	        const cancelButton = document.createElement("button");
-	        cancelButton.textContent = "Cancel";
-	        cancelButton.style.cssText = "padding:6px 16px; background:#45475a; color:#cdd6f4; border:none; border-radius:4px; cursor:pointer;";
-	        btnRow.appendChild(cancelButton);
-	        btnRow.appendChild(sendButton);
-	        container.appendChild(importInput);
-	        container.appendChild(btnRow);
-	        document.body.appendChild(container);
-	        cancelButton.onclick = () => document.body.removeChild(container);
-	        sendButton.onclick = () => {
+	        const overlay = document.createElement("div");
+	        overlay.className = "confirm-modal-overlay";
+	        overlay.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.7);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;animation:confirmFadeIn 0.15s ease-out;";
+	        const card = document.createElement("div");
+	        card.className = "confirm-modal-card";
+	        card.style.cssText = "background:#181825;border:1px solid #313244;border-radius:12px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.7);width:100%;max-width:480px;padding:24px;color:#cdd6f4;font-family:system-ui,-apple-system,sans-serif;box-sizing:border-box;";
+	        const title = document.createElement("h3");
+	        title.style.cssText = "margin:0 0 16px 0;font-size:16px;font-weight:700;color:#cdd6f4;";
+	        title.textContent = "Import Sketches";
+	        card.appendChild(title);
+	        const closeDialog = () => {
+	          if (document.body.contains(overlay)) {
+	            document.body.removeChild(overlay);
+	          }
+	        };
+	        const processImport = jsonText => {
 	          try {
-	            const importedSketches = JSON.parse(importInput.value);
-	            localSketches = localSketches.concat(Array.isArray(importedSketches) ? importedSketches : [importedSketches]);
+	            const imported = JSON.parse(jsonText);
+	            const items = Array.isArray(imported) ? imported : [imported];
+	            if (items.length === 0) throw new Error("No sketches found in JSON.");
+	            localSketches = localSketches.concat(items);
 	            localStorage.setItem("mySketches", JSON.stringify(localSketches));
 	            mySketches = localSketches.slice();
 	            app.expose("mySketches", mySketches);
+	            app.emit("gallery:updateLocalSketches", mySketches);
+	            closeDialog();
+	            if (window.hydraDialog?.alert) {
+	              window.hydraDialog.alert({
+	                title: "Import Successful",
+	                message: `Successfully imported ${items.length} sketch${items.length === 1 ? "" : "es"}.`,
+	                confirmText: "OK"
+	              });
+	            }
 	          } catch (e) {
-	            alert(e.message);
-	          } finally {
-	            if (document.body.contains(container)) {
-	              document.body.removeChild(container);
+	            if (window.hydraDialog?.alert) {
+	              window.hydraDialog.alert({
+	                title: "Import Error",
+	                message: `Failed to parse sketches JSON: ${e.message}`
+	              });
+	            } else {
+	              alert(`Failed to parse sketches JSON: ${e.message}`);
 	            }
 	          }
 	        };
+
+	        // File picker section
+	        const fileSection = document.createElement("div");
+	        fileSection.style.cssText = "margin-bottom:18px;padding:12px;background:#11111b;border:1px dashed #45475a;border-radius:8px;text-align:center;";
+	        const fileLabel = document.createElement("label");
+	        fileLabel.style.cssText = "display:inline-block;padding:8px 18px;background:#89b4fa;color:#11111b;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;";
+	        fileLabel.textContent = "Choose JSON File";
+	        const fileInput = document.createElement("input");
+	        fileInput.type = "file";
+	        fileInput.accept = ".json,application/json";
+	        fileInput.style.cssText = "display:none;";
+	        fileInput.onchange = e => {
+	          const file = e.target.files?.[0];
+	          if (!file) return;
+	          const reader = new FileReader();
+	          reader.onload = ev => processImport(ev.target?.result || "");
+	          reader.readAsText(file);
+	        };
+	        fileLabel.appendChild(fileInput);
+	        const fileHint = document.createElement("div");
+	        fileHint.style.cssText = "font-size:12px;color:#a6adc8;margin-top:6px;";
+	        fileHint.textContent = "Load an exported sketches.json file directly from disk";
+	        fileSection.appendChild(fileLabel);
+	        fileSection.appendChild(fileHint);
+	        card.appendChild(fileSection);
+
+	        // Divider
+	        const divider = document.createElement("div");
+	        divider.style.cssText = "display:flex;align-items:center;margin-bottom:14px;color:#6c7086;font-size:12px;";
+	        divider.innerHTML = '<span style="flex:1;height:1px;background:#313244;"></span><span style="padding:0 8px;">OR PASTE JSON</span><span style="flex:1;height:1px;background:#313244;"></span>';
+	        card.appendChild(divider);
+
+	        // Textarea
+	        const importInput = document.createElement("textarea");
+	        importInput.style.cssText = "display:block;width:100%;height:110px;background:#11111b;color:#cdd6f4;border:1px solid #45475a;padding:10px;border-radius:8px;font-family:monospace;font-size:12px;box-sizing:border-box;outline:none;resize:vertical;";
+	        importInput.placeholder = '[ { "name": "sketch", "code": "..." } ]';
+	        card.appendChild(importInput);
+
+	        // Action buttons
+	        const btnRow = document.createElement("div");
+	        btnRow.style.cssText = "display:flex;justify-content:flex-end;gap:10px;margin-top:18px;";
+	        const cancelButton = document.createElement("button");
+	        cancelButton.textContent = "Cancel";
+	        cancelButton.style.cssText = "padding:8px 18px;background:#313244;color:#cdd6f4;border:1px solid #45475a;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;";
+	        cancelButton.onclick = closeDialog;
+	        const sendButton = document.createElement("button");
+	        sendButton.textContent = "Import Text";
+	        sendButton.style.cssText = "padding:8px 20px;background:#a6e3a1;color:#11111b;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;";
+	        sendButton.onclick = () => {
+	          if (!importInput.value.trim()) {
+	            if (window.hydraDialog?.alert) {
+	              window.hydraDialog.alert({
+	                title: "Empty Input",
+	                message: "Please choose a JSON file or paste sketch JSON text."
+	              });
+	            }
+	            return;
+	          }
+	          processImport(importInput.value);
+	        };
+	        btnRow.appendChild(cancelButton);
+	        btnRow.appendChild(sendButton);
+	        card.appendChild(btnRow);
+	        overlay.onclick = e => {
+	          if (e.target === overlay) closeDialog();
+	        };
+	        overlay.onkeydown = e => {
+	          if (e.key === "Escape") closeDialog();
+	        };
+	        overlay.appendChild(card);
+	        document.body.appendChild(overlay);
+	        setTimeout(() => importInput.focus(), 50);
 	      });
 
 	      // Simple Search Auto-completer UI
@@ -18782,8 +19195,8 @@
 	        const input = document.createElement("input");
 	        input.id = "autocompleteInput";
 	        input.type = "text";
-	        input.placeholder = "Type to search sketches...";
-	        input.style.cssText = "position:fixed; top:10px; right:10px; z-index:9999; padding:8px 12px; background:#11111b; color:#cdd6f4; border:1px solid #89b4fa; border-radius:6px; outline:none; font-family:monospace;";
+	        input.placeholder = "Search sketches (Type & Enter)...";
+	        input.style.cssText = "position:fixed;top:16px;right:16px;z-index:99999;padding:10px 16px;background:#181825;color:#cdd6f4;border:1px solid #89b4fa;border-radius:8px;outline:none;font-family:system-ui,-apple-system,sans-serif;font-size:13px;box-shadow:0 10px 25px rgba(0,0,0,0.5);min-width:260px;";
 	        const list = document.createElement("datalist");
 	        list.id = "autocompleteList";
 	        mySketches.forEach(sketch => {
@@ -18903,10 +19316,16 @@
 	      });
 
 	      // Clear All
-	      app.on("editor:clearAll", (ev = {}) => {
+	      app.on("editor:clearAll", async (ev = {}) => {
 	        const editor = getEditor();
 	        if (ev.altKey || ev.shiftKey || ev.ctrlKey) {
-	          const shouldDelete = confirm("Do you really want to delete this sketch locally?");
+	          const shouldDelete = window.hydraDialog?.confirm ? await window.hydraDialog.confirm({
+	            title: "Delete Sketch Locally",
+	            message: "Do you really want to delete this sketch locally?",
+	            confirmText: "Delete",
+	            cancelText: "Cancel",
+	            isDanger: true
+	          }) : confirm("Do you really want to delete this sketch locally?");
 	          if (!shouldDelete) return;
 	          if (editor) {
 	            const sketchName = editor.getValue().split("\n")[0].replace("/*", "").replace("*/", "").trim();

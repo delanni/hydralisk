@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 // --- ConfirmModal: Non-blocking custom modal dialog component ---
-// Replaces window.confirm() and window.prompt() without freezing WebGL/Hydra animations.
+// Replaces window.confirm(), window.prompt(), and window.alert() without freezing WebGL/Hydra animations.
 
 export default function ConfirmModal({
     isOpen,
@@ -10,7 +10,9 @@ export default function ConfirmModal({
     confirmText = 'Confirm',
     cancelText = 'Cancel',
     isDanger = false,
+    isAlert = false,
     hasInput = false,
+    inputType = 'text',
     defaultValue = '',
     placeholder = '',
     onConfirm,
@@ -18,6 +20,7 @@ export default function ConfirmModal({
 }) {
     const [inputValue, setInputValue] = useState(defaultValue);
     const inputRef = useRef(null);
+    const confirmBtnRef = useRef(null);
 
     useEffect(() => {
         setInputValue(defaultValue);
@@ -30,6 +33,8 @@ export default function ConfirmModal({
                 if (hasInput && inputRef.current) {
                     inputRef.current.focus();
                     inputRef.current.select();
+                } else if (confirmBtnRef.current) {
+                    confirmBtnRef.current.focus();
                 }
             }, 50);
         }
@@ -57,8 +62,8 @@ export default function ConfirmModal({
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundColor: 'rgba(15, 23, 42, 0.6)',
-                backdropFilter: 'blur(4px)',
+                backgroundColor: 'rgba(15, 23, 42, 0.7)',
+                backdropFilter: 'blur(6px)',
                 zIndex: 99999,
                 display: 'flex',
                 alignItems: 'center',
@@ -72,42 +77,46 @@ export default function ConfirmModal({
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={handleKeyDown}
                 style={{
-                    background: '#ffffff',
-                    borderRadius: 10,
-                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
+                    background: '#181825',
+                    border: '1px solid #313244',
+                    borderRadius: 12,
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05)',
                     width: '100%',
                     maxWidth: 420,
-                    padding: 20,
-                    color: '#0f172a',
-                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                    padding: 24,
+                    color: '#cdd6f4',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    boxSizing: 'border-box'
                 }}
             >
                 {/* Dialog Title */}
-                <h3 style={{ margin: '0 0 8px 0', fontSize: 16, fontWeight: 700, color: isDanger ? '#dc2626' : '#0f172a' }}>
+                <h3 style={{ margin: '0 0 10px 0', fontSize: 16, fontWeight: 700, color: isDanger ? '#f38ba8' : '#cdd6f4' }}>
                     {title}
                 </h3>
 
                 {/* Dialog Message */}
                 {message && (
-                    <div style={{ fontSize: 13, color: '#475569', marginBottom: hasInput ? 12 : 16, lineHeight: 1.5 }}>
+                    <div style={{ fontSize: 13, color: '#a6adc8', marginBottom: hasInput ? 14 : 20, lineHeight: 1.5, wordBreak: 'break-word' }}>
                         {message}
                     </div>
                 )}
 
                 {/* Optional Text Input (Replacing window.prompt) */}
                 {hasInput && (
-                    <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 20 }}>
                         <input
                             ref={inputRef}
-                            type="text"
+                            type={inputType || 'text'}
                             value={inputValue}
                             placeholder={placeholder}
                             onChange={(e) => setInputValue(e.target.value)}
                             style={{
                                 width: '100%',
-                                padding: '8px 12px',
-                                border: '1px solid #cbd5e1',
-                                borderRadius: 6,
+                                padding: '10px 12px',
+                                background: '#11111b',
+                                color: '#cdd6f4',
+                                border: '1px solid #45475a',
+                                borderRadius: 8,
                                 fontSize: 14,
                                 boxSizing: 'border-box',
                                 outline: 'none',
@@ -118,30 +127,33 @@ export default function ConfirmModal({
                 )}
 
                 {/* Action Buttons */}
-                <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+                    {!isAlert && (
+                        <button
+                            onClick={onCancel}
+                            style={{
+                                background: '#313244',
+                                color: '#cdd6f4',
+                                border: '1px solid #45475a',
+                                padding: '8px 18px',
+                                borderRadius: 8,
+                                fontSize: 13,
+                                fontWeight: 500,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            {cancelText}
+                        </button>
+                    )}
                     <button
-                        onClick={onCancel}
-                        style={{
-                            background: '#f1f5f9',
-                            color: '#334155',
-                            border: '1px solid #cbd5e1',
-                            padding: '7px 16px',
-                            borderRadius: 6,
-                            fontSize: 13,
-                            fontWeight: 500,
-                            cursor: 'pointer'
-                        }}
-                    >
-                        {cancelText}
-                    </button>
-                    <button
+                        ref={confirmBtnRef}
                         onClick={() => onConfirm(hasInput ? inputValue : true)}
                         style={{
-                            background: isDanger ? '#dc2626' : '#3b82f6',
-                            color: '#ffffff',
+                            background: isDanger ? '#f38ba8' : '#89b4fa',
+                            color: '#11111b',
                             border: 'none',
-                            padding: '7px 18px',
-                            borderRadius: 6,
+                            padding: '8px 20px',
+                            borderRadius: 8,
                             fontSize: 13,
                             fontWeight: 600,
                             cursor: 'pointer'
@@ -154,3 +166,4 @@ export default function ConfirmModal({
         </div>
     );
 }
+
