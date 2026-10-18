@@ -6,6 +6,7 @@ import './plugins.js';
 // 2. Import React components and extension plugins
 import SketchManager from './sketchManager/index.jsx';
 import FeedbackManager from './feedbackModal/index.jsx';
+import MasterEffectsManager from './masterEffects/index.jsx';
 import './amakit.js';
 import './hydrakit.js';
 import './midi-mapping.js';
@@ -20,7 +21,8 @@ import './settings.js';
 
 window.Modules = {
     SketchManager,
-    FeedbackManager
+    FeedbackManager,
+    MasterEffectsManager
 };
 
 if (typeof window !== "undefined" && window.HydraliskPlugins) {

@@ -298,6 +298,8 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         "Shift-Ctrl-9": ["gfx:speedFaster"],
         "Shift-Cmd-8": ["gfx:speedReverse"],
         "Cmd-D": ["editor:duplicateLine"],
+        "Cmd-M": ["masterEffects:toggle"],
+        "Shift-Ctrl-M": ["masterEffects:toggle"],
         "Shift-Ctrl-K": ["editor:commentLine"],
         "Shift-Ctrl-C": ["gallery:search"],
         "Shift-Ctrl-S": ["screencap"],
@@ -310,7 +312,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
 
       // Browser/OS defaults to swallow even though they have no app action.
       const PREVENT_SET = new Set(
-        ["Cmd-Q", "Cmd-P", "Cmd-W", "Cmd-T", "Cmd-N", "Cmd-M", "Cmd-A"].map(normalizeCombo)
+        ["Cmd-Q", "Cmd-P", "Cmd-W", "Cmd-T", "Cmd-N", "Cmd-A"].map(normalizeCombo)
       );
 
       // Capture phase on document: runs BEFORE CodeMirror's own keydown handler (which still has

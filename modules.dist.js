@@ -188,8 +188,8 @@
 	  }
 	}
 
-	var css_248z$1 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
-	styleInject(css_248z$1);
+	var css_248z$2 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
+	styleInject(css_248z$2);
 
 	// This is a module for managing sketch storage in a web application, through localStorage.
 
@@ -2162,8 +2162,8 @@
 	  }
 	}
 
-	var css_248z = "/* Hydralisk Feedback & Bug Reporting Modal CSS */\n\n.feedback-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(8, 8, 14, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 99999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  animation: feedbackFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  box-sizing: border-box;\n}\n\n@keyframes feedbackFadeIn {\n  from {\n    opacity: 0;\n    transform: scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n.feedback-modal-card {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);\n  border-radius: 14px;\n  width: 100%;\n  max-width: 580px;\n  max-height: 90vh;\n  display: flex;\n  flex-direction: column;\n  color: #f8fafc;\n  font-family: 'Outfit', system-ui, -apple-system, sans-serif;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n\n.feedback-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 18px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n}\n\n.feedback-modal-title {\n  margin: 0;\n  font-size: 1.15rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.feedback-modal-badge {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  font-size: 0.65rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  padding: 3px 8px;\n  border-radius: 9999px;\n  letter-spacing: 1px;\n}\n\n.feedback-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 1.5rem;\n  cursor: pointer;\n  line-height: 1;\n  padding: 4px 8px;\n  border-radius: 6px;\n  transition: all 0.2s ease;\n}\n\n.feedback-close-btn:hover {\n  color: #ffffff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.feedback-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  box-sizing: border-box;\n}\n\n/* Category Pills */\n.feedback-category-group {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n\n.feedback-cat-pill {\n  background: rgba(30, 41, 59, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #cbd5e1;\n  padding: 8px 14px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 500;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-cat-pill:hover {\n  border-color: rgba(0, 242, 254, 0.4);\n  background: rgba(30, 41, 59, 0.9);\n}\n\n.feedback-cat-pill.active {\n  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);\n  border-color: #00f2fe;\n  color: #00f2fe;\n  font-weight: 600;\n  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);\n}\n\n/* Ratings */\n.feedback-rating-container {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  background: rgba(30, 41, 59, 0.3);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.feedback-rating-label {\n  font-size: 0.82rem;\n  color: #94a3b8;\n  font-weight: 500;\n}\n\n.feedback-stars-row {\n  display: flex;\n  gap: 6px;\n}\n\n.feedback-star-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.25rem;\n  cursor: pointer;\n  opacity: 0.35;\n  transition: transform 0.15s ease, opacity 0.15s ease;\n  padding: 2px 4px;\n}\n\n.feedback-star-btn.selected,\n.feedback-star-btn:hover {\n  opacity: 1;\n  transform: scale(1.2);\n}\n\n/* Form Inputs */\n.feedback-field-group {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.feedback-label {\n  font-size: 0.8rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: #94a3b8;\n}\n\n.feedback-input,\n.feedback-textarea {\n  width: 100%;\n  background: rgba(15, 23, 42, 0.8);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 8px;\n  padding: 10px 14px;\n  color: #f8fafc;\n  font-size: 0.9rem;\n  font-family: inherit;\n  box-sizing: border-box;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\n.feedback-input:focus,\n.feedback-textarea:focus {\n  border-color: #00f2fe;\n  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);\n}\n\n.feedback-textarea {\n  min-height: 100px;\n  resize: vertical;\n  line-height: 1.5;\n}\n\n/* Toggle Checkbox */\n.feedback-checkbox-wrapper {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  cursor: pointer;\n  user-select: none;\n  background: rgba(30, 41, 59, 0.4);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.feedback-checkbox-wrapper input[type=\"checkbox\"] {\n  accent-color: #00f2fe;\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.feedback-checkbox-text {\n  font-size: 0.85rem;\n  color: #cbd5e1;\n}\n\n/* Diagnostic Details Box */\n.feedback-diag-box {\n  background: rgba(8, 8, 12, 0.9);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 12px;\n  font-family: 'JetBrains Mono', monospace;\n  font-size: 0.75rem;\n  color: #a7f3d0;\n  max-height: 140px;\n  overflow-y: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n/* Modal Actions */\n.feedback-modal-actions {\n  padding: 16px 24px;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n  display: flex;\n  gap: 10px;\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n.feedback-btn {\n  background: rgba(51, 65, 85, 0.8);\n  color: #f8fafc;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  padding: 9px 16px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-btn:hover {\n  background: rgba(71, 85, 105, 0.9);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.feedback-btn.primary {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  border: none;\n  box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);\n}\n\n.feedback-btn.primary:hover {\n  filter: brightness(1.1);\n  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);\n}\n\n/* Success State Overlay */\n.feedback-success-card {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 40px 24px;\n  text-align: center;\n  gap: 14px;\n}\n\n.feedback-success-icon {\n  font-size: 3rem;\n  animation: bounceSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n\n@keyframes bounceSuccess {\n  0% { transform: scale(0); }\n  50% { transform: scale(1.2); }\n  100% { transform: scale(1); }\n}\n\n.feedback-toast-notification {\n  position: fixed;\n  bottom: 24px;\n  right: 24px;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid #00f2fe;\n  color: #ffffff;\n  padding: 12px 20px;\n  border-radius: 8px;\n  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.3);\n  z-index: 100000;\n  font-family: 'Outfit', sans-serif;\n  font-size: 0.9rem;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  animation: toastSlideUp 0.3s ease-out;\n}\n\n@keyframes toastSlideUp {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n";
-	styleInject(css_248z);
+	var css_248z$1 = "/* Hydralisk Feedback & Bug Reporting Modal CSS */\n\n.feedback-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(8, 8, 14, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 99999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  animation: feedbackFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  box-sizing: border-box;\n}\n\n@keyframes feedbackFadeIn {\n  from {\n    opacity: 0;\n    transform: scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n.feedback-modal-card {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);\n  border-radius: 14px;\n  width: 100%;\n  max-width: 580px;\n  max-height: 90vh;\n  display: flex;\n  flex-direction: column;\n  color: #f8fafc;\n  font-family: 'Outfit', system-ui, -apple-system, sans-serif;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n\n.feedback-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 18px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n}\n\n.feedback-modal-title {\n  margin: 0;\n  font-size: 1.15rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.feedback-modal-badge {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  font-size: 0.65rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  padding: 3px 8px;\n  border-radius: 9999px;\n  letter-spacing: 1px;\n}\n\n.feedback-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 1.5rem;\n  cursor: pointer;\n  line-height: 1;\n  padding: 4px 8px;\n  border-radius: 6px;\n  transition: all 0.2s ease;\n}\n\n.feedback-close-btn:hover {\n  color: #ffffff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.feedback-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  box-sizing: border-box;\n}\n\n/* Category Pills */\n.feedback-category-group {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n\n.feedback-cat-pill {\n  background: rgba(30, 41, 59, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #cbd5e1;\n  padding: 8px 14px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 500;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-cat-pill:hover {\n  border-color: rgba(0, 242, 254, 0.4);\n  background: rgba(30, 41, 59, 0.9);\n}\n\n.feedback-cat-pill.active {\n  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);\n  border-color: #00f2fe;\n  color: #00f2fe;\n  font-weight: 600;\n  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);\n}\n\n/* Ratings */\n.feedback-rating-container {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  background: rgba(30, 41, 59, 0.3);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.feedback-rating-label {\n  font-size: 0.82rem;\n  color: #94a3b8;\n  font-weight: 500;\n}\n\n.feedback-stars-row {\n  display: flex;\n  gap: 6px;\n}\n\n.feedback-star-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.25rem;\n  cursor: pointer;\n  opacity: 0.35;\n  transition: transform 0.15s ease, opacity 0.15s ease;\n  padding: 2px 4px;\n}\n\n.feedback-star-btn.selected,\n.feedback-star-btn:hover {\n  opacity: 1;\n  transform: scale(1.2);\n}\n\n/* Form Inputs */\n.feedback-field-group {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.feedback-label {\n  font-size: 0.8rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: #94a3b8;\n}\n\n.feedback-input,\n.feedback-textarea {\n  width: 100%;\n  background: rgba(15, 23, 42, 0.8);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 8px;\n  padding: 10px 14px;\n  color: #f8fafc;\n  font-size: 0.9rem;\n  font-family: inherit;\n  box-sizing: border-box;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\n.feedback-input:focus,\n.feedback-textarea:focus {\n  border-color: #00f2fe;\n  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);\n}\n\n.feedback-textarea {\n  min-height: 100px;\n  resize: vertical;\n  line-height: 1.5;\n}\n\n/* Toggle Checkbox */\n.feedback-checkbox-wrapper {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  cursor: pointer;\n  user-select: none;\n  background: rgba(30, 41, 59, 0.4);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.feedback-checkbox-wrapper input[type=\"checkbox\"] {\n  accent-color: #00f2fe;\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.feedback-checkbox-text {\n  font-size: 0.85rem;\n  color: #cbd5e1;\n}\n\n/* Diagnostic Details Box */\n.feedback-diag-box {\n  background: rgba(8, 8, 12, 0.9);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 12px;\n  font-family: 'JetBrains Mono', monospace;\n  font-size: 0.75rem;\n  color: #a7f3d0;\n  max-height: 140px;\n  overflow-y: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n/* Modal Actions */\n.feedback-modal-actions {\n  padding: 16px 24px;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n  display: flex;\n  gap: 10px;\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n.feedback-btn {\n  background: rgba(51, 65, 85, 0.8);\n  color: #f8fafc;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  padding: 9px 16px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-btn:hover {\n  background: rgba(71, 85, 105, 0.9);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.feedback-btn.primary {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  border: none;\n  box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);\n}\n\n.feedback-btn.primary:hover {\n  filter: brightness(1.1);\n  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);\n}\n\n/* Success State Overlay */\n.feedback-success-card {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 40px 24px;\n  text-align: center;\n  gap: 14px;\n}\n\n.feedback-success-icon {\n  font-size: 3rem;\n  animation: bounceSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n\n@keyframes bounceSuccess {\n  0% { transform: scale(0); }\n  50% { transform: scale(1.2); }\n  100% { transform: scale(1); }\n}\n\n.feedback-toast-notification {\n  position: fixed;\n  bottom: 24px;\n  right: 24px;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid #00f2fe;\n  color: #ffffff;\n  padding: 12px 20px;\n  border-radius: 8px;\n  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.3);\n  z-index: 100000;\n  font-family: 'Outfit', sans-serif;\n  font-size: 0.9rem;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  animation: toastSlideUp 0.3s ease-out;\n}\n\n@keyframes toastSlideUp {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n";
+	styleInject(css_248z$1);
 
 	/**
 	 * Hydralisk Feedback & Diagnostic Service
@@ -2653,1594 +2653,8 @@
 	  });
 	}
 
-	/**
-	 * Kit for connecting to Amazon DynamoDB
-	 *
-	 * Encoded credentials (scripts/encode-credentials.js): both accessKeyId and
-	 * secretAccessKey encrypted with your password—safe to publish in source.
-	 */
-
-	const PBKDF2_ITERATIONS = 310000;
-	if (typeof window !== "undefined") {
-	  window.awsCredentialsEncoded = {
-	    encoded: true,
-	    credentialsCiphertext: "uWzwhV//QeaoDcds1FvdCCWY6EptwC2pyCqlJDYRBXKIqVriyrx5vUgmvjBbintIAzJQYcAmWAN8VBXGawuYrkJdvIyU221g90kyHZkvtJ5pDqk6RrrxN72NHqAad+KM8f2rOky1Mu5ANL78w0TF3JT5bg==",
-	    salt: "u9XNXhZ8/WLxr8A1PoBYug==",
-	    iv: "EnftfLKbFvPBhVLi"
-	  };
-	}
-	const AUTH_TAG_LEN = 16;
-	const userName = (() => {
-	  try {
-	    return localStorage.getItem("awsCredentials") ? JSON.parse(localStorage.getItem("awsCredentials")).name : "Unknown";
-	  } catch (e) {
-	    return "Unknown";
-	  }
-	})();
-	const metadataDefaults = {
-	  author: userName,
-	  midi: false,
-	  heat: 5,
-	  tags: []
-	};
-	class Amakit {
-	  isAuthenticated = false;
-	  draftCache = [];
-	  constructor() {
-	    this.table = "hydralisk-drafts";
-	    this.ensureAWS();
-	  }
-	  ensureAWS = () => {
-	    if (!this.AWS && typeof window !== "undefined" && window.AWS) {
-	      this.AWS = window.AWS;
-	    }
-	    if (this.AWS && !this.docClient) {
-	      this.AWS.config.update({
-	        region: "eu-west-1"
-	      });
-	      this.docClient = new this.AWS.DynamoDB.DocumentClient({
-	        apiVersion: "2012-08-10",
-	        region: "eu-west-1"
-	      });
-	    }
-	    return !!(this.AWS && this.docClient);
-	  };
-	  loadDrafts = async () => {
-	    this.ensureAWS();
-	    try {
-	      const drafts = await this.getAllDrafts();
-	      this.draftCache = drafts || [];
-	      return drafts;
-	    } catch (err) {
-	      console.error("Error loading drafts: ", err);
-	    }
-	  };
-	  getCredentials = () => {
-	    let fromStorage = null;
-	    try {
-	      fromStorage = JSON.parse(localStorage.getItem("awsCredentials") || "null");
-	    } catch (err) {
-	      console.error("Invalid awsCredentials in localStorage:", err);
-	    }
-	    if (fromStorage?.accessKeyId && fromStorage?.secretAccessKey) {
-	      return fromStorage;
-	    }
-	    return null;
-	  };
-
-	  /**
-	   * Store pre-encoded credentials blob from scripts/encode-credentials.js.
-	   * Login will prompt for password to decrypt.
-	   */
-	  saveEncodedCredentials = blob => {
-	    if (!blob || !blob.credentialsCiphertext || !blob.salt || !blob.iv) {
-	      throw new Error("Invalid encoded credentials blob");
-	    }
-	    const machineId = localStorage.getItem("machineId") || prompt("What is the name of this machine?") || "unknown";
-	    localStorage.setItem("machineId", machineId);
-	    const stored = {
-	      ...blob,
-	      machineId,
-	      name: blob.name || "User"
-	    };
-	    localStorage.setItem("awsCredentials", JSON.stringify(stored));
-	    return stored;
-	  };
-	  _decryptSecret = async (ciphertextB64, saltB64, ivB64, password) => {
-	    const salt = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
-	    const iv = Uint8Array.from(atob(ivB64), c => c.charCodeAt(0));
-	    const ciphertext = Uint8Array.from(atob(ciphertextB64), c => c.charCodeAt(0));
-	    const enc = new TextEncoder();
-	    const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveBits", "deriveKey"]);
-	    const key = await crypto.subtle.deriveKey({
-	      name: "PBKDF2",
-	      salt,
-	      iterations: PBKDF2_ITERATIONS,
-	      hash: "SHA-256"
-	    }, keyMaterial, {
-	      name: "AES-GCM",
-	      length: 256
-	    }, false, ["decrypt"]);
-	    const decrypted = await crypto.subtle.decrypt({
-	      name: "AES-GCM",
-	      iv,
-	      tagLength: AUTH_TAG_LEN * 8
-	    }, key, ciphertext);
-	    return new TextDecoder().decode(decrypted);
-	  };
-	  saveCredentials = (name, accessKeyId, secretAccessKey, persist = true) => {
-	    let machineId = localStorage.getItem("machineId") || prompt("What is the name of this machine?") || "unknown";
-	    localStorage.setItem("machineId", machineId);
-	    name = name || prompt("What is your name?");
-	    accessKeyId = accessKeyId || prompt("What is your AWS Access Key ID?");
-	    secretAccessKey = secretAccessKey || prompt("What is your AWS Secret Access Key?");
-	    if (!accessKeyId || !secretAccessKey) {
-	      return null;
-	    }
-	    const credentials = {
-	      name: name || "User",
-	      machineId,
-	      accessKeyId,
-	      secretAccessKey
-	    };
-	    if (persist) {
-	      localStorage.setItem("awsCredentials", JSON.stringify(credentials));
-	    }
-	    return credentials;
-	  };
-	  login = async (doPrompt = true) => {
-	    this.ensureAWS();
-	    if (!this.AWS) {
-	      return Promise.reject("AWS SDK (window.AWS) is not loaded.");
-	    }
-	    let credentials = this.getCredentials();
-
-	    // Check for encoded credentials (encrypted blob in storage or window)
-	    const storedBlob = (() => {
-	      try {
-	        const parsed = JSON.parse(localStorage.getItem("awsCredentials") || "null");
-	        if (parsed?.credentialsCiphertext) return parsed;
-	      } catch (e) {}
-	      return typeof window !== "undefined" && window.awsCredentialsEncoded?.credentialsCiphertext ? window.awsCredentialsEncoded : null;
-	    })();
-	    if (!credentials && storedBlob) {
-	      if (!doPrompt) {
-	        return Promise.reject("No plain credentials found. Decryption password required.");
-	      }
-	      const pwd = prompt("Enter password for AWS credentials:");
-	      if (!pwd) {
-	        return Promise.reject("Login cancelled: no password provided.");
-	      }
-	      try {
-	        const decryptedStr = await this._decryptSecret(storedBlob.credentialsCiphertext, storedBlob.salt, storedBlob.iv, pwd);
-	        const keys = JSON.parse(decryptedStr);
-	        credentials = {
-	          name: storedBlob.name || "User",
-	          machineId: storedBlob.machineId || "unknown",
-	          accessKeyId: keys.accessKeyId,
-	          secretAccessKey: keys.secretAccessKey
-	        };
-	      } catch (err) {
-	        console.error("Decryption error:", err);
-	        return Promise.reject("Invalid password or decryption failed.");
-	      }
-	    }
-	    if (!credentials) {
-	      if (!doPrompt) {
-	        return Promise.reject("No credentials found.");
-	      }
-	      credentials = this.saveCredentials(undefined, undefined, undefined, false);
-	    }
-	    if (!credentials || !credentials.accessKeyId || !credentials.secretAccessKey) {
-	      return Promise.reject("Login cancelled or invalid AWS credentials provided.");
-	    }
-	    this.AWS.config.update({
-	      accessKeyId: credentials.accessKeyId,
-	      secretAccessKey: credentials.secretAccessKey,
-	      region: "eu-west-1"
-	    });
-	    if (this.docClient && this.AWS.config.credentials) {
-	      this.docClient.configure({
-	        credentials: this.AWS.config.credentials
-	      });
-	    }
-	    return new Promise((resolve, reject) => {
-	      if (!this.AWS.config.credentials) {
-	        return reject(new Error("Failed to initialize AWS credentials."));
-	      }
-	      this.AWS.config.credentials.get(err => {
-	        if (err) {
-	          console.error("AWS authentication error:", err);
-	          reject(err);
-	        } else {
-	          this.isAuthenticated = true;
-	          console.log("Logged in as:", credentials.name);
-	          localStorage.setItem("awsCredentials", JSON.stringify(credentials));
-	          resolve(credentials);
-	        }
-	      });
-	    });
-	  };
-	  getDraft = ({
-	    id,
-	    name
-	  }) => {
-	    this.ensureAWS();
-	    const params = {
-	      TableName: this.table,
-	      Key: id ? {
-	        id
-	      } : {
-	        name
-	      }
-	    };
-	    return new Promise((resolve, reject) => {
-	      this.docClient.get(params, (err, data) => {
-	        if (err) {
-	          reject(err);
-	        } else {
-	          resolve(data.Item);
-	        }
-	      });
-	    });
-	  };
-	  getAllDrafts = () => {
-	    this.ensureAWS();
-	    const params = {
-	      TableName: this.table
-	    };
-	    return new Promise((resolve, reject) => {
-	      this.docClient.scan(params, (err, data) => {
-	        if (err) {
-	          reject(err);
-	        } else {
-	          this.allDrafts = data.Items;
-	          resolve(data.Items);
-	        }
-	      });
-	    });
-	  };
-	  processDraftString = draftString => {
-	    let lines = draftString.split("\n");
-	    let name = "";
-	    if (lines[0].trim().startsWith("/*") && lines[0].trim().endsWith("*/")) {
-	      name = this.getCommentValue(lines[0]);
-	      lines = lines.slice(1);
-	    } else {
-	      name = `Random ${Math.floor(Math.random() * 1000)}`;
-	    }
-	    let metadata = {};
-	    try {
-	      const metadataLine = lines.find(line => line.trim().startsWith("/* metadata = "));
-	      metadata = JSON.parse(this.getCommentValue(metadataLine).replace("metadata = ", ""));
-	    } catch (e) {
-	      console.error("Cannot parse metadata: ", e);
-	    }
-	    metadata = {
-	      ...metadataDefaults,
-	      ...metadata
-	    };
-	    return {
-	      name,
-	      metadata,
-	      code: lines.join("\n")
-	    };
-	  };
-	  addDraft = draftOrString => {
-	    this.ensureAWS();
-	    let draft = null;
-	    if (typeof draftOrString === "string") {
-	      const {
-	        name,
-	        metadata,
-	        code
-	      } = this.processDraftString(draftOrString);
-	      draft = this.shapeDraft({
-	        name,
-	        metadata,
-	        code,
-	        fullDraft: btoa(draftOrString)
-	      });
-	    } else {
-	      draft = this.shapeDraft(draftOrString);
-	    }
-	    const params = {
-	      TableName: this.table,
-	      Item: draft
-	    };
-	    return new Promise((resolve, reject) => {
-	      this.docClient.put(params, (err, response) => {
-	        if (err) {
-	          reject(err);
-	        } else {
-	          resolve(draft);
-	        }
-	      });
-	    });
-	  };
-	  uploadDraftObj = draft => {
-	    this.ensureAWS();
-	    const params = {
-	      TableName: this.table,
-	      Item: draft
-	    };
-	    return new Promise((resolve, reject) => {
-	      this.docClient.put(params, (err, data) => {
-	        if (err) {
-	          reject(err);
-	        } else {
-	          resolve(data);
-	        }
-	      });
-	    });
-	  };
-
-	  // Drop by id or name
-	  dropDraft = ({
-	    id,
-	    name
-	  }) => {
-	    this.ensureAWS();
-	    const params = {
-	      TableName: this.table,
-	      Key: id ? {
-	        id
-	      } : {
-	        name
-	      }
-	    };
-	    return new Promise((resolve, reject) => {
-	      this.docClient.delete(params, (err, data) => {
-	        if (err) {
-	          reject(err);
-	        } else {
-	          resolve(data);
-	        }
-	      });
-	    });
-	  };
-	  generateId = () => {
-	    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
-	      const r = Math.floor(Math.random() * 16);
-	      const v = c === "x" ? r : r & 0x3 | 0x8;
-	      return v.toString(16);
-	    });
-	  };
-	  getCommentValue = comment => {
-	    const start = comment.indexOf("/*") + 2;
-	    const end = comment.indexOf("*/");
-	    return comment.substring(start, end).trim();
-	  };
-	  shapeDraft = draft => {
-	    const id = draft.id || this.generateId();
-	    const name = draft.name || `Random ${Math.floor(Math.random() * 1000)}`;
-	    const metadata = {
-	      ...metadataDefaults,
-	      ...(draft.metadata || {})
-	    };
-	    const code = draft.code.replace(/^\/\* metadata.*$/m, "").trim();
-	    const fullDraft = btoa(`/* ${name} */\n${code}\n/* metadata = ${JSON.stringify(metadata)}*/`);
-	    return {
-	      id,
-	      name,
-	      metadata,
-	      fullDraft,
-	      code
-	    };
-	  };
-	}
-	window.amakit = new Amakit();
-	if (typeof window !== "undefined" && window.HydraliskPlugins) {
-	  window.HydraliskPlugins.register({
-	    id: "amakit",
-	    name: "Amazon DynamoDB Draft Storage",
-	    init(app) {
-	      app.expose("amakit", window.amakit);
-	    }
-	  });
-	}
-
-	/**
-	 * Hydrakit — WebMIDI State Engine, Tap Tempo Module & Audio-Reactive Sketch Helpers
-	 * Unified MIDI state management, rolling tap-tempo calculator, and sketch utilities for Hydralisk.
-	 */
-
-	class MidiEngine {
-	  constructor() {
-	    this.cc = new Array(128).fill(0.5);
-	    this.ccc = Array.from({
-	      length: 16
-	    }, () => new Array(128).fill(0.5));
-	    this.ccbind = [];
-	    this.isInitialized = false;
-
-	    // Expose globals for sketch backward compatibility
-	    if (typeof window !== "undefined") {
-	      window.cc = this.cc;
-	      window.ccc = this.ccc;
-	      window.ccbind = this.ccbind;
-	    }
-	  }
-	  init() {
-	    if (this.isInitialized) return;
-	    this.isInitialized = true;
-	    if (typeof navigator !== "undefined" && navigator.requestMIDIAccess) {
-	      navigator.requestMIDIAccess().then(access => this.handleMidiSuccess(access)).catch(err => console.warn("[Hydrakit] Could not access MIDI devices:", err));
-	    }
-	  }
-	  handleMidiSuccess(midiAccess) {
-	    console.log("[Hydrakit] WebMIDI access granted");
-	    for (const input of midiAccess.inputs.values()) {
-	      this.attachInput(input);
-	    }
-	    midiAccess.onstatechange = e => {
-	      if (e.port && e.port.type === "input" && e.port.state === "connected") {
-	        console.log(`[Hydrakit] Hot-plugged MIDI device: ${e.port.name}`);
-	        this.attachInput(e.port);
-	      }
-	    };
-	  }
-	  attachInput(input) {
-	    if (!input) return;
-	    input.removeEventListener("midimessage", this.onMidiMessage);
-	    input.addEventListener("midimessage", this.onMidiMessage);
-	  }
-	  onMidiMessage = event => {
-	    if (!event || !event.data) return;
-	    const [kind, ccIndex, rawValue] = event.data;
-	    if (ccIndex === undefined) return;
-	    const channel = kind & 0b00001111;
-	    const normalizedValue = (rawValue > 64 ? rawValue + 1 : rawValue) / 128.0;
-	    this.cc[ccIndex] = normalizedValue;
-	    this.ccc[channel][ccIndex] = normalizedValue;
-	    if (!this.ccbind.includes(ccIndex)) {
-	      console.log(`[Hydrakit] CC #${ccIndex} bound to b${this.ccbind.length}`);
-	      this.ccbind.push(ccIndex);
-	    }
-	  };
-	  getValue(ccIndex, {
-	    min = 0,
-	    max = 1,
-	    channel,
-	    transform
-	  } = {}) {
-	    let localIndex = ccIndex;
-	    if (typeof ccIndex === "string") {
-	      if (/^[ABCD]$/.test(ccIndex)) {
-	        const globalVal = window.cc ? window.cc[ccIndex] : undefined;
-	        if (globalVal === undefined) return min;
-	        const value = globalVal * (max - min) + min;
-	        return transform ? transform(value) : value;
-	      }
-	      if (/^b\d+$/.test(ccIndex)) {
-	        const bindIndex = parseInt(ccIndex.slice(1), 10);
-	        localIndex = this.ccbind[bindIndex];
-	        if (localIndex === undefined) return min;
-	      }
-	    }
-	    if (localIndex === undefined || localIndex === null) return min;
-	    const ccArr = channel !== undefined ? this.ccc[channel] : this.cc;
-	    const rawVal = ccArr[localIndex] !== undefined ? ccArr[localIndex] : 0.5;
-	    const value = rawVal * (max - min) + min;
-	    return transform ? transform(value) : value;
-	  }
-	}
-	const midiEngine = new MidiEngine();
-	midiEngine.init();
-
-	// --- Tap Tempo Module ---
-
-	/**
-	 * TapTempo — Rolling average BPM calculator & tap manager
-	 */
-	class TapTempo {
-	  constructor({
-	    maxTaps = 128,
-	    idleTimeoutMs = 3000
-	  } = {}) {
-	    this.taps = [];
-	    this.totalTaps = 0;
-	    this.maxTaps = maxTaps;
-	    this.idleTimeoutMs = idleTimeoutMs;
-	    this.resetTimer = null;
-	    this.currentBpm = 120;
-	    this.lastTapTime = null;
-	    this.appContext = null;
-	  }
-	  setAppContext(app) {
-	    this.appContext = app;
-	  }
-	  reset = () => {
-	    this.taps = [];
-	    this.totalTaps = 0;
-	    this.lastTapTime = null;
-	    if (this.resetTimer) {
-	      clearTimeout(this.resetTimer);
-	      this.resetTimer = null;
-	    }
-	  };
-	  tap = (timestamp = Date.now()) => {
-	    // 1. If more than 3 seconds elapsed since the last tap, clear buffer and counters first
-	    if (this.lastTapTime && timestamp - this.lastTapTime >= this.idleTimeoutMs) {
-	      this.reset();
-	    }
-	    this.lastTapTime = timestamp;
-
-	    // 2. Reset 3-second idle timer
-	    if (this.resetTimer) {
-	      clearTimeout(this.resetTimer);
-	    }
-	    this.resetTimer = setTimeout(() => {
-	      this.reset();
-	    }, this.idleTimeoutMs);
-
-	    // 3. Record tap and increment total tap counter
-	    this.taps.push(timestamp);
-	    this.totalTaps++;
-
-	    // 4. Retain buffer history up to maxTaps without emptying on recalculations
-	    if (this.taps.length > this.maxTaps) {
-	      this.taps.shift();
-	    }
-
-	    // 5. Only recalculate when the recorded tempo taps count is divisible by 4 (4, 8, 12, 16...)
-	    if (this.totalTaps >= 4 && this.totalTaps % 4 === 0) {
-	      const count = this.taps.length - 1;
-	      const totalIntervalMs = this.taps[this.taps.length - 1] - this.taps[0];
-	      if (totalIntervalMs > 0 && count > 0) {
-	        const avgIntervalMs = totalIntervalMs / count;
-	        const calculatedBpm = Math.round(60000 / avgIntervalMs);
-	        if (calculatedBpm >= 30 && calculatedBpm <= 300) {
-	          this.currentBpm = calculatedBpm;
-	          if (typeof window !== "undefined") {
-	            window.bpm = calculatedBpm;
-	          }
-	          if (this.appContext) {
-	            this.appContext.bpm = calculatedBpm;
-	            this.appContext.emit("bpm:change", calculatedBpm);
-	            this.appContext.emit("taptempo", {
-	              bpm: calculatedBpm
-	            });
-	          } else if (typeof window !== "undefined" && window.xemitter) {
-	            window.xemitter.emit("bpm:change", calculatedBpm);
-	            window.xemitter.emit("taptempo", {
-	              bpm: calculatedBpm
-	            });
-	          }
-	        }
-	      }
-	    }
-	    return this.currentBpm;
-	  };
-	  getBpm = () => {
-	    return this.currentBpm;
-	  };
-	}
-	const tapTempo = new TapTempo();
-	if (typeof window !== "undefined") {
-	  window.tapTempo = tapTempo;
-	  window.addEventListener("keydown", e => {
-	    const isOptionSpace = e.altKey && (e.code === "Space" || e.key === " " || e.key === "Spacebar");
-	    if (isOptionSpace) {
-	      e.preventDefault();
-	      e.stopPropagation();
-	      tapTempo.tap(e.timeStamp);
-	      return;
-	    }
-	    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
-	      return;
-	    }
-	    // Only bare '[' and ']' without Cmd/Ctrl/Alt modifier keys should navigate setlist; ignore repeats
-	    if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) {
-	      return;
-	    }
-	    if (e.key === "[") {
-	      window.xemitter?.emit('gallery:prevSetlistSketch');
-	    } else if (e.key === "]") {
-	      window.xemitter?.emit('gallery:nextSetlistSketch');
-	    }
-	  });
-	}
-
-	// --- Sketch Helper Functions ---
-
-	/**
-	 * MIDI value getter for sketches
-	 * Usage: midi(3, {min: 10, max: 60}), midi('b0'), midi('A')
-	 */
-	function midi(ccIndex, options = {}) {
-	  return () => midiEngine.getValue(ccIndex, options);
-	}
-
-	/**
-	 * BPM-synced sawtooth ramp for Hydra arrays or properties
-	 */
-	const saw = ({
-	  min = 0,
-	  max = 1,
-	  x = 1,
-	  t
-	} = {}) => ({
-	  time
-	}) => {
-	  const currentBpm = typeof window !== "undefined" && window.bpm ? window.bpm : 120;
-	  const spb = 60 / currentBpm * x;
-	  const p = time % spb / spb * (max - min) + min;
-	  return t ? t(p) : p;
-	};
-
-	/**
-	 * Low Frequency Oscillator (LFO) builder for Hydra params
-	 */
-	function createLFO({
-	  frequency = 1,
-	  amplitude = 1,
-	  phase = 0,
-	  waveform = "sine",
-	  bpm = undefined,
-	  trans = undefined,
-	  t = undefined
-	} = {}) {
-	  const transform = trans || t;
-	  if (bpm) {
-	    frequency = bpm / 60 * frequency;
-	  }
-	  const omega = 2 * Math.PI * frequency;
-	  return ({
-	    time
-	  }) => {
-	    const theta = omega * time + phase;
-	    let value;
-	    switch (waveform) {
-	      case "sine":
-	        value = Math.sin(theta);
-	        break;
-	      case "square":
-	        value = Math.sign(Math.sin(theta));
-	        break;
-	      case "sawtooth":
-	        value = 2 * (theta / (2 * Math.PI) - Math.floor(0.5 + theta / (2 * Math.PI)));
-	        break;
-	      case "triangle":
-	        value = 2 * Math.abs(2 * (theta / (2 * Math.PI) - Math.floor(0.5 + theta / (2 * Math.PI)))) - 1;
-	        break;
-	      case "random":
-	        value = Math.random() * 2 - 1;
-	        break;
-	      default:
-	        throw new Error(`[Hydrakit] Unsupported LFO waveform: ${waveform}`);
-	    }
-	    const scaled = value * amplitude;
-	    return transform ? transform(scaled) : scaled;
-	  };
-	}
-
-	/**
-	 * Returns random integer in range [from, to]
-	 */
-	function randInt(from, to) {
-	  return Math.floor(Math.random() * (to - from + 1) + from);
-	}
-
-	/**
-	 * Balanced random float in range [-0.5, 0.5]
-	 */
-	function rx() {
-	  return Math.random() - 0.5;
-	}
-
-	/**
-	 * Template string function evaluator: f`x => x * 2`
-	 */
-	const f = (...args) => new Function("return " + String.raw(...args));
-
-	/**
-	 * Call-site keyed target value smoothing/easing across frame re-evaluations
-	 */
-	const _xxxStorage = {};
-	const xxx = target => {
-	  try {
-	    const stackLines = new Error().stack.split("\n");
-	    const callLine = stackLines[2] || stackLines[1] || "";
-	    const match = callLine.match(/<anonymous>:(\d+:\d+)/) || callLine.match(/:(\d+:\d+)/);
-	    const key = match ? match[1] : "default";
-	    if (!_xxxStorage[key]) {
-	      _xxxStorage[key] = target;
-	    }
-	    let current = _xxxStorage[key];
-	    return () => {
-	      if (Math.abs(target - current) >= 1 / 30) {
-	        current += (target - current) / 30;
-	        _xxxStorage[key] = current;
-	      } else {
-	        _xxxStorage[key] = target;
-	      }
-	      return current;
-	    };
-	  } catch (e) {
-	    return () => target;
-	  }
-	};
-
-	/**
-	 * Euclidean-style beat pattern generator
-	 */
-	const beatPattern = (length, hits, map = e => e) => {
-	  hits = Math.floor(Math.min(length, hits));
-	  const arr = new Array(Math.floor(length)).fill(0);
-	  while (hits > 0) {
-	    const r = Math.floor(Math.random() * length);
-	    if (!arr[r]) {
-	      arr[r] = 1;
-	      hits--;
-	    }
-	  }
-	  return arr.map(map);
-	};
-
-	/**
-	 * Single-invocation function wrapper
-	 */
-	function once(fn) {
-	  let called = false;
-	  let result;
-	  return function (...args) {
-	    if (!called) {
-	      called = true;
-	      result = fn.apply(this, args);
-	    }
-	    return result;
-	  };
-	}
-
-	/**
-	 * Hex or RGB color solid generator without eval
-	 */
-	function color(...args) {
-	  function hexToRgb(hex) {
-	    if (hex.startsWith("#")) hex = hex.slice(1);
-	    const r = (parseInt(hex.slice(0, 2), 16) / 255).toPrecision(4);
-	    const g = (parseInt(hex.slice(2, 4), 16) / 255).toPrecision(4);
-	    const b = (parseInt(hex.slice(4, 6), 16) / 255).toPrecision(4);
-	    return {
-	      r: Number(r),
-	      g: Number(g),
-	      b: Number(b)
-	    };
-	  }
-	  let r = 0,
-	    g = 0,
-	    b = 0;
-	  if (args.length === 1 && typeof args[0] === "string") {
-	    const rgb = hexToRgb(args[0]);
-	    r = rgb.r;
-	    g = rgb.g;
-	    b = rgb.b;
-	  } else {
-	    r = Number(args[0]) || 0;
-	    g = Number(args[1]) || 0;
-	    b = Number(args[2]) || 0;
-	  }
-	  if (typeof window !== "undefined" && typeof window.solid === "function") {
-	    return window.solid(r, g, b);
-	  }
-	  return ({
-	    time
-	  }) => {
-	    if (typeof window !== "undefined" && typeof window.solid === "function") {
-	      return window.solid(r, g, b);
-	    }
-	  };
-	}
-
-	// --- Plugin System Registration ---
-	if (typeof window !== "undefined" && window.HydraliskPlugins) {
-	  window.HydraliskPlugins.register({
-	    id: "hydrakit",
-	    name: "Hydrakit Helpers & WebMIDI CC Engine",
-	    init(app) {
-	      tapTempo.setAppContext(app);
-	      if (app.on) {
-	        app.on("taptempo", (evt = {}) => {
-	          if (evt && typeof evt.bpm === "number") return;
-	          tapTempo.tap();
-	        });
-	        app.on("bpm:taptempo", (evt = {}) => {
-	          if (evt && typeof evt.bpm === "number") return;
-	          tapTempo.tap();
-	        });
-	        app.on("bpm:change", bpmVal => {
-	          if (typeof window !== "undefined") window.bpm = bpmVal;
-	        });
-	      }
-	      app.expose("midiEngine", midiEngine);
-	      app.expose("tapTempo", tapTempo);
-	      app.expose("midi", midi);
-	      app.expose("saw", saw);
-	      app.expose("createLFO", createLFO);
-	      app.expose("randInt", randInt);
-	      app.expose("rx", rx);
-	      app.expose("f", f);
-	      app.expose("xxx", xxx);
-	      app.expose("beatPattern", beatPattern);
-	      app.expose("once", once);
-	      app.expose("color", color);
-	    }
-	  });
-	}
-
-	var midiMapping = {};
-
-	/**
-	 * MIDI Mapping Module for Hydra
-	 * Allows assigning Hydra actions to MIDI controls (CC and Note On).
-	 * Mappings are stored in localStorage and loaded on init.
-	 */
-	var hasRequiredMidiMapping;
-	function requireMidiMapping() {
-	  if (hasRequiredMidiMapping) return midiMapping;
-	  hasRequiredMidiMapping = 1;
-	  (function () {
-
-	    const STORAGE_KEY = "hydra-midi-mapping";
-	    const CC_TRIGGER_THRESHOLD = 0.5;
-	    const WAITING_TIMEOUT_MS = 15000;
-
-	    // Mappable actions: action ID -> config
-	    // Trigger: { action, payload?, label? } - emits event when CC > threshold or on note
-	    // Bind: { callback: (value) => {}, label? } - calls callback with CC value (0-1) on every change
-	    const MAPPABLE_ACTIONS = {
-	      "gallery:nextSketch": {
-	        action: "gallery:nextSketch",
-	        label: "Next sketch"
-	      },
-	      "gallery:prevSketch": {
-	        action: "gallery:nextSketch",
-	        payload: {
-	          backwards: true
-	        },
-	        label: "Prev sketch"
-	      },
-	      "gallery:randomSketch": {
-	        action: "gallery:randomSketch",
-	        label: "Random Sketch"
-	      },
-	      "editor:randomize": {
-	        action: "editor:randomize",
-	        label: "Randomize"
-	      },
-	      "editor:jumpBack1": {
-	        action: "editor:jumpBack1",
-	        label: "Jump back 1"
-	      },
-	      "editor:jumpBack5": {
-	        action: "editor:jumpBack5",
-	        label: "Jump back 5"
-	      },
-	      "gfx:speedReverse": {
-	        action: "gfx:speedReverse",
-	        label: "Speed reverse"
-	      },
-	      "editor:quickSave": {
-	        action: "editor:quickSave",
-	        label: "Quick save"
-	      },
-	      "editor:quickLoad": {
-	        action: "editor:quickLoad",
-	        label: "Quick load"
-	      },
-	      "editor:toggleAutomutate|off": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-0"
-	        },
-	        label: "Automutate off"
-	      },
-	      "editor:toggleAutomutate|1x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-1"
-	        },
-	        label: "Automutate 1x"
-	      },
-	      "editor:toggleAutomutate|2x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-2"
-	        },
-	        label: "Automutate 2x"
-	      },
-	      "editor:toggleAutomutate|4x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-3"
-	        },
-	        label: "Automutate 4x"
-	      },
-	      "editor:toggleAutomutate|8x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-4"
-	        },
-	        label: "Automutate 8x"
-	      },
-	      "editor:toggleAutomutate|16x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-5"
-	        },
-	        label: "Automutate 16x"
-	      },
-	      "taptempo": {
-	        action: "taptempo",
-	        label: "Tap tempo"
-	      },
-	      "fullscreen": {
-	        action: "fullscreen",
-	        label: "Toggle Fullscreen"
-	      },
-	      "hideAll": {
-	        action: "hideAll",
-	        label: "Hide/Show UI"
-	      },
-	      // Example CC bind - callback receives normalized value (0-1)
-	      speed: {
-	        callback: value => {
-	          // value is between 0 and 1, it should be mapped to speed between
-	          // This is a logarithmic scale, so we need to use a logarithmic function to map the value to the speed.
-	          // value: 0 => 0
-	          // value: 0.5 => 1
-	          // value: 1 => 8
-	          const speed = Math.pow(2, value * 2) - 1;
-	          if (window.speed !== undefined) window.speed = speed;
-	        },
-	        label: "Speed (CC bind)"
-	      },
-	      ...["A", "B", "C", "D"].map(midiShortcut => {
-	        return {
-	          ['midi' + midiShortcut]: {
-	            callback: value => {
-	              // Example of a CC bind that uses the global cc['A'] / cc['B'] / cc['C'] / cc['D'] value
-	              console.log(`MIDI ${midiShortcut} value:`, value);
-	              // reusable as `midi('A', { min: 0, max: 10, transform: v => Math.round(v * 10) })` for example
-	              window.cc[midiShortcut] = value;
-	            },
-	            label: `midi('${midiShortcut}', {min, max, transform}) cc bind`
-	          }
-	        };
-	      }).reduce((acc, curr) => ({
-	        ...acc,
-	        ...curr
-	      }), {})
-	    };
-	    let mapping = {};
-	    let waitingForAction = null;
-	    let waitingTimeoutId = null;
-	    function loadMapping() {
-	      try {
-	        const stored = localStorage.getItem(STORAGE_KEY);
-	        mapping = stored ? JSON.parse(stored) : {};
-	        return mapping;
-	      } catch (e) {
-	        console.warn("MIDI Mapping: failed to load from localStorage", e);
-	        return {};
-	      }
-	    }
-	    function saveMapping() {
-	      try {
-	        localStorage.setItem(STORAGE_KEY, JSON.stringify(mapping));
-	      } catch (e) {
-	        console.warn("MIDI Mapping: failed to save to localStorage", e);
-	      }
-	    }
-	    function getFullMapping() {
-	      return mapping;
-	    }
-	    function formatMappingDesc(m) {
-	      if (!m) return "—";
-	      if (m.type === "cc") return `CC ${m.control} (ch ${m.channel})`;
-	      if (m.type === "note") return `Note ${m.note} (ch ${m.channel})`;
-	      return "—";
-	    }
-	    function findActionForMessage(channel, type, controlOrNote) {
-	      const full = getFullMapping();
-	      const hits = [];
-	      for (const [action, m] of Object.entries(full)) {
-	        if (!m) continue;
-	        if (m.type === type && m.channel === channel) {
-	          if (type === "cc" && m.control === controlOrNote) hits.push(action);
-	          if (type === "note" && m.note === controlOrNote) hits.push(action);
-	        }
-	      }
-	      return hits;
-	    }
-	    function createMIDIHandler() {
-	      return function handleMIDIMessage(midiMessage) {
-	        const data = midiMessage.data;
-	        if (!data || data.length < 3) return;
-	        const kind = data[0];
-	        const channel = kind & 0x0f;
-	        const byte1 = data[1];
-	        const byte2 = data[2];
-	        const valNormalized = (byte2 > 64 ? byte2 + 1 : byte2) / 128.0;
-
-	        // Check if we're in assignment waiting mode
-	        if (waitingForAction) {
-	          const config = MAPPABLE_ACTIONS[waitingForAction];
-	          config && typeof config.callback === "function";
-	          let assignment = null;
-	          if ((kind & 0xf0) === 0xb0) {
-	            assignment = {
-	              type: "cc",
-	              channel,
-	              control: byte1
-	            };
-	          } else if ((kind & 0xf0) === 0x90 && byte2 > 0) {
-	            assignment = {
-	              type: "note",
-	              channel,
-	              note: byte1
-	            };
-	          }
-	          if (assignment) {
-	            mapping[waitingForAction] = assignment;
-	            saveMapping();
-	            waitingForAction = null;
-	            if (waitingTimeoutId) {
-	              clearTimeout(waitingTimeoutId);
-	              waitingTimeoutId = null;
-	            }
-	            if (window.midiMapping && window.midiMapping.render) {
-	              window.midiMapping.render();
-	            }
-	          }
-	          return;
-	        }
-
-	        // Check mapping for action trigger or CC bind
-	        const status = kind & 0xf0;
-	        if (status === 0xb0) {
-	          const actions = findActionForMessage(channel, "cc", byte1);
-	          for (const actionId of actions) {
-	            if (actionId) {
-	              const config = MAPPABLE_ACTIONS[actionId];
-	              if (config) {
-	                if (typeof config.callback === "function") {
-	                  config.callback(valNormalized);
-	                } else if (config.action && valNormalized > CC_TRIGGER_THRESHOLD && window.xemitter) {
-	                  window.xemitter.emit(config.action, config.payload || {});
-	                }
-	              }
-	            }
-	          }
-	        } else if (status === 0x90 && byte2 > 0) {
-	          const actions = findActionForMessage(channel, "note", byte1);
-	          for (const actionId of actions) {
-	            if (actionId) {
-	              const config = MAPPABLE_ACTIONS[actionId];
-	              if (config && window.xemitter) {
-	                if (typeof config.callback === "function") {
-	                  config.callback(valNormalized);
-	                } else {
-	                  window.xemitter.emit(config.action, config.payload || {});
-	                }
-	              }
-	            }
-	          }
-	        }
-	      };
-	    }
-	    function attachInput(input, handler) {
-	      if (!input) return;
-	      input.removeEventListener("midimessage", handler);
-	      input.addEventListener("midimessage", handler);
-	    }
-	    function setupMIDIHandler() {
-	      if (typeof navigator === "undefined" || !navigator.requestMIDIAccess) return;
-	      navigator.requestMIDIAccess().then(function (midiAccess) {
-	        const handler = createMIDIHandler();
-	        for (const input of midiAccess.inputs.values()) {
-	          attachInput(input, handler);
-	        }
-	        midiAccess.onstatechange = e => {
-	          if (e.port && e.port.type === "input" && e.port.state === "connected") {
-	            console.log(`[midi-mapping] Hot-plugged MIDI device: ${e.port.name}`);
-	            attachInput(e.port, handler);
-	          }
-	        };
-	        console.log("MIDI Mapping: handler installed via addEventListener");
-	      }, function () {
-	        console.warn("MIDI Mapping: could not access MIDI devices");
-	      });
-	    }
-
-	    // --- Modal UI (vanilla DOM) ---
-	    let modalContainer = null;
-	    function createModal() {
-	      const container = document.createElement("div");
-	      container.id = "midi-mapping-app";
-	      document.body.appendChild(container);
-	      modalContainer = container;
-	      renderModal();
-	    }
-	    function renderModal() {
-	      if (!modalContainer) return;
-	      if (!document.body.contains(modalContainer)) {
-	        document.body.appendChild(modalContainer);
-	      }
-	      const fullMapping = getFullMapping();
-	      const isVisible = modalContainer.getAttribute("data-visible") === "true";
-	      modalContainer.innerHTML = "";
-	      if (!isVisible) return;
-	      const overlay = document.createElement("div");
-	      overlay.className = "midi-mapping-overlay";
-	      overlay.onclick = function (e) {
-	        if (e.target === overlay) toggleModal();
-	      };
-	      const modal = document.createElement("div");
-	      modal.className = "midi-mapping-modal";
-	      modal.onclick = function (e) {
-	        e.stopPropagation();
-	      };
-	      const header = document.createElement("div");
-	      header.className = "midi-mapping-header";
-	      header.innerHTML = '<h5>MIDI Mapping</h5><span class="midi-mapping-close">&times;</span>';
-	      header.querySelector(".midi-mapping-close").onclick = toggleModal;
-	      const body = document.createElement("div");
-	      body.className = "midi-mapping-body";
-	      const list = document.createElement("ul");
-	      list.className = "midi-mapping-list";
-	      for (const [actionId, config] of Object.entries(MAPPABLE_ACTIONS)) {
-	        const actionLabel = config.label || actionId;
-	        const li = document.createElement("li");
-	        li.className = "midi-mapping-row";
-	        const current = fullMapping[actionId];
-	        const isWaiting = waitingForAction === actionId;
-	        const label = document.createElement("span");
-	        label.className = "midi-mapping-action";
-	        label.textContent = actionLabel;
-	        const mappingSpan = document.createElement("span");
-	        mappingSpan.className = "midi-mapping-value";
-	        mappingSpan.textContent = isWaiting ? "Listening..." : formatMappingDesc(current);
-	        const assignBtn = document.createElement("button");
-	        assignBtn.className = "midi-mapping-btn";
-	        assignBtn.textContent = isWaiting ? "Cancel" : "Assign";
-	        assignBtn.disabled = isWaiting;
-	        assignBtn.onclick = function () {
-	          if (isWaiting) {
-	            waitingForAction = null;
-	            if (waitingTimeoutId) {
-	              clearTimeout(waitingTimeoutId);
-	              waitingTimeoutId = null;
-	            }
-	          } else {
-	            waitingForAction = actionId;
-	            if (waitingTimeoutId) clearTimeout(waitingTimeoutId);
-	            waitingTimeoutId = setTimeout(function () {
-	              waitingForAction = null;
-	              waitingTimeoutId = null;
-	              renderModal();
-	            }, WAITING_TIMEOUT_MS);
-	          }
-	          renderModal();
-	        };
-	        const clearBtn = document.createElement("button");
-	        clearBtn.className = "midi-mapping-btn midi-mapping-clear";
-	        clearBtn.textContent = "Clear";
-	        clearBtn.style.display = current && mapping[actionId] ? "inline-block" : "none";
-	        clearBtn.onclick = function () {
-	          delete mapping[actionId];
-	          saveMapping();
-	          renderModal();
-	        };
-	        li.appendChild(label);
-	        li.appendChild(mappingSpan);
-	        li.appendChild(assignBtn);
-	        li.appendChild(clearBtn);
-	        list.appendChild(li);
-	      }
-	      body.appendChild(list);
-	      modal.appendChild(header);
-	      modal.appendChild(body);
-	      overlay.appendChild(modal);
-	      modalContainer.appendChild(overlay);
-	    }
-	    function toggleModal() {
-	      if (!modalContainer) return;
-	      const isVisible = modalContainer.getAttribute("data-visible") === "true";
-	      modalContainer.setAttribute("data-visible", !isVisible);
-	      renderModal();
-	    }
-	    function openModal() {
-	      if (!modalContainer) {
-	        createModal();
-	      }
-	      modalContainer.setAttribute("data-visible", "true");
-	      renderModal();
-	    }
-	    function init() {
-	      loadMapping();
-	      setupMIDIHandler();
-	      createModal();
-	      if (window.xemitter) {
-	        window.xemitter.on("midi-mapping:open", openModal);
-	      }
-	      window.midiMapping = {
-	        open: openModal,
-	        toggle: toggleModal,
-	        render: renderModal,
-	        getMapping: getFullMapping
-	      };
-	      console.log("MIDI Mapping module loaded");
-	    }
-	    if (typeof window !== "undefined" && window.HydraliskPlugins) {
-	      window.HydraliskPlugins.register({
-	        id: "midi-mapping",
-	        name: "MIDI Mapping UI & Actions",
-	        init(app) {
-	          if (app.emitter) {
-	            app.emitter.on("midi-mapping:open", openModal);
-	          }
-	          app.expose("midiMapping", window.midiMapping);
-	        }
-	      });
-	    }
-	    if (document.readyState === "loading") {
-	      document.addEventListener("DOMContentLoaded", init);
-	    } else {
-	      init();
-	    }
-	  })();
-	  return midiMapping;
-	}
-
-	requireMidiMapping();
-
-	window.initializeConvolutions = () => {
-	  {
-	    const getHydra = function () {
-	      return window.hydra;
-	    };
-	    window._hydra = getHydra();
-	    window._hydraScope = _hydra.sandbox.makeGlobal ? window : _hydra.synth;
-	  }
-	  {
-	    function generateJumps(height, width) {
-	      const middleY = Math.floor(height / 2);
-	      const middleX = Math.floor(width / 2);
-	      let jumpTable = Array.from({
-	        length: height
-	      }, () => []);
-	      for (let y = 0; y < height; y++) {
-	        const posY = (middleY - y).toFixed(1);
-	        for (let x = 0; x < width; x++) {
-	          const posX = (middleX - x).toFixed(1);
-	          const vec2 = `vec2(${posX}, ${posY})`;
-	          jumpTable[y].push(vec2);
-	        }
-	      }
-	      return jumpTable.flat();
-	    }
-	    function processElement(element) {
-	      return typeof element === "string" ? `(${element})` : element.toFixed(9);
-	    }
-	    function generateWeights(kernel) {
-	      const weights = kernel.flat().map(processElement);
-	      const hasParameters = weights.some(x => x.includes("k"));
-	      weights.hasParameters = hasParameters;
-	      return weights;
-	    }
-	    function generateConvolutionFunction(obj, settings) {
-	      const name = obj.name + settings.nameSufix;
-	      const kernel = obj.kernel;
-	      const multiplier = processElement(obj.multiplier || 1);
-	      const [height, width] = [kernel.length, kernel[0].length];
-	      const weights = generateWeights(kernel);
-	      const jumps = generateJumps(height, width);
-	      const hasParameters = weights.hasParameters;
-	      const {
-	        prefix,
-	        newLine,
-	        sufix
-	      } = settings;
-	      let code = prefix + "\n";
-	      weights.forEach((weight, i) => {
-	        const jump = jumps[i];
-	        if (weight == 0) return;
-	        const line = newLine(weight, jump);
-	        code += line + "\n";
-	      });
-	      code += sufix(multiplier);
-	      const inputs = [{
-	        name: "_tex0",
-	        type: "sampler2D",
-	        default: o0
-	      }, {
-	        name: "jump",
-	        type: "float",
-	        default: 1
-	      }, {
-	        name: "amp",
-	        type: "float",
-	        default: 1
-	      }];
-	      if (hasParameters) {
-	        inputs.splice(1, 0, {
-	          name: "k",
-	          type: "float",
-	          default: 1
-	        });
-	      }
-	      const func = {
-	        name,
-	        type: "src",
-	        inputs,
-	        glsl: code
-	      };
-	      return func;
-	    }
-	    function generateConvolutionFunctionRegular(obj) {
-	      const regularSettings = {
-	        nameSufix: "",
-	        prefix: "vec3 outputColor = vec3(0.0); vec2 res = resolution.xy;",
-	        newLine: (weight, jump) => `outputColor += (${weight}) * texture2D(_tex0, _st + (${jump} * jump / res)).rgb;`,
-	        sufix: multiplier => `return vec4(outputColor * ${multiplier} * amp, texture2D(_tex0, _st).a);`
-	      };
-	      return generateConvolutionFunction(obj, regularSettings);
-	    }
-	    function generateConvolutionFunctionForLuma(obj) {
-	      const ySettings = {
-	        nameSufix: "Luma",
-	        prefix: "float outputLuma = 0.0; vec2 res = resolution.xy;",
-	        newLine: (weight, jump) => `outputLuma += (${weight}) * _luminance(texture2D(_tex0, _st + (${jump} * jump / res)).rgb);`,
-	        sufix: multiplier => `return vec4(vec3(outputLuma * ${multiplier} * amp), texture2D(_tex0, _st).a);`
-	      };
-	      return generateConvolutionFunction(obj, ySettings);
-	    }
-	    function generateConvolutionFunctionForY(obj) {
-	      const ySettings = {
-	        nameSufix: "OnY",
-	        prefix: `
-              mat3 rgb2yuv = mat3(0.2126, 0.7152, 0.0722, -0.09991, -0.33609, 0.43600, 0.615, -0.5586, -0.05639);
-              mat3 yuv2rgb = mat3(1.0, 0.0, 1.28033, 1.0, -0.21482, -0.38059, 1.0, 2.12798, 0.0);
-              float outputY = 0.0;
-              vec2 res = resolution.xy;
-            `,
-	        newLine: (weight, jump) => `outputY += (${weight}) * (texture2D(_tex0, _st + (${jump} * jump / res)).rgb * rgb2yuv).x;`,
-	        sufix: multiplier => `
-              vec4 outputColor = texture2D(_tex0, _st);
-              vec3 yuv = outputColor.rgb * rgb2yuv;
-              yuv.x = outputY * ${multiplier};
-              outputColor.rgb = yuv * yuv2rgb * amp;
-              return outputColor;
-            `
-	      };
-	      return generateConvolutionFunction(obj, ySettings);
-	    }
-	    function generateConvolutionFunctionForUV(obj) {
-	      const uvSettings = {
-	        nameSufix: "OnUV",
-	        prefix: `
-              mat3 rgb2yuv = mat3(0.2126, 0.7152, 0.0722, -0.09991, -0.33609, 0.43600, 0.615, -0.5586, -0.05639);
-              mat3 yuv2rgb = mat3(1.0, 0.0, 1.28033, 1.0, -0.21482, -0.38059, 1.0, 2.12798, 0.0);
-              vec2 outputUV = vec2(0.0);
-              vec2 res = resolution.xy;
-            `,
-	        newLine: (weight, jump) => `outputUV += (${weight}) * (texture2D(_tex0, _st + (${jump} * jump / res)).rgb * rgb2yuv).yz;`,
-	        sufix: multiplier => `
-              vec4 outputColor = texture2D(_tex0, _st);
-              vec3 yuv = outputColor.rgb * rgb2yuv;
-              yuv.yz = outputUV  * ${multiplier};
-              outputColor.rgb = yuv * yuv2rgb * amp;
-              return outputColor;
-            `
-	      };
-	      return generateConvolutionFunction(obj, uvSettings);
-	    }
-	    function generateConvolutionFunctionForIQ(obj) {
-	      const iqSettings = {
-	        nameSufix: "OnIQ",
-	        prefix: `
-              mat3 rgb2yiq = mat3(0.299, 0.587, 0.114, 0.5959, -0.2746, -0.3213, 0.2115, -0.5227, 0.3112);
-              mat3 yiq2rgb = mat3(1.0, 0.956, 0.619, 1.0, -0.272, -0.647, 1.0, -1.106, 1.703);
-              vec2 outputIQ = vec2(0.0);
-              vec2 res = resolution.xy;
-            `,
-	        newLine: (weight, jump) => `outputIQ += (${weight}) * (texture2D(_tex0, _st + (${jump} * jump / res)).rgb * rgb2yiq).yz;`,
-	        sufix: multiplier => `
-              vec4 outputColor = texture2D(_tex0, _st);
-              vec3 yiq = outputColor.rgb * rgb2yiq;
-              yiq.yz = outputIQ * ${multiplier};
-              outputColor.rgb = yiq * yiq2rgb * amp;
-              return outputColor;
-            `
-	      };
-	      return generateConvolutionFunction(obj, iqSettings);
-	    }
-	    function setConvolutionFunction(definition) {
-	      const definitions = [generateConvolutionFunctionRegular(definition), generateConvolutionFunctionForLuma(definition), generateConvolutionFunctionForY(definition), generateConvolutionFunctionForUV(definition), generateConvolutionFunctionForIQ(definition)];
-	      definitions.forEach(_hydra.synth.setFunction);
-	    }
-	    _hydraScope.setConvolutionFunction = setConvolutionFunction;
-	  }
-	  {
-	    // convolution kernel lists
-	    const convolutionKernels = [{
-	      name: "sharpen",
-	      kernel: [[0, "-k", 0], ["-k", "(4.0*k)+1.0", "-k"], [0, "-k", 0]]
-	    }, {
-	      name: "sharpenMore",
-	      kernel: [["-k", "-k", "-k"], ["-k", "(8.0*k)+1.0", "-k"], ["-k", "-k", "-k"]]
-	    }, {
-	      name: "lineSharpen",
-	      kernel: [["-k", "(2.0*k)+1.0", "-k"]]
-	    }, {
-	      name: "emboss",
-	      kernel: [["-2.0*k", "-k", 0], ["-k", 1, "k"], [0, "k", "2.0*k"]]
-	    }, {
-	      name: "blur",
-	      kernel: [[1, 2, 1], [2, 4, 2], [1, 2, 1]],
-	      multiplier: 1 / 16
-	    }, {
-	      name: "blur5",
-	      kernel: [[1, 4, 7, 4, 1], [4, 16, 26, 16, 4], [7, 26, 41, 26, 7], [4, 16, 26, 16, 4], [1, 4, 7, 4, 1]],
-	      multiplier: 1 / 273
-	    }, {
-	      name: "blur7",
-	      kernel: [[0, 0, 1, 2, 1, 0, 0], [0, 3, 13, 22, 13, 3, 0], [1, 13, 59, 97, 59, 13, 1], [2, 22, 97, 159, 97, 22, 2], [1, 13, 59, 97, 59, 13, 1], [0, 3, 13, 22, 13, 3, 0], [0, 0, 1, 2, 1, 0, 0]],
-	      multiplier: 1 / 1003
-	    }, {
-	      name: "boxBlur",
-	      kernel: [[1, 1, 1], [1, 1, 1], [1, 1, 1]],
-	      multiplier: 1 / 9
-	    }, {
-	      name: "boxBlur5",
-	      kernel: [[1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]],
-	      multiplier: 1 / 25
-	    }, {
-	      name: "horizontalBlur",
-	      kernel: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
-	      multiplier: 1 / 5
-	    }, {
-	      name: "verticalBlur",
-	      kernel: [[0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]],
-	      multiplier: 1 / 5
-	    }, {
-	      name: "diagonalBlur",
-	      kernel: [[0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0], [0, 1, 0, 0, 0], [1, 0, 0, 0, 0]],
-	      multiplier: 1 / 5
-	    }, {
-	      name: "diagonalBlur2",
-	      kernel: [[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 1]],
-	      multiplier: 1 / 5
-	    }, {
-	      name: "lineBlur",
-	      kernel: [[1, 2, 1]],
-	      multiplier: 1 / 4
-	    }, {
-	      name: "lineBlur5",
-	      kernel: [[7, 26, 41, 26, 7]],
-	      multiplier: 1 / 107
-	    }, {
-	      name: "sobelY",
-	      kernel: [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]
-	    }, {
-	      name: "sobelX",
-	      kernel: [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]
-	    }, {
-	      name: "sobelDiagonal",
-	      kernel: [[2, 1, 0], [1, 0, -1], [0, -1, -2]]
-	    }, {
-	      name: "sobelDiagonal2",
-	      kernel: [[0, 1, 2], [-1, 0, 1], [-2, -1, 0]]
-	    }, {
-	      name: "prewittY",
-	      kernel: [[1, 1, 1], [0, 0, 0], [-1, -1, -1]]
-	    }, {
-	      name: "prewittX",
-	      kernel: [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]
-	    }, {
-	      name: "prewittDiagonal",
-	      kernel: [[1, 1, 0], [1, 0, -1], [0, -1, -1]]
-	    }, {
-	      name: "prewittDiagonal2",
-	      kernel: [[0, 1, 1], [-1, 0, 1], [-1, -1, 0]]
-	    }, {
-	      name: "edge",
-	      kernel: [[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]]
-	    }];
-	    convolutionKernels.forEach(_hydraScope.setConvolutionFunction);
-	  }
-	};
-	if (typeof window !== "undefined" && window.HydraliskPlugins) {
-	  window.HydraliskPlugins.register({
-	    id: "convolutions",
-	    name: "GLSL Convolution Kernels",
-	    onHydraReady(hydra, app) {
-	      if (typeof window.initializeConvolutions === "function" && !window.initializeConvolutions.done) {
-	        window.initializeConvolutions();
-	        window.initializeConvolutions.done = true;
-	      }
-	    }
-	  });
-	}
-
-	window.threeObjects = {
-	  init: function () {
-	    this.scene = new THREE.Scene();
-	    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-	    this.light = new THREE.PointLight(0xffffff, 1, 100);
-	    this.light.position.set(10, 10, 10);
-	    this.scene.add(this.light);
-	    this.renderer = new THREE.WebGLRenderer();
-	    this.renderer.setSize(width, height);
-	    this.camera.position.z = 1.5;
-	  },
-	  cube: function () {
-	    const geometry = new THREE.BoxGeometry();
-	    const material = new THREE.MeshBasicMaterial({
-	      color: 0x00ff00
-	    });
-	    const cube = new THREE.Mesh(geometry, material);
-	    this.scene.add(cube);
-	    return cube;
-	  },
-	  orbital: function (count = 10) {
-	    const cubes = [];
-	    const phaseStep = Math.PI * 2 / count;
-	    for (let i = 0; i < count; i++) {
-	      const phase = i * phaseStep;
-	      const size = Math.random();
-	      const geometry = new THREE.BoxGeometry(size, size, size);
-	      const material = new THREE.MeshStandardMaterial({
-	        color: Math.random() * 0xffffff,
-	        emissive: Math.random() * 0xffffff
-	      });
-	      const cube = new THREE.Mesh(geometry, material);
-	      cube.position.x = Math.cos(phase);
-	      cube.position.y = Math.sin(phase);
-	      this.scene.add(cube);
-	      cubes.push(cube);
-	    }
-	    cubes.animate = function () {
-	      this.forEach((cube, index) => {
-	        const phase = index * phaseStep + Date.now() * 0.001;
-	        cube.position.x = Math.cos(phase);
-	        cube.position.y = Math.sin(phase);
-	        cube.rotation.x += 0.01;
-	        cube.rotation.y += 0.01;
-	      });
-	    };
-	    return cubes;
-	  }
-	};
-
-	// 'update' is a reserved function that will be run every time the main hydra rendering context is updated
-	window.update = () => {
-	  if (typeof cube !== "undefined" && typeof renderer !== "undefined") {
-	    cube.rotation.x += 0.01;
-	    cube.rotation.y += 0.01;
-	    renderer.render(scene, camera);
-	  }
-	};
-	if (typeof window !== "undefined" && window.HydraliskPlugins) {
-	  window.HydraliskPlugins.register({
-	    id: "three-objects",
-	    name: "Three.js Objects Helper",
-	    init(app) {
-	      app.expose("threeObjects", window.threeObjects);
-	    },
-	    onHydraReady(hydra, app) {
-	      if (window.THREE && window.threeObjects && typeof window.threeObjects.init === "function") {
-	        try {
-	          window.threeObjects.init();
-	        } catch (e) {
-	          console.warn("[three-objects] Could not auto-init canvas:", e.message);
-	        }
-	      }
-	    }
-	  });
-	}
+	var css_248z = "/* Master Effects Modal Styling */\n\n.master-effects-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(4, 5, 10, 0.85);\n  backdrop-filter: blur(16px);\n  -webkit-backdrop-filter: blur(16px);\n  z-index: 10000;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif;\n  color: #f8fafc;\n  animation: meFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n}\n\n@keyframes meFadeIn {\n  from { opacity: 0; transform: scale(0.98); }\n  to { opacity: 1; transform: scale(1); }\n}\n\n.master-effects-dialog {\n  background: #0f1219;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 20px;\n  width: 900px;\n  max-width: 94vw;\n  height: 640px;\n  max-height: 90vh;\n  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 40px rgba(56, 189, 248, 0.1);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  position: relative;\n}\n\n/* Header */\n.master-effects-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 20px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.me-title-group {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.me-title-icon {\n  font-size: 24px;\n}\n\n.me-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: #fff;\n}\n\n.me-target-badge {\n  background: rgba(56, 189, 248, 0.15);\n  border: 1px solid rgba(56, 189, 248, 0.3);\n  color: #38bdf8;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 4px 10px;\n  border-radius: 12px;\n  letter-spacing: 0.5px;\n}\n\n.me-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 28px;\n  line-height: 1;\n  cursor: pointer;\n  padding: 4px 8px;\n  border-radius: 8px;\n  transition: color 0.15s, background 0.15s;\n}\n.me-close-btn:hover {\n  color: #fff;\n  background: rgba(255, 255, 255, 0.08);\n}\n\n/* Body / Split View */\n.master-effects-body {\n  flex: 1;\n  display: grid;\n  grid-template-columns: 1.1fr 1fr;\n  overflow: hidden;\n}\n\n/* Preset Cards List */\n.me-presets-pane {\n  padding: 24px;\n  overflow-y: auto;\n  border-right: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n}\n\n.me-preset-card {\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n  border-radius: 14px;\n  padding: 18px 20px;\n  cursor: pointer;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  text-align: left;\n  color: inherit;\n}\n\n.me-preset-card:hover {\n  background: rgba(255, 255, 255, 0.06);\n  border-color: rgba(255, 255, 255, 0.18);\n  transform: translateY(-2px);\n}\n\n.me-preset-card.selected {\n  background: rgba(56, 189, 248, 0.08);\n  border-color: #38bdf8;\n  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);\n}\n\n.me-preset-card.active-on-stage {\n  border-left: 4px solid #10b981;\n}\n\n.me-card-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-card-name-group {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.me-card-icon {\n  font-size: 20px;\n}\n\n.me-card-name {\n  font-size: 15px;\n  font-weight: 700;\n  color: #fff;\n}\n\n.me-card-tag {\n  font-size: 10px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  font-weight: 700;\n  color: #94a3b8;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 3px 8px;\n  border-radius: 6px;\n}\n\n.me-card-desc {\n  font-size: 12px;\n  line-height: 1.5;\n  color: #94a3b8;\n}\n\n.me-card-midi-pills {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n}\n\n.me-midi-pill {\n  font-family: monospace;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 2px 7px;\n  border-radius: 6px;\n  background: rgba(99, 102, 241, 0.15);\n  color: #a5b4fc;\n  border: 1px solid rgba(99, 102, 241, 0.25);\n}\n\n.me-active-badge {\n  font-size: 10px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  padding: 3px 8px;\n  border-radius: 6px;\n  background: #10b981;\n  color: #000;\n  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);\n}\n\n/* Detail & Inspector Deck */\n.me-inspector-pane {\n  padding: 24px 28px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  background: rgba(0, 0, 0, 0.2);\n  overflow-y: auto;\n}\n\n.me-pane-section-title {\n  font-size: 11px;\n  text-transform: uppercase;\n  letter-spacing: 1.5px;\n  font-weight: 800;\n  color: #64748b;\n  margin-bottom: 8px;\n}\n\n.me-code-preview {\n  background: #090a0f;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 10px;\n  padding: 14px;\n  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;\n  font-size: 11px;\n  line-height: 1.5;\n  color: #38bdf8;\n  overflow-x: auto;\n  white-space: pre;\n}\n\n/* MIDI Knobs / Sliders */\n.me-controls-grid {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.me-control-row {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  background: rgba(255, 255, 255, 0.02);\n  padding: 10px 14px;\n  border-radius: 10px;\n  border: 1px solid rgba(255, 255, 255, 0.04);\n}\n\n.me-control-label-group {\n  display: flex;\n  justify-content: space-between;\n  font-size: 12px;\n}\n\n.me-ctrl-cc {\n  font-family: monospace;\n  font-weight: 800;\n  color: #a5b4fc;\n}\n\n.me-ctrl-val {\n  font-family: monospace;\n  color: #38bdf8;\n  font-weight: 700;\n}\n\n.me-control-slider {\n  width: 100%;\n  accent-color: #38bdf8;\n  cursor: pointer;\n}\n\n/* Footer Actions */\n.master-effects-footer {\n  padding: 18px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-action-btn {\n  padding: 10px 22px;\n  border-radius: 10px;\n  font-size: 13px;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  cursor: pointer;\n  border: none;\n  transition: all 0.15s;\n}\n\n.me-btn-apply {\n  background: #38bdf8;\n  color: #000;\n  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);\n}\n.me-btn-apply:hover {\n  background: #7dd3fc;\n  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);\n}\n\n.me-btn-bypass {\n  background: rgba(244, 63, 94, 0.15);\n  border: 1px solid rgba(244, 63, 94, 0.3);\n  color: #f43f5e;\n}\n.me-btn-bypass:hover {\n  background: #f43f5e;\n  color: #fff;\n}\n\n.me-btn-cancel {\n  background: transparent;\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.me-btn-cancel:hover {\n  color: #fff;\n  border-color: rgba(255, 255, 255, 0.25);\n}\n\n@media (max-width: 768px) {\n  .master-effects-dialog {\n    height: 94vh;\n    max-height: 94vh;\n  }\n  .master-effects-body {\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr;\n  }\n}\n";
+	styleInject(css_248z);
 
 	// This file was generated. Do not modify manually!
 	var astralIdentifierCodes = [509, 0, 227, 0, 150, 4, 294, 9, 1368, 2, 2, 1, 6, 3, 41, 2, 5, 0, 166, 1, 574, 3, 9, 9, 7, 9, 32, 4, 318, 1, 78, 5, 71, 10, 50, 3, 123, 2, 54, 14, 32, 10, 3, 1, 11, 3, 46, 10, 8, 0, 46, 9, 7, 2, 37, 13, 2, 9, 6, 1, 45, 0, 13, 2, 49, 13, 9, 3, 2, 11, 83, 11, 7, 0, 3, 0, 158, 11, 6, 9, 7, 3, 56, 1, 2, 6, 3, 1, 3, 2, 10, 0, 11, 1, 3, 6, 4, 4, 68, 8, 2, 0, 3, 0, 2, 3, 2, 4, 2, 0, 15, 1, 83, 17, 10, 9, 5, 0, 82, 19, 13, 9, 214, 6, 3, 8, 28, 1, 83, 16, 16, 9, 82, 12, 9, 9, 7, 19, 58, 14, 5, 9, 243, 14, 166, 9, 71, 5, 2, 1, 3, 3, 2, 0, 2, 1, 13, 9, 120, 6, 3, 6, 4, 0, 29, 9, 41, 6, 2, 3, 9, 0, 10, 10, 47, 15, 199, 7, 137, 9, 54, 7, 2, 7, 17, 9, 57, 21, 2, 13, 123, 5, 4, 0, 2, 1, 2, 6, 2, 0, 9, 9, 49, 4, 2, 1, 2, 4, 9, 9, 55, 9, 266, 3, 10, 1, 2, 0, 49, 6, 4, 4, 14, 10, 5350, 0, 7, 14, 11465, 27, 2343, 9, 87, 9, 39, 4, 60, 6, 26, 9, 535, 9, 470, 0, 2, 54, 8, 3, 82, 0, 12, 1, 19628, 1, 4178, 9, 519, 45, 3, 22, 543, 4, 4, 5, 9, 7, 3, 6, 31, 3, 149, 2, 1418, 49, 513, 54, 5, 49, 9, 0, 15, 0, 23, 4, 2, 14, 1361, 6, 2, 16, 3, 6, 2, 1, 2, 4, 101, 0, 161, 6, 10, 9, 357, 0, 62, 13, 499, 13, 245, 1, 2, 9, 233, 0, 3, 0, 8, 1, 6, 0, 475, 6, 110, 6, 6, 9, 4759, 9, 787719, 239];
@@ -10528,6 +8942,2274 @@
 	  lineBreakG: lineBreakG,
 	  nonASCIIwhitespace: nonASCIIwhitespace
 	};
+
+	// The main exported interface (under `self.acorn` when in the
+	// browser) is a `parse` function that takes a code string and returns
+	// an abstract syntax tree as specified by the [ESTree spec][estree].
+	//
+	// [estree]: https://github.com/estree/estree
+
+	function parse(input, options) {
+	  return Parser.parse(input, options)
+	}
+
+	/**
+	 * masterEffectsService.js — AST parsing, transformation, and preset registry for Hydra Master Effects
+	 *
+	 * Scans sketch code via Acorn AST (with resilient regex fallback):
+	 * 1. Detects the rendered output buffer (e.g. render(o1) -> "o1", default "o0").
+	 * 2. Locates the final output chain ending with .out(targetBuffer) or .out().
+	 * 3. Injects or replaces function chains with MIDI CC bindings before the final .out().
+	 */
+
+	const MASTER_EFFECTS = [{
+	  id: 'hsl_plus',
+	  name: 'HSL+ & Zoom',
+	  tag: 'Color & Framing',
+	  icon: '🎨',
+	  description: 'Master color grade & zoom framing. Smooth hue rotation, saturation punch, contrast, and scale.',
+	  chain: `/* [master-effects-start:hsl_plus] */
+  .hue(() => midi("b1", { min: -1, max: 1 }))
+  .saturate(() => midi("b2", { min: 0, max: 3 }))
+  .contrast(() => midi("b3", { min: 0.2, max: 2.5 }))
+  .scale(() => midi("b4", { min: 0.5, max: 2.5 }))
+/* [master-effects-end] */`,
+	  controls: [{
+	    cc: 'b1',
+	    label: 'Hue Shift',
+	    min: -1,
+	    max: 1,
+	    default: 0,
+	    unit: 'deg'
+	  }, {
+	    cc: 'b2',
+	    label: 'Saturation',
+	    min: 0,
+	    max: 3,
+	    default: 1,
+	    unit: 'x'
+	  }, {
+	    cc: 'b3',
+	    label: 'Contrast',
+	    min: 0.2,
+	    max: 2.5,
+	    default: 1,
+	    unit: 'x'
+	  }, {
+	    cc: 'b4',
+	    label: 'Zoom (Scale)',
+	    min: 0.5,
+	    max: 2.5,
+	    default: 1,
+	    unit: 'x'
+	  }]
+	}, {
+	  id: 'psyche_warp',
+	  name: 'Psychedelic Warp',
+	  tag: 'Symmetry & Motion',
+	  icon: '🌀',
+	  description: 'Hypnotic radial geometry. Real-time kaleidoscope segments, continuous rotation, and color inversion.',
+	  chain: `/* [master-effects-start:psyche_warp] */
+  .kaleid(() => Math.floor(midi("b5", { min: 1, max: 8 })))
+  .rotate(() => midi("b6", { min: -1, max: 1 }))
+  .invert(() => midi("b7", { min: 0, max: 1 }))
+/* [master-effects-end] */`,
+	  controls: [{
+	    cc: 'b5',
+	    label: 'Kaleid Segments',
+	    min: 1,
+	    max: 8,
+	    default: 1,
+	    unit: 'sides'
+	  }, {
+	    cc: 'b6',
+	    label: 'Rotation Angle',
+	    min: -1,
+	    max: 1,
+	    default: 0,
+	    unit: 'rad'
+	  }, {
+	    cc: 'b7',
+	    label: 'Invert Flash',
+	    min: 0,
+	    max: 1,
+	    default: 0,
+	    unit: 'mix'
+	  }]
+	}, {
+	  id: 'cyber_glitch',
+	  name: 'Cyber Glitch',
+	  tag: 'Digital Artifacts',
+	  icon: '⚡',
+	  description: 'Post-digital bitcrush. Colorama rainbow prism shifting, pixelation crunch, and posterization.',
+	  chain: `/* [master-effects-start:cyber_glitch] */
+  .colorama(() => midi("b5", { min: 0, max: 0.5 }))
+  .pixelate(() => midi("b6", { min: 16, max: 256 }), () => midi("b6", { min: 16, max: 256 }))
+  .posterize(() => midi("b7", { min: 2, max: 16 }))
+/* [master-effects-end] */`,
+	  controls: [{
+	    cc: 'b5',
+	    label: 'Prism Colorama',
+	    min: 0,
+	    max: 0.5,
+	    default: 0,
+	    unit: 'shift'
+	  }, {
+	    cc: 'b6',
+	    label: 'Pixel Res',
+	    min: 16,
+	    max: 256,
+	    default: 256,
+	    unit: 'px'
+	  }, {
+	    cc: 'b7',
+	    label: 'Posterize Bins',
+	    min: 2,
+	    max: 16,
+	    default: 16,
+	    unit: 'steps'
+	  }]
+	}, {
+	  id: 'luma_echo',
+	  name: 'Luma Echo & Feedback',
+	  tag: 'Feedback & Trails',
+	  icon: '✨',
+	  description: 'Ethereal trails & threshold glow. Luma keying with modulated screen feedback and chromatic warmth.',
+	  chain: `/* [master-effects-start:luma_echo] */
+  .luma(() => midi("b5", { min: 0.05, max: 0.8 }))
+  .color(1.1, 0.95, 1.05)
+  .modulate(o0, () => midi("b6", { min: 0, max: 0.2 }))
+/* [master-effects-end] */`,
+	  controls: [{
+	    cc: 'b5',
+	    label: 'Luma Cutoff',
+	    min: 0.05,
+	    max: 0.8,
+	    default: 0.1,
+	    unit: 'thresh'
+	  }, {
+	    cc: 'b6',
+	    label: 'Feedback Warp',
+	    min: 0,
+	    max: 0.2,
+	    default: 0,
+	    unit: 'depth'
+	  }]
+	}];
+
+	/**
+	 * Service managing Master Effects state, parsing, and editor interaction
+	 */
+	class MasterEffectsService {
+	  constructor() {
+	    this.subscribers = new Set();
+	    this.isOpen = false;
+	    this.activeEffectId = null;
+	  }
+	  subscribe(callback) {
+	    this.subscribers.add(callback);
+	    return () => this.subscribers.delete(callback);
+	  }
+	  notify() {
+	    this.subscribers.forEach(cb => cb({
+	      isOpen: this.isOpen,
+	      activeEffectId: this.activeEffectId
+	    }));
+	  }
+	  open() {
+	    this.isOpen = true;
+	    this.activeEffectId = this.getActiveEffectFromEditor();
+	    this.notify();
+	  }
+	  close() {
+	    this.isOpen = false;
+	    this.notify();
+	  }
+	  toggle() {
+	    if (this.isOpen) {
+	      this.close();
+	    } else {
+	      this.open();
+	    }
+	  }
+	  getEditor() {
+	    if (typeof window === 'undefined') return null;
+	    return window.app && window.app.state && window.app.state.editor && window.app.state.editor.editor || window.cm || null;
+	  }
+	  getEditorCode() {
+	    const editor = this.getEditor();
+	    return editor && typeof editor.getValue === 'function' ? editor.getValue() : '';
+	  }
+	  setEditorCode(code, evaluate = true) {
+	    const editor = this.getEditor();
+	    if (!editor) return false;
+	    if (typeof editor.setValue === 'function') {
+	      editor.setValue(code);
+	    }
+	    if (evaluate) {
+	      if (typeof window.evalCode === 'function') {
+	        window.evalCode(code);
+	      } else if (typeof editor.eval === 'function') {
+	        editor.eval(code);
+	      }
+	    }
+	    return true;
+	  }
+	  getActiveEffectFromCode(code) {
+	    if (!code) return null;
+	    const match = /\/\*\s*\[master-effects-start:([a-zA-Z0-9_-]+)\]\s*\*\//.exec(code);
+	    return match ? match[1] : null;
+	  }
+	  getActiveEffectFromEditor() {
+	    return this.getActiveEffectFromCode(this.getEditorCode());
+	  }
+
+	  /**
+	   * AST Parser: Locates the target rendered buffer and the insertion point right before .out(...)
+	   */
+	  findTargetBufferAndInsertionPoint(code) {
+	    let targetBuffer = 'o0';
+	    let outStart = -1;
+	    let ast = null;
+
+	    // 1. Try parsing with Acorn
+	    try {
+	      ast = parse(code, {
+	        ecmaVersion: 2020,
+	        sourceType: 'module',
+	        locations: true
+	      });
+	    } catch (e1) {
+	      try {
+	        ast = parse(code, {
+	          ecmaVersion: 2020,
+	          sourceType: 'script',
+	          locations: true
+	        });
+	      } catch (e2) {
+	        // Syntax error in code (e.g. user currently typing) -> fallback to regex
+	      }
+	    }
+	    if (ast) {
+	      // Find render(buffer)
+	      this.walkAst(ast, node => {
+	        if (node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === 'render') {
+	          if (node.arguments.length > 0 && node.arguments[0].type === 'Identifier') {
+	            targetBuffer = node.arguments[0].name;
+	          }
+	        }
+	      });
+
+	      // Find CallExpression ending in .out(targetBuffer) or .out()
+	      this.walkAst(ast, node => {
+	        if (node.type === 'CallExpression' && node.callee.type === 'MemberExpression') {
+	          const prop = node.callee.property;
+	          if (prop && prop.type === 'Identifier' && prop.name === 'out') {
+	            let buf = 'o0';
+	            if (node.arguments.length > 0 && node.arguments[0].type === 'Identifier') {
+	              buf = node.arguments[0].name;
+	            }
+	            if (buf === targetBuffer && outStart === -1) {
+	              // Position right before '.' of .out(...)
+	              outStart = prop.start - 1;
+	            }
+	          }
+	        }
+	      });
+	    }
+
+	    // 2. Resilient Regex Fallback if AST did not resolve out position
+	    if (outStart === -1) {
+	      // Check render(o0..o3)
+	      const renderMatch = /render\s*\(\s*(o[0-3])?\s*\)/.exec(code);
+	      if (renderMatch && renderMatch[1]) {
+	        targetBuffer = renderMatch[1];
+	      }
+
+	      // Find .out(targetBuffer) or .out()
+	      const outRegex = new RegExp(`\\.out\\s*\\(\\s*(${targetBuffer})?\\s*\\)`, 'g');
+	      let m;
+	      let lastMatch = null;
+	      while ((m = outRegex.exec(code)) !== null) {
+	        lastMatch = m;
+	      }
+	      if (lastMatch) {
+	        outStart = lastMatch.index;
+	      } else {
+	        // Fallback to any .out(...)
+	        const genericOut = /\.out\s*\([^)]*\)/.exec(code);
+	        if (genericOut) {
+	          outStart = genericOut.index;
+	        }
+	      }
+	    }
+	    return {
+	      targetBuffer,
+	      outStart
+	    };
+	  }
+	  walkAst(node, visitor) {
+	    if (!node || typeof node !== 'object') return;
+	    visitor(node);
+	    for (const key of Object.keys(node)) {
+	      if (key === 'loc' || key === 'range') continue;
+	      const child = node[key];
+	      if (Array.isArray(child)) {
+	        for (const c of child) this.walkAst(c, visitor);
+	      } else if (child && typeof child.type === 'string') {
+	        this.walkAst(child, visitor);
+	      }
+	    }
+	  }
+
+	  /**
+	   * Cleanly strips any existing master effect block from code
+	   */
+	  removeMasterEffectFromCode(code) {
+	    if (!code) return '';
+	    return code.replace(/\n?\s*\/\*\s*\[master-effects-start:([a-zA-Z0-9_-]+)\]\s*\*\/[\s\S]*?\/\*\s*\[master-effects-end\]\s*\*\/\s*/g, '').trimEnd();
+	  }
+
+	  /**
+	   * Applies a master effect to code by inserting function chain before .out(...)
+	   */
+	  applyEffectToCode(code, effectId) {
+	    const effect = MASTER_EFFECTS.find(e => e.id === effectId);
+	    if (!effect) return code;
+
+	    // 1. Remove any existing master effects block
+	    const cleanedCode = this.removeMasterEffectFromCode(code);
+
+	    // 2. Identify target buffer and insertion point
+	    const {
+	      targetBuffer,
+	      outStart
+	    } = this.findTargetBufferAndInsertionPoint(cleanedCode);
+	    if (outStart === -1) {
+	      // If no .out() found, append as standalone chain or at end
+	      return `${cleanedCode}\n  ${effect.chain}\n  .out(${targetBuffer})`;
+	    }
+
+	    // Insert effect chain immediately before .out(...)
+	    const prefix = cleanedCode.slice(0, outStart).trimEnd();
+	    const suffix = cleanedCode.slice(outStart).trimStart();
+	    return `${prefix}\n  ${effect.chain}\n  ${suffix}`;
+	  }
+
+	  /**
+	   * Apply an effect directly to the active editor
+	   */
+	  applyToEditor(effectId) {
+	    const currentCode = this.getEditorCode();
+	    if (!currentCode) return false;
+	    const newCode = this.applyEffectToCode(currentCode, effectId);
+	    this.setEditorCode(newCode, true);
+	    this.activeEffectId = effectId;
+	    this.notify();
+	    const effect = MASTER_EFFECTS.find(e => e.id === effectId);
+	    if (window.showToast) {
+	      window.showToast(`Master Effect Applied: ${effect ? effect.name : effectId}`);
+	    } else {
+	      console.log(`[MasterEffects] Applied: ${effect ? effect.name : effectId}`);
+	    }
+	    return true;
+	  }
+
+	  /**
+	   * Remove master effects from active editor
+	   */
+	  removeFromEditor() {
+	    const currentCode = this.getEditorCode();
+	    if (!currentCode) return false;
+	    const cleaned = this.removeMasterEffectFromCode(currentCode);
+	    this.setEditorCode(cleaned, true);
+	    this.activeEffectId = null;
+	    this.notify();
+	    if (window.showToast) {
+	      window.showToast('Master Effects Removed');
+	    }
+	    return true;
+	  }
+	}
+	const masterEffectsService = new MasterEffectsService();
+
+	function MasterEffectsModal({
+	  isOpen,
+	  onClose
+	}) {
+	  const [selectedEffectId, setSelectedEffectId] = React$1.useState('hsl_plus');
+	  const [activeEffectId, setActiveEffectId] = React$1.useState(null);
+	  const [targetBuffer, setTargetBuffer] = React$1.useState('o0');
+	  const [sliderValues, setSliderValues] = React$1.useState({});
+	  React$1.useEffect(() => {
+	    if (isOpen) {
+	      const code = masterEffectsService.getEditorCode();
+	      const active = masterEffectsService.getActiveEffectFromCode(code);
+	      setActiveEffectId(active);
+	      if (active) {
+	        setSelectedEffectId(active);
+	      }
+	      const {
+	        targetBuffer: buf
+	      } = masterEffectsService.findTargetBufferAndInsertionPoint(code);
+	      setTargetBuffer(buf);
+
+	      // Prepopulate slider values with default normalized positions (0.5)
+	      const initial = {};
+	      const sel = MASTER_EFFECTS.find(e => e.id === (active || selectedEffectId)) || MASTER_EFFECTS[0];
+	      if (sel && sel.controls) {
+	        sel.controls.forEach(c => {
+	          const cur = window.virtualCC && window.virtualCC[c.cc] !== undefined ? window.virtualCC[c.cc] : (c.default - c.min) / (c.max - c.min);
+	          initial[c.cc] = Math.max(0, Math.min(1, cur));
+	        });
+	      }
+	      setSliderValues(initial);
+	    }
+	  }, [isOpen]);
+	  React$1.useEffect(() => {
+	    const handleKeyDown = e => {
+	      if (!isOpen) return;
+	      if (e.key === 'Escape') {
+	        e.preventDefault();
+	        onClose();
+	      } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey || !e.shiftKey)) {
+	        e.preventDefault();
+	        handleApply();
+	      }
+	    };
+	    window.addEventListener('keydown', handleKeyDown);
+	    return () => window.removeEventListener('keydown', handleKeyDown);
+	  }, [isOpen, selectedEffectId]);
+	  if (!isOpen) return null;
+	  const selectedEffect = MASTER_EFFECTS.find(e => e.id === selectedEffectId) || MASTER_EFFECTS[0];
+	  const handleApply = () => {
+	    masterEffectsService.applyToEditor(selectedEffect.id);
+	    setActiveEffectId(selectedEffect.id);
+	    onClose();
+	  };
+	  const handleBypass = () => {
+	    masterEffectsService.removeFromEditor();
+	    setActiveEffectId(null);
+	    onClose();
+	  };
+	  const handleSliderChange = (cc, normVal) => {
+	    setSliderValues(prev => ({
+	      ...prev,
+	      [cc]: normVal
+	    }));
+	    // Update live virtual MIDI CC so live sketch modulates immediately
+	    if (window.hydraliskMidiBridge && typeof window.hydraliskMidiBridge.setVirtualCC === 'function') {
+	      window.hydraliskMidiBridge.setVirtualCC(cc, normVal);
+	    } else if (typeof window.setVirtualCC === 'function') {
+	      window.setVirtualCC(cc, normVal);
+	    }
+	  };
+	  return /*#__PURE__*/React$1.createElement("div", {
+	    className: "master-effects-overlay",
+	    onClick: e => {
+	      if (e.target === e.currentTarget) onClose();
+	    }
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "master-effects-dialog",
+	    role: "dialog",
+	    "aria-modal": "true"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "master-effects-header"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-title-group"
+	  }, /*#__PURE__*/React$1.createElement("span", {
+	    className: "me-title-icon"
+	  }, "\uD83E\uDE84"), /*#__PURE__*/React$1.createElement("h2", {
+	    className: "me-title"
+	  }, "Master Effects & MIDI Binds"), /*#__PURE__*/React$1.createElement("span", {
+	    className: "me-target-badge"
+	  }, "Target Output: ", targetBuffer)), /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-close-btn",
+	    onClick: onClose,
+	    title: "Close (Esc)"
+	  }, "\xD7")), /*#__PURE__*/React$1.createElement("div", {
+	    className: "master-effects-body"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-presets-pane"
+	  }, MASTER_EFFECTS.map(effect => {
+	    const isSelected = effect.id === selectedEffectId;
+	    const isActive = effect.id === activeEffectId;
+	    return /*#__PURE__*/React$1.createElement("div", {
+	      key: effect.id,
+	      className: `me-preset-card ${isSelected ? 'selected' : ''} ${isActive ? 'active-on-stage' : ''}`,
+	      onClick: () => setSelectedEffectId(effect.id)
+	    }, /*#__PURE__*/React$1.createElement("div", {
+	      className: "me-card-header"
+	    }, /*#__PURE__*/React$1.createElement("div", {
+	      className: "me-card-name-group"
+	    }, /*#__PURE__*/React$1.createElement("span", {
+	      className: "me-card-icon"
+	    }, effect.icon), /*#__PURE__*/React$1.createElement("span", {
+	      className: "me-card-name"
+	    }, effect.name)), isActive ? /*#__PURE__*/React$1.createElement("span", {
+	      className: "me-active-badge"
+	    }, "ACTIVE") : /*#__PURE__*/React$1.createElement("span", {
+	      className: "me-card-tag"
+	    }, effect.tag)), /*#__PURE__*/React$1.createElement("div", {
+	      className: "me-card-desc"
+	    }, effect.description), /*#__PURE__*/React$1.createElement("div", {
+	      className: "me-card-midi-pills"
+	    }, effect.controls.map(ctrl => /*#__PURE__*/React$1.createElement("span", {
+	      key: ctrl.cc,
+	      className: "me-midi-pill"
+	    }, ctrl.cc.toUpperCase(), ": ", ctrl.label))));
+	  })), /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-inspector-pane"
+	  }, /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-pane-section-title"
+	  }, "Injected Function Chain (before .", targetBuffer, ")"), /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-code-preview"
+	  }, selectedEffect.chain)), /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-pane-section-title"
+	  }, "MIDI CC Live Modulators"), /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-controls-grid"
+	  }, selectedEffect.controls.map(ctrl => {
+	    const norm = sliderValues[ctrl.cc] !== undefined ? sliderValues[ctrl.cc] : 0.5;
+	    const computedVal = (norm * (ctrl.max - ctrl.min) + ctrl.min).toFixed(2);
+	    return /*#__PURE__*/React$1.createElement("div", {
+	      key: ctrl.cc,
+	      className: "me-control-row"
+	    }, /*#__PURE__*/React$1.createElement("div", {
+	      className: "me-control-label-group"
+	    }, /*#__PURE__*/React$1.createElement("span", null, /*#__PURE__*/React$1.createElement("span", {
+	      className: "me-ctrl-cc"
+	    }, ctrl.cc.toUpperCase()), " \u2014 ", ctrl.label), /*#__PURE__*/React$1.createElement("span", {
+	      className: "me-ctrl-val"
+	    }, computedVal, " ", ctrl.unit)), /*#__PURE__*/React$1.createElement("input", {
+	      type: "range",
+	      className: "me-control-slider",
+	      min: "0",
+	      max: "1",
+	      step: "0.01",
+	      value: norm,
+	      onChange: e => handleSliderChange(ctrl.cc, parseFloat(e.target.value))
+	    }));
+	  }))))), /*#__PURE__*/React$1.createElement("div", {
+	    className: "master-effects-footer"
+	  }, /*#__PURE__*/React$1.createElement("div", null, activeEffectId && /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-action-btn me-btn-bypass",
+	    onClick: handleBypass,
+	    title: "Remove master effect chain from code"
+	  }, "\u2715 Remove Master Effects")), /*#__PURE__*/React$1.createElement("div", {
+	    style: {
+	      display: 'flex',
+	      gap: '10px'
+	    }
+	  }, /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-action-btn me-btn-cancel",
+	    onClick: onClose
+	  }, "Cancel"), /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-action-btn me-btn-apply",
+	    onClick: handleApply
+	  }, "Apply Effect to Code \u21B5")))));
+	}
+
+	function MasterEffectsHost() {
+	  const [isOpen, setIsOpen] = React$1.useState(false);
+	  React$1.useEffect(() => {
+	    const unsubscribe = masterEffectsService.subscribe(state => {
+	      setIsOpen(state.isOpen);
+	    });
+	    const handleKeyDown = e => {
+	      // Hotkey: Cmd+M or Ctrl+M or Cmd+Shift+M
+	      if ((e.metaKey || e.ctrlKey) && (e.key === 'm' || e.key === 'M')) {
+	        e.preventDefault();
+	        e.stopPropagation();
+	        masterEffectsService.toggle();
+	      }
+	    };
+	    window.addEventListener('keydown', handleKeyDown, true);
+	    return () => {
+	      unsubscribe();
+	      window.removeEventListener('keydown', handleKeyDown, true);
+	    };
+	  }, []);
+	  return /*#__PURE__*/React$1.createElement(MasterEffectsModal, {
+	    isOpen: isOpen,
+	    onClose: () => masterEffectsService.close()
+	  });
+	}
+	class MasterEffectsManager {
+	  constructor() {
+	    this.service = masterEffectsService;
+	  }
+	  inject() {
+	    if (typeof document === 'undefined') return;
+	    let host = document.getElementById('hydra-master-effects-app');
+	    if (!host) {
+	      host = document.createElement('div');
+	      host.id = 'hydra-master-effects-app';
+	      document.body.appendChild(host);
+	    }
+	    ReactDOM$1.render(/*#__PURE__*/React$1.createElement(MasterEffectsHost, null), host);
+	    console.log('[MasterEffectsManager] Injected Master Effects Modal Host');
+
+	    // Inject toolbar icon into editor top menu
+	    this.injectToolbarIcon();
+	    if (window.xemitter) {
+	      window.xemitter.on('masterEffects:open', () => this.service.open());
+	      window.xemitter.on('masterEffects:close', () => this.service.close());
+	      window.xemitter.on('masterEffects:toggle', () => this.service.toggle());
+	    }
+	    window.hydraMasterEffects = this.service;
+	  }
+	  injectToolbarIcon() {
+	    const isPlayerPage = Boolean(window.location.pathname.endsWith('player.html') || window.location.pathname.endsWith('/player') || document.getElementById('hydra-player-dashboard'));
+	    if (isPlayerPage) return;
+	    const tryInject = () => {
+	      if (document.getElementById('nav-master-effects-icon')) return;
+	      const navIcon = document.createElement('i');
+	      navIcon.id = 'nav-master-effects-icon';
+	      navIcon.className = 'fa fa-magic icon';
+	      navIcon.title = 'Master Effects & MIDI Binds (Cmd-M)';
+	      navIcon.onclick = () => this.service.toggle();
+
+	      // Find editor toolbar container alongside other white menu icons
+	      const existingIcon = document.querySelector('i.icon');
+	      if (existingIcon && existingIcon.parentNode) {
+	        existingIcon.parentNode.appendChild(navIcon);
+	      } else {
+	        setTimeout(tryInject, 500);
+	      }
+	    };
+	    setTimeout(tryInject, 300);
+	  }
+	  open() {
+	    this.service.open();
+	  }
+	  close() {
+	    this.service.close();
+	  }
+	  toggle() {
+	    this.service.toggle();
+	  }
+	}
+
+	// Auto-register with HydraliskPlugins
+	if (typeof window !== 'undefined' && window.HydraliskPlugins) {
+	  window.HydraliskPlugins.register({
+	    id: 'master-effects',
+	    name: 'Master Effects & MIDI Binds',
+	    init(app) {
+	      const manager = new MasterEffectsManager();
+	      setTimeout(() => manager.inject(), 120);
+	      app.expose('masterEffectsManager', manager);
+	    }
+	  });
+	}
+
+	/**
+	 * Kit for connecting to Amazon DynamoDB
+	 *
+	 * Encoded credentials (scripts/encode-credentials.js): both accessKeyId and
+	 * secretAccessKey encrypted with your password—safe to publish in source.
+	 */
+
+	const PBKDF2_ITERATIONS = 310000;
+	if (typeof window !== "undefined") {
+	  window.awsCredentialsEncoded = {
+	    encoded: true,
+	    credentialsCiphertext: "uWzwhV//QeaoDcds1FvdCCWY6EptwC2pyCqlJDYRBXKIqVriyrx5vUgmvjBbintIAzJQYcAmWAN8VBXGawuYrkJdvIyU221g90kyHZkvtJ5pDqk6RrrxN72NHqAad+KM8f2rOky1Mu5ANL78w0TF3JT5bg==",
+	    salt: "u9XNXhZ8/WLxr8A1PoBYug==",
+	    iv: "EnftfLKbFvPBhVLi"
+	  };
+	}
+	const AUTH_TAG_LEN = 16;
+	const userName = (() => {
+	  try {
+	    return localStorage.getItem("awsCredentials") ? JSON.parse(localStorage.getItem("awsCredentials")).name : "Unknown";
+	  } catch (e) {
+	    return "Unknown";
+	  }
+	})();
+	const metadataDefaults = {
+	  author: userName,
+	  midi: false,
+	  heat: 5,
+	  tags: []
+	};
+	class Amakit {
+	  isAuthenticated = false;
+	  draftCache = [];
+	  constructor() {
+	    this.table = "hydralisk-drafts";
+	    this.ensureAWS();
+	  }
+	  ensureAWS = () => {
+	    if (!this.AWS && typeof window !== "undefined" && window.AWS) {
+	      this.AWS = window.AWS;
+	    }
+	    if (this.AWS && !this.docClient) {
+	      this.AWS.config.update({
+	        region: "eu-west-1"
+	      });
+	      this.docClient = new this.AWS.DynamoDB.DocumentClient({
+	        apiVersion: "2012-08-10",
+	        region: "eu-west-1"
+	      });
+	    }
+	    return !!(this.AWS && this.docClient);
+	  };
+	  loadDrafts = async () => {
+	    this.ensureAWS();
+	    try {
+	      const drafts = await this.getAllDrafts();
+	      this.draftCache = drafts || [];
+	      return drafts;
+	    } catch (err) {
+	      console.error("Error loading drafts: ", err);
+	    }
+	  };
+	  getCredentials = () => {
+	    let fromStorage = null;
+	    try {
+	      fromStorage = JSON.parse(localStorage.getItem("awsCredentials") || "null");
+	    } catch (err) {
+	      console.error("Invalid awsCredentials in localStorage:", err);
+	    }
+	    if (fromStorage?.accessKeyId && fromStorage?.secretAccessKey) {
+	      return fromStorage;
+	    }
+	    return null;
+	  };
+
+	  /**
+	   * Store pre-encoded credentials blob from scripts/encode-credentials.js.
+	   * Login will prompt for password to decrypt.
+	   */
+	  saveEncodedCredentials = blob => {
+	    if (!blob || !blob.credentialsCiphertext || !blob.salt || !blob.iv) {
+	      throw new Error("Invalid encoded credentials blob");
+	    }
+	    const machineId = localStorage.getItem("machineId") || prompt("What is the name of this machine?") || "unknown";
+	    localStorage.setItem("machineId", machineId);
+	    const stored = {
+	      ...blob,
+	      machineId,
+	      name: blob.name || "User"
+	    };
+	    localStorage.setItem("awsCredentials", JSON.stringify(stored));
+	    return stored;
+	  };
+	  _decryptSecret = async (ciphertextB64, saltB64, ivB64, password) => {
+	    const salt = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+	    const iv = Uint8Array.from(atob(ivB64), c => c.charCodeAt(0));
+	    const ciphertext = Uint8Array.from(atob(ciphertextB64), c => c.charCodeAt(0));
+	    const enc = new TextEncoder();
+	    const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveBits", "deriveKey"]);
+	    const key = await crypto.subtle.deriveKey({
+	      name: "PBKDF2",
+	      salt,
+	      iterations: PBKDF2_ITERATIONS,
+	      hash: "SHA-256"
+	    }, keyMaterial, {
+	      name: "AES-GCM",
+	      length: 256
+	    }, false, ["decrypt"]);
+	    const decrypted = await crypto.subtle.decrypt({
+	      name: "AES-GCM",
+	      iv,
+	      tagLength: AUTH_TAG_LEN * 8
+	    }, key, ciphertext);
+	    return new TextDecoder().decode(decrypted);
+	  };
+	  saveCredentials = (name, accessKeyId, secretAccessKey, persist = true) => {
+	    let machineId = localStorage.getItem("machineId") || prompt("What is the name of this machine?") || "unknown";
+	    localStorage.setItem("machineId", machineId);
+	    name = name || prompt("What is your name?");
+	    accessKeyId = accessKeyId || prompt("What is your AWS Access Key ID?");
+	    secretAccessKey = secretAccessKey || prompt("What is your AWS Secret Access Key?");
+	    if (!accessKeyId || !secretAccessKey) {
+	      return null;
+	    }
+	    const credentials = {
+	      name: name || "User",
+	      machineId,
+	      accessKeyId,
+	      secretAccessKey
+	    };
+	    if (persist) {
+	      localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+	    }
+	    return credentials;
+	  };
+	  login = async (doPrompt = true) => {
+	    this.ensureAWS();
+	    if (!this.AWS) {
+	      return Promise.reject("AWS SDK (window.AWS) is not loaded.");
+	    }
+	    let credentials = this.getCredentials();
+
+	    // Check for encoded credentials (encrypted blob in storage or window)
+	    const storedBlob = (() => {
+	      try {
+	        const parsed = JSON.parse(localStorage.getItem("awsCredentials") || "null");
+	        if (parsed?.credentialsCiphertext) return parsed;
+	      } catch (e) {}
+	      return typeof window !== "undefined" && window.awsCredentialsEncoded?.credentialsCiphertext ? window.awsCredentialsEncoded : null;
+	    })();
+	    if (!credentials && storedBlob) {
+	      if (!doPrompt) {
+	        return Promise.reject("No plain credentials found. Decryption password required.");
+	      }
+	      const pwd = prompt("Enter password for AWS credentials:");
+	      if (!pwd) {
+	        return Promise.reject("Login cancelled: no password provided.");
+	      }
+	      try {
+	        const decryptedStr = await this._decryptSecret(storedBlob.credentialsCiphertext, storedBlob.salt, storedBlob.iv, pwd);
+	        const keys = JSON.parse(decryptedStr);
+	        credentials = {
+	          name: storedBlob.name || "User",
+	          machineId: storedBlob.machineId || "unknown",
+	          accessKeyId: keys.accessKeyId,
+	          secretAccessKey: keys.secretAccessKey
+	        };
+	      } catch (err) {
+	        console.error("Decryption error:", err);
+	        return Promise.reject("Invalid password or decryption failed.");
+	      }
+	    }
+	    if (!credentials) {
+	      if (!doPrompt) {
+	        return Promise.reject("No credentials found.");
+	      }
+	      credentials = this.saveCredentials(undefined, undefined, undefined, false);
+	    }
+	    if (!credentials || !credentials.accessKeyId || !credentials.secretAccessKey) {
+	      return Promise.reject("Login cancelled or invalid AWS credentials provided.");
+	    }
+	    this.AWS.config.update({
+	      accessKeyId: credentials.accessKeyId,
+	      secretAccessKey: credentials.secretAccessKey,
+	      region: "eu-west-1"
+	    });
+	    if (this.docClient && this.AWS.config.credentials) {
+	      this.docClient.configure({
+	        credentials: this.AWS.config.credentials
+	      });
+	    }
+	    return new Promise((resolve, reject) => {
+	      if (!this.AWS.config.credentials) {
+	        return reject(new Error("Failed to initialize AWS credentials."));
+	      }
+	      this.AWS.config.credentials.get(err => {
+	        if (err) {
+	          console.error("AWS authentication error:", err);
+	          reject(err);
+	        } else {
+	          this.isAuthenticated = true;
+	          console.log("Logged in as:", credentials.name);
+	          localStorage.setItem("awsCredentials", JSON.stringify(credentials));
+	          resolve(credentials);
+	        }
+	      });
+	    });
+	  };
+	  getDraft = ({
+	    id,
+	    name
+	  }) => {
+	    this.ensureAWS();
+	    const params = {
+	      TableName: this.table,
+	      Key: id ? {
+	        id
+	      } : {
+	        name
+	      }
+	    };
+	    return new Promise((resolve, reject) => {
+	      this.docClient.get(params, (err, data) => {
+	        if (err) {
+	          reject(err);
+	        } else {
+	          resolve(data.Item);
+	        }
+	      });
+	    });
+	  };
+	  getAllDrafts = () => {
+	    this.ensureAWS();
+	    const params = {
+	      TableName: this.table
+	    };
+	    return new Promise((resolve, reject) => {
+	      this.docClient.scan(params, (err, data) => {
+	        if (err) {
+	          reject(err);
+	        } else {
+	          this.allDrafts = data.Items;
+	          resolve(data.Items);
+	        }
+	      });
+	    });
+	  };
+	  processDraftString = draftString => {
+	    let lines = draftString.split("\n");
+	    let name = "";
+	    if (lines[0].trim().startsWith("/*") && lines[0].trim().endsWith("*/")) {
+	      name = this.getCommentValue(lines[0]);
+	      lines = lines.slice(1);
+	    } else {
+	      name = `Random ${Math.floor(Math.random() * 1000)}`;
+	    }
+	    let metadata = {};
+	    try {
+	      const metadataLine = lines.find(line => line.trim().startsWith("/* metadata = "));
+	      metadata = JSON.parse(this.getCommentValue(metadataLine).replace("metadata = ", ""));
+	    } catch (e) {
+	      console.error("Cannot parse metadata: ", e);
+	    }
+	    metadata = {
+	      ...metadataDefaults,
+	      ...metadata
+	    };
+	    return {
+	      name,
+	      metadata,
+	      code: lines.join("\n")
+	    };
+	  };
+	  addDraft = draftOrString => {
+	    this.ensureAWS();
+	    let draft = null;
+	    if (typeof draftOrString === "string") {
+	      const {
+	        name,
+	        metadata,
+	        code
+	      } = this.processDraftString(draftOrString);
+	      draft = this.shapeDraft({
+	        name,
+	        metadata,
+	        code,
+	        fullDraft: btoa(draftOrString)
+	      });
+	    } else {
+	      draft = this.shapeDraft(draftOrString);
+	    }
+	    const params = {
+	      TableName: this.table,
+	      Item: draft
+	    };
+	    return new Promise((resolve, reject) => {
+	      this.docClient.put(params, (err, response) => {
+	        if (err) {
+	          reject(err);
+	        } else {
+	          resolve(draft);
+	        }
+	      });
+	    });
+	  };
+	  uploadDraftObj = draft => {
+	    this.ensureAWS();
+	    const params = {
+	      TableName: this.table,
+	      Item: draft
+	    };
+	    return new Promise((resolve, reject) => {
+	      this.docClient.put(params, (err, data) => {
+	        if (err) {
+	          reject(err);
+	        } else {
+	          resolve(data);
+	        }
+	      });
+	    });
+	  };
+
+	  // Drop by id or name
+	  dropDraft = ({
+	    id,
+	    name
+	  }) => {
+	    this.ensureAWS();
+	    const params = {
+	      TableName: this.table,
+	      Key: id ? {
+	        id
+	      } : {
+	        name
+	      }
+	    };
+	    return new Promise((resolve, reject) => {
+	      this.docClient.delete(params, (err, data) => {
+	        if (err) {
+	          reject(err);
+	        } else {
+	          resolve(data);
+	        }
+	      });
+	    });
+	  };
+	  generateId = () => {
+	    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+	      const r = Math.floor(Math.random() * 16);
+	      const v = c === "x" ? r : r & 0x3 | 0x8;
+	      return v.toString(16);
+	    });
+	  };
+	  getCommentValue = comment => {
+	    const start = comment.indexOf("/*") + 2;
+	    const end = comment.indexOf("*/");
+	    return comment.substring(start, end).trim();
+	  };
+	  shapeDraft = draft => {
+	    const id = draft.id || this.generateId();
+	    const name = draft.name || `Random ${Math.floor(Math.random() * 1000)}`;
+	    const metadata = {
+	      ...metadataDefaults,
+	      ...(draft.metadata || {})
+	    };
+	    const code = draft.code.replace(/^\/\* metadata.*$/m, "").trim();
+	    const fullDraft = btoa(`/* ${name} */\n${code}\n/* metadata = ${JSON.stringify(metadata)}*/`);
+	    return {
+	      id,
+	      name,
+	      metadata,
+	      fullDraft,
+	      code
+	    };
+	  };
+	}
+	window.amakit = new Amakit();
+	if (typeof window !== "undefined" && window.HydraliskPlugins) {
+	  window.HydraliskPlugins.register({
+	    id: "amakit",
+	    name: "Amazon DynamoDB Draft Storage",
+	    init(app) {
+	      app.expose("amakit", window.amakit);
+	    }
+	  });
+	}
+
+	/**
+	 * Hydrakit — WebMIDI State Engine, Tap Tempo Module & Audio-Reactive Sketch Helpers
+	 * Unified MIDI state management, rolling tap-tempo calculator, and sketch utilities for Hydralisk.
+	 */
+
+	class MidiEngine {
+	  constructor() {
+	    this.cc = new Array(128).fill(0.5);
+	    this.ccc = Array.from({
+	      length: 16
+	    }, () => new Array(128).fill(0.5));
+	    this.ccbind = [];
+	    this.isInitialized = false;
+
+	    // Expose globals for sketch backward compatibility
+	    if (typeof window !== "undefined") {
+	      window.cc = this.cc;
+	      window.ccc = this.ccc;
+	      window.ccbind = this.ccbind;
+	    }
+	  }
+	  init() {
+	    if (this.isInitialized) return;
+	    this.isInitialized = true;
+	    if (typeof navigator !== "undefined" && navigator.requestMIDIAccess) {
+	      navigator.requestMIDIAccess().then(access => this.handleMidiSuccess(access)).catch(err => console.warn("[Hydrakit] Could not access MIDI devices:", err));
+	    }
+	  }
+	  handleMidiSuccess(midiAccess) {
+	    console.log("[Hydrakit] WebMIDI access granted");
+	    for (const input of midiAccess.inputs.values()) {
+	      this.attachInput(input);
+	    }
+	    midiAccess.onstatechange = e => {
+	      if (e.port && e.port.type === "input" && e.port.state === "connected") {
+	        console.log(`[Hydrakit] Hot-plugged MIDI device: ${e.port.name}`);
+	        this.attachInput(e.port);
+	      }
+	    };
+	  }
+	  attachInput(input) {
+	    if (!input) return;
+	    input.removeEventListener("midimessage", this.onMidiMessage);
+	    input.addEventListener("midimessage", this.onMidiMessage);
+	  }
+	  onMidiMessage = event => {
+	    if (!event || !event.data) return;
+	    const [kind, ccIndex, rawValue] = event.data;
+	    if (ccIndex === undefined) return;
+	    const channel = kind & 0b00001111;
+	    const normalizedValue = (rawValue > 64 ? rawValue + 1 : rawValue) / 128.0;
+	    this.cc[ccIndex] = normalizedValue;
+	    this.ccc[channel][ccIndex] = normalizedValue;
+	    if (!this.ccbind.includes(ccIndex)) {
+	      console.log(`[Hydrakit] CC #${ccIndex} bound to b${this.ccbind.length}`);
+	      this.ccbind.push(ccIndex);
+	    }
+	  };
+	  getValue(ccIndex, {
+	    min = 0,
+	    max = 1,
+	    channel,
+	    transform
+	  } = {}) {
+	    let localIndex = ccIndex;
+	    if (typeof ccIndex === "string") {
+	      if (/^[ABCD]$/.test(ccIndex)) {
+	        const globalVal = window.cc ? window.cc[ccIndex] : undefined;
+	        if (globalVal === undefined) return min;
+	        const value = globalVal * (max - min) + min;
+	        return transform ? transform(value) : value;
+	      }
+	      if (/^b\d+$/.test(ccIndex)) {
+	        const bindIndex = parseInt(ccIndex.slice(1), 10);
+	        localIndex = this.ccbind[bindIndex];
+	        if (localIndex === undefined) return min;
+	      }
+	    }
+	    if (localIndex === undefined || localIndex === null) return min;
+	    const ccArr = channel !== undefined ? this.ccc[channel] : this.cc;
+	    const rawVal = ccArr[localIndex] !== undefined ? ccArr[localIndex] : 0.5;
+	    const value = rawVal * (max - min) + min;
+	    return transform ? transform(value) : value;
+	  }
+	}
+	const midiEngine = new MidiEngine();
+	midiEngine.init();
+
+	// --- Tap Tempo Module ---
+
+	/**
+	 * TapTempo — Rolling average BPM calculator & tap manager
+	 */
+	class TapTempo {
+	  constructor({
+	    maxTaps = 128,
+	    idleTimeoutMs = 3000
+	  } = {}) {
+	    this.taps = [];
+	    this.totalTaps = 0;
+	    this.maxTaps = maxTaps;
+	    this.idleTimeoutMs = idleTimeoutMs;
+	    this.resetTimer = null;
+	    this.currentBpm = 120;
+	    this.lastTapTime = null;
+	    this.appContext = null;
+	  }
+	  setAppContext(app) {
+	    this.appContext = app;
+	  }
+	  reset = () => {
+	    this.taps = [];
+	    this.totalTaps = 0;
+	    this.lastTapTime = null;
+	    if (this.resetTimer) {
+	      clearTimeout(this.resetTimer);
+	      this.resetTimer = null;
+	    }
+	  };
+	  tap = (timestamp = Date.now()) => {
+	    // 1. If more than 3 seconds elapsed since the last tap, clear buffer and counters first
+	    if (this.lastTapTime && timestamp - this.lastTapTime >= this.idleTimeoutMs) {
+	      this.reset();
+	    }
+	    this.lastTapTime = timestamp;
+
+	    // 2. Reset 3-second idle timer
+	    if (this.resetTimer) {
+	      clearTimeout(this.resetTimer);
+	    }
+	    this.resetTimer = setTimeout(() => {
+	      this.reset();
+	    }, this.idleTimeoutMs);
+
+	    // 3. Record tap and increment total tap counter
+	    this.taps.push(timestamp);
+	    this.totalTaps++;
+
+	    // 4. Retain buffer history up to maxTaps without emptying on recalculations
+	    if (this.taps.length > this.maxTaps) {
+	      this.taps.shift();
+	    }
+
+	    // 5. Only recalculate when the recorded tempo taps count is divisible by 4 (4, 8, 12, 16...)
+	    if (this.totalTaps >= 4 && this.totalTaps % 4 === 0) {
+	      const count = this.taps.length - 1;
+	      const totalIntervalMs = this.taps[this.taps.length - 1] - this.taps[0];
+	      if (totalIntervalMs > 0 && count > 0) {
+	        const avgIntervalMs = totalIntervalMs / count;
+	        const calculatedBpm = Math.round(60000 / avgIntervalMs);
+	        if (calculatedBpm >= 30 && calculatedBpm <= 300) {
+	          this.currentBpm = calculatedBpm;
+	          if (typeof window !== "undefined") {
+	            window.bpm = calculatedBpm;
+	          }
+	          if (this.appContext) {
+	            this.appContext.bpm = calculatedBpm;
+	            this.appContext.emit("bpm:change", calculatedBpm);
+	            this.appContext.emit("taptempo", {
+	              bpm: calculatedBpm
+	            });
+	          } else if (typeof window !== "undefined" && window.xemitter) {
+	            window.xemitter.emit("bpm:change", calculatedBpm);
+	            window.xemitter.emit("taptempo", {
+	              bpm: calculatedBpm
+	            });
+	          }
+	        }
+	      }
+	    }
+	    return this.currentBpm;
+	  };
+	  getBpm = () => {
+	    return this.currentBpm;
+	  };
+	}
+	const tapTempo = new TapTempo();
+	if (typeof window !== "undefined") {
+	  window.tapTempo = tapTempo;
+	  window.addEventListener("keydown", e => {
+	    const isOptionSpace = e.altKey && (e.code === "Space" || e.key === " " || e.key === "Spacebar");
+	    if (isOptionSpace) {
+	      e.preventDefault();
+	      e.stopPropagation();
+	      tapTempo.tap(e.timeStamp);
+	      return;
+	    }
+	    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+	      return;
+	    }
+	    // Only bare '[' and ']' without Cmd/Ctrl/Alt modifier keys should navigate setlist; ignore repeats
+	    if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) {
+	      return;
+	    }
+	    if (e.key === "[") {
+	      window.xemitter?.emit('gallery:prevSetlistSketch');
+	    } else if (e.key === "]") {
+	      window.xemitter?.emit('gallery:nextSetlistSketch');
+	    }
+	  });
+	}
+
+	// --- Sketch Helper Functions ---
+
+	/**
+	 * MIDI value getter for sketches
+	 * Usage: midi(3, {min: 10, max: 60}), midi('b0'), midi('A')
+	 */
+	function midi(ccIndex, options = {}) {
+	  return () => midiEngine.getValue(ccIndex, options);
+	}
+
+	/**
+	 * BPM-synced sawtooth ramp for Hydra arrays or properties
+	 */
+	const saw = ({
+	  min = 0,
+	  max = 1,
+	  x = 1,
+	  t
+	} = {}) => ({
+	  time
+	}) => {
+	  const currentBpm = typeof window !== "undefined" && window.bpm ? window.bpm : 120;
+	  const spb = 60 / currentBpm * x;
+	  const p = time % spb / spb * (max - min) + min;
+	  return t ? t(p) : p;
+	};
+
+	/**
+	 * Low Frequency Oscillator (LFO) builder for Hydra params
+	 */
+	function createLFO({
+	  frequency = 1,
+	  amplitude = 1,
+	  phase = 0,
+	  waveform = "sine",
+	  bpm = undefined,
+	  trans = undefined,
+	  t = undefined
+	} = {}) {
+	  const transform = trans || t;
+	  if (bpm) {
+	    frequency = bpm / 60 * frequency;
+	  }
+	  const omega = 2 * Math.PI * frequency;
+	  return ({
+	    time
+	  }) => {
+	    const theta = omega * time + phase;
+	    let value;
+	    switch (waveform) {
+	      case "sine":
+	        value = Math.sin(theta);
+	        break;
+	      case "square":
+	        value = Math.sign(Math.sin(theta));
+	        break;
+	      case "sawtooth":
+	        value = 2 * (theta / (2 * Math.PI) - Math.floor(0.5 + theta / (2 * Math.PI)));
+	        break;
+	      case "triangle":
+	        value = 2 * Math.abs(2 * (theta / (2 * Math.PI) - Math.floor(0.5 + theta / (2 * Math.PI)))) - 1;
+	        break;
+	      case "random":
+	        value = Math.random() * 2 - 1;
+	        break;
+	      default:
+	        throw new Error(`[Hydrakit] Unsupported LFO waveform: ${waveform}`);
+	    }
+	    const scaled = value * amplitude;
+	    return transform ? transform(scaled) : scaled;
+	  };
+	}
+
+	/**
+	 * Returns random integer in range [from, to]
+	 */
+	function randInt(from, to) {
+	  return Math.floor(Math.random() * (to - from + 1) + from);
+	}
+
+	/**
+	 * Balanced random float in range [-0.5, 0.5]
+	 */
+	function rx() {
+	  return Math.random() - 0.5;
+	}
+
+	/**
+	 * Template string function evaluator: f`x => x * 2`
+	 */
+	const f = (...args) => new Function("return " + String.raw(...args));
+
+	/**
+	 * Call-site keyed target value smoothing/easing across frame re-evaluations
+	 */
+	const _xxxStorage = {};
+	const xxx = target => {
+	  try {
+	    const stackLines = new Error().stack.split("\n");
+	    const callLine = stackLines[2] || stackLines[1] || "";
+	    const match = callLine.match(/<anonymous>:(\d+:\d+)/) || callLine.match(/:(\d+:\d+)/);
+	    const key = match ? match[1] : "default";
+	    if (!_xxxStorage[key]) {
+	      _xxxStorage[key] = target;
+	    }
+	    let current = _xxxStorage[key];
+	    return () => {
+	      if (Math.abs(target - current) >= 1 / 30) {
+	        current += (target - current) / 30;
+	        _xxxStorage[key] = current;
+	      } else {
+	        _xxxStorage[key] = target;
+	      }
+	      return current;
+	    };
+	  } catch (e) {
+	    return () => target;
+	  }
+	};
+
+	/**
+	 * Euclidean-style beat pattern generator
+	 */
+	const beatPattern = (length, hits, map = e => e) => {
+	  hits = Math.floor(Math.min(length, hits));
+	  const arr = new Array(Math.floor(length)).fill(0);
+	  while (hits > 0) {
+	    const r = Math.floor(Math.random() * length);
+	    if (!arr[r]) {
+	      arr[r] = 1;
+	      hits--;
+	    }
+	  }
+	  return arr.map(map);
+	};
+
+	/**
+	 * Single-invocation function wrapper
+	 */
+	function once(fn) {
+	  let called = false;
+	  let result;
+	  return function (...args) {
+	    if (!called) {
+	      called = true;
+	      result = fn.apply(this, args);
+	    }
+	    return result;
+	  };
+	}
+
+	/**
+	 * Hex or RGB color solid generator without eval
+	 */
+	function color(...args) {
+	  function hexToRgb(hex) {
+	    if (hex.startsWith("#")) hex = hex.slice(1);
+	    const r = (parseInt(hex.slice(0, 2), 16) / 255).toPrecision(4);
+	    const g = (parseInt(hex.slice(2, 4), 16) / 255).toPrecision(4);
+	    const b = (parseInt(hex.slice(4, 6), 16) / 255).toPrecision(4);
+	    return {
+	      r: Number(r),
+	      g: Number(g),
+	      b: Number(b)
+	    };
+	  }
+	  let r = 0,
+	    g = 0,
+	    b = 0;
+	  if (args.length === 1 && typeof args[0] === "string") {
+	    const rgb = hexToRgb(args[0]);
+	    r = rgb.r;
+	    g = rgb.g;
+	    b = rgb.b;
+	  } else {
+	    r = Number(args[0]) || 0;
+	    g = Number(args[1]) || 0;
+	    b = Number(args[2]) || 0;
+	  }
+	  if (typeof window !== "undefined" && typeof window.solid === "function") {
+	    return window.solid(r, g, b);
+	  }
+	  return ({
+	    time
+	  }) => {
+	    if (typeof window !== "undefined" && typeof window.solid === "function") {
+	      return window.solid(r, g, b);
+	    }
+	  };
+	}
+
+	// --- Plugin System Registration ---
+	if (typeof window !== "undefined" && window.HydraliskPlugins) {
+	  window.HydraliskPlugins.register({
+	    id: "hydrakit",
+	    name: "Hydrakit Helpers & WebMIDI CC Engine",
+	    init(app) {
+	      tapTempo.setAppContext(app);
+	      if (app.on) {
+	        app.on("taptempo", (evt = {}) => {
+	          if (evt && typeof evt.bpm === "number") return;
+	          tapTempo.tap();
+	        });
+	        app.on("bpm:taptempo", (evt = {}) => {
+	          if (evt && typeof evt.bpm === "number") return;
+	          tapTempo.tap();
+	        });
+	        app.on("bpm:change", bpmVal => {
+	          if (typeof window !== "undefined") window.bpm = bpmVal;
+	        });
+	      }
+	      app.expose("midiEngine", midiEngine);
+	      app.expose("tapTempo", tapTempo);
+	      app.expose("midi", midi);
+	      app.expose("saw", saw);
+	      app.expose("createLFO", createLFO);
+	      app.expose("randInt", randInt);
+	      app.expose("rx", rx);
+	      app.expose("f", f);
+	      app.expose("xxx", xxx);
+	      app.expose("beatPattern", beatPattern);
+	      app.expose("once", once);
+	      app.expose("color", color);
+	    }
+	  });
+	}
+
+	var midiMapping = {};
+
+	/**
+	 * MIDI Mapping Module for Hydra
+	 * Allows assigning Hydra actions to MIDI controls (CC and Note On).
+	 * Mappings are stored in localStorage and loaded on init.
+	 */
+	var hasRequiredMidiMapping;
+	function requireMidiMapping() {
+	  if (hasRequiredMidiMapping) return midiMapping;
+	  hasRequiredMidiMapping = 1;
+	  (function () {
+
+	    const STORAGE_KEY = "hydra-midi-mapping";
+	    const CC_TRIGGER_THRESHOLD = 0.5;
+	    const WAITING_TIMEOUT_MS = 15000;
+
+	    // Mappable actions: action ID -> config
+	    // Trigger: { action, payload?, label? } - emits event when CC > threshold or on note
+	    // Bind: { callback: (value) => {}, label? } - calls callback with CC value (0-1) on every change
+	    const MAPPABLE_ACTIONS = {
+	      "gallery:nextSketch": {
+	        action: "gallery:nextSketch",
+	        label: "Next sketch"
+	      },
+	      "gallery:prevSketch": {
+	        action: "gallery:nextSketch",
+	        payload: {
+	          backwards: true
+	        },
+	        label: "Prev sketch"
+	      },
+	      "gallery:randomSketch": {
+	        action: "gallery:randomSketch",
+	        label: "Random Sketch"
+	      },
+	      "editor:randomize": {
+	        action: "editor:randomize",
+	        label: "Randomize"
+	      },
+	      "editor:jumpBack1": {
+	        action: "editor:jumpBack1",
+	        label: "Jump back 1"
+	      },
+	      "editor:jumpBack5": {
+	        action: "editor:jumpBack5",
+	        label: "Jump back 5"
+	      },
+	      "gfx:speedReverse": {
+	        action: "gfx:speedReverse",
+	        label: "Speed reverse"
+	      },
+	      "editor:quickSave": {
+	        action: "editor:quickSave",
+	        label: "Quick save"
+	      },
+	      "editor:quickLoad": {
+	        action: "editor:quickLoad",
+	        label: "Quick load"
+	      },
+	      "editor:toggleAutomutate|off": {
+	        action: "editor:toggleAutomutate",
+	        payload: {
+	          lastCombo: "Shift-Ctrl-0"
+	        },
+	        label: "Automutate off"
+	      },
+	      "editor:toggleAutomutate|1x": {
+	        action: "editor:toggleAutomutate",
+	        payload: {
+	          lastCombo: "Shift-Ctrl-1"
+	        },
+	        label: "Automutate 1x"
+	      },
+	      "editor:toggleAutomutate|2x": {
+	        action: "editor:toggleAutomutate",
+	        payload: {
+	          lastCombo: "Shift-Ctrl-2"
+	        },
+	        label: "Automutate 2x"
+	      },
+	      "editor:toggleAutomutate|4x": {
+	        action: "editor:toggleAutomutate",
+	        payload: {
+	          lastCombo: "Shift-Ctrl-3"
+	        },
+	        label: "Automutate 4x"
+	      },
+	      "editor:toggleAutomutate|8x": {
+	        action: "editor:toggleAutomutate",
+	        payload: {
+	          lastCombo: "Shift-Ctrl-4"
+	        },
+	        label: "Automutate 8x"
+	      },
+	      "editor:toggleAutomutate|16x": {
+	        action: "editor:toggleAutomutate",
+	        payload: {
+	          lastCombo: "Shift-Ctrl-5"
+	        },
+	        label: "Automutate 16x"
+	      },
+	      "taptempo": {
+	        action: "taptempo",
+	        label: "Tap tempo"
+	      },
+	      "fullscreen": {
+	        action: "fullscreen",
+	        label: "Toggle Fullscreen"
+	      },
+	      "hideAll": {
+	        action: "hideAll",
+	        label: "Hide/Show UI"
+	      },
+	      "impromptu:trigger": {
+	        action: "impromptu:trigger",
+	        label: "Impromptu Mutation Trigger (Press)"
+	      },
+	      "impromptu:mutationCC": {
+	        callback: value => {
+	          if (window.impromptuMutator && typeof window.impromptuMutator.setCC === "function") {
+	            window.impromptuMutator.setCC(value);
+	          } else if (window.xemitter) {
+	            window.xemitter.emit("impromptu:setCC", value);
+	          }
+	        },
+	        label: "Impromptu Mutation (CC Dial: 0-10)"
+	      },
+	      // Example CC bind - callback receives normalized value (0-1)
+	      speed: {
+	        callback: value => {
+	          // value is between 0 and 1, it should be mapped to speed between
+	          // This is a logarithmic scale, so we need to use a logarithmic function to map the value to the speed.
+	          // value: 0 => 0
+	          // value: 0.5 => 1
+	          // value: 1 => 8
+	          const speed = Math.pow(2, value * 2) - 1;
+	          if (window.speed !== undefined) window.speed = speed;
+	        },
+	        label: "Speed (CC bind)"
+	      },
+	      ...["A", "B", "C", "D"].map(midiShortcut => {
+	        return {
+	          ['midi' + midiShortcut]: {
+	            callback: value => {
+	              // Example of a CC bind that uses the global cc['A'] / cc['B'] / cc['C'] / cc['D'] value
+	              console.log(`MIDI ${midiShortcut} value:`, value);
+	              // reusable as `midi('A', { min: 0, max: 10, transform: v => Math.round(v * 10) })` for example
+	              window.cc[midiShortcut] = value;
+	            },
+	            label: `midi('${midiShortcut}', {min, max, transform}) cc bind`
+	          }
+	        };
+	      }).reduce((acc, curr) => ({
+	        ...acc,
+	        ...curr
+	      }), {})
+	    };
+	    let mapping = {};
+	    let waitingForAction = null;
+	    let waitingTimeoutId = null;
+	    function loadMapping() {
+	      try {
+	        const stored = localStorage.getItem(STORAGE_KEY);
+	        mapping = stored ? JSON.parse(stored) : {};
+	        return mapping;
+	      } catch (e) {
+	        console.warn("MIDI Mapping: failed to load from localStorage", e);
+	        return {};
+	      }
+	    }
+	    function saveMapping() {
+	      try {
+	        localStorage.setItem(STORAGE_KEY, JSON.stringify(mapping));
+	      } catch (e) {
+	        console.warn("MIDI Mapping: failed to save to localStorage", e);
+	      }
+	    }
+	    function getFullMapping() {
+	      return mapping;
+	    }
+	    function formatMappingDesc(m) {
+	      if (!m) return "—";
+	      if (m.type === "cc") return `CC ${m.control} (ch ${m.channel})`;
+	      if (m.type === "note") return `Note ${m.note} (ch ${m.channel})`;
+	      return "—";
+	    }
+	    function findActionForMessage(channel, type, controlOrNote) {
+	      const full = getFullMapping();
+	      const hits = [];
+	      for (const [action, m] of Object.entries(full)) {
+	        if (!m) continue;
+	        if (m.type === type && m.channel === channel) {
+	          if (type === "cc" && m.control === controlOrNote) hits.push(action);
+	          if (type === "note" && m.note === controlOrNote) hits.push(action);
+	        }
+	      }
+	      return hits;
+	    }
+	    function createMIDIHandler() {
+	      return function handleMIDIMessage(midiMessage) {
+	        const data = midiMessage.data;
+	        if (!data || data.length < 3) return;
+	        const kind = data[0];
+	        const channel = kind & 0x0f;
+	        const byte1 = data[1];
+	        const byte2 = data[2];
+	        const valNormalized = (byte2 > 64 ? byte2 + 1 : byte2) / 128.0;
+
+	        // Check if we're in assignment waiting mode
+	        if (waitingForAction) {
+	          const config = MAPPABLE_ACTIONS[waitingForAction];
+	          config && typeof config.callback === "function";
+	          let assignment = null;
+	          if ((kind & 0xf0) === 0xb0) {
+	            assignment = {
+	              type: "cc",
+	              channel,
+	              control: byte1
+	            };
+	          } else if ((kind & 0xf0) === 0x90 && byte2 > 0) {
+	            assignment = {
+	              type: "note",
+	              channel,
+	              note: byte1
+	            };
+	          }
+	          if (assignment) {
+	            mapping[waitingForAction] = assignment;
+	            saveMapping();
+	            waitingForAction = null;
+	            if (waitingTimeoutId) {
+	              clearTimeout(waitingTimeoutId);
+	              waitingTimeoutId = null;
+	            }
+	            if (window.midiMapping && window.midiMapping.render) {
+	              window.midiMapping.render();
+	            }
+	          }
+	          return;
+	        }
+
+	        // Check mapping for action trigger or CC bind
+	        const status = kind & 0xf0;
+	        if (status === 0xb0) {
+	          const actions = findActionForMessage(channel, "cc", byte1);
+	          for (const actionId of actions) {
+	            if (actionId) {
+	              const config = MAPPABLE_ACTIONS[actionId];
+	              if (config) {
+	                if (typeof config.callback === "function") {
+	                  config.callback(valNormalized);
+	                } else if (config.action && valNormalized > CC_TRIGGER_THRESHOLD && window.xemitter) {
+	                  window.xemitter.emit(config.action, config.payload || {});
+	                }
+	              }
+	            }
+	          }
+	        } else if (status === 0x90 && byte2 > 0) {
+	          const actions = findActionForMessage(channel, "note", byte1);
+	          for (const actionId of actions) {
+	            if (actionId) {
+	              const config = MAPPABLE_ACTIONS[actionId];
+	              if (config && window.xemitter) {
+	                if (typeof config.callback === "function") {
+	                  config.callback(valNormalized);
+	                } else {
+	                  window.xemitter.emit(config.action, config.payload || {});
+	                }
+	              }
+	            }
+	          }
+	        }
+	      };
+	    }
+	    function attachInput(input, handler) {
+	      if (!input) return;
+	      input.removeEventListener("midimessage", handler);
+	      input.addEventListener("midimessage", handler);
+	    }
+	    function setupMIDIHandler() {
+	      if (typeof navigator === "undefined" || !navigator.requestMIDIAccess) return;
+	      navigator.requestMIDIAccess().then(function (midiAccess) {
+	        const handler = createMIDIHandler();
+	        for (const input of midiAccess.inputs.values()) {
+	          attachInput(input, handler);
+	        }
+	        midiAccess.onstatechange = e => {
+	          if (e.port && e.port.type === "input" && e.port.state === "connected") {
+	            console.log(`[midi-mapping] Hot-plugged MIDI device: ${e.port.name}`);
+	            attachInput(e.port, handler);
+	          }
+	        };
+	        console.log("MIDI Mapping: handler installed via addEventListener");
+	      }, function () {
+	        console.warn("MIDI Mapping: could not access MIDI devices");
+	      });
+	    }
+
+	    // --- Modal UI (vanilla DOM) ---
+	    let modalContainer = null;
+	    function createModal() {
+	      const container = document.createElement("div");
+	      container.id = "midi-mapping-app";
+	      document.body.appendChild(container);
+	      modalContainer = container;
+	      renderModal();
+	    }
+	    function renderModal() {
+	      if (!modalContainer) return;
+	      if (!document.body.contains(modalContainer)) {
+	        document.body.appendChild(modalContainer);
+	      }
+	      const fullMapping = getFullMapping();
+	      const isVisible = modalContainer.getAttribute("data-visible") === "true";
+	      modalContainer.innerHTML = "";
+	      if (!isVisible) return;
+	      const overlay = document.createElement("div");
+	      overlay.className = "midi-mapping-overlay";
+	      overlay.onclick = function (e) {
+	        if (e.target === overlay) toggleModal();
+	      };
+	      const modal = document.createElement("div");
+	      modal.className = "midi-mapping-modal";
+	      modal.onclick = function (e) {
+	        e.stopPropagation();
+	      };
+	      const header = document.createElement("div");
+	      header.className = "midi-mapping-header";
+	      header.innerHTML = '<h5>MIDI Mapping</h5><span class="midi-mapping-close">&times;</span>';
+	      header.querySelector(".midi-mapping-close").onclick = toggleModal;
+	      const body = document.createElement("div");
+	      body.className = "midi-mapping-body";
+	      const list = document.createElement("ul");
+	      list.className = "midi-mapping-list";
+	      for (const [actionId, config] of Object.entries(MAPPABLE_ACTIONS)) {
+	        const actionLabel = config.label || actionId;
+	        const li = document.createElement("li");
+	        li.className = "midi-mapping-row";
+	        const current = fullMapping[actionId];
+	        const isWaiting = waitingForAction === actionId;
+	        const label = document.createElement("span");
+	        label.className = "midi-mapping-action";
+	        label.textContent = actionLabel;
+	        const mappingSpan = document.createElement("span");
+	        mappingSpan.className = "midi-mapping-value";
+	        mappingSpan.textContent = isWaiting ? "Listening..." : formatMappingDesc(current);
+	        const assignBtn = document.createElement("button");
+	        assignBtn.className = "midi-mapping-btn";
+	        assignBtn.textContent = isWaiting ? "Cancel" : "Assign";
+	        assignBtn.disabled = isWaiting;
+	        assignBtn.onclick = function () {
+	          if (isWaiting) {
+	            waitingForAction = null;
+	            if (waitingTimeoutId) {
+	              clearTimeout(waitingTimeoutId);
+	              waitingTimeoutId = null;
+	            }
+	          } else {
+	            waitingForAction = actionId;
+	            if (waitingTimeoutId) clearTimeout(waitingTimeoutId);
+	            waitingTimeoutId = setTimeout(function () {
+	              waitingForAction = null;
+	              waitingTimeoutId = null;
+	              renderModal();
+	            }, WAITING_TIMEOUT_MS);
+	          }
+	          renderModal();
+	        };
+	        const clearBtn = document.createElement("button");
+	        clearBtn.className = "midi-mapping-btn midi-mapping-clear";
+	        clearBtn.textContent = "Clear";
+	        clearBtn.style.display = current && mapping[actionId] ? "inline-block" : "none";
+	        clearBtn.onclick = function () {
+	          delete mapping[actionId];
+	          saveMapping();
+	          renderModal();
+	        };
+	        li.appendChild(label);
+	        li.appendChild(mappingSpan);
+	        li.appendChild(assignBtn);
+	        li.appendChild(clearBtn);
+	        list.appendChild(li);
+	      }
+	      body.appendChild(list);
+	      modal.appendChild(header);
+	      modal.appendChild(body);
+	      overlay.appendChild(modal);
+	      modalContainer.appendChild(overlay);
+	    }
+	    function toggleModal() {
+	      if (!modalContainer) return;
+	      const isVisible = modalContainer.getAttribute("data-visible") === "true";
+	      modalContainer.setAttribute("data-visible", !isVisible);
+	      renderModal();
+	    }
+	    function openModal() {
+	      if (!modalContainer) {
+	        createModal();
+	      }
+	      modalContainer.setAttribute("data-visible", "true");
+	      renderModal();
+	    }
+	    function init() {
+	      loadMapping();
+	      setupMIDIHandler();
+	      createModal();
+	      if (window.xemitter) {
+	        window.xemitter.on("midi-mapping:open", openModal);
+	      }
+	      window.midiMapping = {
+	        open: openModal,
+	        toggle: toggleModal,
+	        render: renderModal,
+	        getMapping: getFullMapping,
+	        registerAction: (id, config) => {
+	          if (id && config) {
+	            MAPPABLE_ACTIONS[id] = config;
+	          }
+	        }
+	      };
+	      console.log("MIDI Mapping module loaded");
+	    }
+	    if (typeof window !== "undefined" && window.HydraliskPlugins) {
+	      window.HydraliskPlugins.register({
+	        id: "midi-mapping",
+	        name: "MIDI Mapping UI & Actions",
+	        init(app) {
+	          if (app.emitter) {
+	            app.emitter.on("midi-mapping:open", openModal);
+	          }
+	          app.expose("midiMapping", window.midiMapping);
+	        }
+	      });
+	    }
+	    if (document.readyState === "loading") {
+	      document.addEventListener("DOMContentLoaded", init);
+	    } else {
+	      init();
+	    }
+	  })();
+	  return midiMapping;
+	}
+
+	requireMidiMapping();
+
+	window.initializeConvolutions = () => {
+	  {
+	    const getHydra = function () {
+	      return window.hydra;
+	    };
+	    window._hydra = getHydra();
+	    window._hydraScope = _hydra.sandbox.makeGlobal ? window : _hydra.synth;
+	  }
+	  {
+	    function generateJumps(height, width) {
+	      const middleY = Math.floor(height / 2);
+	      const middleX = Math.floor(width / 2);
+	      let jumpTable = Array.from({
+	        length: height
+	      }, () => []);
+	      for (let y = 0; y < height; y++) {
+	        const posY = (middleY - y).toFixed(1);
+	        for (let x = 0; x < width; x++) {
+	          const posX = (middleX - x).toFixed(1);
+	          const vec2 = `vec2(${posX}, ${posY})`;
+	          jumpTable[y].push(vec2);
+	        }
+	      }
+	      return jumpTable.flat();
+	    }
+	    function processElement(element) {
+	      return typeof element === "string" ? `(${element})` : element.toFixed(9);
+	    }
+	    function generateWeights(kernel) {
+	      const weights = kernel.flat().map(processElement);
+	      const hasParameters = weights.some(x => x.includes("k"));
+	      weights.hasParameters = hasParameters;
+	      return weights;
+	    }
+	    function generateConvolutionFunction(obj, settings) {
+	      const name = obj.name + settings.nameSufix;
+	      const kernel = obj.kernel;
+	      const multiplier = processElement(obj.multiplier || 1);
+	      const [height, width] = [kernel.length, kernel[0].length];
+	      const weights = generateWeights(kernel);
+	      const jumps = generateJumps(height, width);
+	      const hasParameters = weights.hasParameters;
+	      const {
+	        prefix,
+	        newLine,
+	        sufix
+	      } = settings;
+	      let code = prefix + "\n";
+	      weights.forEach((weight, i) => {
+	        const jump = jumps[i];
+	        if (weight == 0) return;
+	        const line = newLine(weight, jump);
+	        code += line + "\n";
+	      });
+	      code += sufix(multiplier);
+	      const inputs = [{
+	        name: "_tex0",
+	        type: "sampler2D",
+	        default: o0
+	      }, {
+	        name: "jump",
+	        type: "float",
+	        default: 1
+	      }, {
+	        name: "amp",
+	        type: "float",
+	        default: 1
+	      }];
+	      if (hasParameters) {
+	        inputs.splice(1, 0, {
+	          name: "k",
+	          type: "float",
+	          default: 1
+	        });
+	      }
+	      const func = {
+	        name,
+	        type: "src",
+	        inputs,
+	        glsl: code
+	      };
+	      return func;
+	    }
+	    function generateConvolutionFunctionRegular(obj) {
+	      const regularSettings = {
+	        nameSufix: "",
+	        prefix: "vec3 outputColor = vec3(0.0); vec2 res = resolution.xy;",
+	        newLine: (weight, jump) => `outputColor += (${weight}) * texture2D(_tex0, _st + (${jump} * jump / res)).rgb;`,
+	        sufix: multiplier => `return vec4(outputColor * ${multiplier} * amp, texture2D(_tex0, _st).a);`
+	      };
+	      return generateConvolutionFunction(obj, regularSettings);
+	    }
+	    function generateConvolutionFunctionForLuma(obj) {
+	      const ySettings = {
+	        nameSufix: "Luma",
+	        prefix: "float outputLuma = 0.0; vec2 res = resolution.xy;",
+	        newLine: (weight, jump) => `outputLuma += (${weight}) * _luminance(texture2D(_tex0, _st + (${jump} * jump / res)).rgb);`,
+	        sufix: multiplier => `return vec4(vec3(outputLuma * ${multiplier} * amp), texture2D(_tex0, _st).a);`
+	      };
+	      return generateConvolutionFunction(obj, ySettings);
+	    }
+	    function generateConvolutionFunctionForY(obj) {
+	      const ySettings = {
+	        nameSufix: "OnY",
+	        prefix: `
+              mat3 rgb2yuv = mat3(0.2126, 0.7152, 0.0722, -0.09991, -0.33609, 0.43600, 0.615, -0.5586, -0.05639);
+              mat3 yuv2rgb = mat3(1.0, 0.0, 1.28033, 1.0, -0.21482, -0.38059, 1.0, 2.12798, 0.0);
+              float outputY = 0.0;
+              vec2 res = resolution.xy;
+            `,
+	        newLine: (weight, jump) => `outputY += (${weight}) * (texture2D(_tex0, _st + (${jump} * jump / res)).rgb * rgb2yuv).x;`,
+	        sufix: multiplier => `
+              vec4 outputColor = texture2D(_tex0, _st);
+              vec3 yuv = outputColor.rgb * rgb2yuv;
+              yuv.x = outputY * ${multiplier};
+              outputColor.rgb = yuv * yuv2rgb * amp;
+              return outputColor;
+            `
+	      };
+	      return generateConvolutionFunction(obj, ySettings);
+	    }
+	    function generateConvolutionFunctionForUV(obj) {
+	      const uvSettings = {
+	        nameSufix: "OnUV",
+	        prefix: `
+              mat3 rgb2yuv = mat3(0.2126, 0.7152, 0.0722, -0.09991, -0.33609, 0.43600, 0.615, -0.5586, -0.05639);
+              mat3 yuv2rgb = mat3(1.0, 0.0, 1.28033, 1.0, -0.21482, -0.38059, 1.0, 2.12798, 0.0);
+              vec2 outputUV = vec2(0.0);
+              vec2 res = resolution.xy;
+            `,
+	        newLine: (weight, jump) => `outputUV += (${weight}) * (texture2D(_tex0, _st + (${jump} * jump / res)).rgb * rgb2yuv).yz;`,
+	        sufix: multiplier => `
+              vec4 outputColor = texture2D(_tex0, _st);
+              vec3 yuv = outputColor.rgb * rgb2yuv;
+              yuv.yz = outputUV  * ${multiplier};
+              outputColor.rgb = yuv * yuv2rgb * amp;
+              return outputColor;
+            `
+	      };
+	      return generateConvolutionFunction(obj, uvSettings);
+	    }
+	    function generateConvolutionFunctionForIQ(obj) {
+	      const iqSettings = {
+	        nameSufix: "OnIQ",
+	        prefix: `
+              mat3 rgb2yiq = mat3(0.299, 0.587, 0.114, 0.5959, -0.2746, -0.3213, 0.2115, -0.5227, 0.3112);
+              mat3 yiq2rgb = mat3(1.0, 0.956, 0.619, 1.0, -0.272, -0.647, 1.0, -1.106, 1.703);
+              vec2 outputIQ = vec2(0.0);
+              vec2 res = resolution.xy;
+            `,
+	        newLine: (weight, jump) => `outputIQ += (${weight}) * (texture2D(_tex0, _st + (${jump} * jump / res)).rgb * rgb2yiq).yz;`,
+	        sufix: multiplier => `
+              vec4 outputColor = texture2D(_tex0, _st);
+              vec3 yiq = outputColor.rgb * rgb2yiq;
+              yiq.yz = outputIQ * ${multiplier};
+              outputColor.rgb = yiq * yiq2rgb * amp;
+              return outputColor;
+            `
+	      };
+	      return generateConvolutionFunction(obj, iqSettings);
+	    }
+	    function setConvolutionFunction(definition) {
+	      const definitions = [generateConvolutionFunctionRegular(definition), generateConvolutionFunctionForLuma(definition), generateConvolutionFunctionForY(definition), generateConvolutionFunctionForUV(definition), generateConvolutionFunctionForIQ(definition)];
+	      definitions.forEach(_hydra.synth.setFunction);
+	    }
+	    _hydraScope.setConvolutionFunction = setConvolutionFunction;
+	  }
+	  {
+	    // convolution kernel lists
+	    const convolutionKernels = [{
+	      name: "sharpen",
+	      kernel: [[0, "-k", 0], ["-k", "(4.0*k)+1.0", "-k"], [0, "-k", 0]]
+	    }, {
+	      name: "sharpenMore",
+	      kernel: [["-k", "-k", "-k"], ["-k", "(8.0*k)+1.0", "-k"], ["-k", "-k", "-k"]]
+	    }, {
+	      name: "lineSharpen",
+	      kernel: [["-k", "(2.0*k)+1.0", "-k"]]
+	    }, {
+	      name: "emboss",
+	      kernel: [["-2.0*k", "-k", 0], ["-k", 1, "k"], [0, "k", "2.0*k"]]
+	    }, {
+	      name: "blur",
+	      kernel: [[1, 2, 1], [2, 4, 2], [1, 2, 1]],
+	      multiplier: 1 / 16
+	    }, {
+	      name: "blur5",
+	      kernel: [[1, 4, 7, 4, 1], [4, 16, 26, 16, 4], [7, 26, 41, 26, 7], [4, 16, 26, 16, 4], [1, 4, 7, 4, 1]],
+	      multiplier: 1 / 273
+	    }, {
+	      name: "blur7",
+	      kernel: [[0, 0, 1, 2, 1, 0, 0], [0, 3, 13, 22, 13, 3, 0], [1, 13, 59, 97, 59, 13, 1], [2, 22, 97, 159, 97, 22, 2], [1, 13, 59, 97, 59, 13, 1], [0, 3, 13, 22, 13, 3, 0], [0, 0, 1, 2, 1, 0, 0]],
+	      multiplier: 1 / 1003
+	    }, {
+	      name: "boxBlur",
+	      kernel: [[1, 1, 1], [1, 1, 1], [1, 1, 1]],
+	      multiplier: 1 / 9
+	    }, {
+	      name: "boxBlur5",
+	      kernel: [[1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]],
+	      multiplier: 1 / 25
+	    }, {
+	      name: "horizontalBlur",
+	      kernel: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
+	      multiplier: 1 / 5
+	    }, {
+	      name: "verticalBlur",
+	      kernel: [[0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]],
+	      multiplier: 1 / 5
+	    }, {
+	      name: "diagonalBlur",
+	      kernel: [[0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0], [0, 1, 0, 0, 0], [1, 0, 0, 0, 0]],
+	      multiplier: 1 / 5
+	    }, {
+	      name: "diagonalBlur2",
+	      kernel: [[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 1]],
+	      multiplier: 1 / 5
+	    }, {
+	      name: "lineBlur",
+	      kernel: [[1, 2, 1]],
+	      multiplier: 1 / 4
+	    }, {
+	      name: "lineBlur5",
+	      kernel: [[7, 26, 41, 26, 7]],
+	      multiplier: 1 / 107
+	    }, {
+	      name: "sobelY",
+	      kernel: [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]
+	    }, {
+	      name: "sobelX",
+	      kernel: [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]
+	    }, {
+	      name: "sobelDiagonal",
+	      kernel: [[2, 1, 0], [1, 0, -1], [0, -1, -2]]
+	    }, {
+	      name: "sobelDiagonal2",
+	      kernel: [[0, 1, 2], [-1, 0, 1], [-2, -1, 0]]
+	    }, {
+	      name: "prewittY",
+	      kernel: [[1, 1, 1], [0, 0, 0], [-1, -1, -1]]
+	    }, {
+	      name: "prewittX",
+	      kernel: [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]
+	    }, {
+	      name: "prewittDiagonal",
+	      kernel: [[1, 1, 0], [1, 0, -1], [0, -1, -1]]
+	    }, {
+	      name: "prewittDiagonal2",
+	      kernel: [[0, 1, 1], [-1, 0, 1], [-1, -1, 0]]
+	    }, {
+	      name: "edge",
+	      kernel: [[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]]
+	    }];
+	    convolutionKernels.forEach(_hydraScope.setConvolutionFunction);
+	  }
+	};
+	if (typeof window !== "undefined" && window.HydraliskPlugins) {
+	  window.HydraliskPlugins.register({
+	    id: "convolutions",
+	    name: "GLSL Convolution Kernels",
+	    onHydraReady(hydra, app) {
+	      if (typeof window.initializeConvolutions === "function" && !window.initializeConvolutions.done) {
+	        window.initializeConvolutions();
+	        window.initializeConvolutions.done = true;
+	      }
+	    }
+	  });
+	}
+
+	window.threeObjects = {
+	  init: function () {
+	    this.scene = new THREE.Scene();
+	    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	    this.light = new THREE.PointLight(0xffffff, 1, 100);
+	    this.light.position.set(10, 10, 10);
+	    this.scene.add(this.light);
+	    this.renderer = new THREE.WebGLRenderer();
+	    this.renderer.setSize(width, height);
+	    this.camera.position.z = 1.5;
+	  },
+	  cube: function () {
+	    const geometry = new THREE.BoxGeometry();
+	    const material = new THREE.MeshBasicMaterial({
+	      color: 0x00ff00
+	    });
+	    const cube = new THREE.Mesh(geometry, material);
+	    this.scene.add(cube);
+	    return cube;
+	  },
+	  orbital: function (count = 10) {
+	    const cubes = [];
+	    const phaseStep = Math.PI * 2 / count;
+	    for (let i = 0; i < count; i++) {
+	      const phase = i * phaseStep;
+	      const size = Math.random();
+	      const geometry = new THREE.BoxGeometry(size, size, size);
+	      const material = new THREE.MeshStandardMaterial({
+	        color: Math.random() * 0xffffff,
+	        emissive: Math.random() * 0xffffff
+	      });
+	      const cube = new THREE.Mesh(geometry, material);
+	      cube.position.x = Math.cos(phase);
+	      cube.position.y = Math.sin(phase);
+	      this.scene.add(cube);
+	      cubes.push(cube);
+	    }
+	    cubes.animate = function () {
+	      this.forEach((cube, index) => {
+	        const phase = index * phaseStep + Date.now() * 0.001;
+	        cube.position.x = Math.cos(phase);
+	        cube.position.y = Math.sin(phase);
+	        cube.rotation.x += 0.01;
+	        cube.rotation.y += 0.01;
+	      });
+	    };
+	    return cubes;
+	  }
+	};
+
+	// 'update' is a reserved function that will be run every time the main hydra rendering context is updated
+	window.update = () => {
+	  if (typeof cube !== "undefined" && typeof renderer !== "undefined") {
+	    cube.rotation.x += 0.01;
+	    cube.rotation.y += 0.01;
+	    renderer.render(scene, camera);
+	  }
+	};
+	if (typeof window !== "undefined" && window.HydraliskPlugins) {
+	  window.HydraliskPlugins.register({
+	    id: "three-objects",
+	    name: "Three.js Objects Helper",
+	    init(app) {
+	      app.expose("threeObjects", window.threeObjects);
+	    },
+	    onHydraReady(hydra, app) {
+	      if (window.THREE && window.threeObjects && typeof window.threeObjects.init === "function") {
+	        try {
+	          window.threeObjects.init();
+	        } catch (e) {
+	          console.warn("[three-objects] Could not auto-init canvas:", e.message);
+	        }
+	      }
+	    }
+	  });
+	}
 
 	// Astring is a tiny and fast JavaScript code generator from an ESTree-compliant AST.
 	//
@@ -19095,6 +19777,8 @@
 	        "Shift-Ctrl-9": ["gfx:speedFaster"],
 	        "Shift-Cmd-8": ["gfx:speedReverse"],
 	        "Cmd-D": ["editor:duplicateLine"],
+	        "Cmd-M": ["masterEffects:toggle"],
+	        "Shift-Ctrl-M": ["masterEffects:toggle"],
 	        "Shift-Ctrl-K": ["editor:commentLine"],
 	        "Shift-Ctrl-C": ["gallery:search"],
 	        "Shift-Ctrl-S": ["screencap"],
@@ -19103,7 +19787,7 @@
 	      const SHORTCUT_MAP = new Map(Object.entries(SHORTCUTS).map(([combo, action]) => [normalizeCombo(combo), action]));
 
 	      // Browser/OS defaults to swallow even though they have no app action.
-	      const PREVENT_SET = new Set(["Cmd-Q", "Cmd-P", "Cmd-W", "Cmd-T", "Cmd-N", "Cmd-M", "Cmd-A"].map(normalizeCombo));
+	      const PREVENT_SET = new Set(["Cmd-Q", "Cmd-P", "Cmd-W", "Cmd-T", "Cmd-N", "Cmd-A"].map(normalizeCombo));
 
 	      // Capture phase on document: runs BEFORE CodeMirror's own keydown handler (which still has
 	      // the same combos in its extraKeys map in bundle.min.js). Stopping propagation here makes this
@@ -19538,7 +20222,8 @@
 
 	window.Modules = {
 	  SketchManager,
-	  FeedbackManager
+	  FeedbackManager,
+	  MasterEffectsManager
 	};
 	if (typeof window !== "undefined" && window.HydraliskPlugins) {
 	  window.HydraliskPlugins.register({
