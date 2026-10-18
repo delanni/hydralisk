@@ -30,6 +30,14 @@ export function PanelHeader() {
         >
           💬
         </button>
+        <button
+          className="collapse-btn remote-qr-toggle"
+          onClick={() => window.hydraliskRemote && window.hydraliskRemote.toggleQR()}
+          title="Phone Remote Pairing (Ctrl+Shift+R)"
+          style={{ fontSize: '13px' }}
+        >
+          📱
+        </button>
         <button className="collapse-btn" onClick={toggleCollapse} title="Hide Sidebar">
           <ChevronLeftIcon />
         </button>

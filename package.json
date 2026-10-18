@@ -8,7 +8,9 @@
     "start": "serve -l 1984 .",
     "build": "rollup -c",
     "watch": "rollup -c --watch",
+    "relay": "cd relay && go run .",
     "dev": "concurrently \"npm:watch\" \"npm:start\"",
+    "dev:all": "concurrently \"npm:watch\" \"npm:start\" \"npm:relay\"",
     "encode-credentials": "node scripts/encode-credentials.js"
   },
   "_dependencies": "DEPENDENCIES SHOULD BE EMPTY, IT'S A STATIC SITE",

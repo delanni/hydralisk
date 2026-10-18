@@ -13,6 +13,7 @@ import { notify as showToast } from './services/intercom.js';
 import {
   startExperience, playSketch, toggleUI, openEditorWithCurrentSketch, shouldAutoLaunch
 } from './actions/index.js';
+import { initPlayerRemoteClient } from '../remote/playerClient.js';
 
 exposeGlobalApi();
 
@@ -22,6 +23,12 @@ function mount() {
 
   const container = document.getElementById('player-root');
   createRoot(container).render(<App />);
+
+  try {
+    initPlayerRemoteClient();
+  } catch (err) {
+    console.warn('[HydraliskPlayer] Remote client init error:', err);
+  }
 }
 
 if (document.readyState === 'loading') {

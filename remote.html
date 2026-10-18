@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#000000" />
+  <title>Hydralisk Remote Control</title>
+  
+  <style>
+    :root {
+      --bg-oled: #000000;
+      --bg-panel: #0d0f14;
+      --bg-card: #151821;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #64748b;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(56, 189, 248, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: var(--bg-oled);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      touch-action: none;
+    }
+
+    #app-root {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      height: 100dvh;
+      padding: env(safe-area-inset-top, 8px) env(safe-area-inset-right, 8px) env(safe-area-inset-bottom, 8px) env(safe-area-inset-left, 8px);
+      gap: 8px;
+    }
+
+    /* 1. TOP STATUS BAR */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 44px;
+      padding: 0 12px;
+      background: var(--bg-panel);
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-led {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-rose);
+      box-shadow: 0 0 8px var(--accent-rose);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .status-led.status-connected {
+      background: var(--accent-emerald);
+      box-shadow: 0 0 10px var(--accent-emerald);
+    }
+    .status-led.status-connecting {
+      background: var(--accent-amber);
+      box-shadow: 0 0 10px var(--accent-amber);
+    }
+
+    .status-text {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    .room-badge {
+      font-family: monospace;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .bpm-display {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .blackout-btn {
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: var(--accent-rose);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .blackout-btn.active {
+      background: var(--accent-rose);
+      color: #000;
+      box-shadow: 0 0 15px var(--accent-rose);
+    }
+
+    /* 2. PLAYABILITY DECK */
+    .playability-deck {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 8px;
+      height: 140px;
+      min-height: 130px;
+    }
+
+    .tap-tempo-pad {
+      background: radial-gradient(circle at center, rgba(56, 189, 248, 0.12) 0%, rgba(13, 15, 20, 0.8) 100%);
+      border: 2px solid var(--accent-cyan);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);
+      transition: transform 0.08s, box-shadow 0.08s;
+    }
+    .tap-tempo-pad:active, .tap-tempo-pad.pulse {
+      transform: scale(0.96);
+      background: var(--accent-cyan);
+      box-shadow: 0 0 25px var(--accent-cyan);
+    }
+    .tap-tempo-pad:active .tap-pad-title, .tap-tempo-pad.pulse .tap-pad-title,
+    .tap-tempo-pad:active .tap-pad-sub, .tap-tempo-pad.pulse .tap-pad-sub {
+      color: #000;
+    }
+
+    .tap-pad-title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: var(--accent-cyan);
+    }
+    .tap-pad-sub {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .controls-matrix {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--bg-panel);
+      padding: 8px;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Auto-Mutate Grid */
+    .mutate-row {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .mutate-mode-btn {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mutate-mode-btn.active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--accent-emerald);
+      color: var(--accent-emerald);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Action Buttons Row */
+    .action-row {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .action-btn {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: transform 0.1s, background 0.1s;
+    }
+    .action-btn:active, .action-btn.pulse {
+      transform: scale(0.95);
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .action-btn.mutate-now {
+      color: var(--accent-amber);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    .action-btn.undo-5x {
+      color: #a78bfa;
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    /* Speed Strip Row */
+    .speed-row {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .speed-btn {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .speed-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .speed-btn.rev-btn.active {
+      background: rgba(244, 63, 94, 0.2);
+      border-color: var(--accent-rose);
+      color: var(--accent-rose);
+    }
+
+    /* 3. EXPRESSIVE SURFACE (Faders & XY Pads) */
+    .surface-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-panel);
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      padding: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .surface-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding: 0 4px;
+    }
+
+    .surface-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+    }
+
+    .toggle-surface-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--accent-cyan);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .surface-viewport {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* FADER BANK STYLES */
+    .fader-bank-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .fader-track-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      position: relative;
+    }
+
+    .fader-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      margin-bottom: 4px;
+    }
+
+    .fader-track {
+      flex: 1;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .fader-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to top, rgba(56, 189, 248, 0.4), var(--accent-cyan));
+      border-radius: 0 0 7px 7px;
+      pointer-events: none;
+      transition: height 0.03s linear;
+    }
+
+    .fader-thumb {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+      pointer-events: none;
+      transform: translateY(50%);
+      transition: bottom 0.03s linear;
+    }
+
+    .fader-val {
+      font-size: 10px;
+      font-family: monospace;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* XY PAD STYLES */
+    .xy-pad-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .xy-pad-container {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .xy-grid-lines {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 25% 25%;
+      pointer-events: none;
+    }
+
+    .xy-crosshair-h, .xy-crosshair-v {
+      position: absolute;
+      background: rgba(56, 189, 248, 0.25);
+      pointer-events: none;
+    }
+    .xy-crosshair-h { left: 0; width: 100%; height: 1px; top: 50%; }
+    .xy-crosshair-v { top: 0; height: 100%; width: 1px; left: 50%; }
+
+    .xy-puck {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 15px var(--accent-cyan);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .xy-readout {
+      position: absolute;
+      bottom: 6px;
+      left: 8px;
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--accent-cyan);
+      pointer-events: none;
+    }
+
+    /* 4. SCENE DRAWER */
+    .drawer-toggle-bar {
+      height: 38px;
+      background: var(--bg-panel);
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .drawer-toggle-bar span {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+    }
+
+    .scene-drawer {
+      position: fixed;
+      bottom: 0; left: 0; width: 100%; height: 75vh;
+      background: #0d0f17;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px 20px 0 0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+    }
+    .scene-drawer.open {
+      transform: translateY(0);
+    }
+
+    .scene-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .scene-grid {
+      flex: 1;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+      touch-action: pan-y;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .scene-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .scene-card.active {
+      border-color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.15);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+
+    .scene-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .scene-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div id="app-root">
+    <!-- Top Status Bar -->
+    <header class="top-bar">
+      <div class="status-group">
+        <div id="status-led" class="status-led status-disconnected"></div>
+        <span id="status-text" class="status-text">OFFLINE</span>
+      </div>
+      <div id="room-badge" class="room-badge">----</div>
+      <div id="bpm-display" class="bpm-display">120 BPM</div>
+      <button id="blackout-btn" class="blackout-btn">BLACKOUT</button>
+    </header>
+
+    <!-- Playability Deck -->
+    <section class="playability-deck">
+      <div id="tap-tempo-pad" class="tap-tempo-pad">
+        <div class="tap-pad-title">TAP</div>
+        <div class="tap-pad-sub">TEMPO</div>
+      </div>
+
+      <div class="controls-matrix">
+        <!-- Auto-Mutate Matrix -->
+        <div class="mutate-row">
+          <button class="mutate-mode-btn active" data-beats="0">OFF</button>
+          <button class="mutate-mode-btn" data-beats="1">1b</button>
+          <button class="mutate-mode-btn" data-beats="2">2b</button>
+          <button class="mutate-mode-btn" data-beats="4">4b</button>
+          <button class="mutate-mode-btn" data-beats="8">8b</button>
+          <button class="mutate-mode-btn" data-beats="16">16b</button>
+        </div>
+
+        <!-- Action Row -->
+        <div class="action-row">
+          <button id="mutate-now-btn" class="action-btn mutate-now">⚡ MUTATE</button>
+          <button id="undo-5x-btn" class="action-btn undo-5x">↺ UNDO 5X</button>
+        </div>
+
+        <!-- Speed Row -->
+        <div class="speed-row">
+          <button class="speed-btn" data-speed="0.5">0.5x</button>
+          <button class="speed-btn active" data-speed="1.0">1.0x</button>
+          <button class="speed-btn" data-speed="2.0">2.0x</button>
+          <button id="speed-rev-btn" class="speed-btn rev-btn">REV</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Expressive Surface (Faders or XY Pad) -->
+    <section class="surface-section">
+      <div class="surface-header">
+        <span class="surface-title">EXPRESSIVE CONTROL (B1–B8)</span>
+        <button id="toggle-surface-btn" class="toggle-surface-btn">SWITCH TO XY PAD</button>
+      </div>
+      <div id="expressive-surface" class="surface-viewport">
+        <!-- Dynamic faders or XY pad injected here -->
+      </div>
+    </section>
+
+    <!-- Scene Drawer Toggle Bar -->
+    <div id="scene-drawer-toggle" class="drawer-toggle-bar">
+      <span>▲ SCENE DECK SELECTOR</span>
+    </div>
+
+    <!-- Scene Drawer Bottom Sheet -->
+    <div id="scene-drawer" class="scene-drawer">
+      <div class="scene-drawer-header">
+        <h3 style="font-size:16px; font-weight:800; letter-spacing:1px;">SCENE DECK</h3>
+        <button onclick="document.getElementById('scene-drawer').classList.remove('open')" style="background:transparent; border:none; color:var(--text-muted); font-size:24px; cursor:pointer;">&times;</button>
+      </div>
+      <div id="scene-list-grid" class="scene-grid">
+        <!-- Populated via REGISTER_SCENES from Player -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/remote/controllerApp.js"></script>
+</body>
+</html>

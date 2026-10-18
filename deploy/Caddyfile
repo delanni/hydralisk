@@ -1,0 +1,31 @@
+hydralisk.sphynx.cloud {
+	encode zstd gzip
+
+	# 1. Real-time WebSocket Relay (sub-millisecond frame switching)
+	@websockets {
+		path /ws*
+	}
+	reverse_proxy @websockets relay:8080 {
+		flush_interval -1
+		transport http {
+			read_timeout 3600s
+			write_timeout 3600s
+		}
+	}
+
+	# 2. Relay Healthcheck
+	handle /healthz {
+		reverse_proxy relay:8080
+	}
+
+	# 3. Clean URL rewrites for Mobile Controller and Player
+	rewrite /remote /remote.html
+	rewrite /player /player.html
+
+	# 4. Static Web Application & Media Assets
+	handle {
+		root * /srv/hydralisk
+		header Cache-Control "public, max-age=3600, must-revalidate"
+		file_server
+	}
+}
