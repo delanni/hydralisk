@@ -7,6 +7,7 @@ import './plugins.js';
 import SketchManager from './sketchManager/index.jsx';
 import FeedbackManager from './feedbackModal/index.jsx';
 import MasterEffectsManager from './masterEffects/index.jsx';
+import ImpromptuMutatorManager from './impromptuMutation/index.jsx';
 import './amakit.js';
 import './hydrakit.js';
 import './midi-mapping.js';
@@ -22,7 +23,8 @@ import './settings.js';
 window.Modules = {
     SketchManager,
     FeedbackManager,
-    MasterEffectsManager
+    MasterEffectsManager,
+    ImpromptuMutatorManager
 };
 
 if (typeof window !== "undefined" && window.HydraliskPlugins) {
@@ -34,6 +36,18 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
                 window.sketchManager = new window.Modules.SketchManager();
                 setTimeout(() => window.sketchManager.inject(), 100);
                 app.expose("sketchManager", window.sketchManager);
+            }
+        }
+    });
+
+    window.HydraliskPlugins.register({
+        id: "impromptu-mutator",
+        name: "Impromptu Mutator & MIDI Burst",
+        init(app) {
+            if (window.Modules && window.Modules.ImpromptuMutatorManager) {
+                window.impromptuMutatorManager = new window.Modules.ImpromptuMutatorManager();
+                window.impromptuMutatorManager.init(app);
+                app.expose("impromptuMutatorManager", window.impromptuMutatorManager);
             }
         }
     });

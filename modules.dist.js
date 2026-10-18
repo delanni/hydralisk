@@ -188,8 +188,8 @@
 	  }
 	}
 
-	var css_248z$2 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
-	styleInject(css_248z$2);
+	var css_248z$3 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
+	styleInject(css_248z$3);
 
 	// This is a module for managing sketch storage in a web application, through localStorage.
 
@@ -2162,8 +2162,8 @@
 	  }
 	}
 
-	var css_248z$1 = "/* Hydralisk Feedback & Bug Reporting Modal CSS */\n\n.feedback-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(8, 8, 14, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 99999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  animation: feedbackFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  box-sizing: border-box;\n}\n\n@keyframes feedbackFadeIn {\n  from {\n    opacity: 0;\n    transform: scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n.feedback-modal-card {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);\n  border-radius: 14px;\n  width: 100%;\n  max-width: 580px;\n  max-height: 90vh;\n  display: flex;\n  flex-direction: column;\n  color: #f8fafc;\n  font-family: 'Outfit', system-ui, -apple-system, sans-serif;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n\n.feedback-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 18px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n}\n\n.feedback-modal-title {\n  margin: 0;\n  font-size: 1.15rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.feedback-modal-badge {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  font-size: 0.65rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  padding: 3px 8px;\n  border-radius: 9999px;\n  letter-spacing: 1px;\n}\n\n.feedback-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 1.5rem;\n  cursor: pointer;\n  line-height: 1;\n  padding: 4px 8px;\n  border-radius: 6px;\n  transition: all 0.2s ease;\n}\n\n.feedback-close-btn:hover {\n  color: #ffffff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.feedback-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  box-sizing: border-box;\n}\n\n/* Category Pills */\n.feedback-category-group {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n\n.feedback-cat-pill {\n  background: rgba(30, 41, 59, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #cbd5e1;\n  padding: 8px 14px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 500;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-cat-pill:hover {\n  border-color: rgba(0, 242, 254, 0.4);\n  background: rgba(30, 41, 59, 0.9);\n}\n\n.feedback-cat-pill.active {\n  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);\n  border-color: #00f2fe;\n  color: #00f2fe;\n  font-weight: 600;\n  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);\n}\n\n/* Ratings */\n.feedback-rating-container {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  background: rgba(30, 41, 59, 0.3);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.feedback-rating-label {\n  font-size: 0.82rem;\n  color: #94a3b8;\n  font-weight: 500;\n}\n\n.feedback-stars-row {\n  display: flex;\n  gap: 6px;\n}\n\n.feedback-star-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.25rem;\n  cursor: pointer;\n  opacity: 0.35;\n  transition: transform 0.15s ease, opacity 0.15s ease;\n  padding: 2px 4px;\n}\n\n.feedback-star-btn.selected,\n.feedback-star-btn:hover {\n  opacity: 1;\n  transform: scale(1.2);\n}\n\n/* Form Inputs */\n.feedback-field-group {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.feedback-label {\n  font-size: 0.8rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: #94a3b8;\n}\n\n.feedback-input,\n.feedback-textarea {\n  width: 100%;\n  background: rgba(15, 23, 42, 0.8);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 8px;\n  padding: 10px 14px;\n  color: #f8fafc;\n  font-size: 0.9rem;\n  font-family: inherit;\n  box-sizing: border-box;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\n.feedback-input:focus,\n.feedback-textarea:focus {\n  border-color: #00f2fe;\n  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);\n}\n\n.feedback-textarea {\n  min-height: 100px;\n  resize: vertical;\n  line-height: 1.5;\n}\n\n/* Toggle Checkbox */\n.feedback-checkbox-wrapper {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  cursor: pointer;\n  user-select: none;\n  background: rgba(30, 41, 59, 0.4);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.feedback-checkbox-wrapper input[type=\"checkbox\"] {\n  accent-color: #00f2fe;\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.feedback-checkbox-text {\n  font-size: 0.85rem;\n  color: #cbd5e1;\n}\n\n/* Diagnostic Details Box */\n.feedback-diag-box {\n  background: rgba(8, 8, 12, 0.9);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 12px;\n  font-family: 'JetBrains Mono', monospace;\n  font-size: 0.75rem;\n  color: #a7f3d0;\n  max-height: 140px;\n  overflow-y: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n/* Modal Actions */\n.feedback-modal-actions {\n  padding: 16px 24px;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n  display: flex;\n  gap: 10px;\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n.feedback-btn {\n  background: rgba(51, 65, 85, 0.8);\n  color: #f8fafc;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  padding: 9px 16px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-btn:hover {\n  background: rgba(71, 85, 105, 0.9);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.feedback-btn.primary {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  border: none;\n  box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);\n}\n\n.feedback-btn.primary:hover {\n  filter: brightness(1.1);\n  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);\n}\n\n/* Success State Overlay */\n.feedback-success-card {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 40px 24px;\n  text-align: center;\n  gap: 14px;\n}\n\n.feedback-success-icon {\n  font-size: 3rem;\n  animation: bounceSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n\n@keyframes bounceSuccess {\n  0% { transform: scale(0); }\n  50% { transform: scale(1.2); }\n  100% { transform: scale(1); }\n}\n\n.feedback-toast-notification {\n  position: fixed;\n  bottom: 24px;\n  right: 24px;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid #00f2fe;\n  color: #ffffff;\n  padding: 12px 20px;\n  border-radius: 8px;\n  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.3);\n  z-index: 100000;\n  font-family: 'Outfit', sans-serif;\n  font-size: 0.9rem;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  animation: toastSlideUp 0.3s ease-out;\n}\n\n@keyframes toastSlideUp {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n";
-	styleInject(css_248z$1);
+	var css_248z$2 = "/* Hydralisk Feedback & Bug Reporting Modal CSS */\n\n.feedback-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(8, 8, 14, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 99999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  animation: feedbackFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  box-sizing: border-box;\n}\n\n@keyframes feedbackFadeIn {\n  from {\n    opacity: 0;\n    transform: scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n.feedback-modal-card {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);\n  border-radius: 14px;\n  width: 100%;\n  max-width: 580px;\n  max-height: 90vh;\n  display: flex;\n  flex-direction: column;\n  color: #f8fafc;\n  font-family: 'Outfit', system-ui, -apple-system, sans-serif;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n\n.feedback-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 18px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n}\n\n.feedback-modal-title {\n  margin: 0;\n  font-size: 1.15rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.feedback-modal-badge {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  font-size: 0.65rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  padding: 3px 8px;\n  border-radius: 9999px;\n  letter-spacing: 1px;\n}\n\n.feedback-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 1.5rem;\n  cursor: pointer;\n  line-height: 1;\n  padding: 4px 8px;\n  border-radius: 6px;\n  transition: all 0.2s ease;\n}\n\n.feedback-close-btn:hover {\n  color: #ffffff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.feedback-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  box-sizing: border-box;\n}\n\n/* Category Pills */\n.feedback-category-group {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n\n.feedback-cat-pill {\n  background: rgba(30, 41, 59, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #cbd5e1;\n  padding: 8px 14px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 500;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-cat-pill:hover {\n  border-color: rgba(0, 242, 254, 0.4);\n  background: rgba(30, 41, 59, 0.9);\n}\n\n.feedback-cat-pill.active {\n  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);\n  border-color: #00f2fe;\n  color: #00f2fe;\n  font-weight: 600;\n  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);\n}\n\n/* Ratings */\n.feedback-rating-container {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  background: rgba(30, 41, 59, 0.3);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.feedback-rating-label {\n  font-size: 0.82rem;\n  color: #94a3b8;\n  font-weight: 500;\n}\n\n.feedback-stars-row {\n  display: flex;\n  gap: 6px;\n}\n\n.feedback-star-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.25rem;\n  cursor: pointer;\n  opacity: 0.35;\n  transition: transform 0.15s ease, opacity 0.15s ease;\n  padding: 2px 4px;\n}\n\n.feedback-star-btn.selected,\n.feedback-star-btn:hover {\n  opacity: 1;\n  transform: scale(1.2);\n}\n\n/* Form Inputs */\n.feedback-field-group {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.feedback-label {\n  font-size: 0.8rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: #94a3b8;\n}\n\n.feedback-input,\n.feedback-textarea {\n  width: 100%;\n  background: rgba(15, 23, 42, 0.8);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 8px;\n  padding: 10px 14px;\n  color: #f8fafc;\n  font-size: 0.9rem;\n  font-family: inherit;\n  box-sizing: border-box;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\n.feedback-input:focus,\n.feedback-textarea:focus {\n  border-color: #00f2fe;\n  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);\n}\n\n.feedback-textarea {\n  min-height: 100px;\n  resize: vertical;\n  line-height: 1.5;\n}\n\n/* Toggle Checkbox */\n.feedback-checkbox-wrapper {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  cursor: pointer;\n  user-select: none;\n  background: rgba(30, 41, 59, 0.4);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.feedback-checkbox-wrapper input[type=\"checkbox\"] {\n  accent-color: #00f2fe;\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.feedback-checkbox-text {\n  font-size: 0.85rem;\n  color: #cbd5e1;\n}\n\n/* Diagnostic Details Box */\n.feedback-diag-box {\n  background: rgba(8, 8, 12, 0.9);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 12px;\n  font-family: 'JetBrains Mono', monospace;\n  font-size: 0.75rem;\n  color: #a7f3d0;\n  max-height: 140px;\n  overflow-y: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n/* Modal Actions */\n.feedback-modal-actions {\n  padding: 16px 24px;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n  display: flex;\n  gap: 10px;\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n.feedback-btn {\n  background: rgba(51, 65, 85, 0.8);\n  color: #f8fafc;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  padding: 9px 16px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-btn:hover {\n  background: rgba(71, 85, 105, 0.9);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.feedback-btn.primary {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  border: none;\n  box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);\n}\n\n.feedback-btn.primary:hover {\n  filter: brightness(1.1);\n  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);\n}\n\n/* Success State Overlay */\n.feedback-success-card {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 40px 24px;\n  text-align: center;\n  gap: 14px;\n}\n\n.feedback-success-icon {\n  font-size: 3rem;\n  animation: bounceSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n\n@keyframes bounceSuccess {\n  0% { transform: scale(0); }\n  50% { transform: scale(1.2); }\n  100% { transform: scale(1); }\n}\n\n.feedback-toast-notification {\n  position: fixed;\n  bottom: 24px;\n  right: 24px;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid #00f2fe;\n  color: #ffffff;\n  padding: 12px 20px;\n  border-radius: 8px;\n  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.3);\n  z-index: 100000;\n  font-family: 'Outfit', sans-serif;\n  font-size: 0.9rem;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  animation: toastSlideUp 0.3s ease-out;\n}\n\n@keyframes toastSlideUp {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n";
+	styleInject(css_248z$2);
 
 	/**
 	 * Hydralisk Feedback & Diagnostic Service
@@ -2653,8 +2653,8 @@
 	  });
 	}
 
-	var css_248z = "/* Master Effects Modal Styling */\n\n.master-effects-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(4, 5, 10, 0.85);\n  backdrop-filter: blur(16px);\n  -webkit-backdrop-filter: blur(16px);\n  z-index: 10000;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif;\n  color: #f8fafc;\n  animation: meFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n}\n\n@keyframes meFadeIn {\n  from { opacity: 0; transform: scale(0.98); }\n  to { opacity: 1; transform: scale(1); }\n}\n\n.master-effects-dialog {\n  background: #0f1219;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 20px;\n  width: 900px;\n  max-width: 94vw;\n  height: 640px;\n  max-height: 90vh;\n  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 40px rgba(56, 189, 248, 0.1);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  position: relative;\n}\n\n/* Header */\n.master-effects-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 20px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.me-title-group {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.me-title-icon {\n  font-size: 24px;\n}\n\n.me-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: #fff;\n}\n\n.me-target-badge {\n  background: rgba(56, 189, 248, 0.15);\n  border: 1px solid rgba(56, 189, 248, 0.3);\n  color: #38bdf8;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 4px 10px;\n  border-radius: 12px;\n  letter-spacing: 0.5px;\n}\n\n.me-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 28px;\n  line-height: 1;\n  cursor: pointer;\n  padding: 4px 8px;\n  border-radius: 8px;\n  transition: color 0.15s, background 0.15s;\n}\n.me-close-btn:hover {\n  color: #fff;\n  background: rgba(255, 255, 255, 0.08);\n}\n\n/* Body / Split View */\n.master-effects-body {\n  flex: 1;\n  display: grid;\n  grid-template-columns: 1.1fr 1fr;\n  overflow: hidden;\n}\n\n/* Preset Cards List */\n.me-presets-pane {\n  padding: 24px;\n  overflow-y: auto;\n  border-right: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n}\n\n.me-preset-card {\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n  border-radius: 14px;\n  padding: 18px 20px;\n  cursor: pointer;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  text-align: left;\n  color: inherit;\n}\n\n.me-preset-card:hover {\n  background: rgba(255, 255, 255, 0.06);\n  border-color: rgba(255, 255, 255, 0.18);\n  transform: translateY(-2px);\n}\n\n.me-preset-card.selected {\n  background: rgba(56, 189, 248, 0.08);\n  border-color: #38bdf8;\n  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);\n}\n\n.me-preset-card.active-on-stage {\n  border-left: 4px solid #10b981;\n}\n\n.me-card-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-card-name-group {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.me-card-icon {\n  font-size: 20px;\n}\n\n.me-card-name {\n  font-size: 15px;\n  font-weight: 700;\n  color: #fff;\n}\n\n.me-card-tag {\n  font-size: 10px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  font-weight: 700;\n  color: #94a3b8;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 3px 8px;\n  border-radius: 6px;\n}\n\n.me-card-desc {\n  font-size: 12px;\n  line-height: 1.5;\n  color: #94a3b8;\n}\n\n.me-card-midi-pills {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n}\n\n.me-midi-pill {\n  font-family: monospace;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 2px 7px;\n  border-radius: 6px;\n  background: rgba(99, 102, 241, 0.15);\n  color: #a5b4fc;\n  border: 1px solid rgba(99, 102, 241, 0.25);\n}\n\n.me-active-badge {\n  font-size: 10px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  padding: 3px 8px;\n  border-radius: 6px;\n  background: #10b981;\n  color: #000;\n  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);\n}\n\n/* Detail & Inspector Deck */\n.me-inspector-pane {\n  padding: 24px 28px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  background: rgba(0, 0, 0, 0.2);\n  overflow-y: auto;\n}\n\n.me-pane-section-title {\n  font-size: 11px;\n  text-transform: uppercase;\n  letter-spacing: 1.5px;\n  font-weight: 800;\n  color: #64748b;\n  margin-bottom: 8px;\n}\n\n.me-code-preview {\n  background: #090a0f;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 10px;\n  padding: 14px;\n  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;\n  font-size: 11px;\n  line-height: 1.5;\n  color: #38bdf8;\n  overflow-x: auto;\n  white-space: pre;\n}\n\n/* MIDI Knobs / Sliders */\n.me-controls-grid {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.me-control-row {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  background: rgba(255, 255, 255, 0.02);\n  padding: 10px 14px;\n  border-radius: 10px;\n  border: 1px solid rgba(255, 255, 255, 0.04);\n}\n\n.me-control-label-group {\n  display: flex;\n  justify-content: space-between;\n  font-size: 12px;\n}\n\n.me-ctrl-cc {\n  font-family: monospace;\n  font-weight: 800;\n  color: #a5b4fc;\n}\n\n.me-ctrl-val {\n  font-family: monospace;\n  color: #38bdf8;\n  font-weight: 700;\n}\n\n.me-control-slider {\n  width: 100%;\n  accent-color: #38bdf8;\n  cursor: pointer;\n}\n\n/* Footer Actions */\n.master-effects-footer {\n  padding: 18px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-action-btn {\n  padding: 10px 22px;\n  border-radius: 10px;\n  font-size: 13px;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  cursor: pointer;\n  border: none;\n  transition: all 0.15s;\n}\n\n.me-btn-apply {\n  background: #38bdf8;\n  color: #000;\n  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);\n}\n.me-btn-apply:hover {\n  background: #7dd3fc;\n  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);\n}\n\n.me-btn-bypass {\n  background: rgba(244, 63, 94, 0.15);\n  border: 1px solid rgba(244, 63, 94, 0.3);\n  color: #f43f5e;\n}\n.me-btn-bypass:hover {\n  background: #f43f5e;\n  color: #fff;\n}\n\n.me-btn-cancel {\n  background: transparent;\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.me-btn-cancel:hover {\n  color: #fff;\n  border-color: rgba(255, 255, 255, 0.25);\n}\n\n@media (max-width: 768px) {\n  .master-effects-dialog {\n    height: 94vh;\n    max-height: 94vh;\n  }\n  .master-effects-body {\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr;\n  }\n}\n";
-	styleInject(css_248z);
+	var css_248z$1 = "/* Master Effects Modal Styling */\n\n.master-effects-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(4, 5, 10, 0.85);\n  backdrop-filter: blur(16px);\n  -webkit-backdrop-filter: blur(16px);\n  z-index: 10000;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif;\n  color: #f8fafc;\n  animation: meFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n}\n\n@keyframes meFadeIn {\n  from { opacity: 0; transform: scale(0.98); }\n  to { opacity: 1; transform: scale(1); }\n}\n\n.master-effects-dialog {\n  background: #0f1219;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 20px;\n  width: 900px;\n  max-width: 94vw;\n  height: 640px;\n  max-height: 90vh;\n  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 40px rgba(56, 189, 248, 0.1);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  position: relative;\n}\n\n/* Header */\n.master-effects-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 20px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.me-title-group {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.me-title-icon {\n  font-size: 24px;\n}\n\n.me-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: #fff;\n}\n\n.me-target-badge {\n  background: rgba(56, 189, 248, 0.15);\n  border: 1px solid rgba(56, 189, 248, 0.3);\n  color: #38bdf8;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 4px 10px;\n  border-radius: 12px;\n  letter-spacing: 0.5px;\n}\n\n.me-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 28px;\n  line-height: 1;\n  cursor: pointer;\n  padding: 4px 8px;\n  border-radius: 8px;\n  transition: color 0.15s, background 0.15s;\n}\n.me-close-btn:hover {\n  color: #fff;\n  background: rgba(255, 255, 255, 0.08);\n}\n\n/* Body / Split View */\n.master-effects-body {\n  flex: 1;\n  display: grid;\n  grid-template-columns: 1.1fr 1fr;\n  overflow: hidden;\n}\n\n/* Preset Cards List */\n.me-presets-pane {\n  padding: 24px;\n  overflow-y: auto;\n  border-right: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n}\n\n.me-preset-card {\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n  border-radius: 14px;\n  padding: 18px 20px;\n  cursor: pointer;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  text-align: left;\n  color: inherit;\n}\n\n.me-preset-card:hover {\n  background: rgba(255, 255, 255, 0.06);\n  border-color: rgba(255, 255, 255, 0.18);\n  transform: translateY(-2px);\n}\n\n.me-preset-card.selected {\n  background: rgba(56, 189, 248, 0.08);\n  border-color: #38bdf8;\n  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);\n}\n\n.me-preset-card.active-on-stage {\n  border-left: 4px solid #10b981;\n}\n\n.me-card-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-card-name-group {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.me-card-icon {\n  font-size: 20px;\n}\n\n.me-card-name {\n  font-size: 15px;\n  font-weight: 700;\n  color: #fff;\n}\n\n.me-card-tag {\n  font-size: 10px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  font-weight: 700;\n  color: #94a3b8;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 3px 8px;\n  border-radius: 6px;\n}\n\n.me-card-desc {\n  font-size: 12px;\n  line-height: 1.5;\n  color: #94a3b8;\n}\n\n.me-card-midi-pills {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n}\n\n.me-midi-pill {\n  font-family: monospace;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 2px 7px;\n  border-radius: 6px;\n  background: rgba(99, 102, 241, 0.15);\n  color: #a5b4fc;\n  border: 1px solid rgba(99, 102, 241, 0.25);\n}\n\n.me-active-badge {\n  font-size: 10px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  padding: 3px 8px;\n  border-radius: 6px;\n  background: #10b981;\n  color: #000;\n  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);\n}\n\n/* Detail & Inspector Deck */\n.me-inspector-pane {\n  padding: 24px 28px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  background: rgba(0, 0, 0, 0.2);\n  overflow-y: auto;\n}\n\n.me-pane-section-title {\n  font-size: 11px;\n  text-transform: uppercase;\n  letter-spacing: 1.5px;\n  font-weight: 800;\n  color: #64748b;\n  margin-bottom: 8px;\n}\n\n.me-code-preview {\n  background: #090a0f;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 10px;\n  padding: 14px;\n  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;\n  font-size: 11px;\n  line-height: 1.5;\n  color: #38bdf8;\n  overflow-x: auto;\n  white-space: pre;\n}\n\n/* MIDI Knobs / Sliders */\n.me-controls-grid {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.me-control-row {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  background: rgba(255, 255, 255, 0.02);\n  padding: 10px 14px;\n  border-radius: 10px;\n  border: 1px solid rgba(255, 255, 255, 0.04);\n}\n\n.me-control-label-group {\n  display: flex;\n  justify-content: space-between;\n  font-size: 12px;\n}\n\n.me-ctrl-cc {\n  font-family: monospace;\n  font-weight: 800;\n  color: #a5b4fc;\n}\n\n.me-ctrl-val {\n  font-family: monospace;\n  color: #38bdf8;\n  font-weight: 700;\n}\n\n.me-control-slider {\n  width: 100%;\n  accent-color: #38bdf8;\n  cursor: pointer;\n}\n\n/* Footer Actions */\n.master-effects-footer {\n  padding: 18px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-action-btn {\n  padding: 10px 22px;\n  border-radius: 10px;\n  font-size: 13px;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  cursor: pointer;\n  border: none;\n  transition: all 0.15s;\n}\n\n.me-btn-apply {\n  background: #38bdf8;\n  color: #000;\n  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);\n}\n.me-btn-apply:hover {\n  background: #7dd3fc;\n  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);\n}\n\n.me-btn-bypass {\n  background: rgba(244, 63, 94, 0.15);\n  border: 1px solid rgba(244, 63, 94, 0.3);\n  color: #f43f5e;\n}\n.me-btn-bypass:hover {\n  background: #f43f5e;\n  color: #fff;\n}\n\n.me-btn-cancel {\n  background: transparent;\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.me-btn-cancel:hover {\n  color: #fff;\n  border-color: rgba(255, 255, 255, 0.25);\n}\n\n@media (max-width: 768px) {\n  .master-effects-dialog {\n    height: 94vh;\n    max-height: 94vh;\n  }\n  .master-effects-body {\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr;\n  }\n}\n";
+	styleInject(css_248z$1);
 
 	// This file was generated. Do not modify manually!
 	var astralIdentifierCodes = [509, 0, 227, 0, 150, 4, 294, 9, 1368, 2, 2, 1, 6, 3, 41, 2, 5, 0, 166, 1, 574, 3, 9, 9, 7, 9, 32, 4, 318, 1, 78, 5, 71, 10, 50, 3, 123, 2, 54, 14, 32, 10, 3, 1, 11, 3, 46, 10, 8, 0, 46, 9, 7, 2, 37, 13, 2, 9, 6, 1, 45, 0, 13, 2, 49, 13, 9, 3, 2, 11, 83, 11, 7, 0, 3, 0, 158, 11, 6, 9, 7, 3, 56, 1, 2, 6, 3, 1, 3, 2, 10, 0, 11, 1, 3, 6, 4, 4, 68, 8, 2, 0, 3, 0, 2, 3, 2, 4, 2, 0, 15, 1, 83, 17, 10, 9, 5, 0, 82, 19, 13, 9, 214, 6, 3, 8, 28, 1, 83, 16, 16, 9, 82, 12, 9, 9, 7, 19, 58, 14, 5, 9, 243, 14, 166, 9, 71, 5, 2, 1, 3, 3, 2, 0, 2, 1, 13, 9, 120, 6, 3, 6, 4, 0, 29, 9, 41, 6, 2, 3, 9, 0, 10, 10, 47, 15, 199, 7, 137, 9, 54, 7, 2, 7, 17, 9, 57, 21, 2, 13, 123, 5, 4, 0, 2, 1, 2, 6, 2, 0, 9, 9, 49, 4, 2, 1, 2, 4, 9, 9, 55, 9, 266, 3, 10, 1, 2, 0, 49, 6, 4, 4, 14, 10, 5350, 0, 7, 14, 11465, 27, 2343, 9, 87, 9, 39, 4, 60, 6, 26, 9, 535, 9, 470, 0, 2, 54, 8, 3, 82, 0, 12, 1, 19628, 1, 4178, 9, 519, 45, 3, 22, 543, 4, 4, 5, 9, 7, 3, 6, 31, 3, 149, 2, 1418, 49, 513, 54, 5, 49, 9, 0, 15, 0, 23, 4, 2, 14, 1361, 6, 2, 16, 3, 6, 2, 1, 2, 4, 101, 0, 161, 6, 10, 9, 357, 0, 62, 13, 499, 13, 245, 1, 2, 9, 233, 0, 3, 0, 8, 1, 6, 0, 475, 6, 110, 6, 6, 9, 4759, 9, 787719, 239];
@@ -9603,6 +9603,2003 @@
 	  });
 	}
 
+	var css_248z = "/* Impromptu Mutation HUD & Modal Styles */\n\n#impromptu-hud {\n  position: fixed;\n  top: 14px;\n  right: 140px;\n  z-index: 10001;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 6px 14px;\n  background: rgba(14, 18, 28, 0.88);\n  backdrop-filter: blur(14px);\n  -webkit-backdrop-filter: blur(14px);\n  border: 1px solid rgba(0, 240, 255, 0.25);\n  border-radius: 999px;\n  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 240, 255, 0.15);\n  font-family: 'SF Mono', Monaco, Menlo, 'Courier New', monospace;\n  font-size: 11px;\n  color: #e2e8f0;\n  pointer-events: auto;\n  cursor: pointer;\n  opacity: 0;\n  transform: translateY(-8px);\n  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);\n  user-select: none;\n}\n\n#impromptu-hud.visible {\n  opacity: 1;\n  transform: translateY(0);\n}\n\n#impromptu-hud.flash-burst {\n  animation: impromptu-burst-flash 0.45s cubic-bezier(0.1, 0.9, 0.2, 1);\n}\n\n#impromptu-hud.flash-undo {\n  animation: impromptu-undo-flash 0.45s cubic-bezier(0.1, 0.9, 0.2, 1);\n}\n\n@keyframes impromptu-burst-flash {\n  0% {\n    border-color: #ff007f;\n    box-shadow: 0 0 30px rgba(255, 0, 127, 0.9), 0 0 15px #ff007f;\n    transform: scale(1.08);\n  }\n  100% {\n    border-color: rgba(0, 240, 255, 0.25);\n    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);\n    transform: scale(1);\n  }\n}\n\n@keyframes impromptu-undo-flash {\n  0% {\n    border-color: #ffd700;\n    box-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 0 0 15px #ffd700;\n    transform: scale(1.08);\n  }\n  100% {\n    border-color: rgba(0, 240, 255, 0.25);\n    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);\n    transform: scale(1);\n  }\n}\n\n.impromptu-hud-icon {\n  color: #00f0ff;\n  font-size: 13px;\n  filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.8));\n}\n\n.impromptu-hud-badge {\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  text-transform: uppercase;\n  color: #00f0ff;\n}\n\n.impromptu-hud-badge.undo-mode {\n  color: #ffd700;\n}\n\n.impromptu-hud-meter {\n  display: flex;\n  gap: 3px;\n  align-items: center;\n}\n\n.impromptu-pip {\n  width: 5px;\n  height: 5px;\n  border-radius: 50%;\n  background: rgba(255, 255, 255, 0.18);\n  transition: background 0.15s ease, transform 0.15s ease;\n}\n\n.impromptu-pip.active {\n  background: #00f0ff;\n  box-shadow: 0 0 6px rgba(0, 240, 255, 0.8);\n  transform: scale(1.2);\n}\n\n.impromptu-pip.undo-pip {\n  background: #ffd700;\n  box-shadow: 0 0 6px rgba(255, 215, 0, 0.8);\n}\n\n/* Modal Panel */\n#impromptu-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 10002;\n  background: rgba(8, 10, 16, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity 0.25s ease;\n}\n\n#impromptu-modal-overlay.open {\n  opacity: 1;\n  pointer-events: auto;\n}\n\n.impromptu-modal {\n  width: 90%;\n  max-width: 600px;\n  background: rgba(18, 22, 34, 0.95);\n  border: 1px solid rgba(0, 240, 255, 0.28);\n  border-radius: 12px;\n  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 240, 255, 0.1);\n  padding: 22px;\n  color: #f1f5f9;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, monospace;\n}\n\n.impromptu-modal-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 18px;\n  padding-bottom: 12px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.1);\n}\n\n.impromptu-modal-title {\n  font-size: 16px;\n  font-weight: 700;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  color: #00f0ff;\n}\n\n.impromptu-modal-close {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 20px;\n  cursor: pointer;\n  padding: 4px 8px;\n  transition: color 0.2s;\n}\n\n.impromptu-modal-close:hover {\n  color: #fff;\n}\n\n.impromptu-dial-section {\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 16px;\n  margin-bottom: 16px;\n}\n\n.impromptu-dial-label-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 10px;\n}\n\n.impromptu-dial-name {\n  font-size: 13px;\n  font-weight: 600;\n  color: #cbd5e1;\n}\n\n.impromptu-dial-value {\n  font-family: monospace;\n  font-size: 13px;\n  color: #00f0ff;\n  font-weight: 700;\n}\n\n.impromptu-range-slider {\n  width: 100%;\n  height: 6px;\n  border-radius: 3px;\n  background: #334155;\n  outline: none;\n  -webkit-appearance: none;\n  margin: 10px 0;\n}\n\n.impromptu-range-slider::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: #00f0ff;\n  box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);\n  cursor: pointer;\n}\n\n.impromptu-quick-buttons {\n  display: flex;\n  gap: 6px;\n  margin-top: 10px;\n  flex-wrap: wrap;\n}\n\n.impromptu-quick-btn {\n  background: rgba(255, 255, 255, 0.06);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 4px;\n  color: #cbd5e1;\n  padding: 4px 8px;\n  font-size: 11px;\n  cursor: pointer;\n  font-family: monospace;\n  transition: all 0.2s;\n}\n\n.impromptu-quick-btn:hover {\n  background: rgba(0, 240, 255, 0.2);\n  border-color: #00f0ff;\n  color: #fff;\n}\n\n.impromptu-quick-btn.active {\n  background: #00f0ff;\n  color: #0f172a;\n  font-weight: 700;\n}\n\n.impromptu-status-box {\n  margin: 14px 0;\n  padding: 10px 14px;\n  border-radius: 6px;\n  background: rgba(0, 240, 255, 0.06);\n  border-left: 3px solid #00f0ff;\n  font-size: 12px;\n  font-family: monospace;\n  color: #94a3b8;\n}\n\n.impromptu-status-box.undo {\n  background: rgba(255, 215, 0, 0.06);\n  border-left-color: #ffd700;\n  color: #fef08a;\n}\n\n.impromptu-actions-row {\n  display: flex;\n  gap: 10px;\n  margin-top: 16px;\n}\n\n.impromptu-action-btn {\n  flex: 1;\n  padding: 10px 16px;\n  border-radius: 6px;\n  border: none;\n  font-size: 13px;\n  font-weight: 600;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 6px;\n  transition: all 0.2s;\n}\n\n.impromptu-btn-burst {\n  background: linear-gradient(135deg, #00f0ff 0%, #0088ff 100%);\n  color: #0f172a;\n}\n\n.impromptu-btn-burst:hover {\n  filter: brightness(1.15);\n  box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);\n}\n\n.impromptu-btn-undo {\n  background: rgba(255, 215, 0, 0.15);\n  border: 1px solid rgba(255, 215, 0, 0.4);\n  color: #ffd700;\n}\n\n.impromptu-btn-undo:hover {\n  background: rgba(255, 215, 0, 0.25);\n}\n\n.impromptu-btn-reroll {\n  background: rgba(255, 255, 255, 0.08);\n  border: 1px solid rgba(255, 255, 255, 0.15);\n  color: #e2e8f0;\n}\n\n.impromptu-btn-reroll:hover {\n  background: rgba(255, 255, 255, 0.15);\n}\n\n.impromptu-preview-box {\n  margin-top: 14px;\n  background: #090d16;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 6px;\n  padding: 10px;\n  max-height: 120px;\n  overflow-y: auto;\n  font-family: 'SF Mono', Monaco, monospace;\n  font-size: 11px;\n  color: #94a3b8;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n.impromptu-midi-footer {\n  margin-top: 14px;\n  font-size: 11px;\n  color: #64748b;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.impromptu-midi-link {\n  color: #00f0ff;\n  cursor: pointer;\n  text-decoration: underline;\n}\n";
+	styleInject(css_248z);
+
+	// Astring is a tiny and fast JavaScript code generator from an ESTree-compliant AST.
+	//
+	// Astring was written by David Bonnet and released under an MIT license.
+	//
+	// The Git repository for Astring is available at:
+	// https://github.com/davidbonnet/astring.git
+	//
+	// Please use the GitHub bug tracker to report issues:
+	// https://github.com/davidbonnet/astring/issues
+
+	const { stringify } = JSON;
+
+	/* c8 ignore if */
+	if (!String.prototype.repeat) {
+	  /* c8 ignore next */
+	  throw new Error(
+	    'String.prototype.repeat is undefined, see https://github.com/davidbonnet/astring#installation',
+	  )
+	}
+
+	/* c8 ignore if */
+	if (!String.prototype.endsWith) {
+	  /* c8 ignore next */
+	  throw new Error(
+	    'String.prototype.endsWith is undefined, see https://github.com/davidbonnet/astring#installation',
+	  )
+	}
+
+	const OPERATOR_PRECEDENCE = {
+	  '||': 2,
+	  '??': 3,
+	  '&&': 4,
+	  '|': 5,
+	  '^': 6,
+	  '&': 7,
+	  '==': 8,
+	  '!=': 8,
+	  '===': 8,
+	  '!==': 8,
+	  '<': 9,
+	  '>': 9,
+	  '<=': 9,
+	  '>=': 9,
+	  in: 9,
+	  instanceof: 9,
+	  '<<': 10,
+	  '>>': 10,
+	  '>>>': 10,
+	  '+': 11,
+	  '-': 11,
+	  '*': 12,
+	  '%': 12,
+	  '/': 12,
+	  '**': 13,
+	};
+
+	// Enables parenthesis regardless of precedence
+	const NEEDS_PARENTHESES = 17;
+
+	const EXPRESSIONS_PRECEDENCE = {
+	  // Definitions
+	  ArrayExpression: 20,
+	  TaggedTemplateExpression: 20,
+	  ThisExpression: 20,
+	  Identifier: 20,
+	  PrivateIdentifier: 20,
+	  Literal: 18,
+	  TemplateLiteral: 20,
+	  Super: 20,
+	  SequenceExpression: 20,
+	  // Operations
+	  MemberExpression: 19,
+	  ChainExpression: 19,
+	  CallExpression: 19,
+	  NewExpression: 19,
+	  // Other definitions
+	  ArrowFunctionExpression: NEEDS_PARENTHESES,
+	  ClassExpression: NEEDS_PARENTHESES,
+	  FunctionExpression: NEEDS_PARENTHESES,
+	  ObjectExpression: NEEDS_PARENTHESES,
+	  // Other operations
+	  UpdateExpression: 16,
+	  UnaryExpression: 15,
+	  AwaitExpression: 15,
+	  BinaryExpression: 14,
+	  LogicalExpression: 13,
+	  ConditionalExpression: 4,
+	  AssignmentExpression: 3,
+	  YieldExpression: 2,
+	  RestElement: 1,
+	};
+
+	function formatSequence(state, nodes) {
+	  /*
+	  Writes into `state` a sequence of `nodes`.
+	  */
+	  const { generator } = state;
+	  state.write('(');
+	  if (nodes != null && nodes.length > 0) {
+	    generator[nodes[0].type](nodes[0], state);
+	    const { length } = nodes;
+	    for (let i = 1; i < length; i++) {
+	      const param = nodes[i];
+	      state.write(', ');
+	      generator[param.type](param, state);
+	    }
+	  }
+	  state.write(')');
+	}
+
+	function expressionNeedsParenthesis(state, node, parentNode, isRightHand) {
+	  const nodePrecedence = state.expressionsPrecedence[node.type];
+	  if (nodePrecedence === NEEDS_PARENTHESES) {
+	    return true
+	  }
+	  const parentNodePrecedence = state.expressionsPrecedence[parentNode.type];
+	  if (nodePrecedence !== parentNodePrecedence) {
+	    // Different node types
+	    return (
+	      (!isRightHand &&
+	        nodePrecedence === 15 &&
+	        parentNodePrecedence === 14 &&
+	        parentNode.operator === '**') ||
+	      nodePrecedence < parentNodePrecedence
+	    )
+	  }
+	  if (nodePrecedence !== 13 && nodePrecedence !== 14) {
+	    // Not a `LogicalExpression` or `BinaryExpression`
+	    return false
+	  }
+	  if (node.operator === '**' && parentNode.operator === '**') {
+	    // Exponentiation operator has right-to-left associativity
+	    return !isRightHand
+	  }
+	  if (
+	    nodePrecedence === 13 &&
+	    parentNodePrecedence === 13 &&
+	    (node.operator === '??' || parentNode.operator === '??')
+	  ) {
+	    // Nullish coalescing and boolean operators cannot be combined
+	    return true
+	  }
+	  if (isRightHand) {
+	    // Parenthesis are used if both operators have the same precedence
+	    return (
+	      OPERATOR_PRECEDENCE[node.operator] <=
+	      OPERATOR_PRECEDENCE[parentNode.operator]
+	    )
+	  }
+	  return (
+	    OPERATOR_PRECEDENCE[node.operator] <
+	    OPERATOR_PRECEDENCE[parentNode.operator]
+	  )
+	}
+
+	function formatExpression(state, node, parentNode, isRightHand) {
+	  /*
+	  Writes into `state` the provided `node`, adding parenthesis around if the provided `parentNode` needs it. If `node` is a right-hand argument, the provided `isRightHand` parameter should be `true`.
+	  */
+	  const { generator } = state;
+	  if (expressionNeedsParenthesis(state, node, parentNode, isRightHand)) {
+	    state.write('(');
+	    generator[node.type](node, state);
+	    state.write(')');
+	  } else {
+	    generator[node.type](node, state);
+	  }
+	}
+
+	function reindent(state, text, indent, lineEnd) {
+	  /*
+	  Writes into `state` the `text` string reindented with the provided `indent`.
+	  */
+	  const lines = text.split('\n');
+	  const end = lines.length - 1;
+	  state.write(lines[0].trim());
+	  if (end > 0) {
+	    state.write(lineEnd);
+	    for (let i = 1; i < end; i++) {
+	      state.write(indent + lines[i].trim() + lineEnd);
+	    }
+	    state.write(indent + lines[end].trim());
+	  }
+	}
+
+	function formatComments(state, comments, indent, lineEnd) {
+	  /*
+	  Writes into `state` the provided list of `comments`, with the given `indent` and `lineEnd` strings.
+	  Line comments will end with `"\n"` regardless of the value of `lineEnd`.
+	  Expects to start on a new unindented line.
+	  */
+	  const { length } = comments;
+	  for (let i = 0; i < length; i++) {
+	    const comment = comments[i];
+	    state.write(indent);
+	    if (comment.type[0] === 'L') {
+	      // Line comment
+	      state.write('// ' + comment.value.trim() + '\n', comment);
+	    } else {
+	      // Block comment
+	      state.write('/*');
+	      reindent(state, comment.value, indent, lineEnd);
+	      state.write('*/' + lineEnd);
+	    }
+	  }
+	}
+
+	function hasCallExpression(node) {
+	  /*
+	  Returns `true` if the provided `node` contains a call expression and `false` otherwise.
+	  */
+	  let currentNode = node;
+	  while (currentNode != null) {
+	    const { type } = currentNode;
+	    if (type[0] === 'C' && type[1] === 'a') {
+	      // Is CallExpression
+	      return true
+	    } else if (type[0] === 'M' && type[1] === 'e' && type[2] === 'm') {
+	      // Is MemberExpression
+	      currentNode = currentNode.object;
+	    } else {
+	      return false
+	    }
+	  }
+	}
+
+	function formatVariableDeclaration(state, node) {
+	  /*
+	  Writes into `state` a variable declaration.
+	  */
+	  const { generator } = state;
+	  const { declarations } = node;
+	  state.write(node.kind + ' ');
+	  const { length } = declarations;
+	  if (length > 0) {
+	    generator.VariableDeclarator(declarations[0], state);
+	    for (let i = 1; i < length; i++) {
+	      state.write(', ');
+	      generator.VariableDeclarator(declarations[i], state);
+	    }
+	  }
+	}
+
+	let ForInStatement$1,
+	  FunctionDeclaration$1,
+	  RestElement$1,
+	  BinaryExpression$1,
+	  ArrayExpression$1,
+	  BlockStatement;
+
+	const GENERATOR = {
+	  /*
+	  Default generator.
+	  */
+	  Program(node, state) {
+	    const indent = state.indent.repeat(state.indentLevel);
+	    const { lineEnd, writeComments } = state;
+	    if (writeComments && node.comments != null) {
+	      formatComments(state, node.comments, indent, lineEnd);
+	    }
+	    const statements = node.body;
+	    const { length } = statements;
+	    for (let i = 0; i < length; i++) {
+	      const statement = statements[i];
+	      if (writeComments && statement.comments != null) {
+	        formatComments(state, statement.comments, indent, lineEnd);
+	      }
+	      state.write(indent);
+	      this[statement.type](statement, state);
+	      state.write(lineEnd);
+	    }
+	    if (writeComments && node.trailingComments != null) {
+	      formatComments(state, node.trailingComments, indent, lineEnd);
+	    }
+	  },
+	  BlockStatement: (BlockStatement = function (node, state) {
+	    const indent = state.indent.repeat(state.indentLevel++);
+	    const { lineEnd, writeComments } = state;
+	    const statementIndent = indent + state.indent;
+	    state.write('{');
+	    const statements = node.body;
+	    if (statements != null && statements.length > 0) {
+	      state.write(lineEnd);
+	      if (writeComments && node.comments != null) {
+	        formatComments(state, node.comments, statementIndent, lineEnd);
+	      }
+	      const { length } = statements;
+	      for (let i = 0; i < length; i++) {
+	        const statement = statements[i];
+	        if (writeComments && statement.comments != null) {
+	          formatComments(state, statement.comments, statementIndent, lineEnd);
+	        }
+	        state.write(statementIndent);
+	        this[statement.type](statement, state);
+	        state.write(lineEnd);
+	      }
+	      state.write(indent);
+	    } else {
+	      if (writeComments && node.comments != null) {
+	        state.write(lineEnd);
+	        formatComments(state, node.comments, statementIndent, lineEnd);
+	        state.write(indent);
+	      }
+	    }
+	    if (writeComments && node.trailingComments != null) {
+	      formatComments(state, node.trailingComments, statementIndent, lineEnd);
+	    }
+	    state.write('}');
+	    state.indentLevel--;
+	  }),
+	  ClassBody: BlockStatement,
+	  StaticBlock(node, state) {
+	    state.write('static ');
+	    this.BlockStatement(node, state);
+	  },
+	  EmptyStatement(node, state) {
+	    state.write(';');
+	  },
+	  ExpressionStatement(node, state) {
+	    const precedence = state.expressionsPrecedence[node.expression.type];
+	    if (
+	      precedence === NEEDS_PARENTHESES ||
+	      (precedence === 3 && node.expression.left.type[0] === 'O')
+	    ) {
+	      // Should always have parentheses or is an AssignmentExpression to an ObjectPattern
+	      state.write('(');
+	      this[node.expression.type](node.expression, state);
+	      state.write(')');
+	    } else {
+	      this[node.expression.type](node.expression, state);
+	    }
+	    state.write(';');
+	  },
+	  IfStatement(node, state) {
+	    state.write('if (');
+	    this[node.test.type](node.test, state);
+	    state.write(') ');
+	    this[node.consequent.type](node.consequent, state);
+	    if (node.alternate != null) {
+	      state.write(' else ');
+	      this[node.alternate.type](node.alternate, state);
+	    }
+	  },
+	  LabeledStatement(node, state) {
+	    this[node.label.type](node.label, state);
+	    state.write(': ');
+	    this[node.body.type](node.body, state);
+	  },
+	  BreakStatement(node, state) {
+	    state.write('break');
+	    if (node.label != null) {
+	      state.write(' ');
+	      this[node.label.type](node.label, state);
+	    }
+	    state.write(';');
+	  },
+	  ContinueStatement(node, state) {
+	    state.write('continue');
+	    if (node.label != null) {
+	      state.write(' ');
+	      this[node.label.type](node.label, state);
+	    }
+	    state.write(';');
+	  },
+	  WithStatement(node, state) {
+	    state.write('with (');
+	    this[node.object.type](node.object, state);
+	    state.write(') ');
+	    this[node.body.type](node.body, state);
+	  },
+	  SwitchStatement(node, state) {
+	    const indent = state.indent.repeat(state.indentLevel++);
+	    const { lineEnd, writeComments } = state;
+	    state.indentLevel++;
+	    const caseIndent = indent + state.indent;
+	    const statementIndent = caseIndent + state.indent;
+	    state.write('switch (');
+	    this[node.discriminant.type](node.discriminant, state);
+	    state.write(') {' + lineEnd);
+	    const { cases: occurences } = node;
+	    const { length: occurencesCount } = occurences;
+	    for (let i = 0; i < occurencesCount; i++) {
+	      const occurence = occurences[i];
+	      if (writeComments && occurence.comments != null) {
+	        formatComments(state, occurence.comments, caseIndent, lineEnd);
+	      }
+	      if (occurence.test) {
+	        state.write(caseIndent + 'case ');
+	        this[occurence.test.type](occurence.test, state);
+	        state.write(':' + lineEnd);
+	      } else {
+	        state.write(caseIndent + 'default:' + lineEnd);
+	      }
+	      const { consequent } = occurence;
+	      const { length: consequentCount } = consequent;
+	      for (let i = 0; i < consequentCount; i++) {
+	        const statement = consequent[i];
+	        if (writeComments && statement.comments != null) {
+	          formatComments(state, statement.comments, statementIndent, lineEnd);
+	        }
+	        state.write(statementIndent);
+	        this[statement.type](statement, state);
+	        state.write(lineEnd);
+	      }
+	    }
+	    state.indentLevel -= 2;
+	    state.write(indent + '}');
+	  },
+	  ReturnStatement(node, state) {
+	    state.write('return');
+	    if (node.argument) {
+	      state.write(' ');
+	      this[node.argument.type](node.argument, state);
+	    }
+	    state.write(';');
+	  },
+	  ThrowStatement(node, state) {
+	    state.write('throw ');
+	    this[node.argument.type](node.argument, state);
+	    state.write(';');
+	  },
+	  TryStatement(node, state) {
+	    state.write('try ');
+	    this[node.block.type](node.block, state);
+	    if (node.handler) {
+	      const { handler } = node;
+	      if (handler.param == null) {
+	        state.write(' catch ');
+	      } else {
+	        state.write(' catch (');
+	        this[handler.param.type](handler.param, state);
+	        state.write(') ');
+	      }
+	      this[handler.body.type](handler.body, state);
+	    }
+	    if (node.finalizer) {
+	      state.write(' finally ');
+	      this[node.finalizer.type](node.finalizer, state);
+	    }
+	  },
+	  WhileStatement(node, state) {
+	    state.write('while (');
+	    this[node.test.type](node.test, state);
+	    state.write(') ');
+	    this[node.body.type](node.body, state);
+	  },
+	  DoWhileStatement(node, state) {
+	    state.write('do ');
+	    this[node.body.type](node.body, state);
+	    state.write(' while (');
+	    this[node.test.type](node.test, state);
+	    state.write(');');
+	  },
+	  ForStatement(node, state) {
+	    state.write('for (');
+	    if (node.init != null) {
+	      const { init } = node;
+	      if (init.type[0] === 'V') {
+	        formatVariableDeclaration(state, init);
+	      } else {
+	        this[init.type](init, state);
+	      }
+	    }
+	    state.write('; ');
+	    if (node.test) {
+	      this[node.test.type](node.test, state);
+	    }
+	    state.write('; ');
+	    if (node.update) {
+	      this[node.update.type](node.update, state);
+	    }
+	    state.write(') ');
+	    this[node.body.type](node.body, state);
+	  },
+	  ForInStatement: (ForInStatement$1 = function (node, state) {
+	    state.write(`for ${node.await ? 'await ' : ''}(`);
+	    const { left } = node;
+	    if (left.type[0] === 'V') {
+	      formatVariableDeclaration(state, left);
+	    } else {
+	      this[left.type](left, state);
+	    }
+	    // Identifying whether node.type is `ForInStatement` or `ForOfStatement`
+	    state.write(node.type[3] === 'I' ? ' in ' : ' of ');
+	    this[node.right.type](node.right, state);
+	    state.write(') ');
+	    this[node.body.type](node.body, state);
+	  }),
+	  ForOfStatement: ForInStatement$1,
+	  DebuggerStatement(node, state) {
+	    state.write('debugger;', node);
+	  },
+	  FunctionDeclaration: (FunctionDeclaration$1 = function (node, state) {
+	    state.write(
+	      (node.async ? 'async ' : '') +
+	        (node.generator ? 'function* ' : 'function ') +
+	        (node.id ? node.id.name : ''),
+	      node,
+	    );
+	    formatSequence(state, node.params);
+	    state.write(' ');
+	    this[node.body.type](node.body, state);
+	  }),
+	  FunctionExpression: FunctionDeclaration$1,
+	  VariableDeclaration(node, state) {
+	    formatVariableDeclaration(state, node);
+	    state.write(';');
+	  },
+	  VariableDeclarator(node, state) {
+	    this[node.id.type](node.id, state);
+	    if (node.init != null) {
+	      state.write(' = ');
+	      this[node.init.type](node.init, state);
+	    }
+	  },
+	  ClassDeclaration(node, state) {
+	    state.write('class ' + (node.id ? `${node.id.name} ` : ''), node);
+	    if (node.superClass) {
+	      state.write('extends ');
+	      const { superClass } = node;
+	      const { type } = superClass;
+	      const precedence = state.expressionsPrecedence[type];
+	      if (
+	        (type[0] !== 'C' || type[1] !== 'l' || type[5] !== 'E') &&
+	        (precedence === NEEDS_PARENTHESES ||
+	          precedence < state.expressionsPrecedence.ClassExpression)
+	      ) {
+	        // Not a ClassExpression that needs parentheses
+	        state.write('(');
+	        this[node.superClass.type](superClass, state);
+	        state.write(')');
+	      } else {
+	        this[superClass.type](superClass, state);
+	      }
+	      state.write(' ');
+	    }
+	    this.ClassBody(node.body, state);
+	  },
+	  ImportDeclaration(node, state) {
+	    state.write('import ');
+	    const { specifiers, attributes } = node;
+	    const { length } = specifiers;
+	    // TODO: Once babili is fixed, put this after condition
+	    // https://github.com/babel/babili/issues/430
+	    let i = 0;
+	    if (length > 0) {
+	      for (; i < length; ) {
+	        if (i > 0) {
+	          state.write(', ');
+	        }
+	        const specifier = specifiers[i];
+	        const type = specifier.type[6];
+	        if (type === 'D') {
+	          // ImportDefaultSpecifier
+	          state.write(specifier.local.name, specifier);
+	          i++;
+	        } else if (type === 'N') {
+	          // ImportNamespaceSpecifier
+	          state.write('* as ' + specifier.local.name, specifier);
+	          i++;
+	        } else {
+	          // ImportSpecifier
+	          break
+	        }
+	      }
+	      if (i < length) {
+	        state.write('{');
+	        for (;;) {
+	          const specifier = specifiers[i];
+	          const { name } = specifier.imported;
+	          state.write(name, specifier);
+	          if (name !== specifier.local.name) {
+	            state.write(' as ' + specifier.local.name);
+	          }
+	          if (++i < length) {
+	            state.write(', ');
+	          } else {
+	            break
+	          }
+	        }
+	        state.write('}');
+	      }
+	      state.write(' from ');
+	    }
+	    this.Literal(node.source, state);
+
+	    if (attributes && attributes.length > 0) {
+	      state.write(' with { ');
+	      for (let i = 0; i < attributes.length; i++) {
+	        this.ImportAttribute(attributes[i], state);
+	        if (i < attributes.length - 1) state.write(', ');
+	      }
+
+	      state.write(' }');
+	    }
+	    state.write(';');
+	  },
+	  ImportAttribute(node, state) {
+	    this.Identifier(node.key, state);
+	    state.write(': ');
+	    this.Literal(node.value, state);
+	  },
+	  ImportExpression(node, state) {
+	    state.write('import(');
+	    this[node.source.type](node.source, state);
+	    state.write(')');
+	  },
+	  ExportDefaultDeclaration(node, state) {
+	    state.write('export default ');
+	    this[node.declaration.type](node.declaration, state);
+	    if (
+	      state.expressionsPrecedence[node.declaration.type] != null &&
+	      node.declaration.type[0] !== 'F'
+	    ) {
+	      // All expression nodes except `FunctionExpression`
+	      state.write(';');
+	    }
+	  },
+	  ExportNamedDeclaration(node, state) {
+	    state.write('export ');
+	    if (node.declaration) {
+	      this[node.declaration.type](node.declaration, state);
+	    } else {
+	      state.write('{');
+	      const { specifiers } = node,
+	        { length } = specifiers;
+	      if (length > 0) {
+	        for (let i = 0; ; ) {
+	          const specifier = specifiers[i];
+	          const { name } = specifier.local;
+	          state.write(name, specifier);
+	          if (name !== specifier.exported.name) {
+	            state.write(' as ' + specifier.exported.name);
+	          }
+	          if (++i < length) {
+	            state.write(', ');
+	          } else {
+	            break
+	          }
+	        }
+	      }
+	      state.write('}');
+	      if (node.source) {
+	        state.write(' from ');
+	        this.Literal(node.source, state);
+	      }
+
+	      if (node.attributes && node.attributes.length > 0) {
+	        state.write(' with { ');
+	        for (let i = 0; i < node.attributes.length; i++) {
+	          this.ImportAttribute(node.attributes[i], state);
+	          if (i < node.attributes.length - 1) state.write(', ');
+	        }
+
+	        state.write(' }');
+	      }
+
+	      state.write(';');
+	    }
+	  },
+	  ExportAllDeclaration(node, state) {
+	    if (node.exported != null) {
+	      state.write('export * as ' + node.exported.name + ' from ');
+	    } else {
+	      state.write('export * from ');
+	    }
+	    this.Literal(node.source, state);
+
+	    if (node.attributes && node.attributes.length > 0) {
+	      state.write(' with { ');
+	      for (let i = 0; i < node.attributes.length; i++) {
+	        this.ImportAttribute(node.attributes[i], state);
+	        if (i < node.attributes.length - 1) state.write(', ');
+	      }
+
+	      state.write(' }');
+	    }
+
+	    state.write(';');
+	  },
+	  MethodDefinition(node, state) {
+	    if (node.static) {
+	      state.write('static ');
+	    }
+	    const kind = node.kind[0];
+	    if (kind === 'g' || kind === 's') {
+	      // Getter or setter
+	      state.write(node.kind + ' ');
+	    }
+	    if (node.value.async) {
+	      state.write('async ');
+	    }
+	    if (node.value.generator) {
+	      state.write('*');
+	    }
+	    if (node.computed) {
+	      state.write('[');
+	      this[node.key.type](node.key, state);
+	      state.write(']');
+	    } else {
+	      this[node.key.type](node.key, state);
+	    }
+	    formatSequence(state, node.value.params);
+	    state.write(' ');
+	    this[node.value.body.type](node.value.body, state);
+	  },
+	  ClassExpression(node, state) {
+	    this.ClassDeclaration(node, state);
+	  },
+	  ArrowFunctionExpression(node, state) {
+	    state.write(node.async ? 'async ' : '', node);
+	    const { params } = node;
+	    if (params != null) {
+	      // Omit parenthesis if only one named parameter
+	      if (params.length === 1 && params[0].type[0] === 'I') {
+	        // If params[0].type[0] starts with 'I', it can't be `ImportDeclaration` nor `IfStatement` and thus is `Identifier`
+	        state.write(params[0].name, params[0]);
+	      } else {
+	        formatSequence(state, node.params);
+	      }
+	    }
+	    state.write(' => ');
+	    if (node.body.type[0] === 'O') {
+	      // Body is an object expression
+	      state.write('(');
+	      this.ObjectExpression(node.body, state);
+	      state.write(')');
+	    } else {
+	      this[node.body.type](node.body, state);
+	    }
+	  },
+	  ThisExpression(node, state) {
+	    state.write('this', node);
+	  },
+	  Super(node, state) {
+	    state.write('super', node);
+	  },
+	  RestElement: (RestElement$1 = function (node, state) {
+	    state.write('...');
+	    this[node.argument.type](node.argument, state);
+	  }),
+	  SpreadElement: RestElement$1,
+	  YieldExpression(node, state) {
+	    state.write(node.delegate ? 'yield*' : 'yield');
+	    if (node.argument) {
+	      state.write(' ');
+	      this[node.argument.type](node.argument, state);
+	    }
+	  },
+	  AwaitExpression(node, state) {
+	    state.write('await ', node);
+	    formatExpression(state, node.argument, node);
+	  },
+	  TemplateLiteral(node, state) {
+	    const { quasis, expressions } = node;
+	    state.write('`');
+	    const { length } = expressions;
+	    for (let i = 0; i < length; i++) {
+	      const expression = expressions[i];
+	      const quasi = quasis[i];
+	      state.write(quasi.value.raw, quasi);
+	      state.write('${');
+	      this[expression.type](expression, state);
+	      state.write('}');
+	    }
+	    const quasi = quasis[quasis.length - 1];
+	    state.write(quasi.value.raw, quasi);
+	    state.write('`');
+	  },
+	  TemplateElement(node, state) {
+	    state.write(node.value.raw, node);
+	  },
+	  TaggedTemplateExpression(node, state) {
+	    formatExpression(state, node.tag, node);
+	    this[node.quasi.type](node.quasi, state);
+	  },
+	  ArrayExpression: (ArrayExpression$1 = function (node, state) {
+	    state.write('[');
+	    if (node.elements.length > 0) {
+	      const { elements } = node,
+	        { length } = elements;
+	      for (let i = 0; ; ) {
+	        const element = elements[i];
+	        if (element != null) {
+	          this[element.type](element, state);
+	        }
+	        if (++i < length) {
+	          state.write(', ');
+	        } else {
+	          if (element == null) {
+	            state.write(', ');
+	          }
+	          break
+	        }
+	      }
+	    }
+	    state.write(']');
+	  }),
+	  ArrayPattern: ArrayExpression$1,
+	  ObjectExpression(node, state) {
+	    const indent = state.indent.repeat(state.indentLevel++);
+	    const { lineEnd, writeComments } = state;
+	    const propertyIndent = indent + state.indent;
+	    state.write('{');
+	    if (node.properties.length > 0) {
+	      state.write(lineEnd);
+	      if (writeComments && node.comments != null) {
+	        formatComments(state, node.comments, propertyIndent, lineEnd);
+	      }
+	      const comma = ',' + lineEnd;
+	      const { properties } = node,
+	        { length } = properties;
+	      for (let i = 0; ; ) {
+	        const property = properties[i];
+	        if (writeComments && property.comments != null) {
+	          formatComments(state, property.comments, propertyIndent, lineEnd);
+	        }
+	        state.write(propertyIndent);
+	        this[property.type](property, state);
+	        if (++i < length) {
+	          state.write(comma);
+	        } else {
+	          break
+	        }
+	      }
+	      state.write(lineEnd);
+	      if (writeComments && node.trailingComments != null) {
+	        formatComments(state, node.trailingComments, propertyIndent, lineEnd);
+	      }
+	      state.write(indent + '}');
+	    } else if (writeComments) {
+	      if (node.comments != null) {
+	        state.write(lineEnd);
+	        formatComments(state, node.comments, propertyIndent, lineEnd);
+	        if (node.trailingComments != null) {
+	          formatComments(state, node.trailingComments, propertyIndent, lineEnd);
+	        }
+	        state.write(indent + '}');
+	      } else if (node.trailingComments != null) {
+	        state.write(lineEnd);
+	        formatComments(state, node.trailingComments, propertyIndent, lineEnd);
+	        state.write(indent + '}');
+	      } else {
+	        state.write('}');
+	      }
+	    } else {
+	      state.write('}');
+	    }
+	    state.indentLevel--;
+	  },
+	  Property(node, state) {
+	    if (node.method || node.kind[0] !== 'i') {
+	      // Either a method or of kind `set` or `get` (not `init`)
+	      this.MethodDefinition(node, state);
+	    } else {
+	      if (!node.shorthand) {
+	        if (node.computed) {
+	          state.write('[');
+	          this[node.key.type](node.key, state);
+	          state.write(']');
+	        } else {
+	          this[node.key.type](node.key, state);
+	        }
+	        state.write(': ');
+	      }
+	      this[node.value.type](node.value, state);
+	    }
+	  },
+	  PropertyDefinition(node, state) {
+	    if (node.static) {
+	      state.write('static ');
+	    }
+	    if (node.computed) {
+	      state.write('[');
+	    }
+	    this[node.key.type](node.key, state);
+	    if (node.computed) {
+	      state.write(']');
+	    }
+	    if (node.value == null) {
+	      if (node.key.type[0] !== 'F') {
+	        state.write(';');
+	      }
+	      return
+	    }
+	    state.write(' = ');
+	    this[node.value.type](node.value, state);
+	    state.write(';');
+	  },
+	  ObjectPattern(node, state) {
+	    state.write('{');
+	    if (node.properties.length > 0) {
+	      const { properties } = node,
+	        { length } = properties;
+	      for (let i = 0; ; ) {
+	        this[properties[i].type](properties[i], state);
+	        if (++i < length) {
+	          state.write(', ');
+	        } else {
+	          break
+	        }
+	      }
+	    }
+	    state.write('}');
+	  },
+	  SequenceExpression(node, state) {
+	    formatSequence(state, node.expressions);
+	  },
+	  UnaryExpression(node, state) {
+	    if (node.prefix) {
+	      const {
+	        operator,
+	        argument,
+	        argument: { type },
+	      } = node;
+	      state.write(operator);
+	      const needsParentheses = expressionNeedsParenthesis(state, argument, node);
+	      if (
+	        !needsParentheses &&
+	        (operator.length > 1 ||
+	          (type[0] === 'U' &&
+	            (type[1] === 'n' || type[1] === 'p') &&
+	            argument.prefix &&
+	            argument.operator[0] === operator &&
+	            (operator === '+' || operator === '-')))
+	      ) {
+	        // Large operator or argument is UnaryExpression or UpdateExpression node
+	        state.write(' ');
+	      }
+	      if (needsParentheses) {
+	        state.write(operator.length > 1 ? ' (' : '(');
+	        this[type](argument, state);
+	        state.write(')');
+	      } else {
+	        this[type](argument, state);
+	      }
+	    } else {
+	      // FIXME: This case never occurs
+	      this[node.argument.type](node.argument, state);
+	      state.write(node.operator);
+	    }
+	  },
+	  UpdateExpression(node, state) {
+	    // Always applied to identifiers or members, no parenthesis check needed
+	    if (node.prefix) {
+	      state.write(node.operator);
+	      this[node.argument.type](node.argument, state);
+	    } else {
+	      this[node.argument.type](node.argument, state);
+	      state.write(node.operator);
+	    }
+	  },
+	  AssignmentExpression(node, state) {
+	    this[node.left.type](node.left, state);
+	    state.write(' ' + node.operator + ' ');
+	    this[node.right.type](node.right, state);
+	  },
+	  AssignmentPattern(node, state) {
+	    this[node.left.type](node.left, state);
+	    state.write(' = ');
+	    this[node.right.type](node.right, state);
+	  },
+	  BinaryExpression: (BinaryExpression$1 = function (node, state) {
+	    const isIn = node.operator === 'in';
+	    if (isIn) {
+	      // Avoids confusion in `for` loops initializers
+	      state.write('(');
+	    }
+	    formatExpression(state, node.left, node, false);
+	    state.write(' ' + node.operator + ' ');
+	    formatExpression(state, node.right, node, true);
+	    if (isIn) {
+	      state.write(')');
+	    }
+	  }),
+	  LogicalExpression: BinaryExpression$1,
+	  ConditionalExpression(node, state) {
+	    const { test } = node;
+	    const precedence = state.expressionsPrecedence[test.type];
+	    if (
+	      precedence === NEEDS_PARENTHESES ||
+	      precedence <= state.expressionsPrecedence.ConditionalExpression
+	    ) {
+	      state.write('(');
+	      this[test.type](test, state);
+	      state.write(')');
+	    } else {
+	      this[test.type](test, state);
+	    }
+	    state.write(' ? ');
+	    this[node.consequent.type](node.consequent, state);
+	    state.write(' : ');
+	    this[node.alternate.type](node.alternate, state);
+	  },
+	  NewExpression(node, state) {
+	    state.write('new ');
+	    const precedence = state.expressionsPrecedence[node.callee.type];
+	    if (
+	      precedence === NEEDS_PARENTHESES ||
+	      precedence < state.expressionsPrecedence.CallExpression ||
+	      hasCallExpression(node.callee)
+	    ) {
+	      state.write('(');
+	      this[node.callee.type](node.callee, state);
+	      state.write(')');
+	    } else {
+	      this[node.callee.type](node.callee, state);
+	    }
+	    formatSequence(state, node['arguments']);
+	  },
+	  CallExpression(node, state) {
+	    const precedence = state.expressionsPrecedence[node.callee.type];
+	    if (
+	      precedence === NEEDS_PARENTHESES ||
+	      precedence < state.expressionsPrecedence.CallExpression
+	    ) {
+	      state.write('(');
+	      this[node.callee.type](node.callee, state);
+	      state.write(')');
+	    } else {
+	      this[node.callee.type](node.callee, state);
+	    }
+	    if (node.optional) {
+	      state.write('?.');
+	    }
+	    formatSequence(state, node['arguments']);
+	  },
+	  ChainExpression(node, state) {
+	    this[node.expression.type](node.expression, state);
+	  },
+	  MemberExpression(node, state) {
+	    const precedence = state.expressionsPrecedence[node.object.type];
+	    if (
+	      precedence === NEEDS_PARENTHESES ||
+	      precedence < state.expressionsPrecedence.MemberExpression
+	    ) {
+	      state.write('(');
+	      this[node.object.type](node.object, state);
+	      state.write(')');
+	    } else {
+	      this[node.object.type](node.object, state);
+	    }
+	    if (node.computed) {
+	      if (node.optional) {
+	        state.write('?.');
+	      }
+	      state.write('[');
+	      this[node.property.type](node.property, state);
+	      state.write(']');
+	    } else {
+	      if (node.optional) {
+	        state.write('?.');
+	      } else {
+	        state.write('.');
+	      }
+	      this[node.property.type](node.property, state);
+	    }
+	  },
+	  MetaProperty(node, state) {
+	    state.write(node.meta.name + '.' + node.property.name, node);
+	  },
+	  Identifier(node, state) {
+	    state.write(node.name, node);
+	  },
+	  PrivateIdentifier(node, state) {
+	    state.write(`#${node.name}`, node);
+	  },
+	  Literal(node, state) {
+	    if (node.raw != null) {
+	      // Non-standard property
+	      state.write(node.raw, node);
+	    } else if (node.regex != null) {
+	      this.RegExpLiteral(node, state);
+	    } else if (node.bigint != null) {
+	      state.write(node.bigint + 'n', node);
+	    } else {
+	      state.write(stringify(node.value), node);
+	    }
+	  },
+	  RegExpLiteral(node, state) {
+	    const { regex } = node;
+	    state.write(`/${regex.pattern}/${regex.flags}`, node);
+	  },
+	};
+
+	const EMPTY_OBJECT = {};
+
+	class State {
+	  constructor(options) {
+	    const setup = options == null ? EMPTY_OBJECT : options;
+	    this.output = '';
+	    // Functional options
+	    if (setup.output != null) {
+	      this.output = setup.output;
+	      this.write = this.writeToStream;
+	    } else {
+	      this.output = '';
+	    }
+	    this.generator = setup.generator != null ? setup.generator : GENERATOR;
+	    this.expressionsPrecedence =
+	      setup.expressionsPrecedence != null
+	        ? setup.expressionsPrecedence
+	        : EXPRESSIONS_PRECEDENCE;
+	    // Formating setup
+	    this.indent = setup.indent != null ? setup.indent : '  ';
+	    this.lineEnd = setup.lineEnd != null ? setup.lineEnd : '\n';
+	    this.indentLevel =
+	      setup.startingIndentLevel != null ? setup.startingIndentLevel : 0;
+	    this.writeComments = setup.comments ? setup.comments : false;
+	    // Source map
+	    if (setup.sourceMap != null) {
+	      this.write =
+	        setup.output == null ? this.writeAndMap : this.writeToStreamAndMap;
+	      this.sourceMap = setup.sourceMap;
+	      this.line = 1;
+	      this.column = 0;
+	      this.lineEndSize = this.lineEnd.split('\n').length - 1;
+	      this.mapping = {
+	        original: null,
+	        // Uses the entire state to avoid generating ephemeral objects
+	        generated: this,
+	        name: undefined,
+	        source: setup.sourceMap.file || setup.sourceMap._file,
+	      };
+	    }
+	  }
+
+	  write(code) {
+	    this.output += code;
+	  }
+
+	  writeToStream(code) {
+	    this.output.write(code);
+	  }
+
+	  writeAndMap(code, node) {
+	    this.output += code;
+	    this.map(code, node);
+	  }
+
+	  writeToStreamAndMap(code, node) {
+	    this.output.write(code);
+	    this.map(code, node);
+	  }
+
+	  map(code, node) {
+	    if (node != null) {
+	      const { type } = node;
+	      if (type[0] === 'L' && type[2] === 'n') {
+	        // LineComment
+	        this.column = 0;
+	        this.line++;
+	        return
+	      }
+	      if (node.loc != null) {
+	        const { mapping } = this;
+	        mapping.original = node.loc.start;
+	        mapping.name = node.name;
+	        this.sourceMap.addMapping(mapping);
+	      }
+	      if (
+	        (type[0] === 'T' && type[8] === 'E') ||
+	        (type[0] === 'L' && type[1] === 'i' && typeof node.value === 'string')
+	      ) {
+	        // TemplateElement or Literal string node
+	        const { length } = code;
+	        let { column, line } = this;
+	        for (let i = 0; i < length; i++) {
+	          if (code[i] === '\n') {
+	            column = 0;
+	            line++;
+	          } else {
+	            column++;
+	          }
+	        }
+	        this.column = column;
+	        this.line = line;
+	        return
+	      }
+	    }
+	    const { length } = code;
+	    const { lineEnd } = this;
+	    if (length > 0) {
+	      if (
+	        this.lineEndSize > 0 &&
+	        (lineEnd.length === 1
+	          ? code[length - 1] === lineEnd
+	          : code.endsWith(lineEnd))
+	      ) {
+	        this.line += this.lineEndSize;
+	        this.column = 0;
+	      } else {
+	        this.column += length;
+	      }
+	    }
+	  }
+
+	  toString() {
+	    return this.output
+	  }
+	}
+
+	function generate(node, options) {
+	  /*
+	  Returns a string representing the rendered code of the provided AST `node`.
+	  The `options` are:
+
+	  - `indent`: string to use for indentation (defaults to `␣␣`)
+	  - `lineEnd`: string to use for line endings (defaults to `\n`)
+	  - `startingIndentLevel`: indent level to start from (defaults to `0`)
+	  - `comments`: generate comments if `true` (defaults to `false`)
+	  - `output`: output stream to write the rendered code to (defaults to `null`)
+	  - `generator`: custom code generator (defaults to `GENERATOR`)
+	  - `expressionsPrecedence`: custom map of node types and their precedence level (defaults to `EXPRESSIONS_PRECEDENCE`)
+	  */
+	  const state = new State(options);
+	  // Travel through the AST node and generate the code
+	  state.generator[node.type](node, state);
+	  return state.output
+	}
+
+	/**
+	 * Impromptu Mutator Service for Hydralisk
+	 * 
+	 * Pre-computes mutation states in memory based on a MIDI CC dial (0-1 mapped to 0-10 mutations).
+	 * Swaps to the pre-calculated to-be state instantly on a MIDI press event.
+	 * If CC ~= 0 on press, retrieves and restores the pre-mutation state (undo).
+	 */
+
+	const GLSL_TRANSFORMS$1 = {
+	  src: ['noise', 'voronoi', 'osc', 'shape', 'gradient', 'solid'],
+	  coord: ['rotate', 'scale', 'pixelate', 'repeat', 'repeatX', 'repeatY', 'modulateRepeat', 'modulateRepeatX', 'modulateRepeatY', 'modulateRotate', 'modulateScale', 'modulatePixelate', 'kaleid', 'scroll', 'scrollX', 'scrollY', 'modulateScrollX', 'modulateScrollY', 'modulate'],
+	  color: ['posterize', 'shift', 'invert', 'contrast', 'brightness', 'color', 'luma', 'thresh', 'colorama', 'saturate', 'hue'],
+	  combine: ['add', 'sub', 'layer', 'blend', 'mult', 'diff', 'modulateHue'],
+	  combineCoord: ['modulate', 'modulateRepeat', 'modulateRepeatX', 'modulateRepeatY', 'modulateRotate', 'modulateScale', 'modulatePixelate', 'modulateScrollX', 'modulateScrollY']
+	};
+	const MASTER_EFFECTS_REGEX = /\/\*\s*\[master-effects-start:[a-zA-Z0-9_-]+\]\s*\*\/[\s\S]*?\/\*\s*\[master-effects-end\]\s*\*\//g;
+	function walkAST(node, visitor, parent = null) {
+	  if (!node || typeof node !== 'object') return;
+	  visitor(node, parent);
+	  for (const key of Object.keys(node)) {
+	    if (key === 'parent') continue;
+	    const child = node[key];
+	    if (Array.isArray(child)) {
+	      for (const item of child) {
+	        if (item && typeof item.type === 'string') walkAST(item, visitor, node);
+	      }
+	    } else if (child && typeof child.type === 'string') {
+	      walkAST(child, visitor, node);
+	    }
+	  }
+	}
+	class ImpromptuMutatorService {
+	  constructor(options = {}) {
+	    this.editor = options.editor || null;
+	    this.currentCC = 0;
+	    this.mutationCount = 0;
+	    this.baseCode = '';
+	    this.preMutationState = null;
+	    this.precalculatedStates = [];
+	    this.listeners = new Map();
+	    if (options.initialCode) {
+	      this.setBaseCode(options.initialCode);
+	    }
+	  }
+	  on(event, handler) {
+	    if (!this.listeners.has(event)) {
+	      this.listeners.set(event, new Set());
+	    }
+	    this.listeners.get(event).add(handler);
+	    return () => this.off(event, handler);
+	  }
+	  off(event, handler) {
+	    if (this.listeners.has(event)) {
+	      this.listeners.get(event).delete(handler);
+	    }
+	  }
+	  emit(event, data) {
+	    if (this.listeners.has(event)) {
+	      for (const handler of this.listeners.get(event)) {
+	        try {
+	          handler(data);
+	        } catch (err) {
+	          console.error(`[ImpromptuMutator] Error in '${event}' listener:`, err);
+	        }
+	      }
+	    }
+	  }
+	  setEditor(editor) {
+	    this.editor = editor;
+	    this.syncFromEditor();
+	  }
+	  getEditorCode() {
+	    if (!this.editor) return '';
+	    if (typeof this.editor.getValue === 'function') {
+	      return this.editor.getValue();
+	    }
+	    if (typeof this.editor === 'string') {
+	      return this.editor;
+	    }
+	    return '';
+	  }
+	  syncFromEditor() {
+	    const editorCode = this.getEditorCode();
+	    if (editorCode && editorCode !== this.baseCode) {
+	      this.setBaseCode(editorCode);
+	    }
+	  }
+	  setBaseCode(code) {
+	    this.baseCode = code || '';
+	    this.recalculateStates();
+	  }
+
+	  /**
+	   * Set MIDI CC value (0.0 -> 1.0 mapped to 0 -> 10 mutations).
+	   */
+	  setCC(val) {
+	    const normalized = Math.max(0, Math.min(1, Number(val) || 0));
+	    this.currentCC = normalized;
+	    this.mutationCount = Math.round(normalized * 10);
+
+	    // Sync base code if editor has changed
+	    const currentEditorCode = this.getEditorCode();
+	    if (currentEditorCode && currentEditorCode !== this.baseCode) {
+	      this.baseCode = currentEditorCode;
+	      this.recalculateStates();
+	    } else if (this.precalculatedStates.length < 11) {
+	      this.recalculateStates();
+	    }
+	    const state = this.getStateInfo();
+	    this.emit('change', state);
+	    return state;
+	  }
+	  getToBeState() {
+	    if (this.mutationCount === 0 || this.currentCC < 0.05) {
+	      return this.baseCode;
+	    }
+	    return this.precalculatedStates[this.mutationCount] || this.baseCode;
+	  }
+	  getStateInfo() {
+	    return {
+	      currentCC: this.currentCC,
+	      mutationCount: this.mutationCount,
+	      isUndoMode: this.mutationCount === 0 || this.currentCC < 0.05,
+	      toBeCode: this.getToBeState(),
+	      baseCode: this.baseCode,
+	      preMutationState: this.preMutationState,
+	      hasPreMutationState: Boolean(this.preMutationState),
+	      chainLength: this.precalculatedStates.length
+	    };
+	  }
+
+	  /**
+	   * Pre-calculates states 0 through 10 in memory.
+	   * State 0 is the base code, and each state i is a mutation of state i-1.
+	   */
+	  recalculateStates() {
+	    if (!this.baseCode) {
+	      this.precalculatedStates = [];
+	      return;
+	    }
+	    const states = [this.baseCode];
+	    let currentState = this.baseCode;
+	    for (let i = 1; i <= 10; i++) {
+	      currentState = this.mutateCode(currentState);
+	      states.push(currentState);
+	    }
+	    this.precalculatedStates = states;
+	  }
+
+	  /**
+	   * Force re-rolls all pre-computed states from the current base state.
+	   */
+	  reroll() {
+	    this.recalculateStates();
+	    const state = this.getStateInfo();
+	    this.emit('reroll', state);
+	    this.emit('change', state);
+	    return state;
+	  }
+
+	  /**
+	   * Trigger the action on MIDI press (Note or CC button).
+	   * - If CC ~= 0 (mutationCount == 0): fires undo, restoring preMutationState.
+	   * - If CC > 0: swaps editor directly to pre-calculated to-be state.
+	   */
+	  trigger() {
+	    // Check if editor has drifted
+	    const currentCode = this.getEditorCode();
+	    if (currentCode && currentCode !== this.baseCode && !this.precalculatedStates.includes(currentCode)) {
+	      this.baseCode = currentCode;
+	      this.recalculateStates();
+	    }
+	    const isUndo = this.mutationCount === 0 || this.currentCC < 0.05;
+	    if (isUndo) {
+	      return this.executeUndo();
+	    } else {
+	      return this.executeBurst();
+	    }
+	  }
+	  executeUndo() {
+	    if (this.preMutationState) {
+	      const restored = this.preMutationState;
+	      this.applyCode(restored);
+	      this.baseCode = restored;
+	      this.recalculateStates();
+	      const result = {
+	        action: 'undo',
+	        count: 0,
+	        code: restored,
+	        restored: true
+	      };
+	      this.emit('undone', result);
+	      this.emit('change', this.getStateInfo());
+	      return result;
+	    }
+
+	    // Fallback to editor's mutator undo if available
+	    if (this.editor && this.editor.mutator && typeof this.editor.mutator.doUndo === 'function') {
+	      this.editor.mutator.doUndo();
+	      this.baseCode = this.getEditorCode();
+	      this.recalculateStates();
+	      const result = {
+	        action: 'undo',
+	        count: 0,
+	        code: this.baseCode,
+	        restored: true
+	      };
+	      this.emit('undone', result);
+	      this.emit('change', this.getStateInfo());
+	      return result;
+	    }
+	    if (typeof window !== 'undefined' && window.xemitter) {
+	      window.xemitter.emit('editor:jumpBack1');
+	      const result = {
+	        action: 'undo',
+	        count: 0,
+	        code: this.baseCode,
+	        fallback: true
+	      };
+	      this.emit('undone', result);
+	      return result;
+	    }
+	    const result = {
+	      action: 'undo',
+	      count: 0,
+	      code: this.baseCode,
+	      restored: false
+	    };
+	    this.emit('undone', result);
+	    return result;
+	  }
+	  executeBurst() {
+	    const count = this.mutationCount;
+	    const toBeCode = this.getToBeState();
+	    if (!toBeCode) {
+	      return {
+	        action: 'burst',
+	        count: 0,
+	        code: this.baseCode
+	      };
+	    }
+
+	    // Save pre-mutation state for subsequent undo
+	    this.preMutationState = this.baseCode;
+
+	    // Apply the pre-calculated code
+	    this.applyCode(toBeCode);
+
+	    // Update base code to the new sketch
+	    this.baseCode = toBeCode;
+
+	    // Immediately pre-calculate the next 10 mutations from the new sketch state
+	    this.recalculateStates();
+	    const result = {
+	      action: 'burst',
+	      count,
+	      code: toBeCode
+	    };
+	    this.emit('applied', result);
+	    this.emit('change', this.getStateInfo());
+	    return result;
+	  }
+	  applyCode(code) {
+	    if (this.editor && typeof this.editor.setValue === 'function') {
+	      this.editor.setValue(code);
+	    }
+	    if (typeof window !== 'undefined') {
+	      if (typeof window.evalCode === 'function') {
+	        window.evalCode(code);
+	      } else if (this.editor && typeof this.editor.eval === 'function') {
+	        this.editor.eval(code);
+	      }
+	      if (window.xemitter) {
+	        window.xemitter.emit('editor:formatCode');
+	        window.xemitter.emit('gallery:saveLocally', code);
+	      }
+	    }
+	  }
+
+	  /**
+	   * Pure AST mutation of a single sketch code string.
+	   */
+	  mutateCode(code, {
+	    changeTransform = null
+	  } = {}) {
+	    if (!code || typeof code !== 'string') return code;
+
+	    // Preserve master-effects block safely if present
+	    const meMatch = code.match(MASTER_EFFECTS_REGEX);
+	    let meBlock = null;
+	    let workingCode = code;
+	    if (meMatch) {
+	      meBlock = meMatch[0];
+	      const startIdx = code.indexOf(meBlock);
+	      workingCode = code.slice(0, startIdx) + code.slice(startIdx + meBlock.length);
+	    }
+	    let ast;
+	    try {
+	      ast = Parser.parse(workingCode, {
+	        ecmaVersion: 'latest',
+	        sourceType: 'module'
+	      });
+	    } catch (e) {
+	      const glitched = this.fallbackRegexGlitch(workingCode);
+	      return this.reinsertMasterEffect(glitched, meBlock);
+	    }
+	    const literals = [];
+	    const calls = [];
+	    walkAST(ast, (node, parent) => {
+	      // Do not mutate literals inside arrow functions or function expressions (e.g. MIDI callbacks () => b1(0))
+	      if (parent && (parent.type === 'ArrowFunctionExpression' || parent.type === 'FunctionExpression')) {
+	        return;
+	      }
+	      if (node.type === 'Literal' && typeof node.value === 'number') {
+	        literals.push(node);
+	      } else if (node.type === 'CallExpression') {
+	        if (node.callee.type === 'MemberExpression' && node.callee.property.name !== 'out') {
+	          calls.push({
+	            node,
+	            name: node.callee.property.name,
+	            isMember: true
+	          });
+	        } else if (node.callee.type === 'Identifier' && node.callee.name !== 'render') {
+	          calls.push({
+	            node,
+	            name: node.callee.name,
+	            isMember: false
+	          });
+	        }
+	      }
+	    });
+	    if (literals.length === 0 && calls.length === 0) {
+	      return code;
+	    }
+	    const shouldSwapTransform = changeTransform !== null ? changeTransform : Math.random() < 0.25;
+	    if (shouldSwapTransform && calls.length > 0) {
+	      const targetCall = calls[Math.floor(Math.random() * calls.length)];
+	      const currentFunc = targetCall.name;
+	      const category = Object.keys(GLSL_TRANSFORMS$1).find(cat => GLSL_TRANSFORMS$1[cat].includes(currentFunc));
+	      if (category && GLSL_TRANSFORMS$1[category]) {
+	        const candidates = GLSL_TRANSFORMS$1[category].filter(f => f !== currentFunc);
+	        if (candidates.length > 0) {
+	          const newFunc = candidates[Math.floor(Math.random() * candidates.length)];
+	          if (targetCall.isMember) {
+	            targetCall.node.callee.property.name = newFunc;
+	          } else {
+	            targetCall.node.callee.name = newFunc;
+	          }
+	        }
+	      }
+	    } else if (literals.length > 0) {
+	      const targetLit = literals[Math.floor(Math.random() * literals.length)];
+	      const origVal = targetLit.value;
+	      let newVal;
+	      if (origVal === 0) {
+	        newVal = Math.random() < 0.5 ? 0.5 : 0.05;
+	      } else {
+	        // Multiplicative glitch between 0.2x and 2.2x
+	        const factor = Math.random() * 2.0 + 0.2;
+	        newVal = Number((origVal * factor).toFixed(3));
+	      }
+	      targetLit.value = newVal;
+	      targetLit.raw = String(newVal);
+	    }
+	    let mutated;
+	    try {
+	      mutated = generate(ast);
+	    } catch (e) {
+	      return code;
+	    }
+	    return this.reinsertMasterEffect(mutated, meBlock);
+	  }
+	  reinsertMasterEffect(coreCode, meBlock) {
+	    if (!meBlock) return coreCode;
+	    const outIdx = coreCode.lastIndexOf('.out(');
+	    if (outIdx !== -1) {
+	      return coreCode.slice(0, outIdx) + meBlock + coreCode.slice(outIdx);
+	    }
+	    return coreCode + meBlock;
+	  }
+	  fallbackRegexGlitch(code) {
+	    return code.replace(/\b(\d+(?:\.\d+)?)\b/, match => {
+	      const num = parseFloat(match);
+	      if (isNaN(num)) return match;
+	      if (num === 0) return '0.5';
+	      const factor = Math.random() * 1.8 + 0.2;
+	      return (num * factor).toFixed(2);
+	    });
+	  }
+	}
+
+	/**
+	 * Impromptu Mutation HUD & Modal Controller
+	 * Provides non-intrusive HUD feedback and an interactive modal interface.
+	 */
+
+	class ImpromptuMutationHUD {
+	  constructor(service) {
+	    this.service = service;
+	    this.hudEl = null;
+	    this.modalEl = null;
+	    this.isOpen = false;
+	    this.fadeTimeout = null;
+	    this.initDOM();
+	    this.bindServiceEvents();
+	  }
+	  initDOM() {
+	    if (typeof document === 'undefined') return;
+
+	    // 1. Create HUD Pill
+	    this.hudEl = document.createElement('div');
+	    this.hudEl.id = 'impromptu-hud';
+	    this.hudEl.title = 'Impromptu Mutation (Click to open controls, Cmd+I to trigger)';
+	    this.hudEl.innerHTML = `
+      <i class="fa fa-bolt impromptu-hud-icon"></i>
+      <span class="impromptu-hud-badge" id="impromptu-hud-text">BURST: 0</span>
+      <div class="impromptu-hud-meter" id="impromptu-hud-meter"></div>
+    `;
+	    this.hudEl.onclick = () => this.toggleModal();
+	    document.body.appendChild(this.hudEl);
+
+	    // 2. Create Modal Overlay
+	    this.modalEl = document.createElement('div');
+	    this.modalEl.id = 'impromptu-modal-overlay';
+	    this.modalEl.innerHTML = `
+      <div class="impromptu-modal" onclick="event.stopPropagation()">
+        <div class="impromptu-modal-header">
+          <div class="impromptu-modal-title">
+            <i class="fa fa-bolt"></i> Impromptu Mutation Controller
+          </div>
+          <button class="impromptu-modal-close" id="impromptu-modal-close-btn">&times;</button>
+        </div>
+
+        <div class="impromptu-dial-section">
+          <div class="impromptu-dial-label-row">
+            <span class="impromptu-dial-name">MIDI CC Dial (0.00 → 1.00)</span>
+            <span class="impromptu-dial-value" id="impromptu-dial-readout">0.00 (0 mutations)</span>
+          </div>
+
+          <input type="range" min="0" max="1" step="0.01" value="0" class="impromptu-range-slider" id="impromptu-slider" />
+
+          <div class="impromptu-quick-buttons">
+            <button class="impromptu-quick-btn active" data-val="0">0 (Undo)</button>
+            <button class="impromptu-quick-btn" data-val="0.1">1</button>
+            <button class="impromptu-quick-btn" data-val="0.2">2</button>
+            <button class="impromptu-quick-btn" data-val="0.3">3</button>
+            <button class="impromptu-quick-btn" data-val="0.4">4</button>
+            <button class="impromptu-quick-btn" data-val="0.5">5</button>
+            <button class="impromptu-quick-btn" data-val="0.7">7</button>
+            <button class="impromptu-quick-btn" data-val="1.0">10 (Max)</button>
+          </div>
+        </div>
+
+        <div class="impromptu-status-box undo" id="impromptu-status-box">
+          CC~0 armed: Press event fires UNDO to pre-mutation state.
+        </div>
+
+        <div class="impromptu-preview-box" id="impromptu-code-preview">// Pre-calculated to-be state preview...</div>
+
+        <div class="impromptu-actions-row">
+          <button class="impromptu-action-btn impromptu-btn-burst" id="impromptu-btn-trigger">
+            <i class="fa fa-bolt"></i> Trigger Press (Space/Enter)
+          </button>
+          <button class="impromptu-action-btn impromptu-btn-undo" id="impromptu-btn-undo">
+            <i class="fa fa-undo"></i> Undo
+          </button>
+          <button class="impromptu-action-btn impromptu-btn-reroll" id="impromptu-btn-reroll">
+            <i class="fa fa-refresh"></i> Reroll
+          </button>
+        </div>
+
+        <div class="impromptu-midi-footer">
+          <span>Shortcuts: <kbd>Cmd+I</kbd> to Trigger / <kbd>Shift-Ctrl-I</kbd> for Modal</span>
+          <span class="impromptu-midi-link" id="impromptu-open-midi-link">Open MIDI Mapping &rarr;</span>
+        </div>
+      </div>
+    `;
+	    this.modalEl.onclick = () => this.closeModal();
+	    document.body.appendChild(this.modalEl);
+
+	    // Bind Modal Internal Events
+	    const closeBtn = this.modalEl.querySelector('#impromptu-modal-close-btn');
+	    if (closeBtn) closeBtn.onclick = () => this.closeModal();
+	    const slider = this.modalEl.querySelector('#impromptu-slider');
+	    if (slider) {
+	      slider.oninput = e => {
+	        this.service.setCC(parseFloat(e.target.value));
+	      };
+	    }
+	    const quickBtns = this.modalEl.querySelectorAll('.impromptu-quick-btn');
+	    quickBtns.forEach(btn => {
+	      btn.onclick = () => {
+	        const val = parseFloat(btn.getAttribute('data-val'));
+	        if (slider) slider.value = val;
+	        this.service.setCC(val);
+	      };
+	    });
+	    const triggerBtn = this.modalEl.querySelector('#impromptu-btn-trigger');
+	    if (triggerBtn) {
+	      triggerBtn.onclick = () => this.service.trigger();
+	    }
+	    const undoBtn = this.modalEl.querySelector('#impromptu-btn-undo');
+	    if (undoBtn) {
+	      undoBtn.onclick = () => {
+	        this.service.setCC(0);
+	        this.service.trigger();
+	      };
+	    }
+	    const rerollBtn = this.modalEl.querySelector('#impromptu-btn-reroll');
+	    if (rerollBtn) {
+	      rerollBtn.onclick = () => this.service.reroll();
+	    }
+	    const midiLink = this.modalEl.querySelector('#impromptu-open-midi-link');
+	    if (midiLink) {
+	      midiLink.onclick = () => {
+	        this.closeModal();
+	        if (window.midiMapping && typeof window.midiMapping.open === 'function') {
+	          window.midiMapping.open();
+	        } else if (window.xemitter) {
+	          window.xemitter.emit('midi-mapping:open');
+	        }
+	      };
+	    }
+
+	    // Modal keyboard handling (Escape to close, Enter to trigger)
+	    window.addEventListener('keydown', e => {
+	      if (!this.isOpen) return;
+	      if (e.key === 'Escape') {
+	        this.closeModal();
+	      } else if (e.key === 'Enter') {
+	        e.preventDefault();
+	        this.service.trigger();
+	      }
+	    });
+	    this.renderMeter(0);
+	  }
+	  bindServiceEvents() {
+	    this.service.on('change', state => this.onStateChange(state));
+	    this.service.on('applied', result => this.onApplied(result));
+	    this.service.on('undone', result => this.onUndone(result));
+	  }
+	  onStateChange(state) {
+	    this.renderMeter(state.mutationCount, state.isUndoMode);
+	    const badge = document.getElementById('impromptu-hud-text');
+	    if (badge) {
+	      if (state.isUndoMode) {
+	        badge.textContent = 'CC~0: UNDO';
+	        badge.className = 'impromptu-hud-badge undo-mode';
+	      } else {
+	        badge.textContent = `BURST: ${state.mutationCount}`;
+	        badge.className = 'impromptu-hud-badge';
+	      }
+	    }
+
+	    // Modal Updates
+	    const slider = document.getElementById('impromptu-slider');
+	    if (slider && document.activeElement !== slider) {
+	      slider.value = state.currentCC;
+	    }
+	    const readout = document.getElementById('impromptu-dial-readout');
+	    if (readout) {
+	      readout.textContent = `${state.currentCC.toFixed(2)} (${state.mutationCount} mutations)`;
+	    }
+	    const quickBtns = document.querySelectorAll('.impromptu-quick-btn');
+	    quickBtns.forEach(btn => {
+	      const val = parseFloat(btn.getAttribute('data-val'));
+	      const active = Math.abs(val - state.currentCC) < 0.05 || val === 0 && state.isUndoMode;
+	      btn.classList.toggle('active', active);
+	    });
+	    const statusBox = document.getElementById('impromptu-status-box');
+	    if (statusBox) {
+	      if (state.isUndoMode) {
+	        statusBox.className = 'impromptu-status-box undo';
+	        statusBox.textContent = 'CC~0 armed: Press event fires UNDO to pre-mutation state.';
+	      } else {
+	        statusBox.className = 'impromptu-status-box';
+	        statusBox.textContent = `${state.mutationCount} mutation${state.mutationCount > 1 ? 's' : ''} pre-calculated & armed in memory. Ready to swap on press!`;
+	      }
+	    }
+	    const preview = document.getElementById('impromptu-code-preview');
+	    if (preview) {
+	      preview.textContent = state.toBeCode || '// No code in editor';
+	    }
+
+	    // Show HUD pill and schedule auto-hide
+	    this.showHUD();
+	  }
+	  onApplied(result) {
+	    this.flashHUD('flash-burst');
+	    const badge = document.getElementById('impromptu-hud-text');
+	    if (badge) {
+	      badge.textContent = `⚡ +${result.count} SWAPPED!`;
+	      badge.className = 'impromptu-hud-badge';
+	    }
+	  }
+	  onUndone(result) {
+	    this.flashHUD('flash-undo');
+	    const badge = document.getElementById('impromptu-hud-text');
+	    if (badge) {
+	      badge.textContent = `↩ UNDONE!`;
+	      badge.className = 'impromptu-hud-badge undo-mode';
+	    }
+	  }
+	  renderMeter(count, isUndoMode) {
+	    const meter = document.getElementById('impromptu-hud-meter');
+	    if (!meter) return;
+	    let pipsHTML = '';
+	    for (let i = 1; i <= 10; i++) {
+	      const active = !isUndoMode && i <= count;
+	      const undo = isUndoMode && i === 1;
+	      pipsHTML += `<span class="impromptu-pip ${active ? 'active' : ''} ${undo ? 'undo-pip' : ''}"></span>`;
+	    }
+	    meter.innerHTML = pipsHTML;
+	  }
+	  showHUD() {
+	    if (!this.hudEl) return;
+	    this.hudEl.classList.add('visible');
+	    if (this.fadeTimeout) {
+	      clearTimeout(this.fadeTimeout);
+	    }
+
+	    // If modal is open, keep HUD visible
+	    if (!this.isOpen) {
+	      this.fadeTimeout = setTimeout(() => {
+	        if (!this.isOpen && this.hudEl) {
+	          this.hudEl.classList.remove('visible');
+	        }
+	      }, 2500);
+	    }
+	  }
+	  flashHUD(className) {
+	    if (!this.hudEl) return;
+	    this.showHUD();
+	    this.hudEl.classList.remove('flash-burst', 'flash-undo');
+	    // Force reflow
+	    void this.hudEl.offsetWidth;
+	    this.hudEl.classList.add(className);
+	    setTimeout(() => {
+	      if (this.hudEl) this.hudEl.classList.remove(className);
+	    }, 450);
+	  }
+	  toggleModal() {
+	    if (this.isOpen) {
+	      this.closeModal();
+	    } else {
+	      this.openModal();
+	    }
+	  }
+	  openModal() {
+	    this.isOpen = true;
+	    if (this.modalEl) this.modalEl.classList.add('open');
+	    this.showHUD();
+	  }
+	  closeModal() {
+	    this.isOpen = false;
+	    if (this.modalEl) this.modalEl.classList.remove('open');
+	    this.showHUD();
+	  }
+	}
+
+	/**
+	 * Impromptu Mutation Plugin for Hydralisk
+	 * 
+	 * Pre-computes 0-10 mutations based on MIDI CC dial.
+	 * Swaps to the pre-calculated to-be state instantly on MIDI press.
+	 * If CC ~= 0 on press, retrieves and restores the pre-mutation state (undo).
+	 */
+
+	class ImpromptuMutatorManager {
+	  constructor() {
+	    this.service = new ImpromptuMutatorService();
+	    this.hud = null;
+	    this.isInitialized = false;
+	  }
+	  init(app) {
+	    if (this.isInitialized) return;
+	    this.isInitialized = true;
+
+	    // Attach Editor
+	    const getEditor = () => {
+	      return app && app.state && app.state.editor && app.state.editor.editor || window.cm || null;
+	    };
+	    const initialEditor = getEditor();
+	    if (initialEditor) {
+	      this.service.setEditor(initialEditor);
+	    }
+
+	    // Attach HUD and Modal
+	    if (typeof document !== 'undefined') {
+	      this.hud = new ImpromptuMutationHUD(this.service);
+	      this.injectToolbarIcon();
+	    }
+
+	    // Register with Plugin System and Global Scope
+	    window.impromptuMutator = this.service;
+	    if (app && typeof app.expose === 'function') {
+	      app.expose('impromptuMutator', this.service);
+	    }
+
+	    // Connect Events with xemitter and app emitter
+	    const emitter = app && app.emitter || window.xemitter;
+	    if (emitter) {
+	      emitter.on('impromptu:setCC', val => this.service.setCC(val));
+	      emitter.on('impromptu:trigger', () => this.service.trigger());
+	      emitter.on('impromptu:toggleModal', () => this.hud && this.hud.toggleModal());
+	      emitter.on('impromptu:reroll', () => this.service.reroll());
+	    }
+
+	    // Register with MIDI Mapping Module
+	    this.registerMidiActions();
+
+	    // Listen to sketch changes or editor focus to sync base code
+	    if (emitter) {
+	      emitter.on('gallery:loadSketch', () => {
+	        setTimeout(() => this.service.syncFromEditor(), 100);
+	      });
+	      emitter.on('editor:ready', () => {
+	        const ed = getEditor();
+	        if (ed) this.service.setEditor(ed);
+	      });
+	    }
+
+	    // Direct CodeMirror change listener if window.cm is present
+	    if (window.cm && typeof window.cm.on === 'function') {
+	      window.cm.on('change', () => {
+	        // Sync if not currently executing a burst
+	        this.service.syncFromEditor();
+	      });
+	    }
+	    console.log('[ImpromptuMutator] Plugin initialized successfully ⚡');
+	  }
+	  registerMidiActions() {
+	    const register = (id, config) => {
+	      if (window.midiMapping && typeof window.midiMapping.registerAction === 'function') {
+	        window.midiMapping.registerAction(id, config);
+	      }
+	    };
+	    register('impromptu:mutationCC', {
+	      callback: value => {
+	        this.service.setCC(value);
+	      },
+	      label: 'Impromptu Mutation (CC Dial: 0-10)'
+	    });
+	    register('impromptu:trigger', {
+	      action: 'impromptu:trigger',
+	      label: 'Impromptu Mutation Trigger (Press)'
+	    });
+	  }
+	  injectToolbarIcon() {
+	    const existing = document.getElementById('nav-impromptu-mutation-icon');
+	    if (existing) return;
+
+	    // Look for top menu bar
+	    const topBar = document.querySelector('.top-menu') || document.querySelector('#nav-icons') || document.querySelector('.nav-icons') || document.querySelector('.menu') || document.body;
+	    const icon = document.createElement('i');
+	    icon.className = 'fa fa-bolt icon';
+	    icon.id = 'nav-impromptu-mutation-icon';
+	    icon.title = 'Impromptu Mutation (Cmd+I to trigger, Shift-Ctrl-I for controls)';
+	    icon.style.cursor = 'pointer';
+	    icon.style.marginLeft = '8px';
+	    icon.style.color = '#00f0ff';
+	    icon.onclick = () => {
+	      if (this.hud) this.hud.toggleModal();
+	    };
+	    const magicIcon = document.getElementById('nav-master-effects-icon');
+	    if (magicIcon && magicIcon.parentNode) {
+	      magicIcon.parentNode.insertBefore(icon, magicIcon.nextSibling);
+	    } else {
+	      topBar.appendChild(icon);
+	    }
+	  }
+	}
+
 	/**
 	 * Kit for connecting to Amazon DynamoDB
 	 *
@@ -11209,1227 +13206,6 @@
 	      }
 	    }
 	  });
-	}
-
-	// Astring is a tiny and fast JavaScript code generator from an ESTree-compliant AST.
-	//
-	// Astring was written by David Bonnet and released under an MIT license.
-	//
-	// The Git repository for Astring is available at:
-	// https://github.com/davidbonnet/astring.git
-	//
-	// Please use the GitHub bug tracker to report issues:
-	// https://github.com/davidbonnet/astring/issues
-
-	const { stringify } = JSON;
-
-	/* c8 ignore if */
-	if (!String.prototype.repeat) {
-	  /* c8 ignore next */
-	  throw new Error(
-	    'String.prototype.repeat is undefined, see https://github.com/davidbonnet/astring#installation',
-	  )
-	}
-
-	/* c8 ignore if */
-	if (!String.prototype.endsWith) {
-	  /* c8 ignore next */
-	  throw new Error(
-	    'String.prototype.endsWith is undefined, see https://github.com/davidbonnet/astring#installation',
-	  )
-	}
-
-	const OPERATOR_PRECEDENCE = {
-	  '||': 2,
-	  '??': 3,
-	  '&&': 4,
-	  '|': 5,
-	  '^': 6,
-	  '&': 7,
-	  '==': 8,
-	  '!=': 8,
-	  '===': 8,
-	  '!==': 8,
-	  '<': 9,
-	  '>': 9,
-	  '<=': 9,
-	  '>=': 9,
-	  in: 9,
-	  instanceof: 9,
-	  '<<': 10,
-	  '>>': 10,
-	  '>>>': 10,
-	  '+': 11,
-	  '-': 11,
-	  '*': 12,
-	  '%': 12,
-	  '/': 12,
-	  '**': 13,
-	};
-
-	// Enables parenthesis regardless of precedence
-	const NEEDS_PARENTHESES = 17;
-
-	const EXPRESSIONS_PRECEDENCE = {
-	  // Definitions
-	  ArrayExpression: 20,
-	  TaggedTemplateExpression: 20,
-	  ThisExpression: 20,
-	  Identifier: 20,
-	  PrivateIdentifier: 20,
-	  Literal: 18,
-	  TemplateLiteral: 20,
-	  Super: 20,
-	  SequenceExpression: 20,
-	  // Operations
-	  MemberExpression: 19,
-	  ChainExpression: 19,
-	  CallExpression: 19,
-	  NewExpression: 19,
-	  // Other definitions
-	  ArrowFunctionExpression: NEEDS_PARENTHESES,
-	  ClassExpression: NEEDS_PARENTHESES,
-	  FunctionExpression: NEEDS_PARENTHESES,
-	  ObjectExpression: NEEDS_PARENTHESES,
-	  // Other operations
-	  UpdateExpression: 16,
-	  UnaryExpression: 15,
-	  AwaitExpression: 15,
-	  BinaryExpression: 14,
-	  LogicalExpression: 13,
-	  ConditionalExpression: 4,
-	  AssignmentExpression: 3,
-	  YieldExpression: 2,
-	  RestElement: 1,
-	};
-
-	function formatSequence(state, nodes) {
-	  /*
-	  Writes into `state` a sequence of `nodes`.
-	  */
-	  const { generator } = state;
-	  state.write('(');
-	  if (nodes != null && nodes.length > 0) {
-	    generator[nodes[0].type](nodes[0], state);
-	    const { length } = nodes;
-	    for (let i = 1; i < length; i++) {
-	      const param = nodes[i];
-	      state.write(', ');
-	      generator[param.type](param, state);
-	    }
-	  }
-	  state.write(')');
-	}
-
-	function expressionNeedsParenthesis(state, node, parentNode, isRightHand) {
-	  const nodePrecedence = state.expressionsPrecedence[node.type];
-	  if (nodePrecedence === NEEDS_PARENTHESES) {
-	    return true
-	  }
-	  const parentNodePrecedence = state.expressionsPrecedence[parentNode.type];
-	  if (nodePrecedence !== parentNodePrecedence) {
-	    // Different node types
-	    return (
-	      (!isRightHand &&
-	        nodePrecedence === 15 &&
-	        parentNodePrecedence === 14 &&
-	        parentNode.operator === '**') ||
-	      nodePrecedence < parentNodePrecedence
-	    )
-	  }
-	  if (nodePrecedence !== 13 && nodePrecedence !== 14) {
-	    // Not a `LogicalExpression` or `BinaryExpression`
-	    return false
-	  }
-	  if (node.operator === '**' && parentNode.operator === '**') {
-	    // Exponentiation operator has right-to-left associativity
-	    return !isRightHand
-	  }
-	  if (
-	    nodePrecedence === 13 &&
-	    parentNodePrecedence === 13 &&
-	    (node.operator === '??' || parentNode.operator === '??')
-	  ) {
-	    // Nullish coalescing and boolean operators cannot be combined
-	    return true
-	  }
-	  if (isRightHand) {
-	    // Parenthesis are used if both operators have the same precedence
-	    return (
-	      OPERATOR_PRECEDENCE[node.operator] <=
-	      OPERATOR_PRECEDENCE[parentNode.operator]
-	    )
-	  }
-	  return (
-	    OPERATOR_PRECEDENCE[node.operator] <
-	    OPERATOR_PRECEDENCE[parentNode.operator]
-	  )
-	}
-
-	function formatExpression(state, node, parentNode, isRightHand) {
-	  /*
-	  Writes into `state` the provided `node`, adding parenthesis around if the provided `parentNode` needs it. If `node` is a right-hand argument, the provided `isRightHand` parameter should be `true`.
-	  */
-	  const { generator } = state;
-	  if (expressionNeedsParenthesis(state, node, parentNode, isRightHand)) {
-	    state.write('(');
-	    generator[node.type](node, state);
-	    state.write(')');
-	  } else {
-	    generator[node.type](node, state);
-	  }
-	}
-
-	function reindent(state, text, indent, lineEnd) {
-	  /*
-	  Writes into `state` the `text` string reindented with the provided `indent`.
-	  */
-	  const lines = text.split('\n');
-	  const end = lines.length - 1;
-	  state.write(lines[0].trim());
-	  if (end > 0) {
-	    state.write(lineEnd);
-	    for (let i = 1; i < end; i++) {
-	      state.write(indent + lines[i].trim() + lineEnd);
-	    }
-	    state.write(indent + lines[end].trim());
-	  }
-	}
-
-	function formatComments(state, comments, indent, lineEnd) {
-	  /*
-	  Writes into `state` the provided list of `comments`, with the given `indent` and `lineEnd` strings.
-	  Line comments will end with `"\n"` regardless of the value of `lineEnd`.
-	  Expects to start on a new unindented line.
-	  */
-	  const { length } = comments;
-	  for (let i = 0; i < length; i++) {
-	    const comment = comments[i];
-	    state.write(indent);
-	    if (comment.type[0] === 'L') {
-	      // Line comment
-	      state.write('// ' + comment.value.trim() + '\n', comment);
-	    } else {
-	      // Block comment
-	      state.write('/*');
-	      reindent(state, comment.value, indent, lineEnd);
-	      state.write('*/' + lineEnd);
-	    }
-	  }
-	}
-
-	function hasCallExpression(node) {
-	  /*
-	  Returns `true` if the provided `node` contains a call expression and `false` otherwise.
-	  */
-	  let currentNode = node;
-	  while (currentNode != null) {
-	    const { type } = currentNode;
-	    if (type[0] === 'C' && type[1] === 'a') {
-	      // Is CallExpression
-	      return true
-	    } else if (type[0] === 'M' && type[1] === 'e' && type[2] === 'm') {
-	      // Is MemberExpression
-	      currentNode = currentNode.object;
-	    } else {
-	      return false
-	    }
-	  }
-	}
-
-	function formatVariableDeclaration(state, node) {
-	  /*
-	  Writes into `state` a variable declaration.
-	  */
-	  const { generator } = state;
-	  const { declarations } = node;
-	  state.write(node.kind + ' ');
-	  const { length } = declarations;
-	  if (length > 0) {
-	    generator.VariableDeclarator(declarations[0], state);
-	    for (let i = 1; i < length; i++) {
-	      state.write(', ');
-	      generator.VariableDeclarator(declarations[i], state);
-	    }
-	  }
-	}
-
-	let ForInStatement$1,
-	  FunctionDeclaration$1,
-	  RestElement$1,
-	  BinaryExpression$1,
-	  ArrayExpression$1,
-	  BlockStatement;
-
-	const GENERATOR = {
-	  /*
-	  Default generator.
-	  */
-	  Program(node, state) {
-	    const indent = state.indent.repeat(state.indentLevel);
-	    const { lineEnd, writeComments } = state;
-	    if (writeComments && node.comments != null) {
-	      formatComments(state, node.comments, indent, lineEnd);
-	    }
-	    const statements = node.body;
-	    const { length } = statements;
-	    for (let i = 0; i < length; i++) {
-	      const statement = statements[i];
-	      if (writeComments && statement.comments != null) {
-	        formatComments(state, statement.comments, indent, lineEnd);
-	      }
-	      state.write(indent);
-	      this[statement.type](statement, state);
-	      state.write(lineEnd);
-	    }
-	    if (writeComments && node.trailingComments != null) {
-	      formatComments(state, node.trailingComments, indent, lineEnd);
-	    }
-	  },
-	  BlockStatement: (BlockStatement = function (node, state) {
-	    const indent = state.indent.repeat(state.indentLevel++);
-	    const { lineEnd, writeComments } = state;
-	    const statementIndent = indent + state.indent;
-	    state.write('{');
-	    const statements = node.body;
-	    if (statements != null && statements.length > 0) {
-	      state.write(lineEnd);
-	      if (writeComments && node.comments != null) {
-	        formatComments(state, node.comments, statementIndent, lineEnd);
-	      }
-	      const { length } = statements;
-	      for (let i = 0; i < length; i++) {
-	        const statement = statements[i];
-	        if (writeComments && statement.comments != null) {
-	          formatComments(state, statement.comments, statementIndent, lineEnd);
-	        }
-	        state.write(statementIndent);
-	        this[statement.type](statement, state);
-	        state.write(lineEnd);
-	      }
-	      state.write(indent);
-	    } else {
-	      if (writeComments && node.comments != null) {
-	        state.write(lineEnd);
-	        formatComments(state, node.comments, statementIndent, lineEnd);
-	        state.write(indent);
-	      }
-	    }
-	    if (writeComments && node.trailingComments != null) {
-	      formatComments(state, node.trailingComments, statementIndent, lineEnd);
-	    }
-	    state.write('}');
-	    state.indentLevel--;
-	  }),
-	  ClassBody: BlockStatement,
-	  StaticBlock(node, state) {
-	    state.write('static ');
-	    this.BlockStatement(node, state);
-	  },
-	  EmptyStatement(node, state) {
-	    state.write(';');
-	  },
-	  ExpressionStatement(node, state) {
-	    const precedence = state.expressionsPrecedence[node.expression.type];
-	    if (
-	      precedence === NEEDS_PARENTHESES ||
-	      (precedence === 3 && node.expression.left.type[0] === 'O')
-	    ) {
-	      // Should always have parentheses or is an AssignmentExpression to an ObjectPattern
-	      state.write('(');
-	      this[node.expression.type](node.expression, state);
-	      state.write(')');
-	    } else {
-	      this[node.expression.type](node.expression, state);
-	    }
-	    state.write(';');
-	  },
-	  IfStatement(node, state) {
-	    state.write('if (');
-	    this[node.test.type](node.test, state);
-	    state.write(') ');
-	    this[node.consequent.type](node.consequent, state);
-	    if (node.alternate != null) {
-	      state.write(' else ');
-	      this[node.alternate.type](node.alternate, state);
-	    }
-	  },
-	  LabeledStatement(node, state) {
-	    this[node.label.type](node.label, state);
-	    state.write(': ');
-	    this[node.body.type](node.body, state);
-	  },
-	  BreakStatement(node, state) {
-	    state.write('break');
-	    if (node.label != null) {
-	      state.write(' ');
-	      this[node.label.type](node.label, state);
-	    }
-	    state.write(';');
-	  },
-	  ContinueStatement(node, state) {
-	    state.write('continue');
-	    if (node.label != null) {
-	      state.write(' ');
-	      this[node.label.type](node.label, state);
-	    }
-	    state.write(';');
-	  },
-	  WithStatement(node, state) {
-	    state.write('with (');
-	    this[node.object.type](node.object, state);
-	    state.write(') ');
-	    this[node.body.type](node.body, state);
-	  },
-	  SwitchStatement(node, state) {
-	    const indent = state.indent.repeat(state.indentLevel++);
-	    const { lineEnd, writeComments } = state;
-	    state.indentLevel++;
-	    const caseIndent = indent + state.indent;
-	    const statementIndent = caseIndent + state.indent;
-	    state.write('switch (');
-	    this[node.discriminant.type](node.discriminant, state);
-	    state.write(') {' + lineEnd);
-	    const { cases: occurences } = node;
-	    const { length: occurencesCount } = occurences;
-	    for (let i = 0; i < occurencesCount; i++) {
-	      const occurence = occurences[i];
-	      if (writeComments && occurence.comments != null) {
-	        formatComments(state, occurence.comments, caseIndent, lineEnd);
-	      }
-	      if (occurence.test) {
-	        state.write(caseIndent + 'case ');
-	        this[occurence.test.type](occurence.test, state);
-	        state.write(':' + lineEnd);
-	      } else {
-	        state.write(caseIndent + 'default:' + lineEnd);
-	      }
-	      const { consequent } = occurence;
-	      const { length: consequentCount } = consequent;
-	      for (let i = 0; i < consequentCount; i++) {
-	        const statement = consequent[i];
-	        if (writeComments && statement.comments != null) {
-	          formatComments(state, statement.comments, statementIndent, lineEnd);
-	        }
-	        state.write(statementIndent);
-	        this[statement.type](statement, state);
-	        state.write(lineEnd);
-	      }
-	    }
-	    state.indentLevel -= 2;
-	    state.write(indent + '}');
-	  },
-	  ReturnStatement(node, state) {
-	    state.write('return');
-	    if (node.argument) {
-	      state.write(' ');
-	      this[node.argument.type](node.argument, state);
-	    }
-	    state.write(';');
-	  },
-	  ThrowStatement(node, state) {
-	    state.write('throw ');
-	    this[node.argument.type](node.argument, state);
-	    state.write(';');
-	  },
-	  TryStatement(node, state) {
-	    state.write('try ');
-	    this[node.block.type](node.block, state);
-	    if (node.handler) {
-	      const { handler } = node;
-	      if (handler.param == null) {
-	        state.write(' catch ');
-	      } else {
-	        state.write(' catch (');
-	        this[handler.param.type](handler.param, state);
-	        state.write(') ');
-	      }
-	      this[handler.body.type](handler.body, state);
-	    }
-	    if (node.finalizer) {
-	      state.write(' finally ');
-	      this[node.finalizer.type](node.finalizer, state);
-	    }
-	  },
-	  WhileStatement(node, state) {
-	    state.write('while (');
-	    this[node.test.type](node.test, state);
-	    state.write(') ');
-	    this[node.body.type](node.body, state);
-	  },
-	  DoWhileStatement(node, state) {
-	    state.write('do ');
-	    this[node.body.type](node.body, state);
-	    state.write(' while (');
-	    this[node.test.type](node.test, state);
-	    state.write(');');
-	  },
-	  ForStatement(node, state) {
-	    state.write('for (');
-	    if (node.init != null) {
-	      const { init } = node;
-	      if (init.type[0] === 'V') {
-	        formatVariableDeclaration(state, init);
-	      } else {
-	        this[init.type](init, state);
-	      }
-	    }
-	    state.write('; ');
-	    if (node.test) {
-	      this[node.test.type](node.test, state);
-	    }
-	    state.write('; ');
-	    if (node.update) {
-	      this[node.update.type](node.update, state);
-	    }
-	    state.write(') ');
-	    this[node.body.type](node.body, state);
-	  },
-	  ForInStatement: (ForInStatement$1 = function (node, state) {
-	    state.write(`for ${node.await ? 'await ' : ''}(`);
-	    const { left } = node;
-	    if (left.type[0] === 'V') {
-	      formatVariableDeclaration(state, left);
-	    } else {
-	      this[left.type](left, state);
-	    }
-	    // Identifying whether node.type is `ForInStatement` or `ForOfStatement`
-	    state.write(node.type[3] === 'I' ? ' in ' : ' of ');
-	    this[node.right.type](node.right, state);
-	    state.write(') ');
-	    this[node.body.type](node.body, state);
-	  }),
-	  ForOfStatement: ForInStatement$1,
-	  DebuggerStatement(node, state) {
-	    state.write('debugger;', node);
-	  },
-	  FunctionDeclaration: (FunctionDeclaration$1 = function (node, state) {
-	    state.write(
-	      (node.async ? 'async ' : '') +
-	        (node.generator ? 'function* ' : 'function ') +
-	        (node.id ? node.id.name : ''),
-	      node,
-	    );
-	    formatSequence(state, node.params);
-	    state.write(' ');
-	    this[node.body.type](node.body, state);
-	  }),
-	  FunctionExpression: FunctionDeclaration$1,
-	  VariableDeclaration(node, state) {
-	    formatVariableDeclaration(state, node);
-	    state.write(';');
-	  },
-	  VariableDeclarator(node, state) {
-	    this[node.id.type](node.id, state);
-	    if (node.init != null) {
-	      state.write(' = ');
-	      this[node.init.type](node.init, state);
-	    }
-	  },
-	  ClassDeclaration(node, state) {
-	    state.write('class ' + (node.id ? `${node.id.name} ` : ''), node);
-	    if (node.superClass) {
-	      state.write('extends ');
-	      const { superClass } = node;
-	      const { type } = superClass;
-	      const precedence = state.expressionsPrecedence[type];
-	      if (
-	        (type[0] !== 'C' || type[1] !== 'l' || type[5] !== 'E') &&
-	        (precedence === NEEDS_PARENTHESES ||
-	          precedence < state.expressionsPrecedence.ClassExpression)
-	      ) {
-	        // Not a ClassExpression that needs parentheses
-	        state.write('(');
-	        this[node.superClass.type](superClass, state);
-	        state.write(')');
-	      } else {
-	        this[superClass.type](superClass, state);
-	      }
-	      state.write(' ');
-	    }
-	    this.ClassBody(node.body, state);
-	  },
-	  ImportDeclaration(node, state) {
-	    state.write('import ');
-	    const { specifiers, attributes } = node;
-	    const { length } = specifiers;
-	    // TODO: Once babili is fixed, put this after condition
-	    // https://github.com/babel/babili/issues/430
-	    let i = 0;
-	    if (length > 0) {
-	      for (; i < length; ) {
-	        if (i > 0) {
-	          state.write(', ');
-	        }
-	        const specifier = specifiers[i];
-	        const type = specifier.type[6];
-	        if (type === 'D') {
-	          // ImportDefaultSpecifier
-	          state.write(specifier.local.name, specifier);
-	          i++;
-	        } else if (type === 'N') {
-	          // ImportNamespaceSpecifier
-	          state.write('* as ' + specifier.local.name, specifier);
-	          i++;
-	        } else {
-	          // ImportSpecifier
-	          break
-	        }
-	      }
-	      if (i < length) {
-	        state.write('{');
-	        for (;;) {
-	          const specifier = specifiers[i];
-	          const { name } = specifier.imported;
-	          state.write(name, specifier);
-	          if (name !== specifier.local.name) {
-	            state.write(' as ' + specifier.local.name);
-	          }
-	          if (++i < length) {
-	            state.write(', ');
-	          } else {
-	            break
-	          }
-	        }
-	        state.write('}');
-	      }
-	      state.write(' from ');
-	    }
-	    this.Literal(node.source, state);
-
-	    if (attributes && attributes.length > 0) {
-	      state.write(' with { ');
-	      for (let i = 0; i < attributes.length; i++) {
-	        this.ImportAttribute(attributes[i], state);
-	        if (i < attributes.length - 1) state.write(', ');
-	      }
-
-	      state.write(' }');
-	    }
-	    state.write(';');
-	  },
-	  ImportAttribute(node, state) {
-	    this.Identifier(node.key, state);
-	    state.write(': ');
-	    this.Literal(node.value, state);
-	  },
-	  ImportExpression(node, state) {
-	    state.write('import(');
-	    this[node.source.type](node.source, state);
-	    state.write(')');
-	  },
-	  ExportDefaultDeclaration(node, state) {
-	    state.write('export default ');
-	    this[node.declaration.type](node.declaration, state);
-	    if (
-	      state.expressionsPrecedence[node.declaration.type] != null &&
-	      node.declaration.type[0] !== 'F'
-	    ) {
-	      // All expression nodes except `FunctionExpression`
-	      state.write(';');
-	    }
-	  },
-	  ExportNamedDeclaration(node, state) {
-	    state.write('export ');
-	    if (node.declaration) {
-	      this[node.declaration.type](node.declaration, state);
-	    } else {
-	      state.write('{');
-	      const { specifiers } = node,
-	        { length } = specifiers;
-	      if (length > 0) {
-	        for (let i = 0; ; ) {
-	          const specifier = specifiers[i];
-	          const { name } = specifier.local;
-	          state.write(name, specifier);
-	          if (name !== specifier.exported.name) {
-	            state.write(' as ' + specifier.exported.name);
-	          }
-	          if (++i < length) {
-	            state.write(', ');
-	          } else {
-	            break
-	          }
-	        }
-	      }
-	      state.write('}');
-	      if (node.source) {
-	        state.write(' from ');
-	        this.Literal(node.source, state);
-	      }
-
-	      if (node.attributes && node.attributes.length > 0) {
-	        state.write(' with { ');
-	        for (let i = 0; i < node.attributes.length; i++) {
-	          this.ImportAttribute(node.attributes[i], state);
-	          if (i < node.attributes.length - 1) state.write(', ');
-	        }
-
-	        state.write(' }');
-	      }
-
-	      state.write(';');
-	    }
-	  },
-	  ExportAllDeclaration(node, state) {
-	    if (node.exported != null) {
-	      state.write('export * as ' + node.exported.name + ' from ');
-	    } else {
-	      state.write('export * from ');
-	    }
-	    this.Literal(node.source, state);
-
-	    if (node.attributes && node.attributes.length > 0) {
-	      state.write(' with { ');
-	      for (let i = 0; i < node.attributes.length; i++) {
-	        this.ImportAttribute(node.attributes[i], state);
-	        if (i < node.attributes.length - 1) state.write(', ');
-	      }
-
-	      state.write(' }');
-	    }
-
-	    state.write(';');
-	  },
-	  MethodDefinition(node, state) {
-	    if (node.static) {
-	      state.write('static ');
-	    }
-	    const kind = node.kind[0];
-	    if (kind === 'g' || kind === 's') {
-	      // Getter or setter
-	      state.write(node.kind + ' ');
-	    }
-	    if (node.value.async) {
-	      state.write('async ');
-	    }
-	    if (node.value.generator) {
-	      state.write('*');
-	    }
-	    if (node.computed) {
-	      state.write('[');
-	      this[node.key.type](node.key, state);
-	      state.write(']');
-	    } else {
-	      this[node.key.type](node.key, state);
-	    }
-	    formatSequence(state, node.value.params);
-	    state.write(' ');
-	    this[node.value.body.type](node.value.body, state);
-	  },
-	  ClassExpression(node, state) {
-	    this.ClassDeclaration(node, state);
-	  },
-	  ArrowFunctionExpression(node, state) {
-	    state.write(node.async ? 'async ' : '', node);
-	    const { params } = node;
-	    if (params != null) {
-	      // Omit parenthesis if only one named parameter
-	      if (params.length === 1 && params[0].type[0] === 'I') {
-	        // If params[0].type[0] starts with 'I', it can't be `ImportDeclaration` nor `IfStatement` and thus is `Identifier`
-	        state.write(params[0].name, params[0]);
-	      } else {
-	        formatSequence(state, node.params);
-	      }
-	    }
-	    state.write(' => ');
-	    if (node.body.type[0] === 'O') {
-	      // Body is an object expression
-	      state.write('(');
-	      this.ObjectExpression(node.body, state);
-	      state.write(')');
-	    } else {
-	      this[node.body.type](node.body, state);
-	    }
-	  },
-	  ThisExpression(node, state) {
-	    state.write('this', node);
-	  },
-	  Super(node, state) {
-	    state.write('super', node);
-	  },
-	  RestElement: (RestElement$1 = function (node, state) {
-	    state.write('...');
-	    this[node.argument.type](node.argument, state);
-	  }),
-	  SpreadElement: RestElement$1,
-	  YieldExpression(node, state) {
-	    state.write(node.delegate ? 'yield*' : 'yield');
-	    if (node.argument) {
-	      state.write(' ');
-	      this[node.argument.type](node.argument, state);
-	    }
-	  },
-	  AwaitExpression(node, state) {
-	    state.write('await ', node);
-	    formatExpression(state, node.argument, node);
-	  },
-	  TemplateLiteral(node, state) {
-	    const { quasis, expressions } = node;
-	    state.write('`');
-	    const { length } = expressions;
-	    for (let i = 0; i < length; i++) {
-	      const expression = expressions[i];
-	      const quasi = quasis[i];
-	      state.write(quasi.value.raw, quasi);
-	      state.write('${');
-	      this[expression.type](expression, state);
-	      state.write('}');
-	    }
-	    const quasi = quasis[quasis.length - 1];
-	    state.write(quasi.value.raw, quasi);
-	    state.write('`');
-	  },
-	  TemplateElement(node, state) {
-	    state.write(node.value.raw, node);
-	  },
-	  TaggedTemplateExpression(node, state) {
-	    formatExpression(state, node.tag, node);
-	    this[node.quasi.type](node.quasi, state);
-	  },
-	  ArrayExpression: (ArrayExpression$1 = function (node, state) {
-	    state.write('[');
-	    if (node.elements.length > 0) {
-	      const { elements } = node,
-	        { length } = elements;
-	      for (let i = 0; ; ) {
-	        const element = elements[i];
-	        if (element != null) {
-	          this[element.type](element, state);
-	        }
-	        if (++i < length) {
-	          state.write(', ');
-	        } else {
-	          if (element == null) {
-	            state.write(', ');
-	          }
-	          break
-	        }
-	      }
-	    }
-	    state.write(']');
-	  }),
-	  ArrayPattern: ArrayExpression$1,
-	  ObjectExpression(node, state) {
-	    const indent = state.indent.repeat(state.indentLevel++);
-	    const { lineEnd, writeComments } = state;
-	    const propertyIndent = indent + state.indent;
-	    state.write('{');
-	    if (node.properties.length > 0) {
-	      state.write(lineEnd);
-	      if (writeComments && node.comments != null) {
-	        formatComments(state, node.comments, propertyIndent, lineEnd);
-	      }
-	      const comma = ',' + lineEnd;
-	      const { properties } = node,
-	        { length } = properties;
-	      for (let i = 0; ; ) {
-	        const property = properties[i];
-	        if (writeComments && property.comments != null) {
-	          formatComments(state, property.comments, propertyIndent, lineEnd);
-	        }
-	        state.write(propertyIndent);
-	        this[property.type](property, state);
-	        if (++i < length) {
-	          state.write(comma);
-	        } else {
-	          break
-	        }
-	      }
-	      state.write(lineEnd);
-	      if (writeComments && node.trailingComments != null) {
-	        formatComments(state, node.trailingComments, propertyIndent, lineEnd);
-	      }
-	      state.write(indent + '}');
-	    } else if (writeComments) {
-	      if (node.comments != null) {
-	        state.write(lineEnd);
-	        formatComments(state, node.comments, propertyIndent, lineEnd);
-	        if (node.trailingComments != null) {
-	          formatComments(state, node.trailingComments, propertyIndent, lineEnd);
-	        }
-	        state.write(indent + '}');
-	      } else if (node.trailingComments != null) {
-	        state.write(lineEnd);
-	        formatComments(state, node.trailingComments, propertyIndent, lineEnd);
-	        state.write(indent + '}');
-	      } else {
-	        state.write('}');
-	      }
-	    } else {
-	      state.write('}');
-	    }
-	    state.indentLevel--;
-	  },
-	  Property(node, state) {
-	    if (node.method || node.kind[0] !== 'i') {
-	      // Either a method or of kind `set` or `get` (not `init`)
-	      this.MethodDefinition(node, state);
-	    } else {
-	      if (!node.shorthand) {
-	        if (node.computed) {
-	          state.write('[');
-	          this[node.key.type](node.key, state);
-	          state.write(']');
-	        } else {
-	          this[node.key.type](node.key, state);
-	        }
-	        state.write(': ');
-	      }
-	      this[node.value.type](node.value, state);
-	    }
-	  },
-	  PropertyDefinition(node, state) {
-	    if (node.static) {
-	      state.write('static ');
-	    }
-	    if (node.computed) {
-	      state.write('[');
-	    }
-	    this[node.key.type](node.key, state);
-	    if (node.computed) {
-	      state.write(']');
-	    }
-	    if (node.value == null) {
-	      if (node.key.type[0] !== 'F') {
-	        state.write(';');
-	      }
-	      return
-	    }
-	    state.write(' = ');
-	    this[node.value.type](node.value, state);
-	    state.write(';');
-	  },
-	  ObjectPattern(node, state) {
-	    state.write('{');
-	    if (node.properties.length > 0) {
-	      const { properties } = node,
-	        { length } = properties;
-	      for (let i = 0; ; ) {
-	        this[properties[i].type](properties[i], state);
-	        if (++i < length) {
-	          state.write(', ');
-	        } else {
-	          break
-	        }
-	      }
-	    }
-	    state.write('}');
-	  },
-	  SequenceExpression(node, state) {
-	    formatSequence(state, node.expressions);
-	  },
-	  UnaryExpression(node, state) {
-	    if (node.prefix) {
-	      const {
-	        operator,
-	        argument,
-	        argument: { type },
-	      } = node;
-	      state.write(operator);
-	      const needsParentheses = expressionNeedsParenthesis(state, argument, node);
-	      if (
-	        !needsParentheses &&
-	        (operator.length > 1 ||
-	          (type[0] === 'U' &&
-	            (type[1] === 'n' || type[1] === 'p') &&
-	            argument.prefix &&
-	            argument.operator[0] === operator &&
-	            (operator === '+' || operator === '-')))
-	      ) {
-	        // Large operator or argument is UnaryExpression or UpdateExpression node
-	        state.write(' ');
-	      }
-	      if (needsParentheses) {
-	        state.write(operator.length > 1 ? ' (' : '(');
-	        this[type](argument, state);
-	        state.write(')');
-	      } else {
-	        this[type](argument, state);
-	      }
-	    } else {
-	      // FIXME: This case never occurs
-	      this[node.argument.type](node.argument, state);
-	      state.write(node.operator);
-	    }
-	  },
-	  UpdateExpression(node, state) {
-	    // Always applied to identifiers or members, no parenthesis check needed
-	    if (node.prefix) {
-	      state.write(node.operator);
-	      this[node.argument.type](node.argument, state);
-	    } else {
-	      this[node.argument.type](node.argument, state);
-	      state.write(node.operator);
-	    }
-	  },
-	  AssignmentExpression(node, state) {
-	    this[node.left.type](node.left, state);
-	    state.write(' ' + node.operator + ' ');
-	    this[node.right.type](node.right, state);
-	  },
-	  AssignmentPattern(node, state) {
-	    this[node.left.type](node.left, state);
-	    state.write(' = ');
-	    this[node.right.type](node.right, state);
-	  },
-	  BinaryExpression: (BinaryExpression$1 = function (node, state) {
-	    const isIn = node.operator === 'in';
-	    if (isIn) {
-	      // Avoids confusion in `for` loops initializers
-	      state.write('(');
-	    }
-	    formatExpression(state, node.left, node, false);
-	    state.write(' ' + node.operator + ' ');
-	    formatExpression(state, node.right, node, true);
-	    if (isIn) {
-	      state.write(')');
-	    }
-	  }),
-	  LogicalExpression: BinaryExpression$1,
-	  ConditionalExpression(node, state) {
-	    const { test } = node;
-	    const precedence = state.expressionsPrecedence[test.type];
-	    if (
-	      precedence === NEEDS_PARENTHESES ||
-	      precedence <= state.expressionsPrecedence.ConditionalExpression
-	    ) {
-	      state.write('(');
-	      this[test.type](test, state);
-	      state.write(')');
-	    } else {
-	      this[test.type](test, state);
-	    }
-	    state.write(' ? ');
-	    this[node.consequent.type](node.consequent, state);
-	    state.write(' : ');
-	    this[node.alternate.type](node.alternate, state);
-	  },
-	  NewExpression(node, state) {
-	    state.write('new ');
-	    const precedence = state.expressionsPrecedence[node.callee.type];
-	    if (
-	      precedence === NEEDS_PARENTHESES ||
-	      precedence < state.expressionsPrecedence.CallExpression ||
-	      hasCallExpression(node.callee)
-	    ) {
-	      state.write('(');
-	      this[node.callee.type](node.callee, state);
-	      state.write(')');
-	    } else {
-	      this[node.callee.type](node.callee, state);
-	    }
-	    formatSequence(state, node['arguments']);
-	  },
-	  CallExpression(node, state) {
-	    const precedence = state.expressionsPrecedence[node.callee.type];
-	    if (
-	      precedence === NEEDS_PARENTHESES ||
-	      precedence < state.expressionsPrecedence.CallExpression
-	    ) {
-	      state.write('(');
-	      this[node.callee.type](node.callee, state);
-	      state.write(')');
-	    } else {
-	      this[node.callee.type](node.callee, state);
-	    }
-	    if (node.optional) {
-	      state.write('?.');
-	    }
-	    formatSequence(state, node['arguments']);
-	  },
-	  ChainExpression(node, state) {
-	    this[node.expression.type](node.expression, state);
-	  },
-	  MemberExpression(node, state) {
-	    const precedence = state.expressionsPrecedence[node.object.type];
-	    if (
-	      precedence === NEEDS_PARENTHESES ||
-	      precedence < state.expressionsPrecedence.MemberExpression
-	    ) {
-	      state.write('(');
-	      this[node.object.type](node.object, state);
-	      state.write(')');
-	    } else {
-	      this[node.object.type](node.object, state);
-	    }
-	    if (node.computed) {
-	      if (node.optional) {
-	        state.write('?.');
-	      }
-	      state.write('[');
-	      this[node.property.type](node.property, state);
-	      state.write(']');
-	    } else {
-	      if (node.optional) {
-	        state.write('?.');
-	      } else {
-	        state.write('.');
-	      }
-	      this[node.property.type](node.property, state);
-	    }
-	  },
-	  MetaProperty(node, state) {
-	    state.write(node.meta.name + '.' + node.property.name, node);
-	  },
-	  Identifier(node, state) {
-	    state.write(node.name, node);
-	  },
-	  PrivateIdentifier(node, state) {
-	    state.write(`#${node.name}`, node);
-	  },
-	  Literal(node, state) {
-	    if (node.raw != null) {
-	      // Non-standard property
-	      state.write(node.raw, node);
-	    } else if (node.regex != null) {
-	      this.RegExpLiteral(node, state);
-	    } else if (node.bigint != null) {
-	      state.write(node.bigint + 'n', node);
-	    } else {
-	      state.write(stringify(node.value), node);
-	    }
-	  },
-	  RegExpLiteral(node, state) {
-	    const { regex } = node;
-	    state.write(`/${regex.pattern}/${regex.flags}`, node);
-	  },
-	};
-
-	const EMPTY_OBJECT = {};
-
-	class State {
-	  constructor(options) {
-	    const setup = options == null ? EMPTY_OBJECT : options;
-	    this.output = '';
-	    // Functional options
-	    if (setup.output != null) {
-	      this.output = setup.output;
-	      this.write = this.writeToStream;
-	    } else {
-	      this.output = '';
-	    }
-	    this.generator = setup.generator != null ? setup.generator : GENERATOR;
-	    this.expressionsPrecedence =
-	      setup.expressionsPrecedence != null
-	        ? setup.expressionsPrecedence
-	        : EXPRESSIONS_PRECEDENCE;
-	    // Formating setup
-	    this.indent = setup.indent != null ? setup.indent : '  ';
-	    this.lineEnd = setup.lineEnd != null ? setup.lineEnd : '\n';
-	    this.indentLevel =
-	      setup.startingIndentLevel != null ? setup.startingIndentLevel : 0;
-	    this.writeComments = setup.comments ? setup.comments : false;
-	    // Source map
-	    if (setup.sourceMap != null) {
-	      this.write =
-	        setup.output == null ? this.writeAndMap : this.writeToStreamAndMap;
-	      this.sourceMap = setup.sourceMap;
-	      this.line = 1;
-	      this.column = 0;
-	      this.lineEndSize = this.lineEnd.split('\n').length - 1;
-	      this.mapping = {
-	        original: null,
-	        // Uses the entire state to avoid generating ephemeral objects
-	        generated: this,
-	        name: undefined,
-	        source: setup.sourceMap.file || setup.sourceMap._file,
-	      };
-	    }
-	  }
-
-	  write(code) {
-	    this.output += code;
-	  }
-
-	  writeToStream(code) {
-	    this.output.write(code);
-	  }
-
-	  writeAndMap(code, node) {
-	    this.output += code;
-	    this.map(code, node);
-	  }
-
-	  writeToStreamAndMap(code, node) {
-	    this.output.write(code);
-	    this.map(code, node);
-	  }
-
-	  map(code, node) {
-	    if (node != null) {
-	      const { type } = node;
-	      if (type[0] === 'L' && type[2] === 'n') {
-	        // LineComment
-	        this.column = 0;
-	        this.line++;
-	        return
-	      }
-	      if (node.loc != null) {
-	        const { mapping } = this;
-	        mapping.original = node.loc.start;
-	        mapping.name = node.name;
-	        this.sourceMap.addMapping(mapping);
-	      }
-	      if (
-	        (type[0] === 'T' && type[8] === 'E') ||
-	        (type[0] === 'L' && type[1] === 'i' && typeof node.value === 'string')
-	      ) {
-	        // TemplateElement or Literal string node
-	        const { length } = code;
-	        let { column, line } = this;
-	        for (let i = 0; i < length; i++) {
-	          if (code[i] === '\n') {
-	            column = 0;
-	            line++;
-	          } else {
-	            column++;
-	          }
-	        }
-	        this.column = column;
-	        this.line = line;
-	        return
-	      }
-	    }
-	    const { length } = code;
-	    const { lineEnd } = this;
-	    if (length > 0) {
-	      if (
-	        this.lineEndSize > 0 &&
-	        (lineEnd.length === 1
-	          ? code[length - 1] === lineEnd
-	          : code.endsWith(lineEnd))
-	      ) {
-	        this.line += this.lineEndSize;
-	        this.column = 0;
-	      } else {
-	        this.column += length;
-	      }
-	    }
-	  }
-
-	  toString() {
-	    return this.output
-	  }
-	}
-
-	function generate(node, options) {
-	  /*
-	  Returns a string representing the rendered code of the provided AST `node`.
-	  The `options` are:
-
-	  - `indent`: string to use for indentation (defaults to `␣␣`)
-	  - `lineEnd`: string to use for line endings (defaults to `\n`)
-	  - `startingIndentLevel`: indent level to start from (defaults to `0`)
-	  - `comments`: generate comments if `true` (defaults to `false`)
-	  - `output`: output stream to write the rendered code to (defaults to `null`)
-	  - `generator`: custom code generator (defaults to `GENERATOR`)
-	  - `expressionsPrecedence`: custom map of node types and their precedence level (defaults to `EXPRESSIONS_PRECEDENCE`)
-	  */
-	  const state = new State(options);
-	  // Travel through the AST node and generate the code
-	  state.generator[node.type](node, state);
-	  return state.output
 	}
 
 	let ForInStatement, FunctionDeclaration, RestElement, BinaryExpression, ArrayExpression, Block$1, MethodDefinition;
@@ -19779,6 +20555,8 @@
 	        "Cmd-D": ["editor:duplicateLine"],
 	        "Cmd-M": ["masterEffects:toggle"],
 	        "Shift-Ctrl-M": ["masterEffects:toggle"],
+	        "Cmd-I": ["impromptu:trigger"],
+	        "Shift-Ctrl-I": ["impromptu:toggleModal"],
 	        "Shift-Ctrl-K": ["editor:commentLine"],
 	        "Shift-Ctrl-C": ["gallery:search"],
 	        "Shift-Ctrl-S": ["screencap"],
@@ -20223,7 +21001,8 @@
 	window.Modules = {
 	  SketchManager,
 	  FeedbackManager,
-	  MasterEffectsManager
+	  MasterEffectsManager,
+	  ImpromptuMutatorManager
 	};
 	if (typeof window !== "undefined" && window.HydraliskPlugins) {
 	  window.HydraliskPlugins.register({
@@ -20234,6 +21013,17 @@
 	        window.sketchManager = new window.Modules.SketchManager();
 	        setTimeout(() => window.sketchManager.inject(), 100);
 	        app.expose("sketchManager", window.sketchManager);
+	      }
+	    }
+	  });
+	  window.HydraliskPlugins.register({
+	    id: "impromptu-mutator",
+	    name: "Impromptu Mutator & MIDI Burst",
+	    init(app) {
+	      if (window.Modules && window.Modules.ImpromptuMutatorManager) {
+	        window.impromptuMutatorManager = new window.Modules.ImpromptuMutatorManager();
+	        window.impromptuMutatorManager.init(app);
+	        app.expose("impromptuMutatorManager", window.impromptuMutatorManager);
 	      }
 	    }
 	  });

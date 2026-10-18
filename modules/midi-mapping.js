@@ -93,6 +93,20 @@
       action: "hideAll",
       label: "Hide/Show UI"
     },
+    "impromptu:trigger": {
+      action: "impromptu:trigger",
+      label: "Impromptu Mutation Trigger (Press)"
+    },
+    "impromptu:mutationCC": {
+      callback: (value) => {
+        if (window.impromptuMutator && typeof window.impromptuMutator.setCC === "function") {
+          window.impromptuMutator.setCC(value);
+        } else if (window.xemitter) {
+          window.xemitter.emit("impromptu:setCC", value);
+        }
+      },
+      label: "Impromptu Mutation (CC Dial: 0-10)"
+    },
     // Example CC bind - callback receives normalized value (0-1)
     speed: {
       callback: (value) => {
@@ -412,6 +426,11 @@
       toggle: toggleModal,
       render: renderModal,
       getMapping: getFullMapping,
+      registerAction: (id, config) => {
+        if (id && config) {
+          MAPPABLE_ACTIONS[id] = config;
+        }
+      },
     };
 
     console.log("MIDI Mapping module loaded");
