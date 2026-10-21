@@ -56,8 +56,21 @@ export function pushMutationHistory(code) {
 }
 
 export function triggerMutation() {
+  const startTime = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+  console.log('[Mutator] Mutation requested');
+  if (typeof window !== 'undefined' && window.xemitter && typeof window.xemitter.emit === 'function') {
+    window.xemitter.emit('mutation:requested', { source: 'player' });
+  }
+
   const currentCode = getState().editorCode;
   const newCode = mutateCode(currentCode, Math.random() > 0.5);
+  const duration = ((typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now()) - startTime;
+  console.log(`[Mutator] Mutation calculation completed in ${duration.toFixed(2)}ms`);
+
+  if (typeof window !== 'undefined' && window.xemitter && typeof window.xemitter.emit === 'function') {
+    window.xemitter.emit('mutation:done', { duration, source: 'player' });
+  }
+
   if (newCode === currentCode) return;
 
   try {

@@ -9,6 +9,7 @@
     "build": "rollup -c",
     "watch": "rollup -c --watch",
     "dev": "concurrently \"npm:watch\" \"npm:start\"",
+    "test": "node --test test/**/*.test.js",
     "encode-credentials": "node scripts/encode-credentials.js"
   },
   "_dependencies": "DEPENDENCIES SHOULD BE EMPTY, IT'S A STATIC SITE",

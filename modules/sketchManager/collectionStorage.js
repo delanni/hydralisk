@@ -119,7 +119,7 @@ export default class CollectionStorage {
         const entry = Object.keys(itemMeta).length > 0
             ? { sketchId: sketchIdOrName, ...itemMeta }
             : sketchIdOrName;
-        col.sketchIds.push(entry);
+        col.sketchIds.unshift(entry);
         col.updatedAt = new Date().toISOString();
         this._write(state);
     }
@@ -129,12 +129,14 @@ export default class CollectionStorage {
         const col = state.collections.find((c) => c.id === collectionId);
         if (!col || !Array.isArray(sketchIdOrNameList)) return;
         const existingSet = new Set(col.sketchIds.map(item => typeof item === 'string' ? item : item?.sketchId));
+        const toAdd = [];
         sketchIdOrNameList.forEach(id => {
             if (id && !existingSet.has(id)) {
-                col.sketchIds.push(id);
+                toAdd.push(id);
                 existingSet.add(id);
             }
         });
+        col.sketchIds = [...toAdd, ...col.sketchIds];
         col.updatedAt = new Date().toISOString();
         this._write(state);
     }
