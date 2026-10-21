@@ -1016,17 +1016,7 @@ body {
   pointer-events: auto;
 }
 
-.midi-mapping-modal {
-  background: var(--bg-glass-heavy) !important;
-  border: 1px solid var(--border-glass) !important;
-  border-radius: 16px !important;
-  padding: 24px !important;
-  width: 90% !important;
-  max-width: 500px !important;
-  box-shadow: var(--shadow-premium) !important;
-  font-family: var(--font-sans) !important;
-  color: var(--text-primary) !important;
-}
+/* MIDI mapping modal styles are unified in css/midi-mapping.css */
 /* ==========================================================================
    Component styles (formerly inline styles in player.html)
    ========================================================================== */

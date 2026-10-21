@@ -300,8 +300,6 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         "Cmd-D": ["editor:duplicateLine"],
         "Cmd-M": ["masterEffects:toggle"],
         "Shift-Ctrl-M": ["masterEffects:toggle"],
-        "Cmd-I": ["impromptu:trigger"],
-        "Shift-Ctrl-I": ["impromptu:toggleModal"],
         "Shift-Ctrl-K": ["editor:commentLine"],
         "Shift-Ctrl-C": ["gallery:search"],
         "Shift-Ctrl-S": ["screencap"],

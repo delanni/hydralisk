@@ -9,24 +9,30 @@
 
 import * as acorn from 'acorn';
 
-export const MASTER_EFFECTS = [
+/**
+ * Built-in presets. `chain` holds only the function-chain body; the
+ * `/* [master-effects-start:id] *\/ ... /* [master-effects-end] *\/` markers are
+ * added at apply time (see buildEffectChain), so user-edited presets can't break them.
+ *
+ * All controls use midix() on the A-D virtual CC slots, eased over two beats
+ * (duration re-evaluated every frame so it follows tap tempo).
+ */
+export const DEFAULT_MASTER_EFFECTS = [
   {
     id: 'hsl_plus',
     name: 'HSL+ & Zoom',
     tag: 'Color & Framing',
     icon: '🎨',
     description: 'Master color grade & zoom framing. Smooth hue rotation, saturation punch, contrast, and scale.',
-    chain: `/* [master-effects-start:hsl_plus] */
-  .hue(() => midi("b1", { min: -1, max: 1 }))
-  .saturate(() => midi("b2", { min: 0, max: 3 }))
-  .contrast(() => midi("b3", { min: 0.2, max: 2.5 }))
-  .scale(() => midi("b4", { min: 0.5, max: 2.5 }))
-/* [master-effects-end] */`,
+    chain: `.hue(midix("A", { min: -1, max: 1, default: 0, ease: "sine", duration: () => beatMs(2) }))
+  .saturate(midix("B", { min: 0, max: 3, default: 1, ease: "cubic", duration: () => beatMs(2) }))
+  .contrast(midix("C", { min: 0.2, max: 2.5, default: 1, ease: "quad", duration: () => beatMs(2) }))
+  .scale(midix("D", { min: 0.5, max: 2.5, default: 1, ease: "outCubic", duration: () => beatMs(2) }))`,
     controls: [
-      { cc: 'b1', label: 'Hue Shift', min: -1, max: 1, default: 0, unit: 'deg' },
-      { cc: 'b2', label: 'Saturation', min: 0, max: 3, default: 1, unit: 'x' },
-      { cc: 'b3', label: 'Contrast', min: 0.2, max: 2.5, default: 1, unit: 'x' },
-      { cc: 'b4', label: 'Zoom (Scale)', min: 0.5, max: 2.5, default: 1, unit: 'x' }
+      { cc: 'A', label: 'Hue Shift', min: -1, max: 1, default: 0, unit: 'deg' },
+      { cc: 'B', label: 'Saturation', min: 0, max: 3, default: 1, unit: 'x' },
+      { cc: 'C', label: 'Contrast', min: 0.2, max: 2.5, default: 1, unit: 'x' },
+      { cc: 'D', label: 'Zoom (Scale)', min: 0.5, max: 2.5, default: 1, unit: 'x' }
     ]
   },
   {
@@ -35,15 +41,15 @@ export const MASTER_EFFECTS = [
     tag: 'Symmetry & Motion',
     icon: '🌀',
     description: 'Hypnotic radial geometry. Real-time kaleidoscope segments, continuous rotation, and color inversion.',
-    chain: `/* [master-effects-start:psyche_warp] */
-  .kaleid(() => Math.floor(midi("b5", { min: 1, max: 8 })))
-  .rotate(() => midi("b6", { min: -1, max: 1 }))
-  .invert(() => midi("b7", { min: 0, max: 1 }))
-/* [master-effects-end] */`,
+    chain: `.kaleid(midix("A", { min: 1, max: 8, default: 1, ease: "linear", duration: () => beatMs(2), transform: Math.floor }))
+  .rotate(midix("B", { min: -1, max: 1, default: 0, ease: "sine", duration: () => beatMs(2) }))
+  .invert(midix("C", { min: 0, max: 1, default: 0, ease: "expo", duration: () => beatMs(2) }))
+  .scale(midix("D", { min: 0.6, max: 1.8, default: 1, ease: "cubic", duration: () => beatMs(2) }))`,
     controls: [
-      { cc: 'b5', label: 'Kaleid Segments', min: 1, max: 8, default: 1, unit: 'sides' },
-      { cc: 'b6', label: 'Rotation Angle', min: -1, max: 1, default: 0, unit: 'rad' },
-      { cc: 'b7', label: 'Invert Flash', min: 0, max: 1, default: 0, unit: 'mix' }
+      { cc: 'A', label: 'Kaleid Segments', min: 1, max: 8, default: 1, unit: 'sides' },
+      { cc: 'B', label: 'Rotation Angle', min: -1, max: 1, default: 0, unit: 'rad' },
+      { cc: 'C', label: 'Invert Flash', min: 0, max: 1, default: 0, unit: 'mix' },
+      { cc: 'D', label: 'Scale Zoom', min: 0.6, max: 1.8, default: 1, unit: 'x' }
     ]
   },
   {
@@ -52,15 +58,15 @@ export const MASTER_EFFECTS = [
     tag: 'Digital Artifacts',
     icon: '⚡',
     description: 'Post-digital bitcrush. Colorama rainbow prism shifting, pixelation crunch, and posterization.',
-    chain: `/* [master-effects-start:cyber_glitch] */
-  .colorama(() => midi("b5", { min: 0, max: 0.5 }))
-  .pixelate(() => midi("b6", { min: 16, max: 256 }), () => midi("b6", { min: 16, max: 256 }))
-  .posterize(() => midi("b7", { min: 2, max: 16 }))
-/* [master-effects-end] */`,
+    chain: `.colorama(midix("A", { min: 0, max: 0.5, default: 0, ease: "expo", duration: () => beatMs(2) }))
+  .pixelate(midix("B", { min: 16, max: 256, default: 256, ease: "quad", duration: () => beatMs(2), transform: Math.round }), midix("B", { min: 16, max: 256, default: 256, ease: "quad", duration: () => beatMs(2), transform: Math.round }))
+  .posterize(midix("C", { min: 2, max: 16, default: 16, ease: "linear", duration: () => beatMs(2), transform: Math.floor }))
+  .contrast(midix("D", { min: 0.8, max: 2.5, default: 1, ease: "outCubic", duration: () => beatMs(2) }))`,
     controls: [
-      { cc: 'b5', label: 'Prism Colorama', min: 0, max: 0.5, default: 0, unit: 'shift' },
-      { cc: 'b6', label: 'Pixel Res', min: 16, max: 256, default: 256, unit: 'px' },
-      { cc: 'b7', label: 'Posterize Bins', min: 2, max: 16, default: 16, unit: 'steps' }
+      { cc: 'A', label: 'Prism Colorama', min: 0, max: 0.5, default: 0, unit: 'shift' },
+      { cc: 'B', label: 'Pixel Res', min: 16, max: 256, default: 256, unit: 'px' },
+      { cc: 'C', label: 'Posterize Bins', min: 2, max: 16, default: 16, unit: 'steps' },
+      { cc: 'D', label: 'Contrast', min: 0.8, max: 2.5, default: 1, unit: 'x' }
     ]
   },
   {
@@ -69,17 +75,144 @@ export const MASTER_EFFECTS = [
     tag: 'Feedback & Trails',
     icon: '✨',
     description: 'Ethereal trails & threshold glow. Luma keying with modulated screen feedback and chromatic warmth.',
-    chain: `/* [master-effects-start:luma_echo] */
-  .luma(() => midi("b5", { min: 0.05, max: 0.8 }))
+    chain: `.luma(midix("A", { min: 0.05, max: 0.8, default: 0.1, ease: "cubic", duration: () => beatMs(2) }))
   .color(1.1, 0.95, 1.05)
-  .modulate(o0, () => midi("b6", { min: 0, max: 0.2 }))
-/* [master-effects-end] */`,
+  .modulate(o0, midix("B", { min: 0, max: 0.25, default: 0, ease: "sine", duration: () => beatMs(2) }))
+  .scale(midix("C", { min: 0.9, max: 1.2, default: 1.01, ease: "quad", duration: () => beatMs(2) }))`,
     controls: [
-      { cc: 'b5', label: 'Luma Cutoff', min: 0.05, max: 0.8, default: 0.1, unit: 'thresh' },
-      { cc: 'b6', label: 'Feedback Warp', min: 0, max: 0.2, default: 0, unit: 'depth' }
+      { cc: 'A', label: 'Luma Cutoff', min: 0.05, max: 0.8, default: 0.1, unit: 'thresh' },
+      { cc: 'B', label: 'Feedback Warp', min: 0, max: 0.25, default: 0, unit: 'depth' },
+      { cc: 'C', label: 'Echo Scale', min: 0.9, max: 1.2, default: 1.01, unit: 'x' }
     ]
   }
 ];
+
+export const MASTER_EFFECTS_STORAGE_KEY = 'hydralisk.masterEffects';
+
+const MARKER_START_RE = /\/\*\s*\[master-effects-start:[a-zA-Z0-9_-]+\]\s*\*\/\s*/g;
+const MARKER_END_RE = /\s*\/\*\s*\[master-effects-end\]\s*\*\//g;
+
+/** Strip any marker comments from a chain body (handles legacy chains that embedded them). */
+export function stripEffectMarkers(chain = '') {
+  return String(chain).replace(MARKER_START_RE, '').replace(MARKER_END_RE, '').trim();
+}
+
+/** Wrap a preset's chain body with the start/end markers used for idempotent replacement. */
+export function buildEffectChain(effect) {
+  return `/* [master-effects-start:${effect.id}] */\n  ${stripEffectMarkers(effect.chain)}\n/* [master-effects-end] */`;
+}
+
+const readNum = (opts, key) => {
+  const m = new RegExp(`\\b${key}\\s*:\\s*(-?\\d*\\.?\\d+(?:e-?\\d+)?)`).exec(opts || '');
+  return m ? parseFloat(m[1]) : undefined;
+};
+
+/**
+ * Derive the control list from midi()/midix() calls in a chain body.
+ * Keeps label/unit from previous controls with the same cc; otherwise labels
+ * the control after the hydra method it's an argument of (e.g. ".hue(" -> "hue").
+ */
+export function deriveControls(chain, previous = []) {
+  const body = stripEffectMarkers(chain);
+  const re = /\bmidix?\(\s*["']([A-Za-z0-9]+)["']/g;
+  const controls = [];
+  const seen = new Set();
+  let m;
+  while ((m = re.exec(body)) !== null) {
+    const cc = m[1];
+    if (seen.has(cc)) continue;
+    seen.add(cc);
+    let opts = '';
+    const afterCC = body.slice(m.index + m[0].length);
+    const commaIdx = afterCC.indexOf(',');
+    const closeParenIdx = afterCC.indexOf(')');
+    if (commaIdx !== -1 && (closeParenIdx === -1 || commaIdx < closeParenIdx)) {
+      const braceStart = afterCC.indexOf('{', commaIdx);
+      if (braceStart !== -1 && (closeParenIdx === -1 || braceStart < closeParenIdx)) {
+        let depth = 0;
+        let braceEnd = -1;
+        for (let i = braceStart; i < afterCC.length; i++) {
+          if (afterCC[i] === '{') depth++;
+          else if (afterCC[i] === '}') {
+            depth--;
+            if (depth === 0) {
+              braceEnd = i;
+              break;
+            }
+          }
+        }
+        if (braceEnd !== -1) {
+          opts = afterCC.slice(braceStart + 1, braceEnd);
+        }
+      }
+    }
+    const min = readNum(opts, 'min') ?? 0;
+    const max = readNum(opts, 'max') ?? 1;
+    const def = readNum(opts, 'default') ?? (min + max) / 2;
+    const prev = previous.find((c) => c.cc === cc);
+    const methods = [...body.slice(0, m.index).matchAll(/\.(\w+)\s*\(/g)];
+    const method = methods.length ? methods[methods.length - 1][1] : cc;
+    controls.push({
+      cc,
+      label: prev?.label || method,
+      min,
+      max,
+      default: def,
+      unit: prev?.unit || ''
+    });
+  }
+  return controls;
+}
+
+const clonePresets = (list) => list.map((e) => ({ ...e, controls: e.controls.map((c) => ({ ...c })) }));
+
+const getStorage = () => {
+  try {
+    return typeof localStorage !== 'undefined' ? localStorage : null;
+  } catch (e) {
+    return null;
+  }
+};
+
+function loadStoredEffects() {
+  const storage = getStorage();
+  if (!storage) return null;
+  try {
+    const raw = storage.getItem(MASTER_EFFECTS_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return null;
+    const base = clonePresets(DEFAULT_MASTER_EFFECTS);
+    const result = [...base];
+    for (const item of parsed) {
+      if (!item || !item.id || typeof item.chain !== 'string') continue;
+      const normalized = {
+        icon: '🎛️',
+        tag: 'Custom',
+        description: '',
+        ...item,
+        chain: stripEffectMarkers(item.chain),
+        controls: Array.isArray(item.controls) ? item.controls : deriveControls(item.chain)
+      };
+      const idx = result.findIndex((e) => e.id === normalized.id);
+      if (idx !== -1) {
+        result[idx] = normalized;
+      } else {
+        result.push(normalized);
+      }
+    }
+    return result;
+  } catch (e) {
+    console.warn('[MasterEffects] Failed to read stored effects, using defaults', e);
+    return null;
+  }
+}
+
+/**
+ * Live preset list. Mutated in place (never reassigned) so existing importers
+ * always see the current, localStorage-backed set.
+ */
+export const MASTER_EFFECTS = loadStoredEffects() || clonePresets(DEFAULT_MASTER_EFFECTS);
 
 export const EFFECT_MARKER_REGEX = /\/\*\s*\[master-effects-start:([a-zA-Z0-9_-]+)\]\s*\*\/[\s\S]*?\/\*\s*\[master-effects-end\]\s*\*\/\s*/g;
 
@@ -101,8 +234,92 @@ export class MasterEffectsService {
   notify() {
     this.subscribers.forEach((cb) => cb({
       isOpen: this.isOpen,
-      activeEffectId: this.activeEffectId
+      activeEffectId: this.activeEffectId,
+      effects: MASTER_EFFECTS
     }));
+  }
+
+  // --- Preset registry (localStorage-backed) ---
+
+  getEffects() {
+    return MASTER_EFFECTS;
+  }
+
+  getEffect(id) {
+    return MASTER_EFFECTS.find((e) => e.id === id) || null;
+  }
+
+  persist() {
+    const storage = getStorage();
+    if (!storage) return;
+    try {
+      const overrides = MASTER_EFFECTS.filter((e) => {
+        const def = DEFAULT_MASTER_EFFECTS.find((d) => d.id === e.id);
+        if (!def) return true; // custom preset
+        return (
+          e.name !== def.name ||
+          stripEffectMarkers(e.chain) !== stripEffectMarkers(def.chain) ||
+          e.tag !== def.tag ||
+          e.icon !== def.icon ||
+          e.description !== def.description
+        );
+      });
+      storage.setItem(MASTER_EFFECTS_STORAGE_KEY, JSON.stringify(overrides));
+    } catch (e) {
+      console.warn('[MasterEffects] Failed to persist effects', e);
+    }
+  }
+
+  /** Generate a unique, marker-safe id from a name. */
+  makeId(name = 'effect') {
+    const base = String(name).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'effect';
+    let id = base;
+    let i = 2;
+    while (this.getEffect(id)) id = `${base}_${i++}`;
+    return id;
+  }
+
+  /**
+   * Insert or update a preset. Controls are re-derived from the chain's
+   * midi()/midix() calls, keeping existing labels/units by cc.
+   */
+  saveEffect(effect) {
+    const existing = effect.id ? this.getEffect(effect.id) : null;
+    const chain = stripEffectMarkers(effect.chain);
+    const next = {
+      icon: '🎛️',
+      tag: 'Custom',
+      description: '',
+      ...existing,
+      ...effect,
+      id: existing ? existing.id : this.makeId(effect.name),
+      chain,
+      controls: deriveControls(chain, effect.controls || existing?.controls || [])
+    };
+    if (existing) {
+      MASTER_EFFECTS.splice(MASTER_EFFECTS.indexOf(existing), 1, next);
+    } else {
+      MASTER_EFFECTS.push(next);
+    }
+    this.persist();
+    this.notify();
+    return next;
+  }
+
+  deleteEffect(id) {
+    const idx = MASTER_EFFECTS.findIndex((e) => e.id === id);
+    if (idx === -1) return false;
+    MASTER_EFFECTS.splice(idx, 1);
+    this.persist();
+    this.notify();
+    return true;
+  }
+
+  resetEffects() {
+    MASTER_EFFECTS.splice(0, MASTER_EFFECTS.length, ...clonePresets(DEFAULT_MASTER_EFFECTS));
+    const storage = getStorage();
+    if (storage) storage.removeItem(MASTER_EFFECTS_STORAGE_KEY);
+    this.notify();
   }
 
   open() {
@@ -266,8 +483,9 @@ export class MasterEffectsService {
    * Applies a master effect to code by inserting function chain before .out(...)
    */
   applyEffectToCode(code, effectId) {
-    const effect = MASTER_EFFECTS.find((e) => e.id === effectId);
+    const effect = this.getEffect(effectId);
     if (!effect) return code;
+    const chain = buildEffectChain(effect);
 
     // 1. Remove any existing master effects block
     const cleanedCode = this.removeMasterEffectFromCode(code);
@@ -277,14 +495,14 @@ export class MasterEffectsService {
 
     if (outStart === -1) {
       // If no .out() found, append as standalone chain or at end
-      return `${cleanedCode}\n  ${effect.chain}\n  .out(${targetBuffer})`;
+      return `${cleanedCode}\n  ${chain}\n  .out(${targetBuffer})`;
     }
 
     // Insert effect chain immediately before .out(...)
     const prefix = cleanedCode.slice(0, outStart).trimEnd();
     const suffix = cleanedCode.slice(outStart).trimStart();
 
-    return `${prefix}\n  ${effect.chain}\n  ${suffix}`;
+    return `${prefix}\n  ${chain}\n  ${suffix}`;
   }
 
   /**
@@ -299,7 +517,7 @@ export class MasterEffectsService {
     this.activeEffectId = effectId;
     this.notify();
 
-    const effect = MASTER_EFFECTS.find((e) => e.id === effectId);
+    const effect = this.getEffect(effectId);
     if (window.showToast) {
       window.showToast(`Master Effect Applied: ${effect ? effect.name : effectId}`);
     } else {

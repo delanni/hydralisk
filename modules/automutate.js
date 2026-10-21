@@ -85,6 +85,33 @@ export class UndoStack {
   }
 }
 
+const MASTER_EFFECTS_REGEX = /\/\*\s*\[master-effects-start:[a-zA-Z0-9_-]+\]\s*\*\/[\s\S]*?\/\*\s*\[master-effects-end\]\s*\*\//g;
+
+const PROTECTED_CALLS = new Set([
+  "midi",
+  "midix",
+  "beatMs",
+  "b0",
+  "b1",
+  "b2",
+  "b3",
+  "b4",
+  "b5",
+  "b6",
+  "b7",
+  "b8",
+  "b9",
+]);
+
+function reinsertMasterEffect(coreCode, meBlock) {
+  if (!meBlock) return coreCode;
+  const outIdx = coreCode.lastIndexOf(".out(");
+  if (outIdx !== -1) {
+    return coreCode.slice(0, outIdx) + meBlock + coreCode.slice(outIdx);
+  }
+  return coreCode + meBlock;
+}
+
 export class Mutator {
   constructor(editor) {
     this.editor = editor;
@@ -93,6 +120,10 @@ export class Mutator {
 
     this.traveler = makeTraveler({
       CallExpression(node, state) {
+        if (node.callee.type === "Identifier" && PROTECTED_CALLS.has(node.callee.name)) {
+          // Do not descend into midi(), midix(), beatMs(), etc.
+          return;
+        }
         if (node.callee.type === "MemberExpression") {
           const name = node.callee.property.name;
           if (name !== "out") {
@@ -100,6 +131,14 @@ export class Mutator {
           }
         }
         this.super.CallExpression.call(this, node, state);
+      },
+      ArrowFunctionExpression(node, state) {
+        // Do not mutate inside arrow callbacks
+        return;
+      },
+      FunctionExpression(node, state) {
+        // Do not mutate inside function callbacks
+        return;
       },
       Literal(node, state) {
         if (typeof node.value === "number") {
@@ -136,10 +175,14 @@ export class Mutator {
     const code = typeof this.editor.getValue === "function" ? this.editor.getValue() : "";
     if (!code) return;
 
+    const meMatch = code.match(MASTER_EFFECTS_REGEX);
+    const meBlock = meMatch ? meMatch[0] : "";
+    const workingCode = meBlock ? code.replace(meBlock, "") : code;
+
     let ast;
     const comments = [];
     try {
-      ast = Parser.parse(code, {
+      ast = Parser.parse(workingCode, {
         ecmaVersion: "latest",
         sourceType: "module",
         onComment: comments,
@@ -189,7 +232,8 @@ export class Mutator {
       targetNode.raw = String(targetNode.value);
     }
 
-    const newCode = generate(ast, { comments: true });
+    const generated = generate(ast, { comments: true });
+    const newCode = reinsertMasterEffect(generated, meBlock);
     this.editor.setValue(newCode);
 
     if (typeof this.editor.formatCode === "function") {

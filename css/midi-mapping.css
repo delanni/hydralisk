@@ -1,117 +1,408 @@
-/* MIDI Mapping Modal */
+/* ==========================================================================
+   MIDI Mapping Modal — Modern Dark Glassmorphic Design
+   ========================================================================== */
 
 .midi-mapping-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 5, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 600;
-  font-family: 'Chivo', sans-serif;
+  z-index: 10000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  color: #f8fafc;
+  animation: midiFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes midiFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .midi-mapping-modal {
-  background: #101010;
-  border: 1px solid #fff;
-  width: 420px;
-  max-width: 95vw;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  background: #0f1219 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 18px !important;
+  width: 620px !important;
+  max-width: 95vw !important;
+  height: 680px !important;
+  max-height: 88vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 189, 248, 0.08) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: relative !important;
 }
 
+/* Header */
 .midi-mapping-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid #333;
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.midi-mapping-header h5 {
+.midi-mapping-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.midi-mapping-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  font-size: 16px;
+}
+
+.midi-mapping-title-text h5 {
   margin: 0;
-  font-size: 18px;
-  font-weight: 400;
-  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  color: #f8fafc;
+  letter-spacing: -0.02em;
+}
+
+.midi-mapping-subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+  display: block;
 }
 
 .midi-mapping-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
   cursor: pointer;
-  font-size: 24px;
-  color: #fff;
+  transition: all 0.15s ease;
+  padding: 0;
   line-height: 1;
 }
 
 .midi-mapping-close:hover {
-  color: #ccc;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Search Bar */
+.midi-mapping-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 24px 6px 24px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.midi-mapping-search-wrap:focus-within {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+}
+
+.midi-mapping-search-wrap i {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.midi-mapping-search {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f8fafc;
+  font-size: 13px;
+  width: 100%;
+  font-family: inherit;
+}
+
+.midi-mapping-search::placeholder {
+  color: #64748b;
+}
+
+/* Body & List */
 .midi-mapping-body {
-  padding: 20px;
+  padding: 12px 24px;
   overflow-y: auto;
   flex: 1;
+}
+
+.midi-mapping-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.midi-mapping-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.midi-mapping-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.midi-mapping-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.4);
 }
 
 .midi-mapping-list {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
+/* Row Item */
 .midi-mapping-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid #222;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  transition: all 0.15s ease;
 }
 
-.midi-mapping-row:last-child {
-  border-bottom: none;
+.midi-mapping-row:hover {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.midi-mapping-row.listening {
+  background: rgba(245, 158, 11, 0.06);
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.08);
+}
+
+.midi-mapping-action-group {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .midi-mapping-action {
-  flex: 1;
-  font-size: 14px;
-  color: #fff;
-  font-weight: 300;
+  font-size: 13.5px;
+  color: #f1f5f9;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.midi-mapping-type-tag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.midi-mapping-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Value Badge */
 .midi-mapping-value {
-  min-width: 120px;
-  font-size: 13px;
-  color: #888;
+  min-width: 130px;
+  text-align: center;
+  font-family: 'SF Mono', Monaco, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
 }
 
+.midi-mapping-value.unassigned {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  color: #64748b;
+}
+
+.midi-mapping-value.assigned {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+}
+
+.midi-mapping-value.waiting {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  animation: midiPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes midiPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+.midi-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
+}
+
+/* Buttons */
 .midi-mapping-btn {
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  background: #333;
-  border: 1px solid #555;
-  color: #fff;
+  border-radius: 7px;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
 }
 
-.midi-mapping-btn:hover:not(:disabled) {
-  background: #444;
+.midi-mapping-btn-assign {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(14, 165, 233, 0.25));
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+}
+
+.midi-mapping-btn-assign:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.28), rgba(14, 165, 233, 0.4));
+  border-color: rgba(56, 189, 248, 0.6);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+
+.midi-mapping-btn-cancel {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+.midi-mapping-btn-cancel:hover {
+  background: rgba(245, 158, 11, 0.25);
+  color: #fff;
 }
 
 .midi-mapping-btn:disabled {
-  opacity: 0.6;
-  cursor: default;
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .midi-mapping-clear {
+  width: 30px;
+  height: 30px;
+  padding: 0;
   background: transparent;
-  border-color: #555;
-  color: #888;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #f87171;
+  border-radius: 6px;
+  font-size: 12px;
 }
 
 .midi-mapping-clear:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.5);
   color: #fff;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+}
+
+/* Empty State */
+.midi-mapping-empty {
+  padding: 30px 10px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Footer */
+.midi-mapping-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11.5px;
+  color: #64748b;
+}
+
+.midi-mapping-device-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.midi-status-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.midi-status-indicator.offline {
+  background: #64748b;
+  box-shadow: none;
+}
+
+.midi-mapping-shortcut-hint kbd {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 10.5px;
+  color: #94a3b8;
 }

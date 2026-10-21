@@ -7,7 +7,8 @@ import './plugins.js';
 import SketchManager from './sketchManager/index.jsx';
 import FeedbackManager from './feedbackModal/index.jsx';
 import MasterEffectsManager from './masterEffects/index.jsx';
-import ImpromptuMutatorManager from './impromptuMutation/index.jsx';
+import MutationJumpManager from './mutationJump/index.jsx';
+import MidiMappingManager from './midiMapping/index.jsx';
 import './amakit.js';
 import './hydrakit.js';
 import './midi-mapping.js';
@@ -24,7 +25,8 @@ window.Modules = {
     SketchManager,
     FeedbackManager,
     MasterEffectsManager,
-    ImpromptuMutatorManager
+    MutationJumpManager,
+    MidiMappingManager
 };
 
 if (typeof window !== "undefined" && window.HydraliskPlugins) {
@@ -41,13 +43,13 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
     });
 
     window.HydraliskPlugins.register({
-        id: "impromptu-mutator",
-        name: "Impromptu Mutator & MIDI Burst",
+        id: "mutation-jump",
+        name: "Mutation Jump & MIDI Burst",
         init(app) {
-            if (window.Modules && window.Modules.ImpromptuMutatorManager) {
-                window.impromptuMutatorManager = new window.Modules.ImpromptuMutatorManager();
-                window.impromptuMutatorManager.init(app);
-                app.expose("impromptuMutatorManager", window.impromptuMutatorManager);
+            if (window.Modules && window.Modules.MutationJumpManager) {
+                window.mutationJumpManager = new window.Modules.MutationJumpManager();
+                window.mutationJumpManager.init(app);
+                app.expose("mutationJumpManager", window.mutationJumpManager);
             }
         }
     });

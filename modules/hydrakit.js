@@ -8,6 +8,9 @@ class MidiEngine {
     this.cc = new Array(128).fill(0.5);
     this.ccc = Array.from({ length: 16 }, () => new Array(128).fill(0.5));
     this.ccbind = [];
+    // CC slots that actually received a message ("3" for any channel, "0:3" per channel).
+    // cc/ccc are pre-filled with 0.5 for legacy sketches, so they can't tell us this.
+    this.received = new Set();
     this.isInitialized = false;
 
     // Expose globals for sketch backward compatibility
@@ -58,6 +61,8 @@ class MidiEngine {
 
     this.cc[ccIndex] = normalizedValue;
     this.ccc[channel][ccIndex] = normalizedValue;
+    this.received.add(String(ccIndex));
+    this.received.add(`${channel}:${ccIndex}`);
 
     if (!this.ccbind.includes(ccIndex)) {
       console.log(`[Hydrakit] CC #${ccIndex} bound to b${this.ccbind.length}`);
@@ -90,6 +95,26 @@ class MidiEngine {
     const value = rawVal * (max - min) + min;
 
     return transform ? transform(value) : value;
+  }
+
+  /**
+   * Raw normalized (0..1) CC value, or undefined if no message received yet.
+   */
+  getNormalized(ccIndex, { channel } = {}) {
+    let localIndex = ccIndex;
+    if (typeof ccIndex === "string") {
+      if (/^[ABCD]$/.test(ccIndex)) {
+        return typeof window !== "undefined" && window.cc ? window.cc[ccIndex] : undefined;
+      }
+      if (/^b\d+$/.test(ccIndex)) {
+        localIndex = this.ccbind[parseInt(ccIndex.slice(1), 10)];
+      }
+    }
+    if (localIndex === undefined || localIndex === null) return undefined;
+    const receivedKey = channel !== undefined ? `${channel}:${localIndex}` : String(localIndex);
+    if (!this.received.has(receivedKey)) return undefined;
+    const ccArr = channel !== undefined ? this.ccc[channel] : this.cc;
+    return ccArr ? ccArr[localIndex] : undefined;
   }
 }
 
@@ -220,6 +245,215 @@ if (typeof window !== "undefined") {
  */
 export function midi(ccIndex, options = {}) {
   return () => midiEngine.getValue(ccIndex, options);
+}
+
+/**
+ * Easing curves for midix duration-based tweens (t in 0..1).
+ */
+export const easings = {
+  linear: (t) => t,
+  quad: (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2),
+  cubic: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+  sine: (t) => -(Math.cos(Math.PI * t) - 1) / 2,
+  expo: (t) =>
+    t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2,
+  outCubic: (t) => 1 - Math.pow(1 - t, 3),
+};
+
+const defaultClock = () =>
+  typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+let midixClock = defaultClock;
+
+/**
+ * Shared midix state, keyed by the call's identity (cc, channel, min, max, default).
+ * Hydra re-evaluates the whole sketch on Ctrl+Enter, automutate, mutation jump and
+ * master-effect apply; without this every re-eval would snap values back to their
+ * default and re-arm pickup.
+ */
+const MIDIX_MAX_STATES = 512;
+const midixStates = new Map();
+
+function getMidixState(ccIndex, channel, min, max, def, pickup) {
+  const key = `${ccIndex}|${channel ?? ""}|${min}|${max}|${def}`;
+  let state = midixStates.get(key);
+  if (!state) {
+    state = {
+      key,
+      ccIndex,
+      current: def,
+      target: def,
+      from: def,
+      tweenStart: -Infinity,
+      velocity: 0,
+      lastTime: null,
+      pickupRef: def,
+      pickedUp: !pickup,
+      lastSide: null, // sign of (ccValue - pickupRef), to detect fast crossings
+    };
+    midixStates.set(key, state);
+    // Bound memory: mutations that rewrite min/max create new keys
+    if (midixStates.size > MIDIX_MAX_STATES) {
+      midixStates.delete(midixStates.keys().next().value);
+    }
+  }
+  return state;
+}
+
+/**
+ * Smoothed MIDI value getter: like midi(), but holds a value that eases toward
+ * the CC-controlled target. State survives sketch re-evaluation (see above).
+ *
+ * Usage:
+ *   midix(3, {min: 0, max: 10})                                // lerp smoothing, default = 5
+ *   midix('A', {default: 0, ease: 'smooth', duration: () => beatMs(1)})
+ *   midix('b0', {ease: 'cubic', duration: 500})
+ *   midix(7, {ease: 'none'})                                   // no easing
+ *
+ * Options:
+ *   min, max, channel, transform — same as midi()
+ *   default  — value used until the CC is first received (default: (min+max)/2)
+ *   ease     — 'lerp'   frame-rate independent exponential smoothing (default), rate = speed
+ *              'smooth' critically damped spring; keeps velocity, so it follows a moving knob
+ *                       without stalling. Settles in roughly `duration`. Best for knobs.
+ *              'linear' | 'quad' | 'cubic' | 'sine' | 'expo' | 'outCubic' | (t) => t
+ *                       timed tween over `duration`. While a tween runs, new CC values
+ *                       retarget it instead of restarting it, so a turning knob never freezes.
+ *              'none'   follow the CC directly
+ *   speed    — lerp rate per second (default 6, ~0.5s to settle)
+ *   duration — ms for 'smooth' and timed easings (default 300), or a function returning ms,
+ *              re-evaluated every frame, e.g. () => beatMs(2)
+ *   pickup   — synth-style pickup (default true): ignore CC until it reaches the
+ *              default value (within pickupThreshold, or crossing it)
+ *   pickupThreshold — fraction of |max-min| counted as "close" (default 0.05)
+ *
+ * Returned function extras: fn.set(v), fn.pickedUp(), fn.target()
+ * Globals: midix.reset() clears all state; midixStatus(cc) lists state for a cc.
+ */
+export function midix(ccIndex, options = {}) {
+  const {
+    min = 0,
+    max = 1,
+    channel,
+    transform,
+    ease = "lerp",
+    speed = 6,
+    duration = 300,
+    pickup = true,
+    pickupThreshold = 0.05,
+  } = options;
+  const def = options.default !== undefined ? options.default : (min + max) / 2;
+  const curve = typeof ease === "function" ? ease : easings[ease];
+  const range = Math.abs(max - min) || 1;
+  const s = getMidixState(ccIndex, channel, min, max, def, pickup);
+  const getDuration = () => {
+    const d = typeof duration === "function" ? duration() : duration;
+    return Number.isFinite(d) && d > 0 ? d : 0;
+  };
+
+  const fn = () => {
+    const t = midixClock();
+    const norm = midiEngine.getNormalized(ccIndex, { channel });
+    let newTarget = s.target;
+
+    if (norm !== undefined) {
+      const ccValue = norm * (max - min) + min;
+      if (!s.pickedUp) {
+        const side = Math.sign(ccValue - s.pickupRef);
+        const close = Math.abs(ccValue - s.pickupRef) <= range * pickupThreshold;
+        const crossed = s.lastSide !== null && side !== 0 && side !== s.lastSide;
+        if (close || crossed || side === 0) s.pickedUp = true;
+        s.lastSide = side;
+      }
+      if (s.pickedUp) newTarget = ccValue;
+    }
+
+    const dur = curve && ease !== "lerp" ? getDuration() : 0;
+
+    if (newTarget !== s.target) {
+      // Timed tweens: only start a new tween when the previous one has finished;
+      // otherwise retarget the running one so continuous knob moves keep flowing.
+      if (t - s.tweenStart >= dur) {
+        s.from = s.current;
+        s.tweenStart = t;
+      }
+      s.target = newTarget;
+    }
+
+    const dt = s.lastTime === null ? 0 : Math.max(0, Math.min((t - s.lastTime) / 1000, 0.25));
+
+    if (ease === "none") {
+      s.current = s.target;
+      s.velocity = 0;
+    } else if (ease === "smooth") {
+      // Critically damped spring (Game Programming Gems 4, "SmoothDamp")
+      const smoothTime = Math.max(getDuration() / 1000 / 3, 0.0001);
+      const omega = 2 / smoothTime;
+      const x = omega * dt;
+      const exp = 1 / (1 + x + 0.48 * x * x + 0.235 * x * x * x);
+      const change = s.current - s.target;
+      const temp = (s.velocity + omega * change) * dt;
+      s.velocity = (s.velocity - omega * temp) * exp;
+      s.current = s.target + (change + temp) * exp;
+      if (Math.abs(s.target - s.current) < range * 1e-4 && Math.abs(s.velocity) < range * 1e-3) {
+        s.current = s.target;
+        s.velocity = 0;
+      }
+    } else if (ease === "lerp" || !curve) {
+      s.current += (s.target - s.current) * (1 - Math.exp(-speed * dt));
+      if (Math.abs(s.target - s.current) < range * 1e-4) s.current = s.target;
+      s.velocity = 0;
+    } else {
+      const p = dur > 0 ? Math.min((t - s.tweenStart) / dur, 1) : 1;
+      s.current = s.from + (s.target - s.from) * curve(p);
+      s.velocity = 0;
+    }
+    s.lastTime = t;
+
+    return transform ? transform(s.current) : s.current;
+  };
+
+  // Jump to a value; with pickup enabled, CC is ignored again until it reaches v
+  fn.set = (v) => {
+    s.current = s.target = s.from = s.pickupRef = v;
+    s.velocity = 0;
+    s.tweenStart = -Infinity;
+    s.pickedUp = !pickup;
+    s.lastSide = null;
+  };
+  fn.pickedUp = () => s.pickedUp;
+  fn.target = () => s.target;
+  return fn;
+}
+
+/** Forget all midix state (values return to defaults, pickup re-arms). */
+midix.reset = () => midixStates.clear();
+
+/** Override the clock (ms) used by midix; pass nothing to restore. For tests. */
+midix.setClock = (clock) => {
+  midixClock = typeof clock === "function" ? clock : defaultClock;
+};
+
+/**
+ * Snapshot of midix states for a cc (e.g. 'A'), for UI feedback such as
+ * "waiting for pickup" indicators.
+ */
+export function midixStatus(ccIndex) {
+  const out = [];
+  for (const s of midixStates.values()) {
+    if (s.ccIndex === ccIndex) {
+      out.push({ key: s.key, pickedUp: s.pickedUp, pickupRef: s.pickupRef, current: s.current, target: s.target });
+    }
+  }
+  return out;
+}
+
+/**
+ * Convert a beat count to milliseconds at the current BPM (window.bpm, default 120).
+ * Usage: beatMs(4) -> 2000 at 120 bpm, beatMs(0.5) -> 250, beatMs(1, 90) -> 666.67
+ */
+export function beatMs(beats = 1, bpm) {
+  const currentBpm = bpm || (typeof window !== "undefined" && window.bpm ? window.bpm : 120);
+  return (beats * 60000) / currentBpm;
 }
 
 /**
@@ -415,6 +649,9 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
       app.expose("midiEngine", midiEngine);
       app.expose("tapTempo", tapTempo);
       app.expose("midi", midi);
+      app.expose("midix", midix);
+      app.expose("midixStatus", midixStatus);
+      app.expose("beatMs", beatMs);
       app.expose("saw", saw);
       app.expose("createLFO", createLFO);
       app.expose("randInt", randInt);

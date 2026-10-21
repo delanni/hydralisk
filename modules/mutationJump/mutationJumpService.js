@@ -1,8 +1,8 @@
 /**
- * Impromptu Mutator Service for Hydralisk
+ * Mutation Jump Service for Hydralisk
  * 
  * Pre-computes mutation states in memory based on a MIDI CC dial (0-1 mapped to 0-10 mutations).
- * Swaps to the pre-calculated to-be state instantly on a MIDI press event.
+ * Swaps to the pre-calculated to-be state instantly on a MIDI press event without on-screen visual clues.
  * If CC ~= 0 on press, retrieves and restores the pre-mutation state (undo).
  */
 
@@ -32,9 +32,26 @@ export const GLSL_TRANSFORMS = {
 
 const MASTER_EFFECTS_REGEX = /\/\*\s*\[master-effects-start:[a-zA-Z0-9_-]+\]\s*\*\/[\s\S]*?\/\*\s*\[master-effects-end\]\s*\*\//g;
 
+const PROTECTED_CALLS = new Set([
+  'midi',
+  'midix',
+  'beatMs',
+  'b0',
+  'b1',
+  'b2',
+  'b3',
+  'b4',
+  'b5',
+  'b6',
+  'b7',
+  'b8',
+  'b9'
+]);
+
 function walkAST(node, visitor, parent = null) {
   if (!node || typeof node !== 'object') return;
-  visitor(node, parent);
+  const shouldDescend = visitor(node, parent);
+  if (shouldDescend === false) return;
   for (const key of Object.keys(node)) {
     if (key === 'parent') continue;
     const child = node[key];
@@ -48,7 +65,7 @@ function walkAST(node, visitor, parent = null) {
   }
 }
 
-export class ImpromptuMutatorService {
+export class MutationJumpService {
   constructor(options = {}) {
     this.editor = options.editor || null;
     this.currentCC = 0;
@@ -83,7 +100,7 @@ export class ImpromptuMutatorService {
         try {
           handler(data);
         } catch (err) {
-          console.error(`[ImpromptuMutator] Error in '${event}' listener:`, err);
+          console.error(`[MutationJump] Error in '${event}' listener:`, err);
         }
       }
     }
@@ -325,18 +342,24 @@ export class ImpromptuMutatorService {
     const calls = [];
 
     walkAST(ast, (node, parent) => {
-      // Do not mutate literals inside arrow functions or function expressions (e.g. MIDI callbacks () => b1(0))
-      if (parent && (parent.type === 'ArrowFunctionExpression' || parent.type === 'FunctionExpression')) {
-        return;
+      // Do not mutate inside arrow functions or function expressions (e.g. callbacks () => beatMs(2))
+      if (node.type === 'ArrowFunctionExpression' || node.type === 'FunctionExpression') {
+        return false;
       }
-      if (node.type === 'Literal' && typeof node.value === 'number') {
-        literals.push(node);
-      } else if (node.type === 'CallExpression') {
-        if (node.callee.type === 'MemberExpression' && node.callee.property.name !== 'out') {
+      // Do not mutate or descend into protected helper calls (e.g. midi, midix, beatMs, b0..b9)
+      if (node.type === 'CallExpression') {
+        if (node.callee.type === 'Identifier') {
+          if (PROTECTED_CALLS.has(node.callee.name)) {
+            return false;
+          }
+          if (node.callee.name !== 'render') {
+            calls.push({ node, name: node.callee.name, isMember: false });
+          }
+        } else if (node.callee.type === 'MemberExpression' && node.callee.property.name !== 'out') {
           calls.push({ node, name: node.callee.property.name, isMember: true });
-        } else if (node.callee.type === 'Identifier' && node.callee.name !== 'render') {
-          calls.push({ node, name: node.callee.name, isMember: false });
         }
+      } else if (node.type === 'Literal' && typeof node.value === 'number') {
+        literals.push(node);
       }
     });
 
@@ -405,3 +428,5 @@ export class ImpromptuMutatorService {
     });
   }
 }
+
+export const ImpromptuMutatorService = MutationJumpService;

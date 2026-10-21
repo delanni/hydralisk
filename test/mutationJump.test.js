@@ -1,12 +1,12 @@
 /**
- * Test Suite for Impromptu Mutator Service
- * Run with: node test/impromptuMutation.test.js
+ * Test Suite for Mutation Jump Service
+ * Run with: node test/mutationJump.test.js
  */
 
 import assert from 'assert';
-import { ImpromptuMutatorService } from '../modules/impromptuMutation/impromptuMutatorService.js';
+import { MutationJumpService } from '../modules/mutationJump/mutationJumpService.js';
 
-console.log('Testing Impromptu Mutator Service...');
+console.log('Testing Mutation Jump Service...');
 
 class MockEditor {
   constructor(initialCode = '') {
@@ -26,7 +26,7 @@ class MockEditor {
 
 const initialSketch = 'osc(60, 0.1, 1.5).diff(o0).rotate(0.5).out(o0);';
 const editor = new MockEditor(initialSketch);
-const service = new ImpromptuMutatorService({ editor, initialCode: initialSketch });
+const service = new MutationJumpService({ editor, initialCode: initialSketch });
 
 // Test 1: Defaults and Pre-calculation
 assert.strictEqual(service.currentCC, 0, 'Initial CC should be 0');
@@ -76,11 +76,11 @@ assert.strictEqual(service.baseCode, toBe4, 'Base code should restore to pre-mut
 console.log('✔ CC~=0 press event fires undo retrieving pre-mutation state');
 
 // Test 6: Master Effects comment block preservation
-const sketchWithMasterEffect = 'osc(40, 0.2)/* [master-effects-start:hsl_plus] */.color(1, 1, 1).hue(() => b1(0))/* [master-effects-end] */.out(o0);';
+const sketchWithMasterEffect = 'osc(40, 0.2)/* [master-effects-start:hsl_plus] */.hue(midi("b1", { min: -1, max: 1 }))/* [master-effects-end] */.out(o0);';
 const singleMutation = service.mutateCode(sketchWithMasterEffect);
 assert.ok(singleMutation.includes('/* [master-effects-start:hsl_plus] */'), 'Must preserve master-effects start marker');
 assert.ok(singleMutation.includes('/* [master-effects-end] */'), 'Must preserve master-effects end marker');
-assert.ok(singleMutation.includes('() => b1(0)'), 'Must preserve MIDI binding arrow function inside master effects');
+assert.ok(singleMutation.includes('midi("b1"'), 'Must preserve direct midi() call inside master effects');
 console.log('✔ Master effects block preservation verified');
 
-console.log('\nAll Impromptu Mutator tests PASSED successfully! ⚡🎉\n');
+console.log('\nAll Mutation Jump tests PASSED successfully! ⚡🎉\n');

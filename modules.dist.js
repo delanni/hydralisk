@@ -188,8 +188,8 @@
 	  }
 	}
 
-	var css_248z$3 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
-	styleInject(css_248z$3);
+	var css_248z$2 = ".modal {\n    display: block;\n    position: fixed;\n    z-index: 500;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background-color: white;\n    padding: 0;\n    border: 1px solid #ccc;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n    color: #101010;\n    width: 480px;           /* Set a fixed width */\n    height: 520px;          /* Set a fixed height */\n    max-width: 95vw;\n    max-height: 95vh;\n}\n\n.modal textarea {\n    background: lightblue;\n    width: 100%;\n    height: 100px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.modal.hidden {\n    display: none;\n}\n\n.modal-content {\n    text-align: left;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.modal-header {\n    flex: 0 0 auto;\n    padding: 20px 20px 0 20px;\n    background: white;\n    z-index: 1;\n}\n\n.modal-tabs {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 12px;\n}\n.modal-tabs button {\n    background: none;\n    border: none;\n    padding: 8px 16px;\n    cursor: pointer;\n    font-weight: bold;\n}\n.modal-tabs .active {\n    border-bottom: 2px solid #007bff;\n    color: #007bff;\n}\n.modal-body {\n    flex: 1 1 auto;\n    overflow-y: auto;\n    padding: 20px;\n    min-height: 100px;\n    background: white;\n}\n\n.close-button {\n    cursor: pointer;\n    font-size: 20px;\n    position: absolute;\n    top: 10px;\n    right: 10px;\n}\n\n.sketch-tag {\n    background: #e0e7ff;\n    color: #2d3a5a;\n    border-radius: 12px;\n    padding: 2px 10px;\n    font-size: 12px;\n    margin-left: 2px;\n    white-space: nowrap;\n    display: inline-block;\n    max-width: 80px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.sketch-list-item {\n    transition: background 0.15s;\n    padding: 6px 0;\n    border-bottom: 1px solid #eee;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    cursor: pointer;\n    background: white;\n}\n.sketch-list-item:hover {\n    background: #f0f4ff;\n    cursor: pointer;\n}\n\n.sketch-list-item--remote {\n    background: #e8f5e9;\n}\n.sketch-list-item--remote:hover {\n    background: #c8e6c9;\n}\n\n.sketch-fields-label {\n    width: 120px;\n    margin-right: 8px;\n    font-weight: 500;\n}\n\n.sketch-fields-input,\n.metadata-fields-input {\n    flex: 1;\n    min-height: 32px;\n    font-family: monospace;\n    font-size: 14px;\n    margin-right: 8px;\n}\n\n.metadata-key-input {\n    width: 120px;\n    margin-right: 8px;\n    background: #f5f5f5;\n    color: #888;\n}\n\n.sketch-fields-section {\n    margin-bottom: 16px;\n}\n\n.sketch-fields-title,\n.metadata-fields-title {\n    font-weight: 600;\n    margin-bottom: 4px;\n}\n\n.metadata-add-row {\n    display: flex;\n    align-items: center;\n    margin-top: 12px;\n}\n\n.save-sketch-btn {\n    font-weight: bold;\n    padding: 8px 20px;\n    margin-top: 20px;\n}\n\n.sketch-filter {\n    width: 100%;\n    padding: 8px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    font-size: 14px;\n    margin-bottom: 4px;\n}\n\n.sketch-list {\n    max-height: 300px;\n    overflow-y: auto;\n    margin-bottom: 8px;\n    padding-inline-start: 0;\n}\n\n.sketch-list-item {\n    padding: 8px 12px;\n}\n\n/* --- Search Filter & Tag Cloud Styling --- */\n.sketch-tag-pill {\n    user-select: none;\n}\n.sketch-tag-pill:hover {\n    opacity: 0.9;\n    transform: translateY(-1px);\n}\n.sketch-tag-pill--selected {\n    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.4);\n}\n\n/* --- Setlist Manager Styling --- */\n.setlist-manager-panel select,\n.setlist-manager-panel button,\n.setlist-manager-panel input {\n    font-family: inherit;\n}\n\n.setlist-items-list::-webkit-scrollbar {\n    width: 6px;\n}\n.setlist-items-list::-webkit-scrollbar-thumb {\n    background: #cbd5e1;\n    border-radius: 3px;\n}";
+	styleInject(css_248z$2);
 
 	// This is a module for managing sketch storage in a web application, through localStorage.
 
@@ -278,7 +278,7 @@
 
 	// Collection storage for sketch subsets. Persists to localStorage.
 
-	const STORAGE_KEY = 'mySketches_collections';
+	const STORAGE_KEY$1 = 'mySketches_collections';
 	const DEFAULT_STATE = {
 	  activeId: null,
 	  collections: []
@@ -324,7 +324,7 @@
 	  return result;
 	}
 	class CollectionStorage {
-	  constructor(localStorageRef, storageKey = STORAGE_KEY) {
+	  constructor(localStorageRef, storageKey = STORAGE_KEY$1) {
 	    this.localStorage = localStorageRef;
 	    this.storageKey = storageKey;
 	  }
@@ -2162,8 +2162,8 @@
 	  }
 	}
 
-	var css_248z$2 = "/* Hydralisk Feedback & Bug Reporting Modal CSS */\n\n.feedback-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(8, 8, 14, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 99999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  animation: feedbackFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  box-sizing: border-box;\n}\n\n@keyframes feedbackFadeIn {\n  from {\n    opacity: 0;\n    transform: scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n.feedback-modal-card {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);\n  border-radius: 14px;\n  width: 100%;\n  max-width: 580px;\n  max-height: 90vh;\n  display: flex;\n  flex-direction: column;\n  color: #f8fafc;\n  font-family: 'Outfit', system-ui, -apple-system, sans-serif;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n\n.feedback-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 18px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n}\n\n.feedback-modal-title {\n  margin: 0;\n  font-size: 1.15rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.feedback-modal-badge {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  font-size: 0.65rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  padding: 3px 8px;\n  border-radius: 9999px;\n  letter-spacing: 1px;\n}\n\n.feedback-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 1.5rem;\n  cursor: pointer;\n  line-height: 1;\n  padding: 4px 8px;\n  border-radius: 6px;\n  transition: all 0.2s ease;\n}\n\n.feedback-close-btn:hover {\n  color: #ffffff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.feedback-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  box-sizing: border-box;\n}\n\n/* Category Pills */\n.feedback-category-group {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n\n.feedback-cat-pill {\n  background: rgba(30, 41, 59, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #cbd5e1;\n  padding: 8px 14px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 500;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-cat-pill:hover {\n  border-color: rgba(0, 242, 254, 0.4);\n  background: rgba(30, 41, 59, 0.9);\n}\n\n.feedback-cat-pill.active {\n  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);\n  border-color: #00f2fe;\n  color: #00f2fe;\n  font-weight: 600;\n  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);\n}\n\n/* Ratings */\n.feedback-rating-container {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  background: rgba(30, 41, 59, 0.3);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.feedback-rating-label {\n  font-size: 0.82rem;\n  color: #94a3b8;\n  font-weight: 500;\n}\n\n.feedback-stars-row {\n  display: flex;\n  gap: 6px;\n}\n\n.feedback-star-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.25rem;\n  cursor: pointer;\n  opacity: 0.35;\n  transition: transform 0.15s ease, opacity 0.15s ease;\n  padding: 2px 4px;\n}\n\n.feedback-star-btn.selected,\n.feedback-star-btn:hover {\n  opacity: 1;\n  transform: scale(1.2);\n}\n\n/* Form Inputs */\n.feedback-field-group {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.feedback-label {\n  font-size: 0.8rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: #94a3b8;\n}\n\n.feedback-input,\n.feedback-textarea {\n  width: 100%;\n  background: rgba(15, 23, 42, 0.8);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 8px;\n  padding: 10px 14px;\n  color: #f8fafc;\n  font-size: 0.9rem;\n  font-family: inherit;\n  box-sizing: border-box;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\n.feedback-input:focus,\n.feedback-textarea:focus {\n  border-color: #00f2fe;\n  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);\n}\n\n.feedback-textarea {\n  min-height: 100px;\n  resize: vertical;\n  line-height: 1.5;\n}\n\n/* Toggle Checkbox */\n.feedback-checkbox-wrapper {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  cursor: pointer;\n  user-select: none;\n  background: rgba(30, 41, 59, 0.4);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.feedback-checkbox-wrapper input[type=\"checkbox\"] {\n  accent-color: #00f2fe;\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.feedback-checkbox-text {\n  font-size: 0.85rem;\n  color: #cbd5e1;\n}\n\n/* Diagnostic Details Box */\n.feedback-diag-box {\n  background: rgba(8, 8, 12, 0.9);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 12px;\n  font-family: 'JetBrains Mono', monospace;\n  font-size: 0.75rem;\n  color: #a7f3d0;\n  max-height: 140px;\n  overflow-y: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n/* Modal Actions */\n.feedback-modal-actions {\n  padding: 16px 24px;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n  display: flex;\n  gap: 10px;\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n.feedback-btn {\n  background: rgba(51, 65, 85, 0.8);\n  color: #f8fafc;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  padding: 9px 16px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-btn:hover {\n  background: rgba(71, 85, 105, 0.9);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.feedback-btn.primary {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  border: none;\n  box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);\n}\n\n.feedback-btn.primary:hover {\n  filter: brightness(1.1);\n  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);\n}\n\n/* Success State Overlay */\n.feedback-success-card {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 40px 24px;\n  text-align: center;\n  gap: 14px;\n}\n\n.feedback-success-icon {\n  font-size: 3rem;\n  animation: bounceSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n\n@keyframes bounceSuccess {\n  0% { transform: scale(0); }\n  50% { transform: scale(1.2); }\n  100% { transform: scale(1); }\n}\n\n.feedback-toast-notification {\n  position: fixed;\n  bottom: 24px;\n  right: 24px;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid #00f2fe;\n  color: #ffffff;\n  padding: 12px 20px;\n  border-radius: 8px;\n  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.3);\n  z-index: 100000;\n  font-family: 'Outfit', sans-serif;\n  font-size: 0.9rem;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  animation: toastSlideUp 0.3s ease-out;\n}\n\n@keyframes toastSlideUp {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n";
-	styleInject(css_248z$2);
+	var css_248z$1 = "/* Hydralisk Feedback & Bug Reporting Modal CSS */\n\n.feedback-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(8, 8, 14, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  z-index: 99999;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  animation: feedbackFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  box-sizing: border-box;\n}\n\n@keyframes feedbackFadeIn {\n  from {\n    opacity: 0;\n    transform: scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n.feedback-modal-card {\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);\n  border-radius: 14px;\n  width: 100%;\n  max-width: 580px;\n  max-height: 90vh;\n  display: flex;\n  flex-direction: column;\n  color: #f8fafc;\n  font-family: 'Outfit', system-ui, -apple-system, sans-serif;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n\n.feedback-modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 18px 24px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n}\n\n.feedback-modal-title {\n  margin: 0;\n  font-size: 1.15rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: #ffffff;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.feedback-modal-badge {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  font-size: 0.65rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  padding: 3px 8px;\n  border-radius: 9999px;\n  letter-spacing: 1px;\n}\n\n.feedback-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 1.5rem;\n  cursor: pointer;\n  line-height: 1;\n  padding: 4px 8px;\n  border-radius: 6px;\n  transition: all 0.2s ease;\n}\n\n.feedback-close-btn:hover {\n  color: #ffffff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.feedback-modal-body {\n  padding: 20px 24px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  box-sizing: border-box;\n}\n\n/* Category Pills */\n.feedback-category-group {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n\n.feedback-cat-pill {\n  background: rgba(30, 41, 59, 0.6);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #cbd5e1;\n  padding: 8px 14px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 500;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-cat-pill:hover {\n  border-color: rgba(0, 242, 254, 0.4);\n  background: rgba(30, 41, 59, 0.9);\n}\n\n.feedback-cat-pill.active {\n  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);\n  border-color: #00f2fe;\n  color: #00f2fe;\n  font-weight: 600;\n  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);\n}\n\n/* Ratings */\n.feedback-rating-container {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  background: rgba(30, 41, 59, 0.3);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.feedback-rating-label {\n  font-size: 0.82rem;\n  color: #94a3b8;\n  font-weight: 500;\n}\n\n.feedback-stars-row {\n  display: flex;\n  gap: 6px;\n}\n\n.feedback-star-btn {\n  background: transparent;\n  border: none;\n  font-size: 1.25rem;\n  cursor: pointer;\n  opacity: 0.35;\n  transition: transform 0.15s ease, opacity 0.15s ease;\n  padding: 2px 4px;\n}\n\n.feedback-star-btn.selected,\n.feedback-star-btn:hover {\n  opacity: 1;\n  transform: scale(1.2);\n}\n\n/* Form Inputs */\n.feedback-field-group {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.feedback-label {\n  font-size: 0.8rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: #94a3b8;\n}\n\n.feedback-input,\n.feedback-textarea {\n  width: 100%;\n  background: rgba(15, 23, 42, 0.8);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 8px;\n  padding: 10px 14px;\n  color: #f8fafc;\n  font-size: 0.9rem;\n  font-family: inherit;\n  box-sizing: border-box;\n  outline: none;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n\n.feedback-input:focus,\n.feedback-textarea:focus {\n  border-color: #00f2fe;\n  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);\n}\n\n.feedback-textarea {\n  min-height: 100px;\n  resize: vertical;\n  line-height: 1.5;\n}\n\n/* Toggle Checkbox */\n.feedback-checkbox-wrapper {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  cursor: pointer;\n  user-select: none;\n  background: rgba(30, 41, 59, 0.4);\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.feedback-checkbox-wrapper input[type=\"checkbox\"] {\n  accent-color: #00f2fe;\n  width: 16px;\n  height: 16px;\n  cursor: pointer;\n}\n\n.feedback-checkbox-text {\n  font-size: 0.85rem;\n  color: #cbd5e1;\n}\n\n/* Diagnostic Details Box */\n.feedback-diag-box {\n  background: rgba(8, 8, 12, 0.9);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 12px;\n  font-family: 'JetBrains Mono', monospace;\n  font-size: 0.75rem;\n  color: #a7f3d0;\n  max-height: 140px;\n  overflow-y: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n/* Modal Actions */\n.feedback-modal-actions {\n  padding: 16px 24px;\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(30, 41, 59, 0.4);\n  display: flex;\n  gap: 10px;\n  justify-content: flex-end;\n  flex-wrap: wrap;\n}\n\n.feedback-btn {\n  background: rgba(51, 65, 85, 0.8);\n  color: #f8fafc;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  padding: 9px 16px;\n  border-radius: 8px;\n  font-size: 0.85rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.feedback-btn:hover {\n  background: rgba(71, 85, 105, 0.9);\n  border-color: rgba(255, 255, 255, 0.2);\n}\n\n.feedback-btn.primary {\n  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);\n  color: #000000;\n  border: none;\n  box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);\n}\n\n.feedback-btn.primary:hover {\n  filter: brightness(1.1);\n  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);\n}\n\n/* Success State Overlay */\n.feedback-success-card {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 40px 24px;\n  text-align: center;\n  gap: 14px;\n}\n\n.feedback-success-icon {\n  font-size: 3rem;\n  animation: bounceSuccess 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n\n@keyframes bounceSuccess {\n  0% { transform: scale(0); }\n  50% { transform: scale(1.2); }\n  100% { transform: scale(1); }\n}\n\n.feedback-toast-notification {\n  position: fixed;\n  bottom: 24px;\n  right: 24px;\n  background: rgba(15, 23, 42, 0.95);\n  border: 1px solid #00f2fe;\n  color: #ffffff;\n  padding: 12px 20px;\n  border-radius: 8px;\n  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.3);\n  z-index: 100000;\n  font-family: 'Outfit', sans-serif;\n  font-size: 0.9rem;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  animation: toastSlideUp 0.3s ease-out;\n}\n\n@keyframes toastSlideUp {\n  from {\n    transform: translateY(20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n";
+	styleInject(css_248z$1);
 
 	/**
 	 * Hydralisk Feedback & Diagnostic Service
@@ -2653,8 +2653,8 @@
 	  });
 	}
 
-	var css_248z$1 = "/* Master Effects Modal Styling */\n\n.master-effects-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(4, 5, 10, 0.85);\n  backdrop-filter: blur(16px);\n  -webkit-backdrop-filter: blur(16px);\n  z-index: 10000;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif;\n  color: #f8fafc;\n  animation: meFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n}\n\n@keyframes meFadeIn {\n  from { opacity: 0; transform: scale(0.98); }\n  to { opacity: 1; transform: scale(1); }\n}\n\n.master-effects-dialog {\n  background: #0f1219;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 20px;\n  width: 900px;\n  max-width: 94vw;\n  height: 640px;\n  max-height: 90vh;\n  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 40px rgba(56, 189, 248, 0.1);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  position: relative;\n}\n\n/* Header */\n.master-effects-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 20px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.me-title-group {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.me-title-icon {\n  font-size: 24px;\n}\n\n.me-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: #fff;\n}\n\n.me-target-badge {\n  background: rgba(56, 189, 248, 0.15);\n  border: 1px solid rgba(56, 189, 248, 0.3);\n  color: #38bdf8;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 4px 10px;\n  border-radius: 12px;\n  letter-spacing: 0.5px;\n}\n\n.me-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 28px;\n  line-height: 1;\n  cursor: pointer;\n  padding: 4px 8px;\n  border-radius: 8px;\n  transition: color 0.15s, background 0.15s;\n}\n.me-close-btn:hover {\n  color: #fff;\n  background: rgba(255, 255, 255, 0.08);\n}\n\n/* Body / Split View */\n.master-effects-body {\n  flex: 1;\n  display: grid;\n  grid-template-columns: 1.1fr 1fr;\n  overflow: hidden;\n}\n\n/* Preset Cards List */\n.me-presets-pane {\n  padding: 24px;\n  overflow-y: auto;\n  border-right: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n}\n\n.me-preset-card {\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n  border-radius: 14px;\n  padding: 18px 20px;\n  cursor: pointer;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  text-align: left;\n  color: inherit;\n}\n\n.me-preset-card:hover {\n  background: rgba(255, 255, 255, 0.06);\n  border-color: rgba(255, 255, 255, 0.18);\n  transform: translateY(-2px);\n}\n\n.me-preset-card.selected {\n  background: rgba(56, 189, 248, 0.08);\n  border-color: #38bdf8;\n  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);\n}\n\n.me-preset-card.active-on-stage {\n  border-left: 4px solid #10b981;\n}\n\n.me-card-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-card-name-group {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.me-card-icon {\n  font-size: 20px;\n}\n\n.me-card-name {\n  font-size: 15px;\n  font-weight: 700;\n  color: #fff;\n}\n\n.me-card-tag {\n  font-size: 10px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  font-weight: 700;\n  color: #94a3b8;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 3px 8px;\n  border-radius: 6px;\n}\n\n.me-card-desc {\n  font-size: 12px;\n  line-height: 1.5;\n  color: #94a3b8;\n}\n\n.me-card-midi-pills {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n}\n\n.me-midi-pill {\n  font-family: monospace;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 2px 7px;\n  border-radius: 6px;\n  background: rgba(99, 102, 241, 0.15);\n  color: #a5b4fc;\n  border: 1px solid rgba(99, 102, 241, 0.25);\n}\n\n.me-active-badge {\n  font-size: 10px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  padding: 3px 8px;\n  border-radius: 6px;\n  background: #10b981;\n  color: #000;\n  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);\n}\n\n/* Detail & Inspector Deck */\n.me-inspector-pane {\n  padding: 24px 28px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  background: rgba(0, 0, 0, 0.2);\n  overflow-y: auto;\n}\n\n.me-pane-section-title {\n  font-size: 11px;\n  text-transform: uppercase;\n  letter-spacing: 1.5px;\n  font-weight: 800;\n  color: #64748b;\n  margin-bottom: 8px;\n}\n\n.me-code-preview {\n  background: #090a0f;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 10px;\n  padding: 14px;\n  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;\n  font-size: 11px;\n  line-height: 1.5;\n  color: #38bdf8;\n  overflow-x: auto;\n  white-space: pre;\n}\n\n/* MIDI Knobs / Sliders */\n.me-controls-grid {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.me-control-row {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  background: rgba(255, 255, 255, 0.02);\n  padding: 10px 14px;\n  border-radius: 10px;\n  border: 1px solid rgba(255, 255, 255, 0.04);\n}\n\n.me-control-label-group {\n  display: flex;\n  justify-content: space-between;\n  font-size: 12px;\n}\n\n.me-ctrl-cc {\n  font-family: monospace;\n  font-weight: 800;\n  color: #a5b4fc;\n}\n\n.me-ctrl-val {\n  font-family: monospace;\n  color: #38bdf8;\n  font-weight: 700;\n}\n\n.me-control-slider {\n  width: 100%;\n  accent-color: #38bdf8;\n  cursor: pointer;\n}\n\n/* Footer Actions */\n.master-effects-footer {\n  padding: 18px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-action-btn {\n  padding: 10px 22px;\n  border-radius: 10px;\n  font-size: 13px;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  cursor: pointer;\n  border: none;\n  transition: all 0.15s;\n}\n\n.me-btn-apply {\n  background: #38bdf8;\n  color: #000;\n  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);\n}\n.me-btn-apply:hover {\n  background: #7dd3fc;\n  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);\n}\n\n.me-btn-bypass {\n  background: rgba(244, 63, 94, 0.15);\n  border: 1px solid rgba(244, 63, 94, 0.3);\n  color: #f43f5e;\n}\n.me-btn-bypass:hover {\n  background: #f43f5e;\n  color: #fff;\n}\n\n.me-btn-cancel {\n  background: transparent;\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.me-btn-cancel:hover {\n  color: #fff;\n  border-color: rgba(255, 255, 255, 0.25);\n}\n\n@media (max-width: 768px) {\n  .master-effects-dialog {\n    height: 94vh;\n    max-height: 94vh;\n  }\n  .master-effects-body {\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr;\n  }\n}\n";
-	styleInject(css_248z$1);
+	var css_248z = "/* Master Effects Modal Styling */\n\n.master-effects-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(4, 5, 10, 0.85);\n  backdrop-filter: blur(16px);\n  -webkit-backdrop-filter: blur(16px);\n  z-index: 10000;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif;\n  color: #f8fafc;\n  animation: meFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n}\n\n@keyframes meFadeIn {\n  from { opacity: 0; transform: scale(0.98); }\n  to { opacity: 1; transform: scale(1); }\n}\n\n.master-effects-dialog {\n  background: #0f1219;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 20px;\n  width: 900px;\n  max-width: 94vw;\n  height: 640px;\n  max-height: 90vh;\n  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 40px rgba(56, 189, 248, 0.1);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  position: relative;\n}\n\n/* Header */\n.master-effects-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 20px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.me-title-group {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.me-title-icon {\n  font-size: 24px;\n}\n\n.me-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: #fff;\n}\n\n.me-target-badge {\n  background: rgba(56, 189, 248, 0.15);\n  border: 1px solid rgba(56, 189, 248, 0.3);\n  color: #38bdf8;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 4px 10px;\n  border-radius: 12px;\n  letter-spacing: 0.5px;\n}\n\n.me-close-btn {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 28px;\n  line-height: 1;\n  cursor: pointer;\n  padding: 4px 8px;\n  border-radius: 8px;\n  transition: color 0.15s, background 0.15s;\n}\n.me-close-btn:hover {\n  color: #fff;\n  background: rgba(255, 255, 255, 0.08);\n}\n\n/* Body / Split View */\n.master-effects-body {\n  flex: 1;\n  display: grid;\n  grid-template-columns: 1.1fr 1fr;\n  overflow: hidden;\n}\n\n/* Preset Cards List */\n.me-presets-pane {\n  padding: 24px;\n  overflow-y: auto;\n  border-right: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n}\n\n.me-preset-card {\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.07);\n  border-radius: 14px;\n  padding: 18px 20px;\n  cursor: pointer;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);\n  text-align: left;\n  color: inherit;\n}\n\n.me-preset-card:hover {\n  background: rgba(255, 255, 255, 0.06);\n  border-color: rgba(255, 255, 255, 0.18);\n  transform: translateY(-2px);\n}\n\n.me-preset-card.selected {\n  background: rgba(56, 189, 248, 0.08);\n  border-color: #38bdf8;\n  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);\n}\n\n.me-preset-card.active-on-stage {\n  border-left: 4px solid #10b981;\n}\n\n.me-card-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-card-name-group {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.me-card-icon {\n  font-size: 20px;\n}\n\n.me-card-name {\n  font-size: 15px;\n  font-weight: 700;\n  color: #fff;\n}\n\n.me-card-tag {\n  font-size: 10px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  font-weight: 700;\n  color: #94a3b8;\n  background: rgba(255, 255, 255, 0.05);\n  padding: 3px 8px;\n  border-radius: 6px;\n}\n\n.me-card-desc {\n  font-size: 12px;\n  line-height: 1.5;\n  color: #94a3b8;\n}\n\n.me-card-midi-pills {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n}\n\n.me-midi-pill {\n  font-family: monospace;\n  font-size: 11px;\n  font-weight: 700;\n  padding: 2px 7px;\n  border-radius: 6px;\n  background: rgba(99, 102, 241, 0.15);\n  color: #a5b4fc;\n  border: 1px solid rgba(99, 102, 241, 0.25);\n}\n\n.me-active-badge {\n  font-size: 10px;\n  font-weight: 800;\n  letter-spacing: 1px;\n  padding: 3px 8px;\n  border-radius: 6px;\n  background: #10b981;\n  color: #000;\n  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);\n}\n\n/* Detail & Inspector Deck */\n.me-inspector-pane {\n  padding: 24px 28px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  background: rgba(0, 0, 0, 0.2);\n  overflow-y: auto;\n}\n\n.me-pane-section-title {\n  font-size: 11px;\n  text-transform: uppercase;\n  letter-spacing: 1.5px;\n  font-weight: 800;\n  color: #64748b;\n  margin-bottom: 8px;\n}\n\n.me-code-preview {\n  background: #090a0f;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 10px;\n  padding: 14px;\n  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;\n  font-size: 11px;\n  line-height: 1.5;\n  color: #38bdf8;\n  overflow-x: auto;\n  white-space: pre;\n}\n\n/* MIDI Knobs / Sliders */\n.me-controls-grid {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.me-control-row {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  background: rgba(255, 255, 255, 0.02);\n  padding: 10px 14px;\n  border-radius: 10px;\n  border: 1px solid rgba(255, 255, 255, 0.04);\n}\n\n.me-control-label-group {\n  display: flex;\n  justify-content: space-between;\n  font-size: 12px;\n}\n\n.me-ctrl-cc {\n  font-family: monospace;\n  font-weight: 800;\n  color: #a5b4fc;\n}\n\n.me-ctrl-val {\n  font-family: monospace;\n  color: #38bdf8;\n  font-weight: 700;\n}\n\n.me-pickup-badge {\n  font-size: 9px;\n  font-weight: 700;\n  color: #fbbf24;\n  background: rgba(251, 191, 36, 0.12);\n  border: 1px solid rgba(251, 191, 36, 0.28);\n  padding: 1px 6px;\n  border-radius: 4px;\n  margin-left: 6px;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n}\n\n.me-control-slider {\n  width: 100%;\n  accent-color: #38bdf8;\n  cursor: pointer;\n}\n\n/* Footer Actions */\n.master-effects-footer {\n  padding: 18px 28px;\n  background: rgba(255, 255, 255, 0.02);\n  border-top: 1px solid rgba(255, 255, 255, 0.08);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.me-action-btn {\n  padding: 10px 22px;\n  border-radius: 10px;\n  font-size: 13px;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  cursor: pointer;\n  border: none;\n  transition: all 0.15s;\n}\n\n.me-btn-apply {\n  background: #38bdf8;\n  color: #000;\n  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);\n}\n.me-btn-apply:hover {\n  background: #7dd3fc;\n  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);\n}\n\n.me-btn-bypass {\n  background: rgba(244, 63, 94, 0.15);\n  border: 1px solid rgba(244, 63, 94, 0.3);\n  color: #f43f5e;\n}\n.me-btn-bypass:hover {\n  background: #f43f5e;\n  color: #fff;\n}\n\n.me-btn-cancel {\n  background: transparent;\n  color: #94a3b8;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n.me-btn-cancel:hover {\n  color: #fff;\n  border-color: rgba(255, 255, 255, 0.25);\n}\n\n@media (max-width: 768px) {\n  .master-effects-dialog {\n    height: 94vh;\n    max-height: 94vh;\n  }\n  .master-effects-body {\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr;\n  }\n}\n\n/* Master Effects Edit Mode & Forms */\n.me-card-header-right {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n\n.me-card-edit-btn {\n  background: transparent;\n  border: 1px solid rgba(255, 255, 255, 0.1);\n  color: #94a3b8;\n  border-radius: 6px;\n  cursor: pointer;\n  padding: 2px 6px;\n  font-size: 12px;\n  transition: all 0.15s ease;\n}\n\n.me-card-edit-btn:hover {\n  background: rgba(255, 255, 255, 0.1);\n  color: #38bdf8;\n  border-color: #38bdf8;\n}\n\n.me-add-effect-btn {\n  background: rgba(56, 189, 248, 0.08);\n  border: 1px dashed rgba(56, 189, 248, 0.3);\n  color: #38bdf8;\n  border-radius: 12px;\n  padding: 12px;\n  font-size: 13px;\n  font-weight: 700;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 6px;\n  margin-top: 4px;\n}\n\n.me-add-effect-btn:hover:not(:disabled) {\n  background: rgba(56, 189, 248, 0.15);\n  border-color: #38bdf8;\n  transform: translateY(-1px);\n}\n\n.me-add-effect-btn:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n.me-editor {\n  gap: 14px;\n}\n\n.me-form-row {\n  display: flex;\n  gap: 10px;\n  align-items: center;\n}\n\n.me-input {\n  background: #090a0f;\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 8px;\n  color: #f8fafc;\n  padding: 8px 12px;\n  font-size: 13px;\n  outline: none;\n  transition: border-color 0.15s ease;\n  flex: 1;\n}\n\n.me-input:focus {\n  border-color: #38bdf8;\n  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);\n}\n\n.me-input-icon {\n  width: 48px;\n  flex: none;\n  text-align: center;\n  font-size: 18px;\n  padding: 6px;\n}\n\n.me-input-tag {\n  width: 130px;\n  flex: none;\n}\n\n.me-input-unit {\n  width: 70px;\n  flex: none;\n}\n\n.me-textarea-desc {\n  resize: vertical;\n  min-height: 50px;\n  font-family: inherit;\n  line-height: 1.4;\n}\n\n.me-textarea-code {\n  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;\n  font-size: 12px;\n  line-height: 1.5;\n  color: #38bdf8;\n  resize: vertical;\n  min-height: 130px;\n  white-space: pre;\n}\n\n.me-hint {\n  font-size: 11px;\n  color: #94a3b8;\n  margin-top: 6px;\n  line-height: 1.4;\n}\n\n.me-hint code {\n  color: #e2e8f0;\n  background: rgba(255, 255, 255, 0.08);\n  padding: 2px 5px;\n  border-radius: 4px;\n}\n\n.me-control-edit-row {\n  background: rgba(255, 255, 255, 0.02);\n  padding: 8px 12px;\n  border-radius: 8px;\n  border: 1px solid rgba(255, 255, 255, 0.05);\n}\n\n.me-ctrl-range {\n  font-family: monospace;\n  font-size: 11px;\n  color: #64748b;\n  margin-left: auto;\n  white-space: nowrap;\n}\n\n";
+	styleInject(css_248z);
 
 	// This file was generated. Do not modify manually!
 	var astralIdentifierCodes = [509, 0, 227, 0, 150, 4, 294, 9, 1368, 2, 2, 1, 6, 3, 41, 2, 5, 0, 166, 1, 574, 3, 9, 9, 7, 9, 32, 4, 318, 1, 78, 5, 71, 10, 50, 3, 123, 2, 54, 14, 32, 10, 3, 1, 11, 3, 46, 10, 8, 0, 46, 9, 7, 2, 37, 13, 2, 9, 6, 1, 45, 0, 13, 2, 49, 13, 9, 3, 2, 11, 83, 11, 7, 0, 3, 0, 158, 11, 6, 9, 7, 3, 56, 1, 2, 6, 3, 1, 3, 2, 10, 0, 11, 1, 3, 6, 4, 4, 68, 8, 2, 0, 3, 0, 2, 3, 2, 4, 2, 0, 15, 1, 83, 17, 10, 9, 5, 0, 82, 19, 13, 9, 214, 6, 3, 8, 28, 1, 83, 16, 16, 9, 82, 12, 9, 9, 7, 19, 58, 14, 5, 9, 243, 14, 166, 9, 71, 5, 2, 1, 3, 3, 2, 0, 2, 1, 13, 9, 120, 6, 3, 6, 4, 0, 29, 9, 41, 6, 2, 3, 9, 0, 10, 10, 47, 15, 199, 7, 137, 9, 54, 7, 2, 7, 17, 9, 57, 21, 2, 13, 123, 5, 4, 0, 2, 1, 2, 6, 2, 0, 9, 9, 49, 4, 2, 1, 2, 4, 9, 9, 55, 9, 266, 3, 10, 1, 2, 0, 49, 6, 4, 4, 14, 10, 5350, 0, 7, 14, 11465, 27, 2343, 9, 87, 9, 39, 4, 60, 6, 26, 9, 535, 9, 470, 0, 2, 54, 8, 3, 82, 0, 12, 1, 19628, 1, 4178, 9, 519, 45, 3, 22, 543, 4, 4, 5, 9, 7, 3, 6, 31, 3, 149, 2, 1418, 49, 513, 54, 5, 49, 9, 0, 15, 0, 23, 4, 2, 14, 1361, 6, 2, 16, 3, 6, 2, 1, 2, 4, 101, 0, 161, 6, 10, 9, 357, 0, 62, 13, 499, 13, 245, 1, 2, 9, 233, 0, 3, 0, 8, 1, 6, 0, 475, 6, 110, 6, 6, 9, 4759, 9, 787719, 239];
@@ -8962,41 +8962,48 @@
 	 * 3. Injects or replaces function chains with MIDI CC bindings before the final .out().
 	 */
 
-	const MASTER_EFFECTS = [{
+
+	/**
+	 * Built-in presets. `chain` holds only the function-chain body; the
+	 * `/* [master-effects-start:id] *\/ ... /* [master-effects-end] *\/` markers are
+	 * added at apply time (see buildEffectChain), so user-edited presets can't break them.
+	 *
+	 * All controls use midix() on the A-D virtual CC slots, eased over two beats
+	 * (duration re-evaluated every frame so it follows tap tempo).
+	 */
+	const DEFAULT_MASTER_EFFECTS = [{
 	  id: 'hsl_plus',
 	  name: 'HSL+ & Zoom',
 	  tag: 'Color & Framing',
 	  icon: '🎨',
 	  description: 'Master color grade & zoom framing. Smooth hue rotation, saturation punch, contrast, and scale.',
-	  chain: `/* [master-effects-start:hsl_plus] */
-  .hue(() => midi("b1", { min: -1, max: 1 }))
-  .saturate(() => midi("b2", { min: 0, max: 3 }))
-  .contrast(() => midi("b3", { min: 0.2, max: 2.5 }))
-  .scale(() => midi("b4", { min: 0.5, max: 2.5 }))
-/* [master-effects-end] */`,
+	  chain: `.hue(midix("A", { min: -1, max: 1, default: 0, ease: "sine", duration: () => beatMs(2) }))
+  .saturate(midix("B", { min: 0, max: 3, default: 1, ease: "cubic", duration: () => beatMs(2) }))
+  .contrast(midix("C", { min: 0.2, max: 2.5, default: 1, ease: "quad", duration: () => beatMs(2) }))
+  .scale(midix("D", { min: 0.5, max: 2.5, default: 1, ease: "outCubic", duration: () => beatMs(2) }))`,
 	  controls: [{
-	    cc: 'b1',
+	    cc: 'A',
 	    label: 'Hue Shift',
 	    min: -1,
 	    max: 1,
 	    default: 0,
 	    unit: 'deg'
 	  }, {
-	    cc: 'b2',
+	    cc: 'B',
 	    label: 'Saturation',
 	    min: 0,
 	    max: 3,
 	    default: 1,
 	    unit: 'x'
 	  }, {
-	    cc: 'b3',
+	    cc: 'C',
 	    label: 'Contrast',
 	    min: 0.2,
 	    max: 2.5,
 	    default: 1,
 	    unit: 'x'
 	  }, {
-	    cc: 'b4',
+	    cc: 'D',
 	    label: 'Zoom (Scale)',
 	    min: 0.5,
 	    max: 2.5,
@@ -9009,32 +9016,38 @@
 	  tag: 'Symmetry & Motion',
 	  icon: '🌀',
 	  description: 'Hypnotic radial geometry. Real-time kaleidoscope segments, continuous rotation, and color inversion.',
-	  chain: `/* [master-effects-start:psyche_warp] */
-  .kaleid(() => Math.floor(midi("b5", { min: 1, max: 8 })))
-  .rotate(() => midi("b6", { min: -1, max: 1 }))
-  .invert(() => midi("b7", { min: 0, max: 1 }))
-/* [master-effects-end] */`,
+	  chain: `.kaleid(midix("A", { min: 1, max: 8, default: 1, ease: "linear", duration: () => beatMs(2), transform: Math.floor }))
+  .rotate(midix("B", { min: -1, max: 1, default: 0, ease: "sine", duration: () => beatMs(2) }))
+  .invert(midix("C", { min: 0, max: 1, default: 0, ease: "expo", duration: () => beatMs(2) }))
+  .scale(midix("D", { min: 0.6, max: 1.8, default: 1, ease: "cubic", duration: () => beatMs(2) }))`,
 	  controls: [{
-	    cc: 'b5',
+	    cc: 'A',
 	    label: 'Kaleid Segments',
 	    min: 1,
 	    max: 8,
 	    default: 1,
 	    unit: 'sides'
 	  }, {
-	    cc: 'b6',
+	    cc: 'B',
 	    label: 'Rotation Angle',
 	    min: -1,
 	    max: 1,
 	    default: 0,
 	    unit: 'rad'
 	  }, {
-	    cc: 'b7',
+	    cc: 'C',
 	    label: 'Invert Flash',
 	    min: 0,
 	    max: 1,
 	    default: 0,
 	    unit: 'mix'
+	  }, {
+	    cc: 'D',
+	    label: 'Scale Zoom',
+	    min: 0.6,
+	    max: 1.8,
+	    default: 1,
+	    unit: 'x'
 	  }]
 	}, {
 	  id: 'cyber_glitch',
@@ -9042,32 +9055,38 @@
 	  tag: 'Digital Artifacts',
 	  icon: '⚡',
 	  description: 'Post-digital bitcrush. Colorama rainbow prism shifting, pixelation crunch, and posterization.',
-	  chain: `/* [master-effects-start:cyber_glitch] */
-  .colorama(() => midi("b5", { min: 0, max: 0.5 }))
-  .pixelate(() => midi("b6", { min: 16, max: 256 }), () => midi("b6", { min: 16, max: 256 }))
-  .posterize(() => midi("b7", { min: 2, max: 16 }))
-/* [master-effects-end] */`,
+	  chain: `.colorama(midix("A", { min: 0, max: 0.5, default: 0, ease: "expo", duration: () => beatMs(2) }))
+  .pixelate(midix("B", { min: 16, max: 256, default: 256, ease: "quad", duration: () => beatMs(2), transform: Math.round }), midix("B", { min: 16, max: 256, default: 256, ease: "quad", duration: () => beatMs(2), transform: Math.round }))
+  .posterize(midix("C", { min: 2, max: 16, default: 16, ease: "linear", duration: () => beatMs(2), transform: Math.floor }))
+  .contrast(midix("D", { min: 0.8, max: 2.5, default: 1, ease: "outCubic", duration: () => beatMs(2) }))`,
 	  controls: [{
-	    cc: 'b5',
+	    cc: 'A',
 	    label: 'Prism Colorama',
 	    min: 0,
 	    max: 0.5,
 	    default: 0,
 	    unit: 'shift'
 	  }, {
-	    cc: 'b6',
+	    cc: 'B',
 	    label: 'Pixel Res',
 	    min: 16,
 	    max: 256,
 	    default: 256,
 	    unit: 'px'
 	  }, {
-	    cc: 'b7',
+	    cc: 'C',
 	    label: 'Posterize Bins',
 	    min: 2,
 	    max: 16,
 	    default: 16,
 	    unit: 'steps'
+	  }, {
+	    cc: 'D',
+	    label: 'Contrast',
+	    min: 0.8,
+	    max: 2.5,
+	    default: 1,
+	    unit: 'x'
 	  }]
 	}, {
 	  id: 'luma_echo',
@@ -9075,27 +9094,158 @@
 	  tag: 'Feedback & Trails',
 	  icon: '✨',
 	  description: 'Ethereal trails & threshold glow. Luma keying with modulated screen feedback and chromatic warmth.',
-	  chain: `/* [master-effects-start:luma_echo] */
-  .luma(() => midi("b5", { min: 0.05, max: 0.8 }))
+	  chain: `.luma(midix("A", { min: 0.05, max: 0.8, default: 0.1, ease: "cubic", duration: () => beatMs(2) }))
   .color(1.1, 0.95, 1.05)
-  .modulate(o0, () => midi("b6", { min: 0, max: 0.2 }))
-/* [master-effects-end] */`,
+  .modulate(o0, midix("B", { min: 0, max: 0.25, default: 0, ease: "sine", duration: () => beatMs(2) }))
+  .scale(midix("C", { min: 0.9, max: 1.2, default: 1.01, ease: "quad", duration: () => beatMs(2) }))`,
 	  controls: [{
-	    cc: 'b5',
+	    cc: 'A',
 	    label: 'Luma Cutoff',
 	    min: 0.05,
 	    max: 0.8,
 	    default: 0.1,
 	    unit: 'thresh'
 	  }, {
-	    cc: 'b6',
+	    cc: 'B',
 	    label: 'Feedback Warp',
 	    min: 0,
-	    max: 0.2,
+	    max: 0.25,
 	    default: 0,
 	    unit: 'depth'
+	  }, {
+	    cc: 'C',
+	    label: 'Echo Scale',
+	    min: 0.9,
+	    max: 1.2,
+	    default: 1.01,
+	    unit: 'x'
 	  }]
 	}];
+	const MASTER_EFFECTS_STORAGE_KEY = 'hydralisk.masterEffects';
+	const MARKER_START_RE = /\/\*\s*\[master-effects-start:[a-zA-Z0-9_-]+\]\s*\*\/\s*/g;
+	const MARKER_END_RE = /\s*\/\*\s*\[master-effects-end\]\s*\*\//g;
+
+	/** Strip any marker comments from a chain body (handles legacy chains that embedded them). */
+	function stripEffectMarkers(chain = '') {
+	  return String(chain).replace(MARKER_START_RE, '').replace(MARKER_END_RE, '').trim();
+	}
+
+	/** Wrap a preset's chain body with the start/end markers used for idempotent replacement. */
+	function buildEffectChain(effect) {
+	  return `/* [master-effects-start:${effect.id}] */\n  ${stripEffectMarkers(effect.chain)}\n/* [master-effects-end] */`;
+	}
+	const readNum = (opts, key) => {
+	  const m = new RegExp(`\\b${key}\\s*:\\s*(-?\\d*\\.?\\d+(?:e-?\\d+)?)`).exec(opts || '');
+	  return m ? parseFloat(m[1]) : undefined;
+	};
+
+	/**
+	 * Derive the control list from midi()/midix() calls in a chain body.
+	 * Keeps label/unit from previous controls with the same cc; otherwise labels
+	 * the control after the hydra method it's an argument of (e.g. ".hue(" -> "hue").
+	 */
+	function deriveControls(chain, previous = []) {
+	  const body = stripEffectMarkers(chain);
+	  const re = /\bmidix?\(\s*["']([A-Za-z0-9]+)["']/g;
+	  const controls = [];
+	  const seen = new Set();
+	  let m;
+	  while ((m = re.exec(body)) !== null) {
+	    const cc = m[1];
+	    if (seen.has(cc)) continue;
+	    seen.add(cc);
+	    let opts = '';
+	    const afterCC = body.slice(m.index + m[0].length);
+	    const commaIdx = afterCC.indexOf(',');
+	    const closeParenIdx = afterCC.indexOf(')');
+	    if (commaIdx !== -1 && (closeParenIdx === -1 || commaIdx < closeParenIdx)) {
+	      const braceStart = afterCC.indexOf('{', commaIdx);
+	      if (braceStart !== -1 && (closeParenIdx === -1 || braceStart < closeParenIdx)) {
+	        let depth = 0;
+	        let braceEnd = -1;
+	        for (let i = braceStart; i < afterCC.length; i++) {
+	          if (afterCC[i] === '{') depth++;else if (afterCC[i] === '}') {
+	            depth--;
+	            if (depth === 0) {
+	              braceEnd = i;
+	              break;
+	            }
+	          }
+	        }
+	        if (braceEnd !== -1) {
+	          opts = afterCC.slice(braceStart + 1, braceEnd);
+	        }
+	      }
+	    }
+	    const min = readNum(opts, 'min') ?? 0;
+	    const max = readNum(opts, 'max') ?? 1;
+	    const def = readNum(opts, 'default') ?? (min + max) / 2;
+	    const prev = previous.find(c => c.cc === cc);
+	    const methods = [...body.slice(0, m.index).matchAll(/\.(\w+)\s*\(/g)];
+	    const method = methods.length ? methods[methods.length - 1][1] : cc;
+	    controls.push({
+	      cc,
+	      label: prev?.label || method,
+	      min,
+	      max,
+	      default: def,
+	      unit: prev?.unit || ''
+	    });
+	  }
+	  return controls;
+	}
+	const clonePresets = list => list.map(e => ({
+	  ...e,
+	  controls: e.controls.map(c => ({
+	    ...c
+	  }))
+	}));
+	const getStorage = () => {
+	  try {
+	    return typeof localStorage !== 'undefined' ? localStorage : null;
+	  } catch (e) {
+	    return null;
+	  }
+	};
+	function loadStoredEffects() {
+	  const storage = getStorage();
+	  if (!storage) return null;
+	  try {
+	    const raw = storage.getItem(MASTER_EFFECTS_STORAGE_KEY);
+	    if (!raw) return null;
+	    const parsed = JSON.parse(raw);
+	    if (!Array.isArray(parsed)) return null;
+	    const base = clonePresets(DEFAULT_MASTER_EFFECTS);
+	    const result = [...base];
+	    for (const item of parsed) {
+	      if (!item || !item.id || typeof item.chain !== 'string') continue;
+	      const normalized = {
+	        icon: '🎛️',
+	        tag: 'Custom',
+	        description: '',
+	        ...item,
+	        chain: stripEffectMarkers(item.chain),
+	        controls: Array.isArray(item.controls) ? item.controls : deriveControls(item.chain)
+	      };
+	      const idx = result.findIndex(e => e.id === normalized.id);
+	      if (idx !== -1) {
+	        result[idx] = normalized;
+	      } else {
+	        result.push(normalized);
+	      }
+	    }
+	    return result;
+	  } catch (e) {
+	    console.warn('[MasterEffects] Failed to read stored effects, using defaults', e);
+	    return null;
+	  }
+	}
+
+	/**
+	 * Live preset list. Mutated in place (never reassigned) so existing importers
+	 * always see the current, localStorage-backed set.
+	 */
+	const MASTER_EFFECTS = loadStoredEffects() || clonePresets(DEFAULT_MASTER_EFFECTS);
 
 	/**
 	 * Service managing Master Effects state, parsing, and editor interaction
@@ -9113,8 +9263,82 @@
 	  notify() {
 	    this.subscribers.forEach(cb => cb({
 	      isOpen: this.isOpen,
-	      activeEffectId: this.activeEffectId
+	      activeEffectId: this.activeEffectId,
+	      effects: MASTER_EFFECTS
 	    }));
+	  }
+
+	  // --- Preset registry (localStorage-backed) ---
+
+	  getEffects() {
+	    return MASTER_EFFECTS;
+	  }
+	  getEffect(id) {
+	    return MASTER_EFFECTS.find(e => e.id === id) || null;
+	  }
+	  persist() {
+	    const storage = getStorage();
+	    if (!storage) return;
+	    try {
+	      const overrides = MASTER_EFFECTS.filter(e => {
+	        const def = DEFAULT_MASTER_EFFECTS.find(d => d.id === e.id);
+	        if (!def) return true; // custom preset
+	        return e.name !== def.name || stripEffectMarkers(e.chain) !== stripEffectMarkers(def.chain) || e.tag !== def.tag || e.icon !== def.icon || e.description !== def.description;
+	      });
+	      storage.setItem(MASTER_EFFECTS_STORAGE_KEY, JSON.stringify(overrides));
+	    } catch (e) {
+	      console.warn('[MasterEffects] Failed to persist effects', e);
+	    }
+	  }
+
+	  /** Generate a unique, marker-safe id from a name. */
+	  makeId(name = 'effect') {
+	    const base = String(name).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'effect';
+	    let id = base;
+	    let i = 2;
+	    while (this.getEffect(id)) id = `${base}_${i++}`;
+	    return id;
+	  }
+
+	  /**
+	   * Insert or update a preset. Controls are re-derived from the chain's
+	   * midi()/midix() calls, keeping existing labels/units by cc.
+	   */
+	  saveEffect(effect) {
+	    const existing = effect.id ? this.getEffect(effect.id) : null;
+	    const chain = stripEffectMarkers(effect.chain);
+	    const next = {
+	      icon: '🎛️',
+	      tag: 'Custom',
+	      description: '',
+	      ...existing,
+	      ...effect,
+	      id: existing ? existing.id : this.makeId(effect.name),
+	      chain,
+	      controls: deriveControls(chain, effect.controls || existing?.controls || [])
+	    };
+	    if (existing) {
+	      MASTER_EFFECTS.splice(MASTER_EFFECTS.indexOf(existing), 1, next);
+	    } else {
+	      MASTER_EFFECTS.push(next);
+	    }
+	    this.persist();
+	    this.notify();
+	    return next;
+	  }
+	  deleteEffect(id) {
+	    const idx = MASTER_EFFECTS.findIndex(e => e.id === id);
+	    if (idx === -1) return false;
+	    MASTER_EFFECTS.splice(idx, 1);
+	    this.persist();
+	    this.notify();
+	    return true;
+	  }
+	  resetEffects() {
+	    MASTER_EFFECTS.splice(0, MASTER_EFFECTS.length, ...clonePresets(DEFAULT_MASTER_EFFECTS));
+	    const storage = getStorage();
+	    if (storage) storage.removeItem(MASTER_EFFECTS_STORAGE_KEY);
+	    this.notify();
 	  }
 	  open() {
 	    this.isOpen = true;
@@ -9274,8 +9498,9 @@
 	   * Applies a master effect to code by inserting function chain before .out(...)
 	   */
 	  applyEffectToCode(code, effectId) {
-	    const effect = MASTER_EFFECTS.find(e => e.id === effectId);
+	    const effect = this.getEffect(effectId);
 	    if (!effect) return code;
+	    const chain = buildEffectChain(effect);
 
 	    // 1. Remove any existing master effects block
 	    const cleanedCode = this.removeMasterEffectFromCode(code);
@@ -9287,13 +9512,13 @@
 	    } = this.findTargetBufferAndInsertionPoint(cleanedCode);
 	    if (outStart === -1) {
 	      // If no .out() found, append as standalone chain or at end
-	      return `${cleanedCode}\n  ${effect.chain}\n  .out(${targetBuffer})`;
+	      return `${cleanedCode}\n  ${chain}\n  .out(${targetBuffer})`;
 	    }
 
 	    // Insert effect chain immediately before .out(...)
 	    const prefix = cleanedCode.slice(0, outStart).trimEnd();
 	    const suffix = cleanedCode.slice(outStart).trimStart();
-	    return `${prefix}\n  ${effect.chain}\n  ${suffix}`;
+	    return `${prefix}\n  ${chain}\n  ${suffix}`;
 	  }
 
 	  /**
@@ -9306,7 +9531,7 @@
 	    this.setEditorCode(newCode, true);
 	    this.activeEffectId = effectId;
 	    this.notify();
-	    const effect = MASTER_EFFECTS.find(e => e.id === effectId);
+	    const effect = this.getEffect(effectId);
 	    if (window.showToast) {
 	      window.showToast(`Master Effect Applied: ${effect ? effect.name : effectId}`);
 	    } else {
@@ -9333,6 +9558,14 @@
 	}
 	const masterEffectsService = new MasterEffectsService();
 
+	const NEW_EFFECT_TEMPLATE = {
+	  name: 'New Effect',
+	  icon: '🎛️',
+	  tag: 'Custom',
+	  description: '',
+	  chain: `.hue(midix("A", { min: -1, max: 1, default: 0, ease: "sine", duration: () => beatMs(2) }))
+  .scale(midix("B", { min: 0.5, max: 2, default: 1, ease: "cubic", duration: () => beatMs(2) }))`
+	};
 	function MasterEffectsModal({
 	  isOpen,
 	  onClose
@@ -9341,8 +9574,15 @@
 	  const [activeEffectId, setActiveEffectId] = React$1.useState(null);
 	  const [targetBuffer, setTargetBuffer] = React$1.useState('o0');
 	  const [sliderValues, setSliderValues] = React$1.useState({});
+	  const [, setRevision] = React$1.useState(0);
+	  // Edit draft: null when not editing; { id?, name, icon, tag, description, chain, controls? } otherwise
+	  const [draft, setDraft] = React$1.useState(null);
+
+	  // Re-render when the preset registry changes (save/delete/reset)
+	  React$1.useEffect(() => masterEffectsService.subscribe(() => setRevision(r => r + 1)), []);
 	  React$1.useEffect(() => {
 	    if (isOpen) {
+	      setDraft(null);
 	      const code = masterEffectsService.getEditorCode();
 	      const active = masterEffectsService.getActiveEffectFromCode(code);
 	      setActiveEffectId(active);
@@ -9359,7 +9599,7 @@
 	      const sel = MASTER_EFFECTS.find(e => e.id === (active || selectedEffectId)) || MASTER_EFFECTS[0];
 	      if (sel && sel.controls) {
 	        sel.controls.forEach(c => {
-	          const cur = window.virtualCC && window.virtualCC[c.cc] !== undefined ? window.virtualCC[c.cc] : (c.default - c.min) / (c.max - c.min);
+	          const cur = typeof window !== 'undefined' && window.cc && window.cc[c.cc] !== undefined ? window.cc[c.cc] : typeof window !== 'undefined' && window.virtualCC && window.virtualCC[c.cc] !== undefined ? window.virtualCC[c.cc] : (c.default - c.min) / (c.max - c.min);
 	          initial[c.cc] = Math.max(0, Math.min(1, cur));
 	        });
 	      }
@@ -9371,7 +9611,13 @@
 	      if (!isOpen) return;
 	      if (e.key === 'Escape') {
 	        e.preventDefault();
-	        onClose();
+	        if (draft) setDraft(null);else onClose();
+	      } else if (draft) {
+	        // While editing, Cmd/Ctrl+Enter saves; plain Enter types newlines
+	        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+	          e.preventDefault();
+	          handleSaveDraft();
+	        }
 	      } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey || !e.shiftKey)) {
 	        e.preventDefault();
 	        handleApply();
@@ -9379,10 +9625,11 @@
 	    };
 	    window.addEventListener('keydown', handleKeyDown);
 	    return () => window.removeEventListener('keydown', handleKeyDown);
-	  }, [isOpen, selectedEffectId]);
+	  }, [isOpen, selectedEffectId, draft]);
 	  if (!isOpen) return null;
 	  const selectedEffect = MASTER_EFFECTS.find(e => e.id === selectedEffectId) || MASTER_EFFECTS[0];
 	  const handleApply = () => {
+	    if (!selectedEffect) return;
 	    masterEffectsService.applyToEditor(selectedEffect.id);
 	    setActiveEffectId(selectedEffect.id);
 	    onClose();
@@ -9397,13 +9644,150 @@
 	      ...prev,
 	      [cc]: normVal
 	    }));
-	    // Update live virtual MIDI CC so live sketch modulates immediately
-	    if (window.hydraliskMidiBridge && typeof window.hydraliskMidiBridge.setVirtualCC === 'function') {
-	      window.hydraliskMidiBridge.setVirtualCC(cc, normVal);
-	    } else if (typeof window.setVirtualCC === 'function') {
-	      window.setVirtualCC(cc, normVal);
+	    // Update live MIDI CC so live sketch modulates immediately
+	    if (typeof window !== 'undefined') {
+	      if (!window.cc) window.cc = {};
+	      window.cc[cc] = normVal;
+	      if (!window.virtualCC) window.virtualCC = {};
+	      window.virtualCC[cc] = normVal;
+	      if (window.hydraliskMidiBridge && typeof window.hydraliskMidiBridge.setVirtualCC === 'function') {
+	        window.hydraliskMidiBridge.setVirtualCC(cc, normVal);
+	      } else if (typeof window.setVirtualCC === 'function') {
+	        window.setVirtualCC(cc, normVal);
+	      }
 	    }
 	  };
+	  const startEdit = effect => {
+	    setSelectedEffectId(effect.id);
+	    setDraft({
+	      ...effect,
+	      controls: effect.controls.map(c => ({
+	        ...c
+	      }))
+	    });
+	  };
+	  const startNew = () => setDraft({
+	    ...NEW_EFFECT_TEMPLATE
+	  });
+	  const updateDraft = (key, value) => setDraft(d => {
+	    if (!d) return d;
+	    if (key === 'chain') {
+	      return {
+	        ...d,
+	        chain: value,
+	        controls: deriveControls(value, d.controls || [])
+	      };
+	    }
+	    return {
+	      ...d,
+	      [key]: value
+	    };
+	  });
+	  const updateDraftControl = (cc, key, value) => setDraft(d => ({
+	    ...d,
+	    controls: (d.controls || []).map(c => c.cc === cc ? {
+	      ...c,
+	      [key]: value
+	    } : c)
+	  }));
+	  function handleSaveDraft() {
+	    if (!draft) return;
+	    if (!draft.name || !draft.name.trim()) {
+	      window.showToast?.('Effect needs a name');
+	      return;
+	    }
+	    const controls = deriveControls(draft.chain, draft.controls || []);
+	    const saved = masterEffectsService.saveEffect({
+	      ...draft,
+	      name: draft.name.trim(),
+	      controls
+	    });
+	    setSelectedEffectId(saved.id);
+	    setDraft(null);
+	    window.showToast?.(`Master Effect Saved: ${saved.name}`);
+	  }
+	  const handleDelete = () => {
+	    if (!draft?.id) return;
+	    if (!window.confirm(`Delete master effect "${draft.name}"?`)) return;
+	    masterEffectsService.deleteEffect(draft.id);
+	    setDraft(null);
+	    setSelectedEffectId(MASTER_EFFECTS[0]?.id);
+	  };
+	  const handleReset = () => {
+	    if (!window.confirm('Reset all master effects to the built-in defaults? Custom effects will be lost.')) return;
+	    masterEffectsService.resetEffects();
+	    setDraft(null);
+	    setSelectedEffectId(MASTER_EFFECTS[0]?.id);
+	  };
+
+	  // Controls preview while editing: derived live from the chain, keeping edited labels/units
+	  const draftControls = draft ? deriveControls(draft.chain, draft.controls || []) : [];
+	  const renderEditor = () => /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-inspector-pane me-editor"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-pane-section-title"
+	  }, draft.id ? `Edit: ${draft.name}` : 'New Master Effect'), /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-form-row"
+	  }, /*#__PURE__*/React$1.createElement("input", {
+	    className: "me-input me-input-icon",
+	    value: draft.icon || '',
+	    onChange: e => updateDraft('icon', e.target.value),
+	    "aria-label": "Icon",
+	    maxLength: 4
+	  }), /*#__PURE__*/React$1.createElement("input", {
+	    className: "me-input",
+	    value: draft.name || '',
+	    onChange: e => updateDraft('name', e.target.value),
+	    placeholder: "Name",
+	    "aria-label": "Name",
+	    autoFocus: true
+	  }), /*#__PURE__*/React$1.createElement("input", {
+	    className: "me-input me-input-tag",
+	    value: draft.tag || '',
+	    onChange: e => updateDraft('tag', e.target.value),
+	    placeholder: "Tag",
+	    "aria-label": "Tag"
+	  })), /*#__PURE__*/React$1.createElement("textarea", {
+	    className: "me-input me-textarea-desc",
+	    value: draft.description || '',
+	    onChange: e => updateDraft('description', e.target.value),
+	    placeholder: "Description",
+	    "aria-label": "Description",
+	    rows: 2
+	  }), /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-pane-section-title"
+	  }, "Function Chain (inserted before .out)"), /*#__PURE__*/React$1.createElement("textarea", {
+	    className: "me-input me-textarea-code",
+	    value: draft.chain || '',
+	    onChange: e => updateDraft('chain', e.target.value),
+	    spellCheck: false,
+	    "aria-label": "Function chain",
+	    rows: 8
+	  }), /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-hint"
+	  }, "Use ", /*#__PURE__*/React$1.createElement("code", null, "midix(\"A\"..\"D\", ", '{', " min, max, default, ease, duration: () => beatMs(2) ", '}', ")"), ". Controls are detected automatically.")), draftControls.length > 0 && /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-pane-section-title"
+	  }, "Detected Controls"), /*#__PURE__*/React$1.createElement("div", {
+	    className: "me-controls-grid"
+	  }, draftControls.map(ctrl => /*#__PURE__*/React$1.createElement("div", {
+	    key: ctrl.cc,
+	    className: "me-form-row me-control-edit-row"
+	  }, /*#__PURE__*/React$1.createElement("span", {
+	    className: "me-ctrl-cc"
+	  }, ctrl.cc.toUpperCase()), /*#__PURE__*/React$1.createElement("input", {
+	    className: "me-input",
+	    value: ctrl.label,
+	    onChange: e => updateDraftControl(ctrl.cc, 'label', e.target.value),
+	    "aria-label": `${ctrl.cc} label`
+	  }), /*#__PURE__*/React$1.createElement("input", {
+	    className: "me-input me-input-unit",
+	    value: ctrl.unit,
+	    onChange: e => updateDraftControl(ctrl.cc, 'unit', e.target.value),
+	    placeholder: "unit",
+	    "aria-label": `${ctrl.cc} unit`
+	  }), /*#__PURE__*/React$1.createElement("span", {
+	    className: "me-ctrl-range"
+	  }, ctrl.min, " \u2192 ", ctrl.max))))));
 	  return /*#__PURE__*/React$1.createElement("div", {
 	    className: "master-effects-overlay",
 	    onClick: e => {
@@ -9437,7 +9821,9 @@
 	    return /*#__PURE__*/React$1.createElement("div", {
 	      key: effect.id,
 	      className: `me-preset-card ${isSelected ? 'selected' : ''} ${isActive ? 'active-on-stage' : ''}`,
-	      onClick: () => setSelectedEffectId(effect.id)
+	      onClick: () => {
+	        if (!draft) setSelectedEffectId(effect.id);
+	      }
 	    }, /*#__PURE__*/React$1.createElement("div", {
 	      className: "me-card-header"
 	    }, /*#__PURE__*/React$1.createElement("div", {
@@ -9446,11 +9832,21 @@
 	      className: "me-card-icon"
 	    }, effect.icon), /*#__PURE__*/React$1.createElement("span", {
 	      className: "me-card-name"
-	    }, effect.name)), isActive ? /*#__PURE__*/React$1.createElement("span", {
+	    }, effect.name)), /*#__PURE__*/React$1.createElement("div", {
+	      className: "me-card-header-right"
+	    }, isActive ? /*#__PURE__*/React$1.createElement("span", {
 	      className: "me-active-badge"
 	    }, "ACTIVE") : /*#__PURE__*/React$1.createElement("span", {
 	      className: "me-card-tag"
-	    }, effect.tag)), /*#__PURE__*/React$1.createElement("div", {
+	    }, effect.tag), /*#__PURE__*/React$1.createElement("button", {
+	      className: "me-card-edit-btn",
+	      title: "Edit effect",
+	      id: `me-edit-${effect.id}`,
+	      onClick: e => {
+	        e.stopPropagation();
+	        startEdit(effect);
+	      }
+	    }, "\u270E"))), /*#__PURE__*/React$1.createElement("div", {
 	      className: "me-card-desc"
 	    }, effect.description), /*#__PURE__*/React$1.createElement("div", {
 	      className: "me-card-midi-pills"
@@ -9458,19 +9854,26 @@
 	      key: ctrl.cc,
 	      className: "me-midi-pill"
 	    }, ctrl.cc.toUpperCase(), ": ", ctrl.label))));
-	  })), /*#__PURE__*/React$1.createElement("div", {
+	  }), /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-add-effect-btn",
+	    id: "me-add-effect",
+	    onClick: startNew,
+	    disabled: !!draft
+	  }, "\uFF0B New Master Effect")), draft ? renderEditor() : selectedEffect && /*#__PURE__*/React$1.createElement("div", {
 	    className: "me-inspector-pane"
 	  }, /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
 	    className: "me-pane-section-title"
 	  }, "Injected Function Chain (before .", targetBuffer, ")"), /*#__PURE__*/React$1.createElement("div", {
 	    className: "me-code-preview"
-	  }, selectedEffect.chain)), /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
+	  }, buildEffectChain(selectedEffect))), /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
 	    className: "me-pane-section-title"
 	  }, "MIDI CC Live Modulators"), /*#__PURE__*/React$1.createElement("div", {
 	    className: "me-controls-grid"
 	  }, selectedEffect.controls.map(ctrl => {
 	    const norm = sliderValues[ctrl.cc] !== undefined ? sliderValues[ctrl.cc] : 0.5;
 	    const computedVal = (norm * (ctrl.max - ctrl.min) + ctrl.min).toFixed(2);
+	    const statuses = typeof window !== 'undefined' && typeof window.midixStatus === 'function' ? window.midixStatus(ctrl.cc) : [];
+	    const isWaitingPickup = statuses.length > 0 && statuses.some(s => !s.pickedUp);
 	    return /*#__PURE__*/React$1.createElement("div", {
 	      key: ctrl.cc,
 	      className: "me-control-row"
@@ -9478,7 +9881,10 @@
 	      className: "me-control-label-group"
 	    }, /*#__PURE__*/React$1.createElement("span", null, /*#__PURE__*/React$1.createElement("span", {
 	      className: "me-ctrl-cc"
-	    }, ctrl.cc.toUpperCase()), " \u2014 ", ctrl.label), /*#__PURE__*/React$1.createElement("span", {
+	    }, ctrl.cc.toUpperCase()), " \u2014 ", ctrl.label, isWaitingPickup && /*#__PURE__*/React$1.createElement("span", {
+	      className: "me-pickup-badge",
+	      title: "Waiting for MIDI pickup (knob must reach default value)"
+	    }, "pickup")), /*#__PURE__*/React$1.createElement("span", {
 	      className: "me-ctrl-val"
 	    }, computedVal, " ", ctrl.unit)), /*#__PURE__*/React$1.createElement("input", {
 	      type: "range",
@@ -9491,11 +9897,34 @@
 	    }));
 	  }))))), /*#__PURE__*/React$1.createElement("div", {
 	    className: "master-effects-footer"
-	  }, /*#__PURE__*/React$1.createElement("div", null, activeEffectId && /*#__PURE__*/React$1.createElement("button", {
+	  }, draft ? /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", null, draft.id && /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-action-btn me-btn-bypass",
+	    onClick: handleDelete
+	  }, "\uD83D\uDDD1 Delete Effect")), /*#__PURE__*/React$1.createElement("div", {
+	    style: {
+	      display: 'flex',
+	      gap: '10px'
+	    }
+	  }, /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-action-btn me-btn-cancel",
+	    onClick: () => setDraft(null)
+	  }, "Cancel"), /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-action-btn me-btn-apply",
+	    onClick: handleSaveDraft
+	  }, "Save Effect \u2318\u21B5"))) : /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
+	    style: {
+	      display: 'flex',
+	      gap: '10px'
+	    }
+	  }, activeEffectId && /*#__PURE__*/React$1.createElement("button", {
 	    className: "me-action-btn me-btn-bypass",
 	    onClick: handleBypass,
 	    title: "Remove master effect chain from code"
-	  }, "\u2715 Remove Master Effects")), /*#__PURE__*/React$1.createElement("div", {
+	  }, "\u2715 Remove Master Effects"), /*#__PURE__*/React$1.createElement("button", {
+	    className: "me-action-btn me-btn-cancel",
+	    onClick: handleReset,
+	    title: "Restore built-in presets"
+	  }, "Reset Defaults")), /*#__PURE__*/React$1.createElement("div", {
 	    style: {
 	      display: 'flex',
 	      gap: '10px'
@@ -9506,7 +9935,7 @@
 	  }, "Cancel"), /*#__PURE__*/React$1.createElement("button", {
 	    className: "me-action-btn me-btn-apply",
 	    onClick: handleApply
-	  }, "Apply Effect to Code \u21B5")))));
+	  }, "Apply Effect to Code \u21B5"))))));
 	}
 
 	function MasterEffectsHost() {
@@ -9602,9 +10031,6 @@
 	    }
 	  });
 	}
-
-	var css_248z = "/* Impromptu Mutation HUD & Modal Styles */\n\n#impromptu-hud {\n  position: fixed;\n  top: 14px;\n  right: 140px;\n  z-index: 10001;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 6px 14px;\n  background: rgba(14, 18, 28, 0.88);\n  backdrop-filter: blur(14px);\n  -webkit-backdrop-filter: blur(14px);\n  border: 1px solid rgba(0, 240, 255, 0.25);\n  border-radius: 999px;\n  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 240, 255, 0.15);\n  font-family: 'SF Mono', Monaco, Menlo, 'Courier New', monospace;\n  font-size: 11px;\n  color: #e2e8f0;\n  pointer-events: auto;\n  cursor: pointer;\n  opacity: 0;\n  transform: translateY(-8px);\n  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);\n  user-select: none;\n}\n\n#impromptu-hud.visible {\n  opacity: 1;\n  transform: translateY(0);\n}\n\n#impromptu-hud.flash-burst {\n  animation: impromptu-burst-flash 0.45s cubic-bezier(0.1, 0.9, 0.2, 1);\n}\n\n#impromptu-hud.flash-undo {\n  animation: impromptu-undo-flash 0.45s cubic-bezier(0.1, 0.9, 0.2, 1);\n}\n\n@keyframes impromptu-burst-flash {\n  0% {\n    border-color: #ff007f;\n    box-shadow: 0 0 30px rgba(255, 0, 127, 0.9), 0 0 15px #ff007f;\n    transform: scale(1.08);\n  }\n  100% {\n    border-color: rgba(0, 240, 255, 0.25);\n    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);\n    transform: scale(1);\n  }\n}\n\n@keyframes impromptu-undo-flash {\n  0% {\n    border-color: #ffd700;\n    box-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 0 0 15px #ffd700;\n    transform: scale(1.08);\n  }\n  100% {\n    border-color: rgba(0, 240, 255, 0.25);\n    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);\n    transform: scale(1);\n  }\n}\n\n.impromptu-hud-icon {\n  color: #00f0ff;\n  font-size: 13px;\n  filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.8));\n}\n\n.impromptu-hud-badge {\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  text-transform: uppercase;\n  color: #00f0ff;\n}\n\n.impromptu-hud-badge.undo-mode {\n  color: #ffd700;\n}\n\n.impromptu-hud-meter {\n  display: flex;\n  gap: 3px;\n  align-items: center;\n}\n\n.impromptu-pip {\n  width: 5px;\n  height: 5px;\n  border-radius: 50%;\n  background: rgba(255, 255, 255, 0.18);\n  transition: background 0.15s ease, transform 0.15s ease;\n}\n\n.impromptu-pip.active {\n  background: #00f0ff;\n  box-shadow: 0 0 6px rgba(0, 240, 255, 0.8);\n  transform: scale(1.2);\n}\n\n.impromptu-pip.undo-pip {\n  background: #ffd700;\n  box-shadow: 0 0 6px rgba(255, 215, 0, 0.8);\n}\n\n/* Modal Panel */\n#impromptu-modal-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 10002;\n  background: rgba(8, 10, 16, 0.75);\n  backdrop-filter: blur(8px);\n  -webkit-backdrop-filter: blur(8px);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity 0.25s ease;\n}\n\n#impromptu-modal-overlay.open {\n  opacity: 1;\n  pointer-events: auto;\n}\n\n.impromptu-modal {\n  width: 90%;\n  max-width: 600px;\n  background: rgba(18, 22, 34, 0.95);\n  border: 1px solid rgba(0, 240, 255, 0.28);\n  border-radius: 12px;\n  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 240, 255, 0.1);\n  padding: 22px;\n  color: #f1f5f9;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, monospace;\n}\n\n.impromptu-modal-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 18px;\n  padding-bottom: 12px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.1);\n}\n\n.impromptu-modal-title {\n  font-size: 16px;\n  font-weight: 700;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  color: #00f0ff;\n}\n\n.impromptu-modal-close {\n  background: transparent;\n  border: none;\n  color: #94a3b8;\n  font-size: 20px;\n  cursor: pointer;\n  padding: 4px 8px;\n  transition: color 0.2s;\n}\n\n.impromptu-modal-close:hover {\n  color: #fff;\n}\n\n.impromptu-dial-section {\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 8px;\n  padding: 16px;\n  margin-bottom: 16px;\n}\n\n.impromptu-dial-label-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 10px;\n}\n\n.impromptu-dial-name {\n  font-size: 13px;\n  font-weight: 600;\n  color: #cbd5e1;\n}\n\n.impromptu-dial-value {\n  font-family: monospace;\n  font-size: 13px;\n  color: #00f0ff;\n  font-weight: 700;\n}\n\n.impromptu-range-slider {\n  width: 100%;\n  height: 6px;\n  border-radius: 3px;\n  background: #334155;\n  outline: none;\n  -webkit-appearance: none;\n  margin: 10px 0;\n}\n\n.impromptu-range-slider::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: #00f0ff;\n  box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);\n  cursor: pointer;\n}\n\n.impromptu-quick-buttons {\n  display: flex;\n  gap: 6px;\n  margin-top: 10px;\n  flex-wrap: wrap;\n}\n\n.impromptu-quick-btn {\n  background: rgba(255, 255, 255, 0.06);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 4px;\n  color: #cbd5e1;\n  padding: 4px 8px;\n  font-size: 11px;\n  cursor: pointer;\n  font-family: monospace;\n  transition: all 0.2s;\n}\n\n.impromptu-quick-btn:hover {\n  background: rgba(0, 240, 255, 0.2);\n  border-color: #00f0ff;\n  color: #fff;\n}\n\n.impromptu-quick-btn.active {\n  background: #00f0ff;\n  color: #0f172a;\n  font-weight: 700;\n}\n\n.impromptu-status-box {\n  margin: 14px 0;\n  padding: 10px 14px;\n  border-radius: 6px;\n  background: rgba(0, 240, 255, 0.06);\n  border-left: 3px solid #00f0ff;\n  font-size: 12px;\n  font-family: monospace;\n  color: #94a3b8;\n}\n\n.impromptu-status-box.undo {\n  background: rgba(255, 215, 0, 0.06);\n  border-left-color: #ffd700;\n  color: #fef08a;\n}\n\n.impromptu-actions-row {\n  display: flex;\n  gap: 10px;\n  margin-top: 16px;\n}\n\n.impromptu-action-btn {\n  flex: 1;\n  padding: 10px 16px;\n  border-radius: 6px;\n  border: none;\n  font-size: 13px;\n  font-weight: 600;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 6px;\n  transition: all 0.2s;\n}\n\n.impromptu-btn-burst {\n  background: linear-gradient(135deg, #00f0ff 0%, #0088ff 100%);\n  color: #0f172a;\n}\n\n.impromptu-btn-burst:hover {\n  filter: brightness(1.15);\n  box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);\n}\n\n.impromptu-btn-undo {\n  background: rgba(255, 215, 0, 0.15);\n  border: 1px solid rgba(255, 215, 0, 0.4);\n  color: #ffd700;\n}\n\n.impromptu-btn-undo:hover {\n  background: rgba(255, 215, 0, 0.25);\n}\n\n.impromptu-btn-reroll {\n  background: rgba(255, 255, 255, 0.08);\n  border: 1px solid rgba(255, 255, 255, 0.15);\n  color: #e2e8f0;\n}\n\n.impromptu-btn-reroll:hover {\n  background: rgba(255, 255, 255, 0.15);\n}\n\n.impromptu-preview-box {\n  margin-top: 14px;\n  background: #090d16;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: 6px;\n  padding: 10px;\n  max-height: 120px;\n  overflow-y: auto;\n  font-family: 'SF Mono', Monaco, monospace;\n  font-size: 11px;\n  color: #94a3b8;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n\n.impromptu-midi-footer {\n  margin-top: 14px;\n  font-size: 11px;\n  color: #64748b;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.impromptu-midi-link {\n  color: #00f0ff;\n  cursor: pointer;\n  text-decoration: underline;\n}\n";
-	styleInject(css_248z);
 
 	// Astring is a tiny and fast JavaScript code generator from an ESTree-compliant AST.
 	//
@@ -10828,10 +11254,10 @@
 	}
 
 	/**
-	 * Impromptu Mutator Service for Hydralisk
+	 * Mutation Jump Service for Hydralisk
 	 * 
 	 * Pre-computes mutation states in memory based on a MIDI CC dial (0-1 mapped to 0-10 mutations).
-	 * Swaps to the pre-calculated to-be state instantly on a MIDI press event.
+	 * Swaps to the pre-calculated to-be state instantly on a MIDI press event without on-screen visual clues.
 	 * If CC ~= 0 on press, retrieves and restores the pre-mutation state (undo).
 	 */
 
@@ -10842,10 +11268,12 @@
 	  combine: ['add', 'sub', 'layer', 'blend', 'mult', 'diff', 'modulateHue'],
 	  combineCoord: ['modulate', 'modulateRepeat', 'modulateRepeatX', 'modulateRepeatY', 'modulateRotate', 'modulateScale', 'modulatePixelate', 'modulateScrollX', 'modulateScrollY']
 	};
-	const MASTER_EFFECTS_REGEX = /\/\*\s*\[master-effects-start:[a-zA-Z0-9_-]+\]\s*\*\/[\s\S]*?\/\*\s*\[master-effects-end\]\s*\*\//g;
+	const MASTER_EFFECTS_REGEX$1 = /\/\*\s*\[master-effects-start:[a-zA-Z0-9_-]+\]\s*\*\/[\s\S]*?\/\*\s*\[master-effects-end\]\s*\*\//g;
+	const PROTECTED_CALLS$1 = new Set(['midi', 'midix', 'beatMs', 'b0', 'b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8', 'b9']);
 	function walkAST(node, visitor, parent = null) {
 	  if (!node || typeof node !== 'object') return;
-	  visitor(node, parent);
+	  const shouldDescend = visitor(node, parent);
+	  if (shouldDescend === false) return;
 	  for (const key of Object.keys(node)) {
 	    if (key === 'parent') continue;
 	    const child = node[key];
@@ -10858,7 +11286,7 @@
 	    }
 	  }
 	}
-	class ImpromptuMutatorService {
+	class MutationJumpService {
 	  constructor(options = {}) {
 	    this.editor = options.editor || null;
 	    this.currentCC = 0;
@@ -10889,7 +11317,7 @@
 	        try {
 	          handler(data);
 	        } catch (err) {
-	          console.error(`[ImpromptuMutator] Error in '${event}' listener:`, err);
+	          console.error(`[MutationJump] Error in '${event}' listener:`, err);
 	        }
 	      }
 	    }
@@ -11115,7 +11543,7 @@
 	    if (!code || typeof code !== 'string') return code;
 
 	    // Preserve master-effects block safely if present
-	    const meMatch = code.match(MASTER_EFFECTS_REGEX);
+	    const meMatch = code.match(MASTER_EFFECTS_REGEX$1);
 	    let meBlock = null;
 	    let workingCode = code;
 	    if (meMatch) {
@@ -11136,26 +11564,32 @@
 	    const literals = [];
 	    const calls = [];
 	    walkAST(ast, (node, parent) => {
-	      // Do not mutate literals inside arrow functions or function expressions (e.g. MIDI callbacks () => b1(0))
-	      if (parent && (parent.type === 'ArrowFunctionExpression' || parent.type === 'FunctionExpression')) {
-	        return;
+	      // Do not mutate inside arrow functions or function expressions (e.g. callbacks () => beatMs(2))
+	      if (node.type === 'ArrowFunctionExpression' || node.type === 'FunctionExpression') {
+	        return false;
 	      }
-	      if (node.type === 'Literal' && typeof node.value === 'number') {
-	        literals.push(node);
-	      } else if (node.type === 'CallExpression') {
-	        if (node.callee.type === 'MemberExpression' && node.callee.property.name !== 'out') {
+	      // Do not mutate or descend into protected helper calls (e.g. midi, midix, beatMs, b0..b9)
+	      if (node.type === 'CallExpression') {
+	        if (node.callee.type === 'Identifier') {
+	          if (PROTECTED_CALLS$1.has(node.callee.name)) {
+	            return false;
+	          }
+	          if (node.callee.name !== 'render') {
+	            calls.push({
+	              node,
+	              name: node.callee.name,
+	              isMember: false
+	            });
+	          }
+	        } else if (node.callee.type === 'MemberExpression' && node.callee.property.name !== 'out') {
 	          calls.push({
 	            node,
 	            name: node.callee.property.name,
 	            isMember: true
 	          });
-	        } else if (node.callee.type === 'Identifier' && node.callee.name !== 'render') {
-	          calls.push({
-	            node,
-	            name: node.callee.name,
-	            isMember: false
-	          });
 	        }
+	      } else if (node.type === 'Literal' && typeof node.value === 'number') {
+	        literals.push(node);
 	      }
 	    });
 	    if (literals.length === 0 && calls.length === 0) {
@@ -11219,286 +11653,18 @@
 	}
 
 	/**
-	 * Impromptu Mutation HUD & Modal Controller
-	 * Provides non-intrusive HUD feedback and an interactive modal interface.
-	 */
-
-	class ImpromptuMutationHUD {
-	  constructor(service) {
-	    this.service = service;
-	    this.hudEl = null;
-	    this.modalEl = null;
-	    this.isOpen = false;
-	    this.fadeTimeout = null;
-	    this.initDOM();
-	    this.bindServiceEvents();
-	  }
-	  initDOM() {
-	    if (typeof document === 'undefined') return;
-
-	    // 1. Create HUD Pill
-	    this.hudEl = document.createElement('div');
-	    this.hudEl.id = 'impromptu-hud';
-	    this.hudEl.title = 'Impromptu Mutation (Click to open controls, Cmd+I to trigger)';
-	    this.hudEl.innerHTML = `
-      <i class="fa fa-bolt impromptu-hud-icon"></i>
-      <span class="impromptu-hud-badge" id="impromptu-hud-text">BURST: 0</span>
-      <div class="impromptu-hud-meter" id="impromptu-hud-meter"></div>
-    `;
-	    this.hudEl.onclick = () => this.toggleModal();
-	    document.body.appendChild(this.hudEl);
-
-	    // 2. Create Modal Overlay
-	    this.modalEl = document.createElement('div');
-	    this.modalEl.id = 'impromptu-modal-overlay';
-	    this.modalEl.innerHTML = `
-      <div class="impromptu-modal" onclick="event.stopPropagation()">
-        <div class="impromptu-modal-header">
-          <div class="impromptu-modal-title">
-            <i class="fa fa-bolt"></i> Impromptu Mutation Controller
-          </div>
-          <button class="impromptu-modal-close" id="impromptu-modal-close-btn">&times;</button>
-        </div>
-
-        <div class="impromptu-dial-section">
-          <div class="impromptu-dial-label-row">
-            <span class="impromptu-dial-name">MIDI CC Dial (0.00 → 1.00)</span>
-            <span class="impromptu-dial-value" id="impromptu-dial-readout">0.00 (0 mutations)</span>
-          </div>
-
-          <input type="range" min="0" max="1" step="0.01" value="0" class="impromptu-range-slider" id="impromptu-slider" />
-
-          <div class="impromptu-quick-buttons">
-            <button class="impromptu-quick-btn active" data-val="0">0 (Undo)</button>
-            <button class="impromptu-quick-btn" data-val="0.1">1</button>
-            <button class="impromptu-quick-btn" data-val="0.2">2</button>
-            <button class="impromptu-quick-btn" data-val="0.3">3</button>
-            <button class="impromptu-quick-btn" data-val="0.4">4</button>
-            <button class="impromptu-quick-btn" data-val="0.5">5</button>
-            <button class="impromptu-quick-btn" data-val="0.7">7</button>
-            <button class="impromptu-quick-btn" data-val="1.0">10 (Max)</button>
-          </div>
-        </div>
-
-        <div class="impromptu-status-box undo" id="impromptu-status-box">
-          CC~0 armed: Press event fires UNDO to pre-mutation state.
-        </div>
-
-        <div class="impromptu-preview-box" id="impromptu-code-preview">// Pre-calculated to-be state preview...</div>
-
-        <div class="impromptu-actions-row">
-          <button class="impromptu-action-btn impromptu-btn-burst" id="impromptu-btn-trigger">
-            <i class="fa fa-bolt"></i> Trigger Press (Space/Enter)
-          </button>
-          <button class="impromptu-action-btn impromptu-btn-undo" id="impromptu-btn-undo">
-            <i class="fa fa-undo"></i> Undo
-          </button>
-          <button class="impromptu-action-btn impromptu-btn-reroll" id="impromptu-btn-reroll">
-            <i class="fa fa-refresh"></i> Reroll
-          </button>
-        </div>
-
-        <div class="impromptu-midi-footer">
-          <span>Shortcuts: <kbd>Cmd+I</kbd> to Trigger / <kbd>Shift-Ctrl-I</kbd> for Modal</span>
-          <span class="impromptu-midi-link" id="impromptu-open-midi-link">Open MIDI Mapping &rarr;</span>
-        </div>
-      </div>
-    `;
-	    this.modalEl.onclick = () => this.closeModal();
-	    document.body.appendChild(this.modalEl);
-
-	    // Bind Modal Internal Events
-	    const closeBtn = this.modalEl.querySelector('#impromptu-modal-close-btn');
-	    if (closeBtn) closeBtn.onclick = () => this.closeModal();
-	    const slider = this.modalEl.querySelector('#impromptu-slider');
-	    if (slider) {
-	      slider.oninput = e => {
-	        this.service.setCC(parseFloat(e.target.value));
-	      };
-	    }
-	    const quickBtns = this.modalEl.querySelectorAll('.impromptu-quick-btn');
-	    quickBtns.forEach(btn => {
-	      btn.onclick = () => {
-	        const val = parseFloat(btn.getAttribute('data-val'));
-	        if (slider) slider.value = val;
-	        this.service.setCC(val);
-	      };
-	    });
-	    const triggerBtn = this.modalEl.querySelector('#impromptu-btn-trigger');
-	    if (triggerBtn) {
-	      triggerBtn.onclick = () => this.service.trigger();
-	    }
-	    const undoBtn = this.modalEl.querySelector('#impromptu-btn-undo');
-	    if (undoBtn) {
-	      undoBtn.onclick = () => {
-	        this.service.setCC(0);
-	        this.service.trigger();
-	      };
-	    }
-	    const rerollBtn = this.modalEl.querySelector('#impromptu-btn-reroll');
-	    if (rerollBtn) {
-	      rerollBtn.onclick = () => this.service.reroll();
-	    }
-	    const midiLink = this.modalEl.querySelector('#impromptu-open-midi-link');
-	    if (midiLink) {
-	      midiLink.onclick = () => {
-	        this.closeModal();
-	        if (window.midiMapping && typeof window.midiMapping.open === 'function') {
-	          window.midiMapping.open();
-	        } else if (window.xemitter) {
-	          window.xemitter.emit('midi-mapping:open');
-	        }
-	      };
-	    }
-
-	    // Modal keyboard handling (Escape to close, Enter to trigger)
-	    window.addEventListener('keydown', e => {
-	      if (!this.isOpen) return;
-	      if (e.key === 'Escape') {
-	        this.closeModal();
-	      } else if (e.key === 'Enter') {
-	        e.preventDefault();
-	        this.service.trigger();
-	      }
-	    });
-	    this.renderMeter(0);
-	  }
-	  bindServiceEvents() {
-	    this.service.on('change', state => this.onStateChange(state));
-	    this.service.on('applied', result => this.onApplied(result));
-	    this.service.on('undone', result => this.onUndone(result));
-	  }
-	  onStateChange(state) {
-	    this.renderMeter(state.mutationCount, state.isUndoMode);
-	    const badge = document.getElementById('impromptu-hud-text');
-	    if (badge) {
-	      if (state.isUndoMode) {
-	        badge.textContent = 'CC~0: UNDO';
-	        badge.className = 'impromptu-hud-badge undo-mode';
-	      } else {
-	        badge.textContent = `BURST: ${state.mutationCount}`;
-	        badge.className = 'impromptu-hud-badge';
-	      }
-	    }
-
-	    // Modal Updates
-	    const slider = document.getElementById('impromptu-slider');
-	    if (slider && document.activeElement !== slider) {
-	      slider.value = state.currentCC;
-	    }
-	    const readout = document.getElementById('impromptu-dial-readout');
-	    if (readout) {
-	      readout.textContent = `${state.currentCC.toFixed(2)} (${state.mutationCount} mutations)`;
-	    }
-	    const quickBtns = document.querySelectorAll('.impromptu-quick-btn');
-	    quickBtns.forEach(btn => {
-	      const val = parseFloat(btn.getAttribute('data-val'));
-	      const active = Math.abs(val - state.currentCC) < 0.05 || val === 0 && state.isUndoMode;
-	      btn.classList.toggle('active', active);
-	    });
-	    const statusBox = document.getElementById('impromptu-status-box');
-	    if (statusBox) {
-	      if (state.isUndoMode) {
-	        statusBox.className = 'impromptu-status-box undo';
-	        statusBox.textContent = 'CC~0 armed: Press event fires UNDO to pre-mutation state.';
-	      } else {
-	        statusBox.className = 'impromptu-status-box';
-	        statusBox.textContent = `${state.mutationCount} mutation${state.mutationCount > 1 ? 's' : ''} pre-calculated & armed in memory. Ready to swap on press!`;
-	      }
-	    }
-	    const preview = document.getElementById('impromptu-code-preview');
-	    if (preview) {
-	      preview.textContent = state.toBeCode || '// No code in editor';
-	    }
-
-	    // Show HUD pill and schedule auto-hide
-	    this.showHUD();
-	  }
-	  onApplied(result) {
-	    this.flashHUD('flash-burst');
-	    const badge = document.getElementById('impromptu-hud-text');
-	    if (badge) {
-	      badge.textContent = `⚡ +${result.count} SWAPPED!`;
-	      badge.className = 'impromptu-hud-badge';
-	    }
-	  }
-	  onUndone(result) {
-	    this.flashHUD('flash-undo');
-	    const badge = document.getElementById('impromptu-hud-text');
-	    if (badge) {
-	      badge.textContent = `↩ UNDONE!`;
-	      badge.className = 'impromptu-hud-badge undo-mode';
-	    }
-	  }
-	  renderMeter(count, isUndoMode) {
-	    const meter = document.getElementById('impromptu-hud-meter');
-	    if (!meter) return;
-	    let pipsHTML = '';
-	    for (let i = 1; i <= 10; i++) {
-	      const active = !isUndoMode && i <= count;
-	      const undo = isUndoMode && i === 1;
-	      pipsHTML += `<span class="impromptu-pip ${active ? 'active' : ''} ${undo ? 'undo-pip' : ''}"></span>`;
-	    }
-	    meter.innerHTML = pipsHTML;
-	  }
-	  showHUD() {
-	    if (!this.hudEl) return;
-	    this.hudEl.classList.add('visible');
-	    if (this.fadeTimeout) {
-	      clearTimeout(this.fadeTimeout);
-	    }
-
-	    // If modal is open, keep HUD visible
-	    if (!this.isOpen) {
-	      this.fadeTimeout = setTimeout(() => {
-	        if (!this.isOpen && this.hudEl) {
-	          this.hudEl.classList.remove('visible');
-	        }
-	      }, 2500);
-	    }
-	  }
-	  flashHUD(className) {
-	    if (!this.hudEl) return;
-	    this.showHUD();
-	    this.hudEl.classList.remove('flash-burst', 'flash-undo');
-	    // Force reflow
-	    void this.hudEl.offsetWidth;
-	    this.hudEl.classList.add(className);
-	    setTimeout(() => {
-	      if (this.hudEl) this.hudEl.classList.remove(className);
-	    }, 450);
-	  }
-	  toggleModal() {
-	    if (this.isOpen) {
-	      this.closeModal();
-	    } else {
-	      this.openModal();
-	    }
-	  }
-	  openModal() {
-	    this.isOpen = true;
-	    if (this.modalEl) this.modalEl.classList.add('open');
-	    this.showHUD();
-	  }
-	  closeModal() {
-	    this.isOpen = false;
-	    if (this.modalEl) this.modalEl.classList.remove('open');
-	    this.showHUD();
-	  }
-	}
-
-	/**
-	 * Impromptu Mutation Plugin for Hydralisk
+	 * Mutation Jump Plugin for Hydralisk
 	 * 
-	 * Pre-computes 0-10 mutations based on MIDI CC dial.
-	 * Swaps to the pre-calculated to-be state instantly on MIDI press.
+	 * Silent background engine pre-computing 0-10 mutations based on a MIDI CC dial.
+	 * Swaps to the pre-calculated to-be state instantly on a MIDI press event without
+	 * any on-screen visual clues (no charging indicator, no firing flash).
 	 * If CC ~= 0 on press, retrieves and restores the pre-mutation state (undo).
+	 * Triggered strictly via MIDI combo bindings.
 	 */
 
-	class ImpromptuMutatorManager {
+	class MutationJumpManager {
 	  constructor() {
-	    this.service = new ImpromptuMutatorService();
-	    this.hud = null;
+	    this.service = new MutationJumpService();
 	    this.isInitialized = false;
 	  }
 	  init(app) {
@@ -11514,24 +11680,24 @@
 	      this.service.setEditor(initialEditor);
 	    }
 
-	    // Attach HUD and Modal
-	    if (typeof document !== 'undefined') {
-	      this.hud = new ImpromptuMutationHUD(this.service);
-	      this.injectToolbarIcon();
-	    }
-
 	    // Register with Plugin System and Global Scope
-	    window.impromptuMutator = this.service;
+	    window.mutationJump = this.service;
+	    window.impromptuMutator = this.service; // Backward compatibility alias
 	    if (app && typeof app.expose === 'function') {
+	      app.expose('mutationJump', this.service);
 	      app.expose('impromptuMutator', this.service);
 	    }
 
-	    // Connect Events with xemitter and app emitter
+	    // Connect Events with xemitter and app emitter (for MIDI actions)
 	    const emitter = app && app.emitter || window.xemitter;
 	    if (emitter) {
+	      emitter.on('mutationJump:setCC', val => this.service.setCC(val));
+	      emitter.on('mutationJump:trigger', () => this.service.trigger());
+	      emitter.on('mutationJump:reroll', () => this.service.reroll());
+
+	      // Compatibility event aliases
 	      emitter.on('impromptu:setCC', val => this.service.setCC(val));
 	      emitter.on('impromptu:trigger', () => this.service.trigger());
-	      emitter.on('impromptu:toggleModal', () => this.hud && this.hud.toggleModal());
 	      emitter.on('impromptu:reroll', () => this.service.reroll());
 	    }
 
@@ -11552,11 +11718,10 @@
 	    // Direct CodeMirror change listener if window.cm is present
 	    if (window.cm && typeof window.cm.on === 'function') {
 	      window.cm.on('change', () => {
-	        // Sync if not currently executing a burst
 	        this.service.syncFromEditor();
 	      });
 	    }
-	    console.log('[ImpromptuMutator] Plugin initialized successfully ⚡');
+	    console.log('[MutationJump] Silent background engine initialized (MIDI-controlled only)');
 	  }
 	  registerMidiActions() {
 	    const register = (id, config) => {
@@ -11564,40 +11729,685 @@
 	        window.midiMapping.registerAction(id, config);
 	      }
 	    };
-	    register('impromptu:mutationCC', {
+	    register('mutationJump:cc', {
 	      callback: value => {
 	        this.service.setCC(value);
 	      },
-	      label: 'Impromptu Mutation (CC Dial: 0-10)'
+	      label: 'Mutation Jump (CC Dial: 0-10)'
 	    });
-	    register('impromptu:trigger', {
-	      action: 'impromptu:trigger',
-	      label: 'Impromptu Mutation Trigger (Press)'
+	    register('mutationJump:trigger', {
+	      action: 'mutationJump:trigger',
+	      label: 'Mutation Jump Trigger (Press)'
 	    });
 	  }
-	  injectToolbarIcon() {
-	    const existing = document.getElementById('nav-impromptu-mutation-icon');
-	    if (existing) return;
+	}
 
-	    // Look for top menu bar
-	    const topBar = document.querySelector('.top-menu') || document.querySelector('#nav-icons') || document.querySelector('.nav-icons') || document.querySelector('.menu') || document.body;
-	    const icon = document.createElement('i');
-	    icon.className = 'fa fa-bolt icon';
-	    icon.id = 'nav-impromptu-mutation-icon';
-	    icon.title = 'Impromptu Mutation (Cmd+I to trigger, Shift-Ctrl-I for controls)';
-	    icon.style.cursor = 'pointer';
-	    icon.style.marginLeft = '8px';
-	    icon.style.color = '#00f0ff';
-	    icon.onclick = () => {
-	      if (this.hud) this.hud.toggleModal();
+	/**
+	 * MIDI Mapping Service
+	 * Handles state, Web MIDI hardware access, mapping persistence, and action triggers.
+	 */
+
+	const STORAGE_KEY = "hydra-midi-mapping";
+	const CC_TRIGGER_THRESHOLD = 0.5;
+	const WAITING_TIMEOUT_MS = 15000;
+	const DEFAULT_MAPPABLE_ACTIONS = {
+	  "gallery:nextSketch": {
+	    action: "gallery:nextSketch",
+	    label: "Next sketch"
+	  },
+	  "gallery:prevSketch": {
+	    action: "gallery:nextSketch",
+	    payload: {
+	      backwards: true
+	    },
+	    label: "Prev sketch"
+	  },
+	  "gallery:randomSketch": {
+	    action: "gallery:randomSketch",
+	    label: "Random Sketch"
+	  },
+	  "editor:randomize": {
+	    action: "editor:randomize",
+	    label: "Randomize"
+	  },
+	  "editor:jumpBack1": {
+	    action: "editor:jumpBack1",
+	    label: "Jump back 1"
+	  },
+	  "editor:jumpBack5": {
+	    action: "editor:jumpBack5",
+	    label: "Jump back 5"
+	  },
+	  "gfx:speedReverse": {
+	    action: "gfx:speedReverse",
+	    label: "Speed reverse"
+	  },
+	  "editor:quickSave": {
+	    action: "editor:quickSave",
+	    label: "Quick save"
+	  },
+	  "editor:quickLoad": {
+	    action: "editor:quickLoad",
+	    label: "Quick load"
+	  },
+	  "editor:toggleAutomutate|off": {
+	    action: "editor:toggleAutomutate",
+	    payload: {
+	      lastCombo: "Shift-Ctrl-0"
+	    },
+	    label: "Automutate off"
+	  },
+	  "editor:toggleAutomutate|1x": {
+	    action: "editor:toggleAutomutate",
+	    payload: {
+	      lastCombo: "Shift-Ctrl-1"
+	    },
+	    label: "Automutate 1x"
+	  },
+	  "editor:toggleAutomutate|2x": {
+	    action: "editor:toggleAutomutate",
+	    payload: {
+	      lastCombo: "Shift-Ctrl-2"
+	    },
+	    label: "Automutate 2x"
+	  },
+	  "editor:toggleAutomutate|4x": {
+	    action: "editor:toggleAutomutate",
+	    payload: {
+	      lastCombo: "Shift-Ctrl-3"
+	    },
+	    label: "Automutate 4x"
+	  },
+	  "editor:toggleAutomutate|8x": {
+	    action: "editor:toggleAutomutate",
+	    payload: {
+	      lastCombo: "Shift-Ctrl-4"
+	    },
+	    label: "Automutate 8x"
+	  },
+	  "editor:toggleAutomutate|16x": {
+	    action: "editor:toggleAutomutate",
+	    payload: {
+	      lastCombo: "Shift-Ctrl-5"
+	    },
+	    label: "Automutate 16x"
+	  },
+	  "taptempo": {
+	    action: "taptempo",
+	    label: "Tap tempo"
+	  },
+	  "fullscreen": {
+	    action: "fullscreen",
+	    label: "Toggle Fullscreen"
+	  },
+	  "hideAll": {
+	    action: "hideAll",
+	    label: "Hide/Show UI"
+	  },
+	  "mutationJump:trigger": {
+	    action: "mutationJump:trigger",
+	    label: "Mutation Jump Trigger (Press)"
+	  },
+	  "mutationJump:cc": {
+	    callback: value => {
+	      if (window.mutationJump && typeof window.mutationJump.setCC === "function") {
+	        window.mutationJump.setCC(value);
+	      } else if (window.impromptuMutator && typeof window.impromptuMutator.setCC === "function") {
+	        window.impromptuMutator.setCC(value);
+	      } else if (window.xemitter) {
+	        window.xemitter.emit("mutationJump:setCC", value);
+	      }
+	    },
+	    label: "Mutation Jump (CC Dial: 0-10)"
+	  },
+	  "speed": {
+	    callback: value => {
+	      const speed = Math.pow(2, value * 2) - 1;
+	      if (typeof window !== "undefined" && window.speed !== undefined) {
+	        window.speed = speed;
+	      }
+	    },
+	    label: "Speed (CC bind)"
+	  },
+	  ...["A", "B", "C", "D"].map(midiShortcut => ({
+	    ["midi" + midiShortcut]: {
+	      callback: value => {
+	        if (typeof window !== "undefined") {
+	          if (!window.cc) window.cc = {};
+	          window.cc[midiShortcut] = value;
+	        }
+	      },
+	      label: `midi('${midiShortcut}', {min, max, transform}) cc bind`
+	    }
+	  })).reduce((acc, curr) => ({
+	    ...acc,
+	    ...curr
+	  }), {})
+	};
+	class MidiMappingService {
+	  constructor() {
+	    this.storageKey = STORAGE_KEY;
+	    this.mappableActions = {
+	      ...DEFAULT_MAPPABLE_ACTIONS
 	    };
-	    const magicIcon = document.getElementById('nav-master-effects-icon');
-	    if (magicIcon && magicIcon.parentNode) {
-	      magicIcon.parentNode.insertBefore(icon, magicIcon.nextSibling);
-	    } else {
-	      topBar.appendChild(icon);
+	    this.mapping = this.loadMapping();
+	    this.waitingForAction = null;
+	    this.waitingTimeoutId = null;
+	    this.isOpen = false;
+	    this.deviceCount = 0;
+	    this.deviceNames = [];
+	    this.listeners = new Set();
+	    this.activeMidiAccess = null;
+	    this.handleMIDIMessage = this.createMIDIHandler();
+	  }
+	  loadMapping() {
+	    if (typeof localStorage === "undefined") return {};
+	    try {
+	      const stored = localStorage.getItem(this.storageKey);
+	      return stored ? JSON.parse(stored) : {};
+	    } catch (e) {
+	      console.warn("[MidiMappingService] Failed to load from localStorage:", e);
+	      return {};
 	    }
 	  }
+	  saveMapping() {
+	    if (typeof localStorage === "undefined") return;
+	    try {
+	      localStorage.setItem(this.storageKey, JSON.stringify(this.mapping));
+	    } catch (e) {
+	      console.warn("[MidiMappingService] Failed to save to localStorage:", e);
+	    }
+	  }
+	  subscribe(listener) {
+	    this.listeners.add(listener);
+	    listener(this.getState());
+	    return () => {
+	      this.listeners.delete(listener);
+	    };
+	  }
+	  notify() {
+	    const state = this.getState();
+	    for (const listener of this.listeners) {
+	      try {
+	        listener(state);
+	      } catch (err) {
+	        console.error("[MidiMappingService] Error in subscriber:", err);
+	      }
+	    }
+	  }
+	  getState() {
+	    return {
+	      isOpen: this.isOpen,
+	      mapping: {
+	        ...this.mapping
+	      },
+	      waitingForAction: this.waitingForAction,
+	      deviceCount: this.deviceCount,
+	      deviceNames: [...this.deviceNames],
+	      actions: {
+	        ...this.mappableActions
+	      }
+	    };
+	  }
+	  open() {
+	    this.isOpen = true;
+	    this.notify();
+	  }
+	  close() {
+	    this.isOpen = false;
+	    this.cancelAssign();
+	    this.notify();
+	  }
+	  toggle() {
+	    if (this.isOpen) {
+	      this.close();
+	    } else {
+	      this.open();
+	    }
+	  }
+	  startAssign(actionId) {
+	    if (this.waitingForAction === actionId) {
+	      this.cancelAssign();
+	      return;
+	    }
+	    this.waitingForAction = actionId;
+	    if (this.waitingTimeoutId) {
+	      clearTimeout(this.waitingTimeoutId);
+	    }
+	    this.waitingTimeoutId = setTimeout(() => {
+	      this.waitingForAction = null;
+	      this.waitingTimeoutId = null;
+	      this.notify();
+	    }, WAITING_TIMEOUT_MS);
+	    this.notify();
+	  }
+	  cancelAssign() {
+	    if (this.waitingTimeoutId) {
+	      clearTimeout(this.waitingTimeoutId);
+	      this.waitingTimeoutId = null;
+	    }
+	    if (this.waitingForAction !== null) {
+	      this.waitingForAction = null;
+	      this.notify();
+	    }
+	  }
+	  clearMapping(actionId) {
+	    if (this.mapping[actionId]) {
+	      delete this.mapping[actionId];
+	      this.saveMapping();
+	      this.notify();
+	    }
+	  }
+	  registerAction(id, config) {
+	    if (!id || !config) return;
+	    this.mappableActions[id] = config;
+	    this.notify();
+	  }
+	  getFullMapping() {
+	    return {
+	      ...this.mapping
+	    };
+	  }
+	  formatMappingDesc(m) {
+	    if (!m) return "—";
+	    if (m.type === "cc") return `CC ${m.control} (ch ${m.channel})`;
+	    if (m.type === "note") return `Note ${m.note} (ch ${m.channel})`;
+	    return "—";
+	  }
+	  findActionForMessage(channel, type, controlOrNote) {
+	    const hits = [];
+	    for (const [actionId, m] of Object.entries(this.mapping)) {
+	      if (!m) continue;
+	      if (m.type === type && m.channel === channel) {
+	        if (type === "cc" && m.control === controlOrNote) hits.push(actionId);
+	        if (type === "note" && m.note === controlOrNote) hits.push(actionId);
+	      }
+	    }
+	    return hits;
+	  }
+	  createMIDIHandler() {
+	    return midiMessage => {
+	      const data = midiMessage.data;
+	      if (!data || data.length < 3) return;
+	      const kind = data[0];
+	      const channel = kind & 0x0f;
+	      const byte1 = data[1];
+	      const byte2 = data[2];
+	      const valNormalized = (byte2 > 64 ? byte2 + 1 : byte2) / 128.0;
+
+	      // 1. Assignment Learning Mode
+	      if (this.waitingForAction) {
+	        let assignment = null;
+	        if ((kind & 0xf0) === 0xb0) {
+	          assignment = {
+	            type: "cc",
+	            channel,
+	            control: byte1
+	          };
+	        } else if ((kind & 0xf0) === 0x90 && byte2 > 0) {
+	          assignment = {
+	            type: "note",
+	            channel,
+	            note: byte1
+	          };
+	        }
+	        if (assignment) {
+	          this.mapping[this.waitingForAction] = assignment;
+	          this.saveMapping();
+	          this.cancelAssign();
+	        }
+	        return;
+	      }
+
+	      // 2. Active Mapping Dispatch
+	      const status = kind & 0xf0;
+	      if (status === 0xb0) {
+	        const actions = this.findActionForMessage(channel, "cc", byte1);
+	        for (const actionId of actions) {
+	          const config = this.mappableActions[actionId];
+	          if (!config) continue;
+	          if (typeof config.callback === "function") {
+	            config.callback(valNormalized);
+	          } else if (config.action && valNormalized > CC_TRIGGER_THRESHOLD && typeof window !== "undefined" && window.xemitter) {
+	            window.xemitter.emit(config.action, config.payload || {});
+	          }
+	        }
+	      } else if (status === 0x90 && byte2 > 0) {
+	        const actions = this.findActionForMessage(channel, "note", byte1);
+	        for (const actionId of actions) {
+	          const config = this.mappableActions[actionId];
+	          if (!config) continue;
+	          if (typeof config.callback === "function") {
+	            config.callback(valNormalized);
+	          } else if (config.action && typeof window !== "undefined" && window.xemitter) {
+	            window.xemitter.emit(config.action, config.payload || {});
+	          }
+	        }
+	      }
+	    };
+	  }
+	  attachInput(input) {
+	    if (!input) return;
+	    input.removeEventListener("midimessage", this.handleMIDIMessage);
+	    input.addEventListener("midimessage", this.handleMIDIMessage);
+	  }
+	  updateConnectedDevices() {
+	    if (!this.activeMidiAccess || !this.activeMidiAccess.inputs) {
+	      this.deviceCount = 0;
+	      this.deviceNames = [];
+	      return;
+	    }
+	    const names = [];
+	    for (const input of this.activeMidiAccess.inputs.values()) {
+	      if (input.state === "connected") {
+	        names.push(input.name || "MIDI Device");
+	      }
+	    }
+	    this.deviceCount = names.length;
+	    this.deviceNames = names;
+	    this.notify();
+	  }
+	  setupMIDIHandler() {
+	    if (typeof navigator === "undefined" || !navigator.requestMIDIAccess) return;
+	    navigator.requestMIDIAccess().then(midiAccess => {
+	      this.activeMidiAccess = midiAccess;
+	      for (const input of midiAccess.inputs.values()) {
+	        this.attachInput(input);
+	      }
+	      this.updateConnectedDevices();
+	      midiAccess.onstatechange = e => {
+	        if (e.port && e.port.type === "input" && e.port.state === "connected") {
+	          this.attachInput(e.port);
+	        }
+	        this.updateConnectedDevices();
+	      };
+	    }, () => {
+	      console.warn("[MidiMappingService] Could not access Web MIDI API");
+	    });
+	  }
+	}
+	const midiMappingService = new MidiMappingService();
+
+	function MidiMappingModal({
+	  isOpen,
+	  onClose
+	}) {
+	  const [serviceState, setServiceState] = React$1.useState(() => midiMappingService.getState());
+	  const [searchQuery, setSearchQuery] = React$1.useState('');
+	  const searchInputRef = React$1.useRef(null);
+	  React$1.useEffect(() => {
+	    const unsubscribe = midiMappingService.subscribe(nextState => {
+	      setServiceState(nextState);
+	    });
+	    return unsubscribe;
+	  }, []);
+
+	  // Keyboard shortcut: Escape to close
+	  React$1.useEffect(() => {
+	    if (!isOpen) return;
+	    const handleKeyDown = e => {
+	      if (e.key === 'Escape') {
+	        e.preventDefault();
+	        e.stopPropagation();
+	        onClose();
+	      }
+	    };
+	    window.addEventListener('keydown', handleKeyDown, true);
+	    return () => window.removeEventListener('keydown', handleKeyDown, true);
+	  }, [isOpen, onClose]);
+
+	  // Focus search input on open
+	  React$1.useEffect(() => {
+	    if (isOpen) {
+	      setTimeout(() => {
+	        if (searchInputRef.current) {
+	          searchInputRef.current.focus();
+	        }
+	      }, 50);
+	    } else {
+	      setSearchQuery('');
+	    }
+	  }, [isOpen]);
+	  const {
+	    mapping,
+	    waitingForAction,
+	    deviceCount,
+	    actions
+	  } = serviceState;
+
+	  // Filter actions by search query
+	  const filteredActions = React$1.useMemo(() => {
+	    const query = searchQuery.trim().toLowerCase();
+	    const entries = Object.entries(actions);
+	    if (!query) return entries;
+	    return entries.filter(([actionId, config]) => {
+	      const label = config.label || actionId;
+	      return label.toLowerCase().includes(query) || actionId.toLowerCase().includes(query);
+	    });
+	  }, [actions, searchQuery]);
+	  if (!isOpen) return null;
+	  const handleOverlayClick = e => {
+	    if (e.target === e.currentTarget) {
+	      onClose();
+	    }
+	  };
+	  const handleAssignClick = (e, actionId) => {
+	    e.preventDefault();
+	    e.stopPropagation();
+	    midiMappingService.startAssign(actionId);
+	  };
+	  const handleClearClick = (e, actionId) => {
+	    e.preventDefault();
+	    e.stopPropagation();
+	    midiMappingService.clearMapping(actionId);
+	  };
+	  return /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-overlay",
+	    onClick: handleOverlayClick
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-modal",
+	    role: "dialog",
+	    "aria-modal": "true",
+	    "aria-label": "MIDI Mapping"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-header"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-title-group"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-icon-badge"
+	  }, /*#__PURE__*/React$1.createElement("i", {
+	    className: "fa fa-sliders-h"
+	  })), /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-title-text"
+	  }, /*#__PURE__*/React$1.createElement("h5", null, "MIDI Mapping"), /*#__PURE__*/React$1.createElement("span", {
+	    className: "midi-mapping-subtitle"
+	  }, "Assign hardware CC knobs & pads to actions"))), /*#__PURE__*/React$1.createElement("button", {
+	    type: "button",
+	    className: "midi-mapping-close",
+	    onClick: onClose,
+	    title: "Close (Esc)"
+	  }, "\xD7")), /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-search-wrap"
+	  }, /*#__PURE__*/React$1.createElement("i", {
+	    className: "fa fa-search"
+	  }), /*#__PURE__*/React$1.createElement("input", {
+	    ref: searchInputRef,
+	    type: "text",
+	    className: "midi-mapping-search",
+	    placeholder: "Search actions (e.g. mutate, speed, sketch, CC)...",
+	    value: searchQuery,
+	    onChange: e => setSearchQuery(e.target.value)
+	  })), /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-body"
+	  }, /*#__PURE__*/React$1.createElement("ul", {
+	    className: "midi-mapping-list"
+	  }, filteredActions.map(([actionId, config]) => {
+	    const actionLabel = config.label || actionId;
+	    const isBind = typeof config.callback === 'function';
+	    const isWaiting = waitingForAction === actionId;
+	    const current = mapping[actionId];
+	    return /*#__PURE__*/React$1.createElement("li", {
+	      key: actionId,
+	      className: `midi-mapping-row ${isWaiting ? 'listening' : ''}`
+	    }, /*#__PURE__*/React$1.createElement("div", {
+	      className: "midi-mapping-action-group"
+	    }, /*#__PURE__*/React$1.createElement("span", {
+	      className: "midi-mapping-action"
+	    }, actionLabel), /*#__PURE__*/React$1.createElement("span", {
+	      className: "midi-mapping-type-tag"
+	    }, isBind ? 'Continuous CC Bind' : 'Trigger Action')), /*#__PURE__*/React$1.createElement("div", {
+	      className: "midi-mapping-controls-group"
+	    }, isWaiting ? /*#__PURE__*/React$1.createElement("span", {
+	      className: "midi-mapping-value waiting"
+	    }, /*#__PURE__*/React$1.createElement("span", {
+	      className: "midi-pulse-dot"
+	    }), " Waiting for MIDI...") : current ? /*#__PURE__*/React$1.createElement("span", {
+	      className: "midi-mapping-value assigned"
+	    }, /*#__PURE__*/React$1.createElement("i", {
+	      className: "fa fa-plug"
+	    }), " ", midiMappingService.formatMappingDesc(current)) : /*#__PURE__*/React$1.createElement("span", {
+	      className: "midi-mapping-value unassigned"
+	    }, "\u2014"), /*#__PURE__*/React$1.createElement("button", {
+	      type: "button",
+	      className: `midi-mapping-btn ${isWaiting ? 'midi-mapping-btn-cancel' : 'midi-mapping-btn-assign'}`,
+	      onClick: e => handleAssignClick(e, actionId)
+	    }, isWaiting ? 'Cancel' : 'Assign'), current && !isWaiting && /*#__PURE__*/React$1.createElement("button", {
+	      type: "button",
+	      className: "midi-mapping-btn midi-mapping-clear",
+	      title: "Clear assignment",
+	      onClick: e => handleClearClick(e, actionId)
+	    }, /*#__PURE__*/React$1.createElement("i", {
+	      className: "fa fa-times"
+	    }))));
+	  }), filteredActions.length === 0 && /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-empty"
+	  }, /*#__PURE__*/React$1.createElement("i", {
+	    className: "fa fa-search",
+	    style: {
+	      fontSize: '22px',
+	      marginBottom: '8px',
+	      display: 'block',
+	      opacity: 0.4
+	    }
+	  }), "No actions found matching \"", searchQuery, "\""))), /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-footer"
+	  }, /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-device-status"
+	  }, /*#__PURE__*/React$1.createElement("span", {
+	    className: `midi-status-indicator ${deviceCount > 0 ? '' : 'offline'}`
+	  }), /*#__PURE__*/React$1.createElement("span", null, deviceCount > 0 ? `${deviceCount} MIDI Device${deviceCount > 1 ? 's' : ''} Connected` : 'No MIDI inputs detected')), /*#__PURE__*/React$1.createElement("div", {
+	    className: "midi-mapping-shortcut-hint"
+	  }, /*#__PURE__*/React$1.createElement("kbd", null, "Esc"), " to close"))));
+	}
+
+	function MidiMappingHost() {
+	  const [isOpen, setIsOpen] = React$1.useState(false);
+	  React$1.useEffect(() => {
+	    const unsubscribe = midiMappingService.subscribe(state => {
+	      setIsOpen(state.isOpen);
+	    });
+	    return unsubscribe;
+	  }, []);
+	  return /*#__PURE__*/React$1.createElement(MidiMappingModal, {
+	    isOpen: isOpen,
+	    onClose: () => midiMappingService.close()
+	  });
+	}
+	class MidiMappingManager {
+	  constructor() {
+	    this.service = midiMappingService;
+	    this.injected = false;
+	  }
+
+	  /**
+	   * choo mounts by replacing document.body, which can detach our host node.
+	   * Re-attach (and re-render) it whenever it is missing from the live DOM.
+	   */
+	  ensureHost() {
+	    if (typeof document === 'undefined' || !document.body) return;
+	    if (this.host && document.body.contains(this.host)) return;
+	    if (this.host) {
+	      try {
+	        ReactDOM$1.unmountComponentAtNode(this.host);
+	      } catch (e) {/* noop */}
+	    }
+	    const host = document.createElement('div');
+	    host.id = 'midi-mapping-app';
+	    document.body.appendChild(host);
+	    ReactDOM$1.render(/*#__PURE__*/React$1.createElement(MidiMappingHost, null), host);
+	    this.host = host;
+	  }
+	  inject() {
+	    if (typeof document === 'undefined') return;
+	    if (this.injected) return;
+	    this.ensureHost();
+	    this.injected = true;
+	    console.log('[MidiMappingManager] Injected React MIDI Mapping Host');
+
+	    // Make sure the host is alive before any open
+	    const origOpen = this.service.open.bind(this.service);
+	    this.service.open = () => {
+	      this.ensureHost();
+	      origOpen();
+	    };
+
+	    // Setup Web MIDI hardware connection
+	    this.service.setupMIDIHandler();
+
+	    // Hook up xemitter events if available
+	    if (typeof window !== 'undefined' && window.xemitter) {
+	      window.xemitter.on('midi-mapping:open', () => this.service.open());
+	      window.xemitter.on('midi-mapping:close', () => this.service.close());
+	      window.xemitter.on('midi-mapping:toggle', () => this.service.toggle());
+	    }
+
+	    // Expose global API
+	    window.midiMapping = {
+	      open: () => this.service.open(),
+	      close: () => this.service.close(),
+	      toggle: () => this.service.toggle(),
+	      render: () => this.service.notify(),
+	      getMapping: () => this.service.getFullMapping(),
+	      registerAction: (id, config) => this.service.registerAction(id, config)
+	    };
+	  }
+	  open() {
+	    this.service.open();
+	  }
+	  close() {
+	    this.service.close();
+	  }
+	  toggle() {
+	    this.service.toggle();
+	  }
+	}
+
+	// Global instance & auto-injection
+	const midiMappingManager = new MidiMappingManager();
+	if (typeof document !== 'undefined') {
+	  if (document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', () => midiMappingManager.inject());
+	  } else {
+	    midiMappingManager.inject();
+	  }
+	}
+
+	// Auto-register with HydraliskPlugins if present
+	if (typeof window !== 'undefined' && window.HydraliskPlugins) {
+	  window.HydraliskPlugins.register({
+	    id: 'midi-mapping',
+	    name: 'MIDI Mapping UI & Actions',
+	    init(app) {
+	      midiMappingManager.inject();
+	      if (app.emitter) {
+	        app.emitter.on('midi-mapping:open', () => midiMappingManager.open());
+	        app.emitter.on('midi-mapping:close', () => midiMappingManager.close());
+	        app.emitter.on('midi-mapping:toggle', () => midiMappingManager.toggle());
+	      }
+	      app.expose('midiMapping', window.midiMapping);
+	      app.expose('midiMappingManager', midiMappingManager);
+	    }
+	  });
 	}
 
 	/**
@@ -11999,6 +12809,9 @@
 	      length: 16
 	    }, () => new Array(128).fill(0.5));
 	    this.ccbind = [];
+	    // CC slots that actually received a message ("3" for any channel, "0:3" per channel).
+	    // cc/ccc are pre-filled with 0.5 for legacy sketches, so they can't tell us this.
+	    this.received = new Set();
 	    this.isInitialized = false;
 
 	    // Expose globals for sketch backward compatibility
@@ -12040,6 +12853,8 @@
 	    const normalizedValue = (rawValue > 64 ? rawValue + 1 : rawValue) / 128.0;
 	    this.cc[ccIndex] = normalizedValue;
 	    this.ccc[channel][ccIndex] = normalizedValue;
+	    this.received.add(String(ccIndex));
+	    this.received.add(`${channel}:${ccIndex}`);
 	    if (!this.ccbind.includes(ccIndex)) {
 	      console.log(`[Hydrakit] CC #${ccIndex} bound to b${this.ccbind.length}`);
 	      this.ccbind.push(ccIndex);
@@ -12070,6 +12885,28 @@
 	    const rawVal = ccArr[localIndex] !== undefined ? ccArr[localIndex] : 0.5;
 	    const value = rawVal * (max - min) + min;
 	    return transform ? transform(value) : value;
+	  }
+
+	  /**
+	   * Raw normalized (0..1) CC value, or undefined if no message received yet.
+	   */
+	  getNormalized(ccIndex, {
+	    channel
+	  } = {}) {
+	    let localIndex = ccIndex;
+	    if (typeof ccIndex === "string") {
+	      if (/^[ABCD]$/.test(ccIndex)) {
+	        return typeof window !== "undefined" && window.cc ? window.cc[ccIndex] : undefined;
+	      }
+	      if (/^b\d+$/.test(ccIndex)) {
+	        localIndex = this.ccbind[parseInt(ccIndex.slice(1), 10)];
+	      }
+	    }
+	    if (localIndex === undefined || localIndex === null) return undefined;
+	    const receivedKey = channel !== undefined ? `${channel}:${localIndex}` : String(localIndex);
+	    if (!this.received.has(receivedKey)) return undefined;
+	    const ccArr = channel !== undefined ? this.ccc[channel] : this.cc;
+	    return ccArr ? ccArr[localIndex] : undefined;
 	  }
 	}
 	const midiEngine = new MidiEngine();
@@ -12197,6 +13034,212 @@
 	 */
 	function midi(ccIndex, options = {}) {
 	  return () => midiEngine.getValue(ccIndex, options);
+	}
+
+	/**
+	 * Easing curves for midix duration-based tweens (t in 0..1).
+	 */
+	const easings = {
+	  linear: t => t,
+	  quad: t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
+	  cubic: t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+	  sine: t => -(Math.cos(Math.PI * t) - 1) / 2,
+	  expo: t => t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2,
+	  outCubic: t => 1 - Math.pow(1 - t, 3)
+	};
+	const defaultClock = () => typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+	let midixClock = defaultClock;
+
+	/**
+	 * Shared midix state, keyed by the call's identity (cc, channel, min, max, default).
+	 * Hydra re-evaluates the whole sketch on Ctrl+Enter, automutate, mutation jump and
+	 * master-effect apply; without this every re-eval would snap values back to their
+	 * default and re-arm pickup.
+	 */
+	const MIDIX_MAX_STATES = 512;
+	const midixStates = new Map();
+	function getMidixState(ccIndex, channel, min, max, def, pickup) {
+	  const key = `${ccIndex}|${channel ?? ""}|${min}|${max}|${def}`;
+	  let state = midixStates.get(key);
+	  if (!state) {
+	    state = {
+	      key,
+	      ccIndex,
+	      current: def,
+	      target: def,
+	      from: def,
+	      tweenStart: -Infinity,
+	      velocity: 0,
+	      lastTime: null,
+	      pickupRef: def,
+	      pickedUp: !pickup,
+	      lastSide: null // sign of (ccValue - pickupRef), to detect fast crossings
+	    };
+	    midixStates.set(key, state);
+	    // Bound memory: mutations that rewrite min/max create new keys
+	    if (midixStates.size > MIDIX_MAX_STATES) {
+	      midixStates.delete(midixStates.keys().next().value);
+	    }
+	  }
+	  return state;
+	}
+
+	/**
+	 * Smoothed MIDI value getter: like midi(), but holds a value that eases toward
+	 * the CC-controlled target. State survives sketch re-evaluation (see above).
+	 *
+	 * Usage:
+	 *   midix(3, {min: 0, max: 10})                                // lerp smoothing, default = 5
+	 *   midix('A', {default: 0, ease: 'smooth', duration: () => beatMs(1)})
+	 *   midix('b0', {ease: 'cubic', duration: 500})
+	 *   midix(7, {ease: 'none'})                                   // no easing
+	 *
+	 * Options:
+	 *   min, max, channel, transform — same as midi()
+	 *   default  — value used until the CC is first received (default: (min+max)/2)
+	 *   ease     — 'lerp'   frame-rate independent exponential smoothing (default), rate = speed
+	 *              'smooth' critically damped spring; keeps velocity, so it follows a moving knob
+	 *                       without stalling. Settles in roughly `duration`. Best for knobs.
+	 *              'linear' | 'quad' | 'cubic' | 'sine' | 'expo' | 'outCubic' | (t) => t
+	 *                       timed tween over `duration`. While a tween runs, new CC values
+	 *                       retarget it instead of restarting it, so a turning knob never freezes.
+	 *              'none'   follow the CC directly
+	 *   speed    — lerp rate per second (default 6, ~0.5s to settle)
+	 *   duration — ms for 'smooth' and timed easings (default 300), or a function returning ms,
+	 *              re-evaluated every frame, e.g. () => beatMs(2)
+	 *   pickup   — synth-style pickup (default true): ignore CC until it reaches the
+	 *              default value (within pickupThreshold, or crossing it)
+	 *   pickupThreshold — fraction of |max-min| counted as "close" (default 0.05)
+	 *
+	 * Returned function extras: fn.set(v), fn.pickedUp(), fn.target()
+	 * Globals: midix.reset() clears all state; midixStatus(cc) lists state for a cc.
+	 */
+	function midix(ccIndex, options = {}) {
+	  const {
+	    min = 0,
+	    max = 1,
+	    channel,
+	    transform,
+	    ease = "lerp",
+	    speed = 6,
+	    duration = 300,
+	    pickup = true,
+	    pickupThreshold = 0.05
+	  } = options;
+	  const def = options.default !== undefined ? options.default : (min + max) / 2;
+	  const curve = typeof ease === "function" ? ease : easings[ease];
+	  const range = Math.abs(max - min) || 1;
+	  const s = getMidixState(ccIndex, channel, min, max, def, pickup);
+	  const getDuration = () => {
+	    const d = typeof duration === "function" ? duration() : duration;
+	    return Number.isFinite(d) && d > 0 ? d : 0;
+	  };
+	  const fn = () => {
+	    const t = midixClock();
+	    const norm = midiEngine.getNormalized(ccIndex, {
+	      channel
+	    });
+	    let newTarget = s.target;
+	    if (norm !== undefined) {
+	      const ccValue = norm * (max - min) + min;
+	      if (!s.pickedUp) {
+	        const side = Math.sign(ccValue - s.pickupRef);
+	        const close = Math.abs(ccValue - s.pickupRef) <= range * pickupThreshold;
+	        const crossed = s.lastSide !== null && side !== 0 && side !== s.lastSide;
+	        if (close || crossed || side === 0) s.pickedUp = true;
+	        s.lastSide = side;
+	      }
+	      if (s.pickedUp) newTarget = ccValue;
+	    }
+	    const dur = curve && ease !== "lerp" ? getDuration() : 0;
+	    if (newTarget !== s.target) {
+	      // Timed tweens: only start a new tween when the previous one has finished;
+	      // otherwise retarget the running one so continuous knob moves keep flowing.
+	      if (t - s.tweenStart >= dur) {
+	        s.from = s.current;
+	        s.tweenStart = t;
+	      }
+	      s.target = newTarget;
+	    }
+	    const dt = s.lastTime === null ? 0 : Math.max(0, Math.min((t - s.lastTime) / 1000, 0.25));
+	    if (ease === "none") {
+	      s.current = s.target;
+	      s.velocity = 0;
+	    } else if (ease === "smooth") {
+	      // Critically damped spring (Game Programming Gems 4, "SmoothDamp")
+	      const smoothTime = Math.max(getDuration() / 1000 / 3, 0.0001);
+	      const omega = 2 / smoothTime;
+	      const x = omega * dt;
+	      const exp = 1 / (1 + x + 0.48 * x * x + 0.235 * x * x * x);
+	      const change = s.current - s.target;
+	      const temp = (s.velocity + omega * change) * dt;
+	      s.velocity = (s.velocity - omega * temp) * exp;
+	      s.current = s.target + (change + temp) * exp;
+	      if (Math.abs(s.target - s.current) < range * 1e-4 && Math.abs(s.velocity) < range * 1e-3) {
+	        s.current = s.target;
+	        s.velocity = 0;
+	      }
+	    } else if (ease === "lerp" || !curve) {
+	      s.current += (s.target - s.current) * (1 - Math.exp(-speed * dt));
+	      if (Math.abs(s.target - s.current) < range * 1e-4) s.current = s.target;
+	      s.velocity = 0;
+	    } else {
+	      const p = dur > 0 ? Math.min((t - s.tweenStart) / dur, 1) : 1;
+	      s.current = s.from + (s.target - s.from) * curve(p);
+	      s.velocity = 0;
+	    }
+	    s.lastTime = t;
+	    return transform ? transform(s.current) : s.current;
+	  };
+
+	  // Jump to a value; with pickup enabled, CC is ignored again until it reaches v
+	  fn.set = v => {
+	    s.current = s.target = s.from = s.pickupRef = v;
+	    s.velocity = 0;
+	    s.tweenStart = -Infinity;
+	    s.pickedUp = !pickup;
+	    s.lastSide = null;
+	  };
+	  fn.pickedUp = () => s.pickedUp;
+	  fn.target = () => s.target;
+	  return fn;
+	}
+
+	/** Forget all midix state (values return to defaults, pickup re-arms). */
+	midix.reset = () => midixStates.clear();
+
+	/** Override the clock (ms) used by midix; pass nothing to restore. For tests. */
+	midix.setClock = clock => {
+	  midixClock = typeof clock === "function" ? clock : defaultClock;
+	};
+
+	/**
+	 * Snapshot of midix states for a cc (e.g. 'A'), for UI feedback such as
+	 * "waiting for pickup" indicators.
+	 */
+	function midixStatus(ccIndex) {
+	  const out = [];
+	  for (const s of midixStates.values()) {
+	    if (s.ccIndex === ccIndex) {
+	      out.push({
+	        key: s.key,
+	        pickedUp: s.pickedUp,
+	        pickupRef: s.pickupRef,
+	        current: s.current,
+	        target: s.target
+	      });
+	    }
+	  }
+	  return out;
+	}
+
+	/**
+	 * Convert a beat count to milliseconds at the current BPM (window.bpm, default 120).
+	 * Usage: beatMs(4) -> 2000 at 120 bpm, beatMs(0.5) -> 250, beatMs(1, 90) -> 666.67
+	 */
+	function beatMs(beats = 1, bpm) {
+	  const currentBpm = bpm || (typeof window !== "undefined" && window.bpm ? window.bpm : 120);
+	  return beats * 60000 / currentBpm;
 	}
 
 	/**
@@ -12403,6 +13446,9 @@
 	      app.expose("midiEngine", midiEngine);
 	      app.expose("tapTempo", tapTempo);
 	      app.expose("midi", midi);
+	      app.expose("midix", midix);
+	      app.expose("midixStatus", midixStatus);
+	      app.expose("beatMs", beatMs);
 	      app.expose("saw", saw);
 	      app.expose("createLFO", createLFO);
 	      app.expose("randInt", randInt);
@@ -12415,452 +13461,6 @@
 	    }
 	  });
 	}
-
-	var midiMapping = {};
-
-	/**
-	 * MIDI Mapping Module for Hydra
-	 * Allows assigning Hydra actions to MIDI controls (CC and Note On).
-	 * Mappings are stored in localStorage and loaded on init.
-	 */
-	var hasRequiredMidiMapping;
-	function requireMidiMapping() {
-	  if (hasRequiredMidiMapping) return midiMapping;
-	  hasRequiredMidiMapping = 1;
-	  (function () {
-
-	    const STORAGE_KEY = "hydra-midi-mapping";
-	    const CC_TRIGGER_THRESHOLD = 0.5;
-	    const WAITING_TIMEOUT_MS = 15000;
-
-	    // Mappable actions: action ID -> config
-	    // Trigger: { action, payload?, label? } - emits event when CC > threshold or on note
-	    // Bind: { callback: (value) => {}, label? } - calls callback with CC value (0-1) on every change
-	    const MAPPABLE_ACTIONS = {
-	      "gallery:nextSketch": {
-	        action: "gallery:nextSketch",
-	        label: "Next sketch"
-	      },
-	      "gallery:prevSketch": {
-	        action: "gallery:nextSketch",
-	        payload: {
-	          backwards: true
-	        },
-	        label: "Prev sketch"
-	      },
-	      "gallery:randomSketch": {
-	        action: "gallery:randomSketch",
-	        label: "Random Sketch"
-	      },
-	      "editor:randomize": {
-	        action: "editor:randomize",
-	        label: "Randomize"
-	      },
-	      "editor:jumpBack1": {
-	        action: "editor:jumpBack1",
-	        label: "Jump back 1"
-	      },
-	      "editor:jumpBack5": {
-	        action: "editor:jumpBack5",
-	        label: "Jump back 5"
-	      },
-	      "gfx:speedReverse": {
-	        action: "gfx:speedReverse",
-	        label: "Speed reverse"
-	      },
-	      "editor:quickSave": {
-	        action: "editor:quickSave",
-	        label: "Quick save"
-	      },
-	      "editor:quickLoad": {
-	        action: "editor:quickLoad",
-	        label: "Quick load"
-	      },
-	      "editor:toggleAutomutate|off": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-0"
-	        },
-	        label: "Automutate off"
-	      },
-	      "editor:toggleAutomutate|1x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-1"
-	        },
-	        label: "Automutate 1x"
-	      },
-	      "editor:toggleAutomutate|2x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-2"
-	        },
-	        label: "Automutate 2x"
-	      },
-	      "editor:toggleAutomutate|4x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-3"
-	        },
-	        label: "Automutate 4x"
-	      },
-	      "editor:toggleAutomutate|8x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-4"
-	        },
-	        label: "Automutate 8x"
-	      },
-	      "editor:toggleAutomutate|16x": {
-	        action: "editor:toggleAutomutate",
-	        payload: {
-	          lastCombo: "Shift-Ctrl-5"
-	        },
-	        label: "Automutate 16x"
-	      },
-	      "taptempo": {
-	        action: "taptempo",
-	        label: "Tap tempo"
-	      },
-	      "fullscreen": {
-	        action: "fullscreen",
-	        label: "Toggle Fullscreen"
-	      },
-	      "hideAll": {
-	        action: "hideAll",
-	        label: "Hide/Show UI"
-	      },
-	      "impromptu:trigger": {
-	        action: "impromptu:trigger",
-	        label: "Impromptu Mutation Trigger (Press)"
-	      },
-	      "impromptu:mutationCC": {
-	        callback: value => {
-	          if (window.impromptuMutator && typeof window.impromptuMutator.setCC === "function") {
-	            window.impromptuMutator.setCC(value);
-	          } else if (window.xemitter) {
-	            window.xemitter.emit("impromptu:setCC", value);
-	          }
-	        },
-	        label: "Impromptu Mutation (CC Dial: 0-10)"
-	      },
-	      // Example CC bind - callback receives normalized value (0-1)
-	      speed: {
-	        callback: value => {
-	          // value is between 0 and 1, it should be mapped to speed between
-	          // This is a logarithmic scale, so we need to use a logarithmic function to map the value to the speed.
-	          // value: 0 => 0
-	          // value: 0.5 => 1
-	          // value: 1 => 8
-	          const speed = Math.pow(2, value * 2) - 1;
-	          if (window.speed !== undefined) window.speed = speed;
-	        },
-	        label: "Speed (CC bind)"
-	      },
-	      ...["A", "B", "C", "D"].map(midiShortcut => {
-	        return {
-	          ['midi' + midiShortcut]: {
-	            callback: value => {
-	              // Example of a CC bind that uses the global cc['A'] / cc['B'] / cc['C'] / cc['D'] value
-	              console.log(`MIDI ${midiShortcut} value:`, value);
-	              // reusable as `midi('A', { min: 0, max: 10, transform: v => Math.round(v * 10) })` for example
-	              window.cc[midiShortcut] = value;
-	            },
-	            label: `midi('${midiShortcut}', {min, max, transform}) cc bind`
-	          }
-	        };
-	      }).reduce((acc, curr) => ({
-	        ...acc,
-	        ...curr
-	      }), {})
-	    };
-	    let mapping = {};
-	    let waitingForAction = null;
-	    let waitingTimeoutId = null;
-	    function loadMapping() {
-	      try {
-	        const stored = localStorage.getItem(STORAGE_KEY);
-	        mapping = stored ? JSON.parse(stored) : {};
-	        return mapping;
-	      } catch (e) {
-	        console.warn("MIDI Mapping: failed to load from localStorage", e);
-	        return {};
-	      }
-	    }
-	    function saveMapping() {
-	      try {
-	        localStorage.setItem(STORAGE_KEY, JSON.stringify(mapping));
-	      } catch (e) {
-	        console.warn("MIDI Mapping: failed to save to localStorage", e);
-	      }
-	    }
-	    function getFullMapping() {
-	      return mapping;
-	    }
-	    function formatMappingDesc(m) {
-	      if (!m) return "—";
-	      if (m.type === "cc") return `CC ${m.control} (ch ${m.channel})`;
-	      if (m.type === "note") return `Note ${m.note} (ch ${m.channel})`;
-	      return "—";
-	    }
-	    function findActionForMessage(channel, type, controlOrNote) {
-	      const full = getFullMapping();
-	      const hits = [];
-	      for (const [action, m] of Object.entries(full)) {
-	        if (!m) continue;
-	        if (m.type === type && m.channel === channel) {
-	          if (type === "cc" && m.control === controlOrNote) hits.push(action);
-	          if (type === "note" && m.note === controlOrNote) hits.push(action);
-	        }
-	      }
-	      return hits;
-	    }
-	    function createMIDIHandler() {
-	      return function handleMIDIMessage(midiMessage) {
-	        const data = midiMessage.data;
-	        if (!data || data.length < 3) return;
-	        const kind = data[0];
-	        const channel = kind & 0x0f;
-	        const byte1 = data[1];
-	        const byte2 = data[2];
-	        const valNormalized = (byte2 > 64 ? byte2 + 1 : byte2) / 128.0;
-
-	        // Check if we're in assignment waiting mode
-	        if (waitingForAction) {
-	          const config = MAPPABLE_ACTIONS[waitingForAction];
-	          config && typeof config.callback === "function";
-	          let assignment = null;
-	          if ((kind & 0xf0) === 0xb0) {
-	            assignment = {
-	              type: "cc",
-	              channel,
-	              control: byte1
-	            };
-	          } else if ((kind & 0xf0) === 0x90 && byte2 > 0) {
-	            assignment = {
-	              type: "note",
-	              channel,
-	              note: byte1
-	            };
-	          }
-	          if (assignment) {
-	            mapping[waitingForAction] = assignment;
-	            saveMapping();
-	            waitingForAction = null;
-	            if (waitingTimeoutId) {
-	              clearTimeout(waitingTimeoutId);
-	              waitingTimeoutId = null;
-	            }
-	            if (window.midiMapping && window.midiMapping.render) {
-	              window.midiMapping.render();
-	            }
-	          }
-	          return;
-	        }
-
-	        // Check mapping for action trigger or CC bind
-	        const status = kind & 0xf0;
-	        if (status === 0xb0) {
-	          const actions = findActionForMessage(channel, "cc", byte1);
-	          for (const actionId of actions) {
-	            if (actionId) {
-	              const config = MAPPABLE_ACTIONS[actionId];
-	              if (config) {
-	                if (typeof config.callback === "function") {
-	                  config.callback(valNormalized);
-	                } else if (config.action && valNormalized > CC_TRIGGER_THRESHOLD && window.xemitter) {
-	                  window.xemitter.emit(config.action, config.payload || {});
-	                }
-	              }
-	            }
-	          }
-	        } else if (status === 0x90 && byte2 > 0) {
-	          const actions = findActionForMessage(channel, "note", byte1);
-	          for (const actionId of actions) {
-	            if (actionId) {
-	              const config = MAPPABLE_ACTIONS[actionId];
-	              if (config && window.xemitter) {
-	                if (typeof config.callback === "function") {
-	                  config.callback(valNormalized);
-	                } else {
-	                  window.xemitter.emit(config.action, config.payload || {});
-	                }
-	              }
-	            }
-	          }
-	        }
-	      };
-	    }
-	    function attachInput(input, handler) {
-	      if (!input) return;
-	      input.removeEventListener("midimessage", handler);
-	      input.addEventListener("midimessage", handler);
-	    }
-	    function setupMIDIHandler() {
-	      if (typeof navigator === "undefined" || !navigator.requestMIDIAccess) return;
-	      navigator.requestMIDIAccess().then(function (midiAccess) {
-	        const handler = createMIDIHandler();
-	        for (const input of midiAccess.inputs.values()) {
-	          attachInput(input, handler);
-	        }
-	        midiAccess.onstatechange = e => {
-	          if (e.port && e.port.type === "input" && e.port.state === "connected") {
-	            console.log(`[midi-mapping] Hot-plugged MIDI device: ${e.port.name}`);
-	            attachInput(e.port, handler);
-	          }
-	        };
-	        console.log("MIDI Mapping: handler installed via addEventListener");
-	      }, function () {
-	        console.warn("MIDI Mapping: could not access MIDI devices");
-	      });
-	    }
-
-	    // --- Modal UI (vanilla DOM) ---
-	    let modalContainer = null;
-	    function createModal() {
-	      const container = document.createElement("div");
-	      container.id = "midi-mapping-app";
-	      document.body.appendChild(container);
-	      modalContainer = container;
-	      renderModal();
-	    }
-	    function renderModal() {
-	      if (!modalContainer) return;
-	      if (!document.body.contains(modalContainer)) {
-	        document.body.appendChild(modalContainer);
-	      }
-	      const fullMapping = getFullMapping();
-	      const isVisible = modalContainer.getAttribute("data-visible") === "true";
-	      modalContainer.innerHTML = "";
-	      if (!isVisible) return;
-	      const overlay = document.createElement("div");
-	      overlay.className = "midi-mapping-overlay";
-	      overlay.onclick = function (e) {
-	        if (e.target === overlay) toggleModal();
-	      };
-	      const modal = document.createElement("div");
-	      modal.className = "midi-mapping-modal";
-	      modal.onclick = function (e) {
-	        e.stopPropagation();
-	      };
-	      const header = document.createElement("div");
-	      header.className = "midi-mapping-header";
-	      header.innerHTML = '<h5>MIDI Mapping</h5><span class="midi-mapping-close">&times;</span>';
-	      header.querySelector(".midi-mapping-close").onclick = toggleModal;
-	      const body = document.createElement("div");
-	      body.className = "midi-mapping-body";
-	      const list = document.createElement("ul");
-	      list.className = "midi-mapping-list";
-	      for (const [actionId, config] of Object.entries(MAPPABLE_ACTIONS)) {
-	        const actionLabel = config.label || actionId;
-	        const li = document.createElement("li");
-	        li.className = "midi-mapping-row";
-	        const current = fullMapping[actionId];
-	        const isWaiting = waitingForAction === actionId;
-	        const label = document.createElement("span");
-	        label.className = "midi-mapping-action";
-	        label.textContent = actionLabel;
-	        const mappingSpan = document.createElement("span");
-	        mappingSpan.className = "midi-mapping-value";
-	        mappingSpan.textContent = isWaiting ? "Listening..." : formatMappingDesc(current);
-	        const assignBtn = document.createElement("button");
-	        assignBtn.className = "midi-mapping-btn";
-	        assignBtn.textContent = isWaiting ? "Cancel" : "Assign";
-	        assignBtn.disabled = isWaiting;
-	        assignBtn.onclick = function () {
-	          if (isWaiting) {
-	            waitingForAction = null;
-	            if (waitingTimeoutId) {
-	              clearTimeout(waitingTimeoutId);
-	              waitingTimeoutId = null;
-	            }
-	          } else {
-	            waitingForAction = actionId;
-	            if (waitingTimeoutId) clearTimeout(waitingTimeoutId);
-	            waitingTimeoutId = setTimeout(function () {
-	              waitingForAction = null;
-	              waitingTimeoutId = null;
-	              renderModal();
-	            }, WAITING_TIMEOUT_MS);
-	          }
-	          renderModal();
-	        };
-	        const clearBtn = document.createElement("button");
-	        clearBtn.className = "midi-mapping-btn midi-mapping-clear";
-	        clearBtn.textContent = "Clear";
-	        clearBtn.style.display = current && mapping[actionId] ? "inline-block" : "none";
-	        clearBtn.onclick = function () {
-	          delete mapping[actionId];
-	          saveMapping();
-	          renderModal();
-	        };
-	        li.appendChild(label);
-	        li.appendChild(mappingSpan);
-	        li.appendChild(assignBtn);
-	        li.appendChild(clearBtn);
-	        list.appendChild(li);
-	      }
-	      body.appendChild(list);
-	      modal.appendChild(header);
-	      modal.appendChild(body);
-	      overlay.appendChild(modal);
-	      modalContainer.appendChild(overlay);
-	    }
-	    function toggleModal() {
-	      if (!modalContainer) return;
-	      const isVisible = modalContainer.getAttribute("data-visible") === "true";
-	      modalContainer.setAttribute("data-visible", !isVisible);
-	      renderModal();
-	    }
-	    function openModal() {
-	      if (!modalContainer) {
-	        createModal();
-	      }
-	      modalContainer.setAttribute("data-visible", "true");
-	      renderModal();
-	    }
-	    function init() {
-	      loadMapping();
-	      setupMIDIHandler();
-	      createModal();
-	      if (window.xemitter) {
-	        window.xemitter.on("midi-mapping:open", openModal);
-	      }
-	      window.midiMapping = {
-	        open: openModal,
-	        toggle: toggleModal,
-	        render: renderModal,
-	        getMapping: getFullMapping,
-	        registerAction: (id, config) => {
-	          if (id && config) {
-	            MAPPABLE_ACTIONS[id] = config;
-	          }
-	        }
-	      };
-	      console.log("MIDI Mapping module loaded");
-	    }
-	    if (typeof window !== "undefined" && window.HydraliskPlugins) {
-	      window.HydraliskPlugins.register({
-	        id: "midi-mapping",
-	        name: "MIDI Mapping UI & Actions",
-	        init(app) {
-	          if (app.emitter) {
-	            app.emitter.on("midi-mapping:open", openModal);
-	          }
-	          app.expose("midiMapping", window.midiMapping);
-	        }
-	      });
-	    }
-	    if (document.readyState === "loading") {
-	      document.addEventListener("DOMContentLoaded", init);
-	    } else {
-	      init();
-	    }
-	  })();
-	  return midiMapping;
-	}
-
-	requireMidiMapping();
 
 	window.initializeConvolutions = () => {
 	  {
@@ -19496,6 +20096,16 @@
 	    return this.stack.length;
 	  }
 	}
+	const MASTER_EFFECTS_REGEX = /\/\*\s*\[master-effects-start:[a-zA-Z0-9_-]+\]\s*\*\/[\s\S]*?\/\*\s*\[master-effects-end\]\s*\*\//g;
+	const PROTECTED_CALLS = new Set(["midi", "midix", "beatMs", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9"]);
+	function reinsertMasterEffect(coreCode, meBlock) {
+	  if (!meBlock) return coreCode;
+	  const outIdx = coreCode.lastIndexOf(".out(");
+	  if (outIdx !== -1) {
+	    return coreCode.slice(0, outIdx) + meBlock + coreCode.slice(outIdx);
+	  }
+	  return coreCode + meBlock;
+	}
 	class Mutator {
 	  constructor(editor) {
 	    this.editor = editor;
@@ -19503,6 +20113,10 @@
 	    this.initialVector = null;
 	    this.traveler = makeTraveler({
 	      CallExpression(node, state) {
+	        if (node.callee.type === "Identifier" && PROTECTED_CALLS.has(node.callee.name)) {
+	          // Do not descend into midi(), midix(), beatMs(), etc.
+	          return;
+	        }
 	        if (node.callee.type === "MemberExpression") {
 	          const name = node.callee.property.name;
 	          if (name !== "out") {
@@ -19510,6 +20124,14 @@
 	          }
 	        }
 	        this.super.CallExpression.call(this, node, state);
+	      },
+	      ArrowFunctionExpression(node, state) {
+	        // Do not mutate inside arrow callbacks
+	        return;
+	      },
+	      FunctionExpression(node, state) {
+	        // Do not mutate inside function callbacks
+	        return;
 	      },
 	      Literal(node, state) {
 	        if (typeof node.value === "number") {
@@ -19545,10 +20167,13 @@
 	    if (!this.editor) return;
 	    const code = typeof this.editor.getValue === "function" ? this.editor.getValue() : "";
 	    if (!code) return;
+	    const meMatch = code.match(MASTER_EFFECTS_REGEX);
+	    const meBlock = meMatch ? meMatch[0] : "";
+	    const workingCode = meBlock ? code.replace(meBlock, "") : code;
 	    let ast;
 	    const comments = [];
 	    try {
-	      ast = Parser.parse(code, {
+	      ast = Parser.parse(workingCode, {
 	        ecmaVersion: "latest",
 	        sourceType: "module",
 	        onComment: comments
@@ -19590,9 +20215,10 @@
 	      targetNode.value = this.glitchNumber(targetNode.value, initVal);
 	      targetNode.raw = String(targetNode.value);
 	    }
-	    const newCode = generate(ast, {
+	    const generated = generate(ast, {
 	      comments: true
 	    });
+	    const newCode = reinsertMasterEffect(generated, meBlock);
 	    this.editor.setValue(newCode);
 	    if (typeof this.editor.formatCode === "function") {
 	      this.editor.formatCode();
@@ -20555,8 +21181,6 @@
 	        "Cmd-D": ["editor:duplicateLine"],
 	        "Cmd-M": ["masterEffects:toggle"],
 	        "Shift-Ctrl-M": ["masterEffects:toggle"],
-	        "Cmd-I": ["impromptu:trigger"],
-	        "Shift-Ctrl-I": ["impromptu:toggleModal"],
 	        "Shift-Ctrl-K": ["editor:commentLine"],
 	        "Shift-Ctrl-C": ["gallery:search"],
 	        "Shift-Ctrl-S": ["screencap"],
@@ -21002,7 +21626,8 @@
 	  SketchManager,
 	  FeedbackManager,
 	  MasterEffectsManager,
-	  ImpromptuMutatorManager
+	  MutationJumpManager,
+	  MidiMappingManager
 	};
 	if (typeof window !== "undefined" && window.HydraliskPlugins) {
 	  window.HydraliskPlugins.register({
@@ -21017,13 +21642,13 @@
 	    }
 	  });
 	  window.HydraliskPlugins.register({
-	    id: "impromptu-mutator",
-	    name: "Impromptu Mutator & MIDI Burst",
+	    id: "mutation-jump",
+	    name: "Mutation Jump & MIDI Burst",
 	    init(app) {
-	      if (window.Modules && window.Modules.ImpromptuMutatorManager) {
-	        window.impromptuMutatorManager = new window.Modules.ImpromptuMutatorManager();
-	        window.impromptuMutatorManager.init(app);
-	        app.expose("impromptuMutatorManager", window.impromptuMutatorManager);
+	      if (window.Modules && window.Modules.MutationJumpManager) {
+	        window.mutationJumpManager = new window.Modules.MutationJumpManager();
+	        window.mutationJumpManager.init(app);
+	        app.expose("mutationJumpManager", window.mutationJumpManager);
 	      }
 	    }
 	  });

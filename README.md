@@ -15,6 +15,8 @@ Extra features:
  - save sketch: floppy disc
  - browse local sketches: CTRL + SHIFT + C
  - full screen: CTRL + SHIFT + G
- - extra functions: createLFO({ amplitude, phase, trans, waveform }), beatPattern(length, hits, transform), color(hexCode)
- - midi binds: midi(ccIndex, {min,max,channel,transform}), where ccIndex="b1" ("b2",... will bind to the first, second... changed cc value for easy bind)
+ - extra functions: createLFO({ amplitude, phase, trans, waveform }), beatPattern(length, hits, transform), color(hexCode), beatMs(beats, bpm)
+ - midi binds: midi(ccIndex, {min,max,channel,transform}), where ccIndex="b1" ("b2",... will bind to the first, second... changed cc value for easy bind) or "A".."D" for virtual controls
+ - smoothed midi with pickup: midix(ccIndex, { min, max, default, ease, speed, duration, pickup, pickupThreshold }) — eases toward the CC target with synth-style pickup (disregards CC until knob crosses/reaches default value); supports 'smooth' critically damped spring, 'lerp', and timed curves ('cubic', 'quad', 'sine', etc.) with retargeting; survives sketch re-evaluation
+ - master effects: CMD + M / CTRL + M — hot-swappable visual post-processing chains on rendered output buffers (e.g. o0) with customizable presets and live MIDI modulation
  - work in progress: upload and download sketches
