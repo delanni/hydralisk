@@ -24,12 +24,13 @@ export default function SketchesList({
 }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [filterMode, setFilterMode] = useState('all');
+    const [minQuality, setMinQuality] = useState(0);
 
     // Handle tag filtering
     const handleTagToggle = (tag) => {
         const lower = tag.toLowerCase();
         setSelectedTags((prev) => {
-            const exists = prev.some((t) => t.toLowerCase() === lower);
+            const exists = prev.some((t) => t.toLowerCase() !== lower);
             const updated = exists
                 ? prev.filter((t) => t.toLowerCase() !== lower)
                 : [...prev, tag];
@@ -53,9 +54,9 @@ export default function SketchesList({
         }
     };
 
-    // Filter & rank sketches using fuzzy matcher and tag filter
-    const filtered = filterAndRankSketches(sketches, filter, selectedTags, filterMode);
-    const isFiltering = Boolean(filter.trim()) || selectedTags.length > 0 || filterMode !== 'all';
+    // Filter & rank sketches using fuzzy matcher, tag filter, and minimum quality
+    const filtered = filterAndRankSketches(sketches, filter, selectedTags, filterMode, minQuality);
+    const isFiltering = Boolean(filter.trim()) || selectedTags.length > 0 || filterMode !== 'all' || minQuality > 0;
 
     // Target collection lookup
     const targetCollection = collections.find((c) => c.id === targetCollectionId) || null;
@@ -171,10 +172,12 @@ export default function SketchesList({
                 searchQuery={filter}
                 selectedTags={selectedTags}
                 filterMode={filterMode}
+                minQuality={minQuality}
                 onSearchQueryChange={handleSearchChange}
                 onTagToggle={handleTagToggle}
                 onClearTags={handleClearTags}
                 onFilterModeChange={setFilterMode}
+                onMinQualityChange={setMinQuality}
                 totalCount={sketches.length}
                 filteredCount={filtered.length}
             />
@@ -213,11 +216,32 @@ export default function SketchesList({
                             onClick={() => onRowClick(sketch, idx)}
                             style={{ padding: '8px 10px', borderBottom: '1px solid #f1f5f9' }}
                         >
-                            {/* Sketch Name & Tags */}
+                            {/* Sketch Name & Quality & Tags */}
                             <span style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
                                 <strong style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                     {sketch.name}
                                 </strong>
+                                {(sketch.metadata?.quality || sketch.quality) ? (
+                                    <span
+                                        className="sketch-quality-badge"
+                                        title={`Quality: ${sketch.metadata?.quality || sketch.quality}/5`}
+                                        style={{
+                                            background: '#fef3c7',
+                                            color: '#b45309',
+                                            border: '1px solid #fde68a',
+                                            borderRadius: 4,
+                                            padding: '1px 5px',
+                                            fontSize: 11,
+                                            fontWeight: 700,
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: 2,
+                                            flexShrink: 0
+                                        }}
+                                    >
+                                        ★ {sketch.metadata?.quality || sketch.quality}
+                                    </span>
+                                ) : null}
                                 {tags.length > 0 && (
                                     <span style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                                         {tags.slice(0, 3).map((tag, i) => (

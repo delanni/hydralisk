@@ -26,7 +26,12 @@ export default class SketchStorage {
     }
     saveSketch(sketch) {
         const sketches = this.getSketches();
-        sketches.push(sketch);
+        const existingIdx = sketches.findIndex(s => s.name === sketch.name || (sketch.id && s.id === sketch.id));
+        if (existingIdx >= 0) {
+            sketches[existingIdx] = sketch;
+        } else {
+            sketches.unshift(sketch);
+        }
         this.localStorage.setItem(this.storageKey, JSON.stringify(sketches));
     }
     deleteSketch(index) {

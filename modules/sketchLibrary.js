@@ -4,44 +4,16 @@
  * import/export, deduplication, and sketch autocompleter.
  */
 
-export const sGet = (key) => {
-  try {
-    const variablesStr = localStorage.getItem("variables");
-    const variablesObj = JSON.parse(variablesStr || "{}");
-    return variablesObj[key];
-  } catch (e) {
-    return undefined;
-  }
-};
-
-export const sPut = (key, value) => {
-  try {
-    const variablesStr = localStorage.getItem("variables") || "{}";
-    const o = JSON.parse(variablesStr);
-    o[key] = value;
-    localStorage.setItem("variables", JSON.stringify(o));
-  } catch (e) {
-    console.error("[sketchLibrary] Error saving variable:", e);
-  }
-};
-
-export function deduplicateBy(array, field) {
-  if (!Array.isArray(array)) return [];
-  return Object.values(
-    array.reduce((acc, s) => {
-      if (s && s[field]) acc[s[field]] = s;
-      return acc;
-    }, {})
-  );
-}
-
-const parseCode = (url) => {
-  try {
-    return decodeURIComponent(atob(decodeURIComponent(url.split("code=")[1])));
-  } catch (e) {
-    return url;
-  }
-};
+export { sGet, sPut, deduplicateBy, parseCode, formatSketchCode, loadSketch } from "./sketchLoader.js";
+import {
+  sGet,
+  sPut,
+  deduplicateBy,
+  parseCode,
+  loadSketch,
+  getNextIndex,
+  getRandomIndex,
+} from "./sketchLoader.js";
 
 if (typeof window !== "undefined" && window.HydraliskPlugins) {
   window.HydraliskPlugins.register({
@@ -58,6 +30,14 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
 
       app.expose("mySketches", mySketches);
       app.expose("sketchIdx", sketchIdx);
+
+      app.loadSketch = (target, opts) =>
+        loadSketch(app, target, { sketches: mySketches, currentIndex: sketchIdx, ...opts });
+      app.expose("loadSketch", app.loadSketch);
+
+      app.on("gallery:sketchLoaded", ({ index }) => {
+        sketchIdx = index;
+      });
 
       const getEditor = () => {
         return (app.state && app.state.editor && app.state.editor.editor) || window.cm || null;
@@ -91,44 +71,62 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         console.error("[sketchLibrary] Failed to load local sketches:", e);
       }
 
+      let initialSketchLoaded = false;
+
+      const initStartupSketch = () => {
+        if (initialSketchLoaded) return;
+        if (!mySketches || mySketches.length === 0) return;
+
+        // Check if explicit query param ?sketch=Name was passed
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          const targetName = urlParams.get("sketch");
+          if (targetName) {
+            const foundIdx = mySketches.findIndex(
+              (s) => s.name && s.name.toLowerCase() === targetName.toLowerCase()
+            );
+            if (foundIdx >= 0) {
+              initialSketchLoaded = true;
+              loadSketch(app, foundIdx, { sketches: mySketches, currentIndex: foundIdx });
+              return;
+            }
+          }
+        } catch (e) {}
+
+        // Otherwise load a random sketch and set sketchIdx to that random sketch's number
+        const randomIdx = Math.floor(Math.random() * mySketches.length);
+        initialSketchLoaded = true;
+        loadSketch(app, randomIdx, { sketches: mySketches, currentIndex: randomIdx });
+      };
+
+      app.initStartupSketch = initStartupSketch;
+      app.expose("initStartupSketch", initStartupSketch);
+
       if (localSketches.length === 0) {
         setTimeout(() => app.emit("gallery:import-remote"), 100);
+      } else {
+        setTimeout(() => initStartupSketch(), 150);
+        setTimeout(() => initStartupSketch(), 600);
       }
 
-      // Next / Prev Sketch
-      app.on("gallery:prevSketch", (e = {}) => {
-        e.backwards = true;
-        app.emit("gallery:nextSketch", e);
-        delete e.backwards;
+      // Next / Prev / Random Sketch consolidated handlers
+      app.on("gallery:prevSketch", () => {
+        if (!mySketches || mySketches.length === 0) return;
+        const newIdx = getNextIndex(sketchIdx, mySketches.length, true);
+        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: sketchIdx });
       });
 
       app.on("gallery:nextSketch", (e = {}) => {
         if (!mySketches || mySketches.length === 0) return;
-
-        if (isNaN(sketchIdx) || sketchIdx < 0 || sketchIdx >= mySketches.length) {
-          sketchIdx = 0;
-        }
-
-        if (e.altKey || e.shiftKey || e.backwards) {
-          sketchIdx = (sketchIdx - 1 + mySketches.length) % mySketches.length;
-        } else {
-          sketchIdx = (sketchIdx + 1) % mySketches.length;
-        }
-        sPut("sketchIdx", sketchIdx);
-        app.expose("sketchIdx", sketchIdx);
-
-        const sketch = mySketches[sketchIdx];
-        if (!sketch) return;
-
-        app.emit("gallery:loadSketch", sketch);
+        const isBackwards = Boolean(e.altKey || e.shiftKey || e.backwards);
+        const newIdx = getNextIndex(sketchIdx, mySketches.length, isBackwards);
+        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: sketchIdx });
       });
 
-      app.on("gallery:randomSketch", (e = {}) => {
+      app.on("gallery:randomSketch", () => {
         if (!mySketches || mySketches.length === 0) return;
-        sketchIdx = Math.floor(Math.random() * mySketches.length);
-        sPut("sketchIdx", sketchIdx);
-        app.expose("sketchIdx", sketchIdx);
-        app.emit("gallery:nextSketch", e);
+        const newIdx = getRandomIndex(sketchIdx, mySketches.length);
+        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: sketchIdx });
       });
 
       // Cross-navigation helper to launch player with active sketch
@@ -198,77 +196,8 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
       }
 
       app.on("gallery:loadSketch", (sketchInfo) => {
-        if (!sketchInfo) return;
-        const targetIdx = Array.isArray(mySketches)
-          ? mySketches.findIndex((s) => s.name === sketchInfo.name || (s.id && s.id === sketchInfo.id))
-          : -1;
-        const sketch = targetIdx >= 0 ? mySketches[targetIdx] : sketchInfo;
-
-        if (!sketch) return;
-
-        // Save sketch name protocol in localStorage and URL querystring
-        if (sketch && sketch.name) {
-          try {
-            localStorage.setItem("lastSelectedSketchName", sketch.name);
-            if (window.history && window.history.replaceState) {
-              const url = new URL(window.location);
-              url.searchParams.set("sketch", sketch.name);
-              window.history.replaceState({}, "", url.toString());
-            }
-          } catch (e) {}
-        }
-
-        let formattedCode = "";
-        if (sketch.metadata) {
-          const metaCopy = { ...sketch.metadata };
-          delete metaCopy.bpm;
-          delete metaCopy.date;
-          delete metaCopy.local;
-          delete metaCopy.index;
-          delete metaCopy.type;
-          const preamble = `/* ${sketch.name} */`;
-          const metadata = `/* metadata = ${JSON.stringify(metaCopy)} */`;
-          formattedCode = `${preamble}\n${sketch.code || ""}\n${metadata}`;
-        } else {
-          const preamble = `/* ${sketch.name} */\n`;
-          if (sketch.code && sketch.code.startsWith(preamble.slice(0, -2))) {
-            formattedCode = sketch.code;
-          } else {
-            formattedCode = preamble + (sketch.code || "");
-          }
-        }
-
-        setEditorText(formattedCode);
-        evalCode(formattedCode);
-        document.title = sketch.name || "Hydralisk";
-
-        sketchIdx = targetIdx >= 0 ? targetIdx : (typeof sketch.index === "number" ? sketch.index : 0);
-        if (isNaN(sketchIdx)) sketchIdx = 0;
-        sPut("sketchIdx", sketchIdx);
-        app.expose("sketchIdx", sketchIdx);
-
-        if (app.memory) {
-          app.memory.resetAutosaves();
-          app.memory.autoSave(formattedCode, true);
-        }
+        loadSketch(app, sketchInfo, { sketches: mySketches, currentIndex: sketchIdx });
       });
-
-      // Query parameter & localStorage sketch loading protocol on initialization
-      const loadSketchFromProtocol = () => {
-        try {
-          const urlParams = new URLSearchParams(window.location.search);
-          const targetName = urlParams.get("sketch") || localStorage.getItem("lastSelectedSketchName");
-          if (targetName && Array.isArray(mySketches) && mySketches.length > 0) {
-            const foundIdx = mySketches.findIndex(s => s.name && s.name.toLowerCase() === targetName.toLowerCase());
-            if (foundIdx >= 0) {
-              sketchIdx = foundIdx;
-              sPut("sketchIdx", sketchIdx);
-              app.expose("sketchIdx", sketchIdx);
-              app.emit("gallery:loadSketch", mySketches[foundIdx]);
-            }
-          }
-        } catch (e) {}
-      };
 
       app.on("gallery:updateLocalSketches", (sketchList) => {
         mySketches = Array.isArray(sketchList) ? sketchList : [];
@@ -278,7 +207,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
           sPut("sketchIdx", sketchIdx);
           app.expose("sketchIdx", sketchIdx);
         }
-        loadSketchFromProtocol();
+        initStartupSketch();
       });
 
       app.on("gallery:saveMyExample", async () => {
@@ -349,16 +278,22 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         if (existingIdx >= 0) {
           localSketches[existingIdx] = sketch;
         } else {
-          localSketches.push(sketch);
+          localSketches.unshift(sketch); // Prepend new sketches to the collection
         }
         localStorage.setItem("mySketches", JSON.stringify(localSketches));
 
         const sketchesMap = {};
-        downloadedSketches.concat(localSketches).forEach((s) => {
-          sketchesMap[s.name] = s;
+        localSketches.concat(downloadedSketches).forEach((s) => {
+          if (!sketchesMap[s.name]) {
+            sketchesMap[s.name] = s;
+          }
         });
         mySketches = Object.values(sketchesMap);
+        sketchIdx = 0;
+        sPut("sketchIdx", sketchIdx);
+        app.expose("sketchIdx", sketchIdx);
         app.expose("mySketches", mySketches);
+        app.emit("gallery:updateLocalSketches", mySketches);
       });
 
       app.on("gallery:export", (e = {}) => {
@@ -369,12 +304,16 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
 
         const sketchList = sketchesToExport.map((sketch) => {
           const { name, code, type, midi } = sketch;
+          const quality = typeof sketch.metadata?.quality === "number"
+            ? sketch.metadata.quality
+            : (typeof sketch.quality === "number" ? sketch.quality : undefined);
           return {
             name,
             type,
             code: code ? fixCode(code) : "",
             bpm: code?.match(/bpm\s+=\s+(\d+)/)?.[1],
             midi: !!(midi || code?.match(/cc\[/) || code?.match(/midi\(/)),
+            ...(quality !== undefined ? { quality } : {}),
             author: window.author ?? "Anony Mouse",
           };
         });
@@ -475,7 +414,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
             const imported = JSON.parse(jsonText);
             const items = Array.isArray(imported) ? imported : [imported];
             if (items.length === 0) throw new Error("No sketches found in JSON.");
-            localSketches = localSketches.concat(items);
+            localSketches = items.concat(localSketches); // Prepend newly imported sketches
             localStorage.setItem("mySketches", JSON.stringify(localSketches));
             mySketches = localSketches.slice();
             app.expose("mySketches", mySketches);
@@ -627,6 +566,12 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
           if (e.key === "Escape") app.emit("gallery:search");
         };
       });
+    },
+
+    onHydraReady(hydra, app) {
+      if (typeof app?.initStartupSketch === "function") {
+        app.initStartupSketch();
+      }
     },
   });
 }

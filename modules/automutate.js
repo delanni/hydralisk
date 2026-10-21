@@ -132,9 +132,14 @@ export class Mutator {
   }
 
   mutate({ reroll = false, changeTransform = false } = {}) {
-    if (!this.editor) return;
+    if (!this.editor) return null;
     const code = typeof this.editor.getValue === "function" ? this.editor.getValue() : "";
-    if (!code) return;
+    if (!code) return null;
+
+    console.log(
+      `[Mutator] Mutation requested (reroll: ${Boolean(reroll)}, changeTransform: ${Boolean(changeTransform)})`
+    );
+    const startTime = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
 
     let ast;
     const comments = [];
@@ -146,14 +151,16 @@ export class Mutator {
       });
     } catch (e) {
       console.warn("[Mutator] AST parse error:", e);
-      return;
+      return null;
     }
 
     const state = { literals: [], calls: [] };
     this.traveler.go(ast, state);
 
     if (state.literals.length === 0 && state.calls.length === 0) {
-      return;
+      const duration = ((typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now()) - startTime;
+      console.log(`[Mutator] Mutation calculation completed in ${duration.toFixed(2)}ms (no mutable AST nodes)`);
+      return { duration, newCode: code };
     }
 
     if (!this.initialVector || this.initialVector.length !== state.literals.length) {
@@ -190,6 +197,9 @@ export class Mutator {
     }
 
     const newCode = generate(ast, { comments: true });
+    const duration = ((typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now()) - startTime;
+    console.log(`[Mutator] Mutation calculation completed in ${duration.toFixed(2)}ms`);
+
     this.editor.setValue(newCode);
 
     if (typeof this.editor.formatCode === "function") {
@@ -197,47 +207,154 @@ export class Mutator {
     } else if (window.xemitter) {
       window.xemitter.emit("editor:formatCode");
     }
+
+    const emitter = (this.editor && this.editor.emitter) || (typeof window !== "undefined" && window.xemitter);
+    if (emitter && typeof emitter.emit === "function") {
+      emitter.emit("mutation:done", {
+        duration,
+        changeTransform: Boolean(changeTransform),
+        reroll: Boolean(reroll),
+      });
+    }
+
+    return { duration, newCode };
   }
 }
 
+const QUICKSAVE_STORAGE_KEY = "hydralisk_quicksave";
+const AUTOSAVES_STORAGE_KEY = "hydralisk_autosaves";
+
+const getMemoryStorage = () => {
+  try {
+    if (typeof window !== "undefined" && window.sessionStorage) {
+      return window.sessionStorage;
+    }
+  } catch (e) {}
+  try {
+    if (typeof window !== "undefined" && window.localStorage) {
+      return window.localStorage;
+    }
+  } catch (e) {}
+  return null;
+};
+
+const loadPersistedQuicksave = () => {
+  try {
+    const storage = getMemoryStorage();
+    return storage ? storage.getItem(QUICKSAVE_STORAGE_KEY) : null;
+  } catch (e) {
+    return null;
+  }
+};
+
+const persistQuicksave = (code) => {
+  try {
+    const storage = getMemoryStorage();
+    if (storage) {
+      if (code) {
+        storage.setItem(QUICKSAVE_STORAGE_KEY, code);
+      } else {
+        storage.removeItem(QUICKSAVE_STORAGE_KEY);
+      }
+    }
+  } catch (e) {
+    console.warn("[MemoryStore] Failed to persist quicksave:", e);
+  }
+};
+
+const loadPersistedAutosaves = () => {
+  try {
+    const storage = getMemoryStorage();
+    const raw = storage ? storage.getItem(AUTOSAVES_STORAGE_KEY) : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) {}
+  return [];
+};
+
+const persistAutosaves = (history) => {
+  try {
+    const storage = getMemoryStorage();
+    if (storage) {
+      storage.setItem(AUTOSAVES_STORAGE_KEY, JSON.stringify(history));
+    }
+  } catch (e) {
+    console.warn("[MemoryStore] Failed to persist autosaves:", e);
+  }
+};
+
 export class MemoryStore {
   constructor() {
-    this.saveSlot = null;
-    this.autoSaves = [];
-    this._autosaveCulling = 8;
+    this.saveSlot = loadPersistedQuicksave();
+    this.autoSaves = loadPersistedAutosaves();
+    this._autosaveCulling = 5; // Culling every 5th mutation
     this._autosaveIndex = 0;
+    this.maxAutosaves = 40;
   }
 
   quickSave(code) {
     this.saveSlot = code;
+    persistQuicksave(code);
   }
 
   quickLoad() {
+    if (!this.saveSlot) {
+      this.saveSlot = loadPersistedQuicksave();
+    }
     return this.saveSlot;
   }
 
   autoSave(code, force = false) {
+    if (!code) return;
     this._autosaveIndex += 1;
     if (this._autosaveIndex >= this._autosaveCulling || force) {
       this._autosaveIndex = 0;
-      this.autoSaves.push(code);
+      if (this.autoSaves.length === 0 || this.autoSaves[this.autoSaves.length - 1] !== code) {
+        this.autoSaves.push(code);
+        if (this.autoSaves.length > this.maxAutosaves) {
+          this.autoSaves.shift();
+        }
+        persistAutosaves(this.autoSaves);
+      }
     }
   }
 
   jumpBack(idx = 1) {
-    let code;
+    if (this.autoSaves.length === 0) return null;
+    let code = null;
     while (idx-- > 0 && this.autoSaves.length > 0) {
       code = this.autoSaves.pop();
     }
     if (this.autoSaves.length === 0 && code) {
       this.autoSaves = [code];
     }
+    persistAutosaves(this.autoSaves);
     return code;
+  }
+
+  /**
+   * Called when navigating scenes forward.
+   * Reduces undo history to exactly 1 entry: the previous scene's code.
+   * This clears mutation noise from prior scenes while allowing immediate rollback.
+   */
+  reduceToPreviousScene(previousSceneCode) {
+    if (previousSceneCode) {
+      this.autoSaves = [previousSceneCode];
+    } else if (this.autoSaves.length > 0) {
+      this.autoSaves = [this.autoSaves[this.autoSaves.length - 1]];
+    } else {
+      this.autoSaves = [];
+    }
+    this._autosaveIndex = 0;
+    persistAutosaves(this.autoSaves);
   }
 
   resetAutosaves() {
     this.autoSaves = [];
     this._autosaveIndex = 0;
+    persistAutosaves(this.autoSaves);
   }
 }
 
@@ -287,16 +404,12 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         clearInterval(app.automutateInterval);
 
         const newInterval = setInterval(() => {
-          const ed = getEditor();
-          if (!ed) return;
-          if (!ed.mutator) ed.mutator = new Mutator(ed);
           const changeTransform = Math.random() > (app.automutateChangeTransformChance ?? 1);
-          ed.mutator.mutate({ reroll: false, changeTransform });
-          if (app.emitter) {
-            app.emitter.emit("editor:formatCode");
-            app.emitter.emit("oblivion:scheduleCheck", { delay: 250 });
-          }
-          memory.autoSave(ed.getValue());
+          app.emit("editor:randomize", {
+            reroll: false,
+            changeTransform,
+            source: "automutate",
+          });
         }, mutateTimeout);
 
         setAutomutateState(newInterval, app.automutateBeatMultiplier, app.automutateChangeTransformChance);
@@ -318,14 +431,19 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         if (evt.shiftKey) {
           editor.mutator.doUndo();
         } else {
+          if (app.emitter) {
+            app.emitter.emit("mutation:requested", evt);
+          }
+          const changeTransform = Boolean(evt.metaKey || evt.changeTransform);
           editor.mutator.mutate({
-            reroll: false,
-            changeTransform: Boolean(evt.metaKey),
+            reroll: Boolean(evt.reroll),
+            changeTransform,
           });
           if (app.emitter) {
             app.emitter.emit("editor:formatCode");
             app.emitter.emit("gallery:saveLocally", editor.getValue());
           }
+          memory.autoSave(editor.getValue());
         }
       });
 
@@ -397,16 +515,12 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         }
 
         const newInterval = setInterval(() => {
-          const ed = getEditor();
-          if (!ed) return;
-          if (!ed.mutator) ed.mutator = new Mutator(ed);
           const changeTransform = Math.random() > changeTransformChance;
-          ed.mutator.mutate({ reroll: false, changeTransform });
-          if (app.emitter) {
-            app.emitter.emit("editor:formatCode");
-            app.emitter.emit("oblivion:scheduleCheck", { delay: 250 });
-          }
-          memory.autoSave(ed.getValue());
+          app.emit("editor:randomize", {
+            reroll: false,
+            changeTransform,
+            source: "automutate",
+          });
         }, mutateTimeout);
 
         setAutomutateState(newInterval, beatMultiplier, changeTransformChance);

@@ -219,7 +219,12 @@
 	  }
 	  saveSketch(sketch) {
 	    const sketches = this.getSketches();
-	    sketches.push(sketch);
+	    const existingIdx = sketches.findIndex(s => s.name === sketch.name || sketch.id && s.id === sketch.id);
+	    if (existingIdx >= 0) {
+	      sketches[existingIdx] = sketch;
+	    } else {
+	      sketches.unshift(sketch);
+	    }
 	    this.localStorage.setItem(this.storageKey, JSON.stringify(sketches));
 	  }
 	  deleteSketch(index) {
@@ -398,7 +403,7 @@
 	      sketchId: sketchIdOrName,
 	      ...itemMeta
 	    } : sketchIdOrName;
-	    col.sketchIds.push(entry);
+	    col.sketchIds.unshift(entry);
 	    col.updatedAt = new Date().toISOString();
 	    this._write(state);
 	  }
@@ -407,12 +412,14 @@
 	    const col = state.collections.find(c => c.id === collectionId);
 	    if (!col || !Array.isArray(sketchIdOrNameList)) return;
 	    const existingSet = new Set(col.sketchIds.map(item => typeof item === 'string' ? item : item?.sketchId));
+	    const toAdd = [];
 	    sketchIdOrNameList.forEach(id => {
 	      if (id && !existingSet.has(id)) {
-	        col.sketchIds.push(id);
+	        toAdd.push(id);
 	        existingSet.add(id);
 	      }
 	    });
+	    col.sketchIds = [...toAdd, ...col.sketchIds];
 	    col.updatedAt = new Date().toISOString();
 	    this._write(state);
 	  }
@@ -580,7 +587,62 @@
 	  };
 	  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
 	    className: "metadata-fields-title"
-	  }, "Metadata"), Object.entries(metadata).map(([key, value]) => /*#__PURE__*/React.createElement("div", {
+	  }, "Metadata"), /*#__PURE__*/React.createElement("div", {
+	    style: {
+	      display: 'flex',
+	      alignItems: 'center',
+	      marginBottom: 12,
+	      padding: '8px 10px',
+	      background: '#11111b',
+	      borderRadius: 8,
+	      border: '1px solid #313244',
+	      justifyContent: 'space-between'
+	    }
+	  }, /*#__PURE__*/React.createElement("span", {
+	    style: {
+	      fontSize: 13,
+	      fontWeight: 600,
+	      color: '#cdd6f4'
+	    }
+	  }, "Quality Rating:"), /*#__PURE__*/React.createElement("div", {
+	    style: {
+	      display: 'flex',
+	      gap: 4,
+	      alignItems: 'center'
+	    }
+	  }, [1, 2, 3, 4, 5].map(star => {
+	    const currentQ = Number(metadata.quality) || 0;
+	    const isFilled = star <= currentQ;
+	    return /*#__PURE__*/React.createElement("button", {
+	      key: star,
+	      type: "button",
+	      onClick: () => onFieldChange('quality', star),
+	      title: `Set quality to ${star}`,
+	      style: {
+	        background: isFilled ? '#f59e0b' : '#313244',
+	        color: isFilled ? '#11111b' : '#a6adc8',
+	        border: isFilled ? '1px solid #fbbf24' : '1px solid #45475a',
+	        borderRadius: 6,
+	        padding: '3px 8px',
+	        cursor: 'pointer',
+	        fontSize: 12,
+	        fontWeight: 700,
+	        transition: 'all 0.15s ease'
+	      }
+	    }, "\u2605 ", star);
+	  }), metadata.quality !== undefined && /*#__PURE__*/React.createElement("button", {
+	    type: "button",
+	    onClick: () => onRemove('quality'),
+	    style: {
+	      background: 'none',
+	      border: 'none',
+	      color: '#f38ba8',
+	      fontSize: 11,
+	      cursor: 'pointer',
+	      marginLeft: 4
+	    },
+	    title: "Clear quality rating"
+	  }, "Clear"))), Object.entries(metadata).filter(([k]) => k !== 'quality').map(([key, value]) => /*#__PURE__*/React.createElement("div", {
 	    key: key,
 	    style: {
 	      display: 'flex',
@@ -651,7 +713,7 @@
 	  }, "\uFF0B")));
 	}
 
-	// --- SketchSearchFilter: React search & tag filtering component with fuzzy matching ---
+	// --- SketchFilterService: Pure JS search, fuzzy matching, and quality filter logic ---
 
 	/**
 	 * Calculates a fuzzy match score for a given query against target text.
@@ -689,16 +751,23 @@
 	}
 
 	/**
-	 * Filters and ranks sketches based on text search (fuzzy) and tag selection.
+	 * Filters and ranks sketches based on text search (fuzzy), tag selection, and minimum quality.
 	 */
-	function filterAndRankSketches(sketches, searchQuery, selectedTags = [], filterMode = 'all') {
+	function filterAndRankSketches(sketches, searchQuery, selectedTags = [], filterMode = 'all', minQuality = 0) {
 	  if (!sketches || !Array.isArray(sketches)) return [];
 	  const query = (searchQuery || '').trim();
 	  const tagsLower = (selectedTags || []).map(t => String(t).toLowerCase());
+	  const minQ = Number(minQuality) || 0;
 	  return sketches.map(sketch => {
 	    // Source mode filter (all / remote / local)
 	    if (filterMode === 'remote' && !sketch.remote) return null;
 	    if (filterMode === 'local' && sketch.remote) return null;
+
+	    // Quality filter (numeric 1-5): allow filtering for sketches over a quality number
+	    if (minQ > 0) {
+	      const sketchQuality = Number(sketch.metadata?.quality ?? sketch.quality ?? 0);
+	      if (sketchQuality < minQ) return null;
+	    }
 
 	    // Tag filter check
 	    const sketchTags = Array.isArray(sketch.metadata?.tags) ? sketch.metadata.tags : [];
@@ -727,15 +796,19 @@
 	    } : null;
 	  }).filter(Boolean).sort((a, b) => b.score - a.score).map(item => item.sketch);
 	}
+
+	// --- SketchSearchFilter: React search & tag filtering component with fuzzy matching & quality filter ---
 	function SketchSearchFilter({
 	  sketches = [],
 	  searchQuery = '',
 	  selectedTags = [],
 	  filterMode = 'all',
+	  minQuality = 0,
 	  onSearchQueryChange,
 	  onTagToggle,
 	  onClearTags,
 	  onFilterModeChange,
+	  onMinQualityChange,
 	  totalCount = 0,
 	  filteredCount = 0
 	}) {
@@ -762,12 +835,14 @@
 	      display: 'flex',
 	      gap: 8,
 	      marginBottom: 8,
-	      alignItems: 'center'
+	      alignItems: 'center',
+	      flexWrap: 'wrap'
 	    }
 	  }, /*#__PURE__*/React.createElement("div", {
 	    style: {
 	      position: 'relative',
-	      flex: 1
+	      flex: 1,
+	      minWidth: 160
 	    }
 	  }, /*#__PURE__*/React.createElement("input", {
 	    type: "text",
@@ -795,6 +870,31 @@
 	      color: '#666'
 	    }
 	  }, "\u2715")), /*#__PURE__*/React.createElement("select", {
+	    value: minQuality,
+	    onChange: e => onMinQualityChange?.(Number(e.target.value) || 0),
+	    style: {
+	      padding: '7px 8px',
+	      borderRadius: 4,
+	      border: minQuality > 0 ? '1px solid #f59e0b' : '1px solid #ccc',
+	      fontSize: 13,
+	      background: minQuality > 0 ? '#fef3c7' : '#fff',
+	      color: minQuality > 0 ? '#b45309' : '#333',
+	      fontWeight: minQuality > 0 ? 600 : 400
+	    },
+	    title: "Filter sketches over minimum quality rating"
+	  }, /*#__PURE__*/React.createElement("option", {
+	    value: "0"
+	  }, "All Qualities"), /*#__PURE__*/React.createElement("option", {
+	    value: "1"
+	  }, "Quality \u2265 1 \u2605"), /*#__PURE__*/React.createElement("option", {
+	    value: "2"
+	  }, "Quality \u2265 2 \u2605\u2605"), /*#__PURE__*/React.createElement("option", {
+	    value: "3"
+	  }, "Quality \u2265 3 \u2605\u2605\u2605"), /*#__PURE__*/React.createElement("option", {
+	    value: "4"
+	  }, "Quality \u2265 4 \u2605\u2605\u2605\u2605"), /*#__PURE__*/React.createElement("option", {
+	    value: "5"
+	  }, "Quality = 5 \u2605\u2605\u2605\u2605\u2605")), /*#__PURE__*/React.createElement("select", {
 	    value: filterMode,
 	    onChange: e => onFilterModeChange(e.target.value),
 	    style: {
@@ -872,11 +972,11 @@
 	      fontSize: 12,
 	      color: '#666'
 	    }
-	  }, /*#__PURE__*/React.createElement("span", null, "Showing ", /*#__PURE__*/React.createElement("strong", null, filteredCount), " of ", /*#__PURE__*/React.createElement("strong", null, totalCount), " sketches"), (searchQuery || selectedTags.length > 0 || filterMode !== 'all') && /*#__PURE__*/React.createElement("span", {
+	  }, /*#__PURE__*/React.createElement("span", null, "Showing ", /*#__PURE__*/React.createElement("strong", null, filteredCount), " of ", /*#__PURE__*/React.createElement("strong", null, totalCount), " sketches"), (searchQuery || selectedTags.length > 0 || filterMode !== 'all' || minQuality > 0) && /*#__PURE__*/React.createElement("span", {
 	    style: {
 	      color: '#3b82f6'
 	    }
-	  }, "Fuzzy filter active")));
+	  }, "Filter active", minQuality > 0 ? ` (Quality ≥ ${minQuality})` : '')));
 	}
 
 	// --- SketchesList: Main Sketches Tab with Setlist Collecting & (+)/(-) Controls ---
@@ -902,12 +1002,13 @@
 	}) {
 	  const [selectedTags, setSelectedTags] = React$1.useState([]);
 	  const [filterMode, setFilterMode] = React$1.useState('all');
+	  const [minQuality, setMinQuality] = React$1.useState(0);
 
 	  // Handle tag filtering
 	  const handleTagToggle = tag => {
 	    const lower = tag.toLowerCase();
 	    setSelectedTags(prev => {
-	      const exists = prev.some(t => t.toLowerCase() === lower);
+	      const exists = prev.some(t => t.toLowerCase() !== lower);
 	      const updated = exists ? prev.filter(t => t.toLowerCase() !== lower) : [...prev, tag];
 	      if (onTagFilterChange) {
 	        onTagFilterChange({
@@ -939,9 +1040,9 @@
 	    }
 	  };
 
-	  // Filter & rank sketches using fuzzy matcher and tag filter
-	  const filtered = filterAndRankSketches(sketches, filter, selectedTags, filterMode);
-	  const isFiltering = Boolean(filter.trim()) || selectedTags.length > 0 || filterMode !== 'all';
+	  // Filter & rank sketches using fuzzy matcher, tag filter, and minimum quality
+	  const filtered = filterAndRankSketches(sketches, filter, selectedTags, filterMode, minQuality);
+	  const isFiltering = Boolean(filter.trim()) || selectedTags.length > 0 || filterMode !== 'all' || minQuality > 0;
 
 	  // Target collection lookup
 	  const targetCollection = collections.find(c => c.id === targetCollectionId) || null;
@@ -1059,10 +1160,12 @@
 	    searchQuery: filter,
 	    selectedTags: selectedTags,
 	    filterMode: filterMode,
+	    minQuality: minQuality,
 	    onSearchQueryChange: handleSearchChange,
 	    onTagToggle: handleTagToggle,
 	    onClearTags: handleClearTags,
 	    onFilterModeChange: setFilterMode,
+	    onMinQualityChange: setMinQuality,
 	    totalCount: sketches.length,
 	    filteredCount: filtered.length
 	  }), actions.length > 0 && /*#__PURE__*/React$1.createElement("div", {
@@ -1118,7 +1221,23 @@
 	        textOverflow: 'ellipsis',
 	        whiteSpace: 'nowrap'
 	      }
-	    }, sketch.name), tags.length > 0 && /*#__PURE__*/React$1.createElement("span", {
+	    }, sketch.name), sketch.metadata?.quality || sketch.quality ? /*#__PURE__*/React$1.createElement("span", {
+	      className: "sketch-quality-badge",
+	      title: `Quality: ${sketch.metadata?.quality || sketch.quality}/5`,
+	      style: {
+	        background: '#fef3c7',
+	        color: '#b45309',
+	        border: '1px solid #fde68a',
+	        borderRadius: 4,
+	        padding: '1px 5px',
+	        fontSize: 11,
+	        fontWeight: 700,
+	        display: 'inline-flex',
+	        alignItems: 'center',
+	        gap: 2,
+	        flexShrink: 0
+	      }
+	    }, "\u2605 ", sketch.metadata?.quality || sketch.quality) : null, tags.length > 0 && /*#__PURE__*/React$1.createElement("span", {
 	      style: {
 	        display: 'flex',
 	        gap: 4,
@@ -18376,9 +18495,11 @@
 	    reroll = false,
 	    changeTransform = false
 	  } = {}) {
-	    if (!this.editor) return;
+	    if (!this.editor) return null;
 	    const code = typeof this.editor.getValue === "function" ? this.editor.getValue() : "";
-	    if (!code) return;
+	    if (!code) return null;
+	    console.log(`[Mutator] Mutation requested (reroll: ${Boolean(reroll)}, changeTransform: ${Boolean(changeTransform)})`);
+	    const startTime = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
 	    let ast;
 	    const comments = [];
 	    try {
@@ -18389,7 +18510,7 @@
 	      });
 	    } catch (e) {
 	      console.warn("[Mutator] AST parse error:", e);
-	      return;
+	      return null;
 	    }
 	    const state = {
 	      literals: [],
@@ -18397,7 +18518,12 @@
 	    };
 	    this.traveler.go(ast, state);
 	    if (state.literals.length === 0 && state.calls.length === 0) {
-	      return;
+	      const duration = (typeof performance !== "undefined" && performance.now ? performance.now() : Date.now()) - startTime;
+	      console.log(`[Mutator] Mutation calculation completed in ${duration.toFixed(2)}ms (no mutable AST nodes)`);
+	      return {
+	        duration,
+	        newCode: code
+	      };
 	    }
 	    if (!this.initialVector || this.initialVector.length !== state.literals.length) {
 	      this.initialVector = state.literals.map(l => l.value);
@@ -18427,47 +18553,151 @@
 	    const newCode = generate(ast, {
 	      comments: true
 	    });
+	    const duration = (typeof performance !== "undefined" && performance.now ? performance.now() : Date.now()) - startTime;
+	    console.log(`[Mutator] Mutation calculation completed in ${duration.toFixed(2)}ms`);
 	    this.editor.setValue(newCode);
 	    if (typeof this.editor.formatCode === "function") {
 	      this.editor.formatCode();
 	    } else if (window.xemitter) {
 	      window.xemitter.emit("editor:formatCode");
 	    }
+	    const emitter = this.editor && this.editor.emitter || typeof window !== "undefined" && window.xemitter;
+	    if (emitter && typeof emitter.emit === "function") {
+	      emitter.emit("mutation:done", {
+	        duration,
+	        changeTransform: Boolean(changeTransform),
+	        reroll: Boolean(reroll)
+	      });
+	    }
+	    return {
+	      duration,
+	      newCode
+	    };
 	  }
 	}
+	const QUICKSAVE_STORAGE_KEY = "hydralisk_quicksave";
+	const AUTOSAVES_STORAGE_KEY = "hydralisk_autosaves";
+	const getMemoryStorage = () => {
+	  try {
+	    if (typeof window !== "undefined" && window.sessionStorage) {
+	      return window.sessionStorage;
+	    }
+	  } catch (e) {}
+	  try {
+	    if (typeof window !== "undefined" && window.localStorage) {
+	      return window.localStorage;
+	    }
+	  } catch (e) {}
+	  return null;
+	};
+	const loadPersistedQuicksave = () => {
+	  try {
+	    const storage = getMemoryStorage();
+	    return storage ? storage.getItem(QUICKSAVE_STORAGE_KEY) : null;
+	  } catch (e) {
+	    return null;
+	  }
+	};
+	const persistQuicksave = code => {
+	  try {
+	    const storage = getMemoryStorage();
+	    if (storage) {
+	      if (code) {
+	        storage.setItem(QUICKSAVE_STORAGE_KEY, code);
+	      } else {
+	        storage.removeItem(QUICKSAVE_STORAGE_KEY);
+	      }
+	    }
+	  } catch (e) {
+	    console.warn("[MemoryStore] Failed to persist quicksave:", e);
+	  }
+	};
+	const loadPersistedAutosaves = () => {
+	  try {
+	    const storage = getMemoryStorage();
+	    const raw = storage ? storage.getItem(AUTOSAVES_STORAGE_KEY) : null;
+	    if (raw) {
+	      const parsed = JSON.parse(raw);
+	      if (Array.isArray(parsed)) return parsed;
+	    }
+	  } catch (e) {}
+	  return [];
+	};
+	const persistAutosaves = history => {
+	  try {
+	    const storage = getMemoryStorage();
+	    if (storage) {
+	      storage.setItem(AUTOSAVES_STORAGE_KEY, JSON.stringify(history));
+	    }
+	  } catch (e) {
+	    console.warn("[MemoryStore] Failed to persist autosaves:", e);
+	  }
+	};
 	class MemoryStore {
 	  constructor() {
-	    this.saveSlot = null;
-	    this.autoSaves = [];
-	    this._autosaveCulling = 8;
+	    this.saveSlot = loadPersistedQuicksave();
+	    this.autoSaves = loadPersistedAutosaves();
+	    this._autosaveCulling = 5; // Culling every 5th mutation
 	    this._autosaveIndex = 0;
+	    this.maxAutosaves = 40;
 	  }
 	  quickSave(code) {
 	    this.saveSlot = code;
+	    persistQuicksave(code);
 	  }
 	  quickLoad() {
+	    if (!this.saveSlot) {
+	      this.saveSlot = loadPersistedQuicksave();
+	    }
 	    return this.saveSlot;
 	  }
 	  autoSave(code, force = false) {
+	    if (!code) return;
 	    this._autosaveIndex += 1;
 	    if (this._autosaveIndex >= this._autosaveCulling || force) {
 	      this._autosaveIndex = 0;
-	      this.autoSaves.push(code);
+	      if (this.autoSaves.length === 0 || this.autoSaves[this.autoSaves.length - 1] !== code) {
+	        this.autoSaves.push(code);
+	        if (this.autoSaves.length > this.maxAutosaves) {
+	          this.autoSaves.shift();
+	        }
+	        persistAutosaves(this.autoSaves);
+	      }
 	    }
 	  }
 	  jumpBack(idx = 1) {
-	    let code;
+	    if (this.autoSaves.length === 0) return null;
+	    let code = null;
 	    while (idx-- > 0 && this.autoSaves.length > 0) {
 	      code = this.autoSaves.pop();
 	    }
 	    if (this.autoSaves.length === 0 && code) {
 	      this.autoSaves = [code];
 	    }
+	    persistAutosaves(this.autoSaves);
 	    return code;
+	  }
+
+	  /**
+	   * Called when navigating scenes forward.
+	   * Reduces undo history to exactly 1 entry: the previous scene's code.
+	   * This clears mutation noise from prior scenes while allowing immediate rollback.
+	   */
+	  reduceToPreviousScene(previousSceneCode) {
+	    if (previousSceneCode) {
+	      this.autoSaves = [previousSceneCode];
+	    } else if (this.autoSaves.length > 0) {
+	      this.autoSaves = [this.autoSaves[this.autoSaves.length - 1]];
+	    } else {
+	      this.autoSaves = [];
+	    }
+	    this._autosaveIndex = 0;
+	    persistAutosaves(this.autoSaves);
 	  }
 	  resetAutosaves() {
 	    this.autoSaves = [];
 	    this._autosaveIndex = 0;
+	    persistAutosaves(this.autoSaves);
 	  }
 	}
 	const memory = new MemoryStore();
@@ -18508,21 +18738,12 @@
 	        const mutateTimeout = 60000 / currentBpm * app.automutateBeatMultiplier;
 	        clearInterval(app.automutateInterval);
 	        const newInterval = setInterval(() => {
-	          const ed = getEditor();
-	          if (!ed) return;
-	          if (!ed.mutator) ed.mutator = new Mutator(ed);
 	          const changeTransform = Math.random() > (app.automutateChangeTransformChance ?? 1);
-	          ed.mutator.mutate({
+	          app.emit("editor:randomize", {
 	            reroll: false,
-	            changeTransform
+	            changeTransform,
+	            source: "automutate"
 	          });
-	          if (app.emitter) {
-	            app.emitter.emit("editor:formatCode");
-	            app.emitter.emit("oblivion:scheduleCheck", {
-	              delay: 250
-	            });
-	          }
-	          memory.autoSave(ed.getValue());
 	        }, mutateTimeout);
 	        setAutomutateState(newInterval, app.automutateBeatMultiplier, app.automutateChangeTransformChance);
 	      };
@@ -18540,14 +18761,19 @@
 	        if (evt.shiftKey) {
 	          editor.mutator.doUndo();
 	        } else {
+	          if (app.emitter) {
+	            app.emitter.emit("mutation:requested", evt);
+	          }
+	          const changeTransform = Boolean(evt.metaKey || evt.changeTransform);
 	          editor.mutator.mutate({
-	            reroll: false,
-	            changeTransform: Boolean(evt.metaKey)
+	            reroll: Boolean(evt.reroll),
+	            changeTransform
 	          });
 	          if (app.emitter) {
 	            app.emitter.emit("editor:formatCode");
 	            app.emitter.emit("gallery:saveLocally", editor.getValue());
 	          }
+	          memory.autoSave(editor.getValue());
 	        }
 	      });
 	      app.on("editor:midify", (evt = {}) => {
@@ -18611,21 +18837,12 @@
 	          clearInterval(app.automutateInterval);
 	        }
 	        const newInterval = setInterval(() => {
-	          const ed = getEditor();
-	          if (!ed) return;
-	          if (!ed.mutator) ed.mutator = new Mutator(ed);
 	          const changeTransform = Math.random() > changeTransformChance;
-	          ed.mutator.mutate({
+	          app.emit("editor:randomize", {
 	            reroll: false,
-	            changeTransform
+	            changeTransform,
+	            source: "automutate"
 	          });
-	          if (app.emitter) {
-	            app.emitter.emit("editor:formatCode");
-	            app.emitter.emit("oblivion:scheduleCheck", {
-	              delay: 250
-	            });
-	          }
-	          memory.autoSave(ed.getValue());
 	        }, mutateTimeout);
 	        setAutomutateState(newInterval, beatMultiplier, changeTransformChance);
 	        if (editor) {
@@ -18659,9 +18876,9 @@
 	}
 
 	/**
-	 * Sketch Library & Storage Plugin for Hydralisk
-	 * Manages local/remote sketches, playlist navigation, loading, saving,
-	 * import/export, deduplication, and sketch autocompleter.
+	 * Canonical Sketch Loader & Metadata Services for Hydralisk
+	 * Consolidates sketch navigation (next, prev, random), loading, code/preamble formatting,
+	 * metadata cloning (preventing source object mutation), and persistent state tracking.
 	 */
 
 	const sGet = key => {
@@ -18680,7 +18897,7 @@
 	    o[key] = value;
 	    localStorage.setItem("variables", JSON.stringify(o));
 	  } catch (e) {
-	    console.error("[sketchLibrary] Error saving variable:", e);
+	    console.error("[sketchLoader] Error saving variable:", e);
 	  }
 	};
 	function deduplicateBy(array, field) {
@@ -18697,6 +18914,282 @@
 	    return url;
 	  }
 	};
+
+	/** Internal metadata fields stripped when formatting sketch comments */
+	const INTERNAL_METADATA_KEYS = ["bpm", "date", "local", "index", "type"];
+
+	/**
+	 * Creates a clean copy of metadata without modifying source sketch objects.
+	 * Validates quality metadata field to a numeric value between 1 and 5.
+	 */
+	function cleanMetadata(metadata) {
+	  if (!metadata || typeof metadata !== "object") return {};
+	  const copy = {
+	    ...metadata
+	  };
+	  INTERNAL_METADATA_KEYS.forEach(key => {
+	    delete copy[key];
+	  });
+	  if (copy.quality !== undefined) {
+	    const q = Number(copy.quality);
+	    if (copy.quality !== null && copy.quality !== "" && !isNaN(q) && q >= 1 && q <= 5) {
+	      copy.quality = Math.round(q);
+	    } else {
+	      delete copy.quality;
+	    }
+	  }
+	  return copy;
+	}
+
+	/**
+	 * Formats a sketch object into executable editor text with preamble comment and metadata trailer.
+	 * Safe from in-place mutation of the source sketch or its metadata object.
+	 */
+	function formatSketchCode(sketch) {
+	  if (!sketch) return "";
+	  const name = (sketch.name || "Untitled").trim();
+	  const rawCode = (sketch.code || "").trim();
+
+	  // Combine sketch.metadata with any top-level quality property if present
+	  let rawMeta = sketch.metadata ? {
+	    ...sketch.metadata
+	  } : null;
+	  if (sketch.quality !== undefined && (!rawMeta || rawMeta.quality === undefined)) {
+	    rawMeta = {
+	      ...(rawMeta || {}),
+	      quality: sketch.quality
+	    };
+	  }
+	  let formattedCode = "";
+	  if (rawMeta) {
+	    const metaCopy = cleanMetadata(rawMeta);
+	    const preamble = `/* ${name} */`;
+	    const hasMetaKeys = Object.keys(metaCopy).length > 0;
+	    const metadataStr = hasMetaKeys ? `\n/* metadata = ${JSON.stringify(metaCopy)} */` : "";
+	    formattedCode = `${preamble}\n${rawCode}${metadataStr}`;
+	  } else {
+	    const preamble = `/* ${name} */\n`;
+	    if (rawCode.startsWith(preamble.slice(0, -2))) {
+	      formattedCode = rawCode;
+	    } else {
+	      formattedCode = preamble + rawCode;
+	    }
+	  }
+	  return formattedCode;
+	}
+
+	/**
+	 * Calculate next or previous index with wrapping.
+	 */
+	function getNextIndex(currentIndex, total, backwards = false) {
+	  if (typeof total !== "number" || total <= 0) return 0;
+	  const current = Number(currentIndex) || 0;
+	  return (current + (backwards ? -1 : 1) + total) % total;
+	}
+
+	/**
+	 * Calculate a random sketch index, preferably different from current if total > 1.
+	 */
+	function getRandomIndex(currentIndex, total) {
+	  if (typeof total !== "number" || total <= 0) return 0;
+	  if (total === 1) return 0;
+	  const current = Number(currentIndex) || 0;
+	  let next = Math.floor(Math.random() * total);
+	  if (next === current && total > 1) {
+	    next = (current + 1 + Math.floor(Math.random() * (total - 1))) % total;
+	  }
+	  return next;
+	}
+
+	/**
+	 * Resolves a target sketch and its index within the playlist.
+	 */
+	function resolveSketchIndex(target, sketches = [], fallbackIndex = 0) {
+	  if (!Array.isArray(sketches) || sketches.length === 0) {
+	    return {
+	      index: -1,
+	      sketch: null
+	    };
+	  }
+
+	  // 1. By direct numeric index
+	  if (typeof target === "number") {
+	    const safeIdx = Math.max(0, Math.min(sketches.length - 1, target));
+	    return {
+	      index: safeIdx,
+	      sketch: sketches[safeIdx]
+	    };
+	  }
+
+	  // 2. By string (name or id)
+	  if (typeof target === "string") {
+	    const targetLower = target.trim().toLowerCase();
+	    const idx = sketches.findIndex(s => s.name && s.name.toLowerCase() === targetLower || s.id && String(s.id).toLowerCase() === targetLower || s.sketch_id && String(s.sketch_id).toLowerCase() === targetLower);
+	    if (idx >= 0) {
+	      return {
+	        index: idx,
+	        sketch: sketches[idx]
+	      };
+	    }
+	    const safeFallback = Math.max(0, Math.min(sketches.length - 1, Number(fallbackIndex) || 0));
+	    return {
+	      index: safeFallback,
+	      sketch: sketches[safeFallback]
+	    };
+	  }
+
+	  // 3. By object
+	  if (target && typeof target === "object") {
+	    const idx = sketches.findIndex(s => target.name && s.name === target.name || target.id && s.id === target.id || target.sketch_id && s.sketch_id === target.sketch_id || s === target);
+	    if (idx >= 0) {
+	      return {
+	        index: idx,
+	        sketch: sketches[idx]
+	      };
+	    }
+	    // Object not found in current playlist, use the provided object directly
+	    return {
+	      index: typeof target.index === "number" ? target.index : fallbackIndex,
+	      sketch: target
+	    };
+	  }
+	  return {
+	    index: -1,
+	    sketch: null
+	  };
+	}
+
+	/**
+	 * Access editor instance from application state or global window.
+	 */
+	function getEditor(app) {
+	  return app?.state?.editor?.editor || window.cm || typeof window !== "undefined" && window.editor || null;
+	}
+
+	/**
+	 * Reads current text from the active editor.
+	 */
+	function getEditorCode(app) {
+	  const editor = getEditor(app);
+	  if (editor && typeof editor.getValue === "function") {
+	    return editor.getValue();
+	  }
+	  return "";
+	}
+
+	/**
+	 * Sets text in the active editor.
+	 */
+	function setEditorCode(app, code) {
+	  const editor = getEditor(app);
+	  if (editor && typeof editor.setValue === "function") {
+	    editor.setValue(code);
+	  }
+	}
+
+	/**
+	 * Executes/evaluates code in the Hydra sandbox.
+	 */
+	function evalEditorCode(app, code, cb) {
+	  const editor = getEditor(app);
+	  if (typeof window !== "undefined" && typeof window.evalCode === "function") {
+	    window.evalCode(code, cb);
+	  } else if (editor && typeof editor.eval === "function") {
+	    editor.eval(code, cb);
+	  }
+	}
+
+	/**
+	 * Canonical sketch loader: formats code, updates editor, evals, syncs title & url,
+	 * manages autosaves (reducing undo history to previous scene), and persists playlist index.
+	 */
+	function loadSketch(app, targetSketchOrIndex, options = {}) {
+	  const sketches = options.sketches || app?.mySketches || window.mySketches || [];
+	  if (!Array.isArray(sketches) || sketches.length === 0) return null;
+	  const currentIdx = typeof options.currentIndex === "number" ? options.currentIndex : app?.sketchIdx ?? 0;
+	  const {
+	    index,
+	    sketch
+	  } = resolveSketchIndex(targetSketchOrIndex, sketches, currentIdx);
+	  if (!sketch) return null;
+
+	  // 1. Capture current code before loading so we can preserve previous scene for undo
+	  const previousCode = getEditorCode(app);
+
+	  // 2. Format sketch code safely without mutating source metadata
+	  const formattedCode = formatSketchCode(sketch);
+
+	  // 3. Extract and sync BPM if defined in sketch or code
+	  const bpmMatch = formattedCode.match(/bpm\s*=\s*(\d+(\.\d+)?)/);
+	  const sketchBpm = Number(sketch.bpm) || Number(sketch.metadata?.bpm) || (bpmMatch ? Number(bpmMatch[1]) : null);
+	  if (sketchBpm && !isNaN(sketchBpm) && sketchBpm > 0 && app?.emitter) {
+	    app.emitter.emit("bpm:change", sketchBpm);
+	  }
+
+	  // 4. Update editor and evaluate
+	  setEditorCode(app, formattedCode);
+	  evalEditorCode(app, formattedCode);
+
+	  // 5. Update window title
+	  if (typeof document !== "undefined") {
+	    document.title = sketch.name || "Hydralisk";
+	  }
+
+	  // 6. Update persistent index and protocol
+	  const targetIdx = index >= 0 ? index : typeof sketch.index === "number" ? sketch.index : 0;
+	  const safeIdx = isNaN(targetIdx) ? 0 : targetIdx;
+	  sPut("sketchIdx", safeIdx);
+	  if (app) {
+	    app.sketchIdx = safeIdx;
+	    if (typeof app.expose === "function") {
+	      app.expose("sketchIdx", safeIdx);
+	    }
+	  }
+
+	  // 7. Store sketch name in localStorage and URL querystring
+	  if (sketch.name && typeof localStorage !== "undefined") {
+	    try {
+	      localStorage.setItem("lastSelectedSketchName", sketch.name);
+	      if (options.syncUrl !== false && typeof window !== "undefined" && window.history?.replaceState) {
+	        const url = new URL(window.location);
+	        url.searchParams.set("sketch", sketch.name);
+	        window.history.replaceState({}, "", url.toString());
+	      }
+	    } catch (e) {}
+	  }
+
+	  // 8. Autosave & Undo history: reduce undo history to 1 (the previous scene)
+	  if (app?.memory) {
+	    if (typeof app.memory.reduceToPreviousScene === "function") {
+	      app.memory.reduceToPreviousScene(previousCode);
+	    } else if (typeof app.memory.resetAutosaves === "function") {
+	      app.memory.resetAutosaves();
+	    }
+	    if (typeof app.memory.autoSave === "function") {
+	      app.memory.autoSave(formattedCode, true);
+	    }
+	  }
+
+	  // 9. Notify app bus
+	  if (app?.emit) {
+	    app.emit("gallery:sketchLoaded", {
+	      sketch,
+	      index: safeIdx
+	    });
+	  }
+	  return {
+	    sketch,
+	    index: safeIdx,
+	    formattedCode
+	  };
+	}
+
+	/**
+	 * Sketch Library & Storage Plugin for Hydralisk
+	 * Manages local/remote sketches, playlist navigation, loading, saving,
+	 * import/export, deduplication, and sketch autocompleter.
+	 */
+
 	if (typeof window !== "undefined" && window.HydraliskPlugins) {
 	  window.HydraliskPlugins.register({
 	    id: "sketch-library",
@@ -18709,22 +19202,19 @@
 	      let sketchIdx = !isNaN(rawSketchIdx) && rawSketchIdx >= 0 ? rawSketchIdx : 0;
 	      app.expose("mySketches", mySketches);
 	      app.expose("sketchIdx", sketchIdx);
+	      app.loadSketch = (target, opts) => loadSketch(app, target, {
+	        sketches: mySketches,
+	        currentIndex: sketchIdx,
+	        ...opts
+	      });
+	      app.expose("loadSketch", app.loadSketch);
+	      app.on("gallery:sketchLoaded", ({
+	        index
+	      }) => {
+	        sketchIdx = index;
+	      });
 	      const getEditor = () => {
 	        return app.state && app.state.editor && app.state.editor.editor || window.cm || null;
-	      };
-	      const evalCode = (code, cb) => {
-	        const editor = getEditor();
-	        if (window.evalCode) {
-	          window.evalCode(code, cb);
-	        } else if (editor && typeof editor.eval === "function") {
-	          editor.eval(code, cb);
-	        }
-	      };
-	      const setEditorText = code => {
-	        const editor = getEditor();
-	        if (editor && typeof editor.setValue === "function") {
-	          editor.setValue(code);
-	        }
 	      };
 
 	      // Load initial local sketches
@@ -18738,38 +19228,70 @@
 	      } catch (e) {
 	        console.error("[sketchLibrary] Failed to load local sketches:", e);
 	      }
+	      let initialSketchLoaded = false;
+	      const initStartupSketch = () => {
+	        if (initialSketchLoaded) return;
+	        if (!mySketches || mySketches.length === 0) return;
+
+	        // Check if explicit query param ?sketch=Name was passed
+	        try {
+	          const urlParams = new URLSearchParams(window.location.search);
+	          const targetName = urlParams.get("sketch");
+	          if (targetName) {
+	            const foundIdx = mySketches.findIndex(s => s.name && s.name.toLowerCase() === targetName.toLowerCase());
+	            if (foundIdx >= 0) {
+	              initialSketchLoaded = true;
+	              loadSketch(app, foundIdx, {
+	                sketches: mySketches,
+	                currentIndex: foundIdx
+	              });
+	              return;
+	            }
+	          }
+	        } catch (e) {}
+
+	        // Otherwise load a random sketch and set sketchIdx to that random sketch's number
+	        const randomIdx = Math.floor(Math.random() * mySketches.length);
+	        initialSketchLoaded = true;
+	        loadSketch(app, randomIdx, {
+	          sketches: mySketches,
+	          currentIndex: randomIdx
+	        });
+	      };
+	      app.initStartupSketch = initStartupSketch;
+	      app.expose("initStartupSketch", initStartupSketch);
 	      if (localSketches.length === 0) {
 	        setTimeout(() => app.emit("gallery:import-remote"), 100);
+	      } else {
+	        setTimeout(() => initStartupSketch(), 150);
+	        setTimeout(() => initStartupSketch(), 600);
 	      }
 
-	      // Next / Prev Sketch
-	      app.on("gallery:prevSketch", (e = {}) => {
-	        e.backwards = true;
-	        app.emit("gallery:nextSketch", e);
-	        delete e.backwards;
+	      // Next / Prev / Random Sketch consolidated handlers
+	      app.on("gallery:prevSketch", () => {
+	        if (!mySketches || mySketches.length === 0) return;
+	        const newIdx = getNextIndex(sketchIdx, mySketches.length, true);
+	        loadSketch(app, newIdx, {
+	          sketches: mySketches,
+	          currentIndex: sketchIdx
+	        });
 	      });
 	      app.on("gallery:nextSketch", (e = {}) => {
 	        if (!mySketches || mySketches.length === 0) return;
-	        if (isNaN(sketchIdx) || sketchIdx < 0 || sketchIdx >= mySketches.length) {
-	          sketchIdx = 0;
-	        }
-	        if (e.altKey || e.shiftKey || e.backwards) {
-	          sketchIdx = (sketchIdx - 1 + mySketches.length) % mySketches.length;
-	        } else {
-	          sketchIdx = (sketchIdx + 1) % mySketches.length;
-	        }
-	        sPut("sketchIdx", sketchIdx);
-	        app.expose("sketchIdx", sketchIdx);
-	        const sketch = mySketches[sketchIdx];
-	        if (!sketch) return;
-	        app.emit("gallery:loadSketch", sketch);
+	        const isBackwards = Boolean(e.altKey || e.shiftKey || e.backwards);
+	        const newIdx = getNextIndex(sketchIdx, mySketches.length, isBackwards);
+	        loadSketch(app, newIdx, {
+	          sketches: mySketches,
+	          currentIndex: sketchIdx
+	        });
 	      });
-	      app.on("gallery:randomSketch", (e = {}) => {
+	      app.on("gallery:randomSketch", () => {
 	        if (!mySketches || mySketches.length === 0) return;
-	        sketchIdx = Math.floor(Math.random() * mySketches.length);
-	        sPut("sketchIdx", sketchIdx);
-	        app.expose("sketchIdx", sketchIdx);
-	        app.emit("gallery:nextSketch", e);
+	        const newIdx = getRandomIndex(sketchIdx, mySketches.length);
+	        loadSketch(app, newIdx, {
+	          sketches: mySketches,
+	          currentIndex: sketchIdx
+	        });
 	      });
 
 	      // Cross-navigation helper to launch player with active sketch
@@ -18833,72 +19355,11 @@
 	        }
 	      }
 	      app.on("gallery:loadSketch", sketchInfo => {
-	        if (!sketchInfo) return;
-	        const targetIdx = Array.isArray(mySketches) ? mySketches.findIndex(s => s.name === sketchInfo.name || s.id && s.id === sketchInfo.id) : -1;
-	        const sketch = targetIdx >= 0 ? mySketches[targetIdx] : sketchInfo;
-	        if (!sketch) return;
-
-	        // Save sketch name protocol in localStorage and URL querystring
-	        if (sketch && sketch.name) {
-	          try {
-	            localStorage.setItem("lastSelectedSketchName", sketch.name);
-	            if (window.history && window.history.replaceState) {
-	              const url = new URL(window.location);
-	              url.searchParams.set("sketch", sketch.name);
-	              window.history.replaceState({}, "", url.toString());
-	            }
-	          } catch (e) {}
-	        }
-	        let formattedCode = "";
-	        if (sketch.metadata) {
-	          const metaCopy = {
-	            ...sketch.metadata
-	          };
-	          delete metaCopy.bpm;
-	          delete metaCopy.date;
-	          delete metaCopy.local;
-	          delete metaCopy.index;
-	          delete metaCopy.type;
-	          const preamble = `/* ${sketch.name} */`;
-	          const metadata = `/* metadata = ${JSON.stringify(metaCopy)} */`;
-	          formattedCode = `${preamble}\n${sketch.code || ""}\n${metadata}`;
-	        } else {
-	          const preamble = `/* ${sketch.name} */\n`;
-	          if (sketch.code && sketch.code.startsWith(preamble.slice(0, -2))) {
-	            formattedCode = sketch.code;
-	          } else {
-	            formattedCode = preamble + (sketch.code || "");
-	          }
-	        }
-	        setEditorText(formattedCode);
-	        evalCode(formattedCode);
-	        document.title = sketch.name || "Hydralisk";
-	        sketchIdx = targetIdx >= 0 ? targetIdx : typeof sketch.index === "number" ? sketch.index : 0;
-	        if (isNaN(sketchIdx)) sketchIdx = 0;
-	        sPut("sketchIdx", sketchIdx);
-	        app.expose("sketchIdx", sketchIdx);
-	        if (app.memory) {
-	          app.memory.resetAutosaves();
-	          app.memory.autoSave(formattedCode, true);
-	        }
+	        loadSketch(app, sketchInfo, {
+	          sketches: mySketches,
+	          currentIndex: sketchIdx
+	        });
 	      });
-
-	      // Query parameter & localStorage sketch loading protocol on initialization
-	      const loadSketchFromProtocol = () => {
-	        try {
-	          const urlParams = new URLSearchParams(window.location.search);
-	          const targetName = urlParams.get("sketch") || localStorage.getItem("lastSelectedSketchName");
-	          if (targetName && Array.isArray(mySketches) && mySketches.length > 0) {
-	            const foundIdx = mySketches.findIndex(s => s.name && s.name.toLowerCase() === targetName.toLowerCase());
-	            if (foundIdx >= 0) {
-	              sketchIdx = foundIdx;
-	              sPut("sketchIdx", sketchIdx);
-	              app.expose("sketchIdx", sketchIdx);
-	              app.emit("gallery:loadSketch", mySketches[foundIdx]);
-	            }
-	          }
-	        } catch (e) {}
-	      };
 	      app.on("gallery:updateLocalSketches", sketchList => {
 	        mySketches = Array.isArray(sketchList) ? sketchList : [];
 	        app.expose("mySketches", mySketches);
@@ -18907,7 +19368,7 @@
 	          sPut("sketchIdx", sketchIdx);
 	          app.expose("sketchIdx", sketchIdx);
 	        }
-	        loadSketchFromProtocol();
+	        initStartupSketch();
 	      });
 	      app.on("gallery:saveMyExample", async () => {
 	        const editor = getEditor();
@@ -18965,15 +19426,21 @@
 	        if (existingIdx >= 0) {
 	          localSketches[existingIdx] = sketch;
 	        } else {
-	          localSketches.push(sketch);
+	          localSketches.unshift(sketch); // Prepend new sketches to the collection
 	        }
 	        localStorage.setItem("mySketches", JSON.stringify(localSketches));
 	        const sketchesMap = {};
-	        downloadedSketches.concat(localSketches).forEach(s => {
-	          sketchesMap[s.name] = s;
+	        localSketches.concat(downloadedSketches).forEach(s => {
+	          if (!sketchesMap[s.name]) {
+	            sketchesMap[s.name] = s;
+	          }
 	        });
 	        mySketches = Object.values(sketchesMap);
+	        sketchIdx = 0;
+	        sPut("sketchIdx", sketchIdx);
+	        app.expose("sketchIdx", sketchIdx);
 	        app.expose("mySketches", mySketches);
+	        app.emit("gallery:updateLocalSketches", mySketches);
 	      });
 	      app.on("gallery:export", (e = {}) => {
 	        const fixCode = code => code.replace(/([^\s])\*([^\s])/g, "$1 * $2");
@@ -18985,12 +19452,16 @@
 	            type,
 	            midi
 	          } = sketch;
+	          const quality = typeof sketch.metadata?.quality === "number" ? sketch.metadata.quality : typeof sketch.quality === "number" ? sketch.quality : undefined;
 	          return {
 	            name,
 	            type,
 	            code: code ? fixCode(code) : "",
 	            bpm: code?.match(/bpm\s+=\s+(\d+)/)?.[1],
 	            midi: !!(midi || code?.match(/cc\[/) || code?.match(/midi\(/)),
+	            ...(quality !== undefined ? {
+	              quality
+	            } : {}),
 	            author: window.author ?? "Anony Mouse"
 	          };
 	        });
@@ -19081,7 +19552,7 @@
 	            const imported = JSON.parse(jsonText);
 	            const items = Array.isArray(imported) ? imported : [imported];
 	            if (items.length === 0) throw new Error("No sketches found in JSON.");
-	            localSketches = localSketches.concat(items);
+	            localSketches = items.concat(localSketches); // Prepend newly imported sketches
 	            localStorage.setItem("mySketches", JSON.stringify(localSketches));
 	            mySketches = localSketches.slice();
 	            app.expose("mySketches", mySketches);
@@ -19220,6 +19691,11 @@
 	          if (e.key === "Escape") app.emit("gallery:search");
 	        };
 	      });
+	    },
+	    onHydraReady(hydra, app) {
+	      if (typeof app?.initStartupSketch === "function") {
+	        app.initStartupSketch();
+	      }
 	    }
 	  });
 	}
@@ -19624,220 +20100,53 @@
 	 * and automatically triggers jump-back to restore the last functional sketch state.
 	 */
 
-	function analyzeCanvasPixels(pixels) {
-	  let totalR = 0,
-	    totalG = 0,
-	    totalB = 0,
-	    totalA = 0;
-	  let minRGB = 255,
-	    maxRGB = 0;
-	  const pixelCount = pixels.length / 4;
-	  for (let i = 0; i < pixels.length; i += 4) {
-	    const r = pixels[i];
-	    const g = pixels[i + 1];
-	    const b = pixels[i + 2];
-	    const a = pixels[i + 3];
-	    totalR += r;
-	    totalG += g;
-	    totalB += b;
-	    totalA += a;
-	    const brightness = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
-	    if (brightness < minRGB) minRGB = brightness;
-	    if (brightness > maxRGB) maxRGB = brightness;
-	  }
-	  const avgR = totalR / pixelCount;
-	  const avgG = totalG / pixelCount;
-	  const avgB = totalB / pixelCount;
-	  const avgA = totalA / pixelCount;
-	  const avgBrightness = 0.299 * avgR + 0.587 * avgG + 0.114 * avgB;
-	  const isBlackout = maxRGB <= 2 || avgBrightness < 1;
-	  const isWhiteout = minRGB >= 253 || avgBrightness > 254;
-	  const isBlankAlpha = avgA === 0;
-	  const isOblivion = isBlackout || isWhiteout || isBlankAlpha;
-	  return {
-	    isOblivion,
-	    type: isBlackout ? "blackout" : isWhiteout ? "whiteout" : isBlankAlpha ? "blank" : "normal",
-	    avgBrightness,
-	    minRGB,
-	    maxRGB,
-	    avgA
-	  };
-	}
 	class OblivionGuard {
 	  constructor(app) {
 	    this.app = app;
-	    // Disabled for now pending retuning; code retained and toggleable via oblivion:toggle
+	    // Completely disabled per user preference to save CPU cycles
 	    this.enabled = false;
 	    this.checkTimeout = null;
 	    this.consecutiveReverts = 0;
-	    this.maxConsecutiveReverts = 3;
+	    this.consecutiveBlackouts = 0;
+	    this.totalReverts = 0;
+	    this.maxConsecutiveReverts = 0;
 	    this.offscreenCanvas = null;
 	    this.toastEl = null;
 	  }
 	  getCanvas() {
-	    return window.hydra && window.hydra.canvas || document.querySelector("canvas") || null;
+	    return null;
 	  }
 	  inspectCanvas() {
-	    const canvas = this.getCanvas();
-	    if (!canvas) return null;
-	    const sampleDim = 16;
-	    const pixels = new Uint8Array(sampleDim * sampleDim * 4);
-
-	    // Method 1: Try WebGL readPixels directly from regl context or canvas context
-	    let gl = null;
-	    if (window.hydra && window.hydra.regl && window.hydra.regl._gl) {
-	      gl = window.hydra.regl._gl;
-	    } else {
-	      try {
-	        gl = canvas.getContext("webgl") || canvas.getContext("webgl2");
-	      } catch (e) {}
-	    }
-	    if (gl && typeof gl.readPixels === "function") {
-	      try {
-	        const dw = gl.drawingBufferWidth || canvas.width || 300;
-	        const dh = gl.drawingBufferHeight || canvas.height || 150;
-	        const startX = Math.floor((dw - sampleDim) / 2);
-	        const startY = Math.floor((dh - sampleDim) / 2);
-	        gl.readPixels(Math.max(0, startX), Math.max(0, startY), sampleDim, sampleDim, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-	        return analyzeCanvasPixels(pixels);
-	      } catch (e) {
-	        // Fallback to 2D context below
-	      }
-	    }
-
-	    // Method 2: Fallback to 2D canvas drawImage
-	    try {
-	      if (!this.offscreenCanvas) {
-	        this.offscreenCanvas = document.createElement("canvas");
-	        this.offscreenCanvas.width = sampleDim;
-	        this.offscreenCanvas.height = sampleDim;
-	      }
-	      const ctx = this.offscreenCanvas.getContext("2d");
-	      ctx.drawImage(canvas, 0, 0, sampleDim, sampleDim);
-	      const imgData = ctx.getImageData(0, 0, sampleDim, sampleDim);
-	      return analyzeCanvasPixels(imgData.data);
-	    } catch (e) {
-	      return null;
-	    }
+	    // OblivionGuard is completely disabled to save CPU cycles
+	    return null;
 	  }
-	  scheduleCheck(delay = 250) {
-	    if (!this.enabled) return;
-	    if (this.checkTimeout) {
-	      clearTimeout(this.checkTimeout);
-	    }
-	    this.checkTimeout = setTimeout(() => {
-	      this.performCheck();
-	    }, delay);
+	  scheduleCheck() {
+	    // OblivionGuard is completely disabled to save CPU cycles
+	    return;
 	  }
 	  performCheck() {
-	    if (!this.enabled) return;
-	    const result = this.inspectCanvas();
-	    if (!result) return;
-	    if (result.isOblivion) {
-	      if (this.consecutiveReverts >= this.maxConsecutiveReverts) {
-	        console.warn(`[OblivionGuard] Max consecutive reverts (${this.maxConsecutiveReverts}) reached. Stopping auto-jump back to prevent infinite loop.`);
-	        return;
-	      }
-	      this.consecutiveReverts++;
-	      console.warn(`[OblivionGuard] Oblivion state detected (${result.type}). Reverting sketch to previous state...`);
-
-	      // Revert code
-	      let reverted = false;
-	      if (this.app.memory && typeof this.app.memory.jumpBack === "function") {
-	        const code = this.app.memory.jumpBack(1);
-	        if (code) {
-	          reverted = true;
-	          this.evalCode(code);
-	        }
-	      }
-	      if (!reverted) {
-	        const cm = this.app.state && this.app.state.editor && this.app.state.editor.editor || window.cm;
-	        if (cm && cm.mutator && typeof cm.mutator.doUndo === "function") {
-	          cm.mutator.doUndo();
-	          reverted = true;
-	        }
-	      }
-	      this.showToast(`⚡ Oblivion Guard: Reverted ${result.type} state`);
-
-	      // Schedule follow-up check to verify recovery
-	      this.scheduleCheck(300);
-	    } else {
-	      this.consecutiveReverts = 0;
-	    }
+	    // OblivionGuard is completely disabled to save CPU cycles
+	    return;
 	  }
-	  evalCode(code) {
-	    const cm = this.app.state && this.app.state.editor && this.app.state.editor.editor || window.cm;
-	    if (cm && typeof cm.setValue === "function") {
-	      cm.setValue(code);
-	    }
-	    if (window.evalCode) {
-	      window.evalCode(code);
-	    } else if (cm && typeof cm.eval === "function") {
-	      cm.eval(code);
-	    }
+	  evalCode() {
+	    return;
 	  }
-	  showToast(message) {
-	    if (typeof document === "undefined") return;
-	    if (!this.toastEl) {
-	      this.toastEl = document.createElement("div");
-	      this.toastEl.id = "oblivion-guard-toast";
-	      Object.assign(this.toastEl.style, {
-	        position: "fixed",
-	        bottom: "24px",
-	        right: "24px",
-	        backgroundColor: "rgba(20, 20, 25, 0.88)",
-	        color: "#ff6b6b",
-	        border: "1px solid rgba(255, 107, 107, 0.4)",
-	        borderRadius: "8px",
-	        padding: "10px 16px",
-	        fontFamily: "monospace, sans-serif",
-	        fontSize: "13px",
-	        fontWeight: "bold",
-	        boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
-	        backdropFilter: "blur(8px)",
-	        zIndex: "9999",
-	        transition: "opacity 0.3s ease, transform 0.3s ease",
-	        opacity: "0",
-	        transform: "translateY(10px)",
-	        pointerEvents: "none"
-	      });
-	      document.body.appendChild(this.toastEl);
-	    }
-	    this.toastEl.textContent = message;
-	    this.toastEl.style.opacity = "1";
-	    this.toastEl.style.transform = "translateY(0)";
-	    if (this._toastTimer) clearTimeout(this._toastTimer);
-	    this._toastTimer = setTimeout(() => {
-	      if (this.toastEl) {
-	        this.toastEl.style.opacity = "0";
-	        this.toastEl.style.transform = "translateY(10px)";
-	      }
-	    }, 2500);
+	  showToast() {
+	    return;
 	  }
 	}
 	if (typeof window !== "undefined" && window.HydraliskPlugins) {
 	  window.HydraliskPlugins.register({
 	    id: "oblivion-guard",
-	    name: "Oblivion Guard (Canvas Blackout & Whiteout Auto-Recovery)",
+	    name: "Oblivion Guard (Disabled)",
 	    init(app) {
 	      const guard = new OblivionGuard(app);
 	      app.oblivionGuard = guard;
 	      app.expose("oblivionGuard", guard);
-	      app.on("oblivion:scheduleCheck", (evt = {}) => {
-	        guard.scheduleCheck(evt.delay || 250);
-	      });
-	      app.on("oblivion:checkNow", () => {
-	        guard.performCheck();
-	      });
-	      app.on("oblivion:toggle", () => {
-	        guard.enabled = !guard.enabled;
-	        console.log(`[OblivionGuard] Enabled: ${guard.enabled}`);
-	        guard.showToast(`Oblivion Guard ${guard.enabled ? "Enabled" : "Disabled"}`);
-	      });
 
-	      // Automatically trigger checks on mutate events
-	      app.on("editor:randomize", () => {
-	        guard.scheduleCheck(250);
+	      // Kept for API compatibility without burning CPU cycles
+	      app.on("oblivion:toggle", () => {
+	        console.log("[OblivionGuard] Oblivion Guard is completely disabled to save CPU cycles.");
 	      });
 	    }
 	  });
