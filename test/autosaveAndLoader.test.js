@@ -394,3 +394,58 @@ test("OblivionGuard: is completely disabled and returns null without scheduling 
   guard.performCheck();
   assert.equal(guard.consecutiveReverts, 0);
 });
+
+test("sketchLoader: loadSketch handles app objects with getter-only sketchIdx and updates state correctly", () => {
+  let internalIndex = 0;
+  const sketches = [
+    { name: "Sketch Zero", code: "osc(10).out()" },
+    { name: "Sketch One", code: "shape(2).out()" },
+    { name: "Sketch Two", code: "noise(3).out()" },
+  ];
+
+  let evalCode = "";
+  let emittedLoaded = null;
+
+  // Simulate plugin context with getter only (legacy or strict descriptors)
+  const getterOnlyApp = {
+    get sketchIdx() {
+      return internalIndex;
+    },
+    state: {
+      editor: {
+        editor: {
+          getValue: () => "old()",
+          setValue: () => {},
+          eval: (c) => {
+            evalCode = c;
+          },
+        },
+      },
+    },
+    emit: (evt, data) => {
+      if (evt === "gallery:sketchLoaded") {
+        emittedLoaded = data;
+        internalIndex = data.index;
+      }
+    },
+  };
+
+  // Must not throw when app.sketchIdx is getter-only
+  assert.doesNotThrow(() => {
+    loadSketch(getterOnlyApp, 1, { sketches, currentIndex: 0 });
+  });
+
+  assert.equal(emittedLoaded?.index, 1);
+  assert.equal(getterOnlyApp.sketchIdx, 1);
+
+  // Consecutive next navigation advances to index 2
+  const nextIdx = getNextIndex(getterOnlyApp.sketchIdx, sketches.length, false);
+  assert.equal(nextIdx, 2);
+
+  assert.doesNotThrow(() => {
+    loadSketch(getterOnlyApp, nextIdx, { sketches, currentIndex: getterOnlyApp.sketchIdx });
+  });
+
+  assert.equal(emittedLoaded?.index, 2);
+  assert.equal(getterOnlyApp.sketchIdx, 2);
+});

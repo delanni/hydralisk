@@ -109,24 +109,36 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         setTimeout(() => initStartupSketch(), 600);
       }
 
+      const getActiveIndex = () => {
+        if (typeof sketchIdx === "number" && !isNaN(sketchIdx)) return sketchIdx;
+        const fromApp = Number(app?.sketchIdx);
+        if (!isNaN(fromApp)) return fromApp;
+        const fromWin = typeof window !== "undefined" ? Number(window.sketchIdx) : NaN;
+        if (!isNaN(fromWin)) return fromWin;
+        return 0;
+      };
+
       // Next / Prev / Random Sketch consolidated handlers
       app.on("gallery:prevSketch", () => {
         if (!mySketches || mySketches.length === 0) return;
-        const newIdx = getNextIndex(sketchIdx, mySketches.length, true);
-        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: sketchIdx });
+        const currentIdx = getActiveIndex();
+        const newIdx = getNextIndex(currentIdx, mySketches.length, true);
+        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: currentIdx });
       });
 
       app.on("gallery:nextSketch", (e = {}) => {
         if (!mySketches || mySketches.length === 0) return;
         const isBackwards = Boolean(e.altKey || e.shiftKey || e.backwards);
-        const newIdx = getNextIndex(sketchIdx, mySketches.length, isBackwards);
-        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: sketchIdx });
+        const currentIdx = getActiveIndex();
+        const newIdx = getNextIndex(currentIdx, mySketches.length, isBackwards);
+        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: currentIdx });
       });
 
       app.on("gallery:randomSketch", () => {
         if (!mySketches || mySketches.length === 0) return;
-        const newIdx = getRandomIndex(sketchIdx, mySketches.length);
-        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: sketchIdx });
+        const currentIdx = getActiveIndex();
+        const newIdx = getRandomIndex(currentIdx, mySketches.length);
+        loadSketch(app, newIdx, { sketches: mySketches, currentIndex: currentIdx });
       });
 
       // Cross-navigation helper to launch player with active sketch

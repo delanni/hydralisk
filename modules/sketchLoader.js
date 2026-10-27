@@ -304,10 +304,17 @@ export function loadSketch(app, targetSketchOrIndex, options = {}) {
   const safeIdx = isNaN(targetIdx) ? 0 : targetIdx;
   sPut("sketchIdx", safeIdx);
   if (app) {
-    app.sketchIdx = safeIdx;
+    try {
+      app.sketchIdx = safeIdx;
+    } catch (e) {
+      console.warn("[sketchLoader] Could not assign app.sketchIdx directly:", e);
+    }
     if (typeof app.expose === "function") {
       app.expose("sketchIdx", safeIdx);
     }
+  }
+  if (typeof window !== "undefined") {
+    window.sketchIdx = safeIdx;
   }
 
   // 7. Store sketch name in localStorage and URL querystring

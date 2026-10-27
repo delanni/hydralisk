@@ -33,8 +33,14 @@
         get mySketches() {
           return root.mySketches || [];
         },
+        set mySketches(val) {
+          root.mySketches = val;
+        },
         get sketchIdx() {
           return root.sketchIdx || 0;
+        },
+        set sketchIdx(val) {
+          root.sketchIdx = val;
         },
 
         // Event shortcuts
