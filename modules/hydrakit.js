@@ -8,6 +8,7 @@ class MidiEngine {
     this.cc = new Array(128).fill(0.5);
     this.ccc = Array.from({ length: 16 }, () => new Array(128).fill(0.5));
     this.ccbind = [];
+    this.virtualCC = {};
     this.isInitialized = false;
 
     // Expose globals for sketch backward compatibility
@@ -15,6 +16,23 @@ class MidiEngine {
       window.cc = this.cc;
       window.ccc = this.ccc;
       window.ccbind = this.ccbind;
+      window.virtualCC = this.virtualCC;
+      window.hydraliskMidiBridge = {
+        setVirtualCC: (cc, val) => this.setVirtualCC(cc, val),
+        getVirtualCC: (cc) => this.virtualCC[cc],
+        getAll: () => ({ ...this.virtualCC })
+      };
+      window.setVirtualCC = window.hydraliskMidiBridge.setVirtualCC;
+    }
+  }
+
+  setVirtualCC(ccIndex, val) {
+    if (typeof ccIndex !== "string") return;
+    const norm = Math.max(0, Math.min(1, Number(val) || 0));
+    this.virtualCC[ccIndex] = norm;
+    if (/^b\d+$/.test(ccIndex)) {
+      const idx = parseInt(ccIndex.slice(1), 10);
+      this.cc[idx] = norm;
     }
   }
 
@@ -70,6 +88,11 @@ class MidiEngine {
     let valNorm = min;
 
     if (typeof ccIndex === "string") {
+      if (this.virtualCC[ccIndex] !== undefined) {
+        const valNorm = this.virtualCC[ccIndex];
+        const value = valNorm * (max - min) + min;
+        return transform ? transform(value) : value;
+      }
       if (/^[ABCD]$/.test(ccIndex)) {
         const globalVal = window.cc ? window.cc[ccIndex] : undefined;
         if (globalVal === undefined) return min;

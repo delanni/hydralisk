@@ -4,4 +4,6 @@ node_modules/
 # Build artifacts
 *.dist.js
 *.dist.js.map
+
+relay/hydralisk-relay
 _site/

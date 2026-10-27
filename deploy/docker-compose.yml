@@ -1,0 +1,35 @@
+services:
+  caddy:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp" # HTTP/3 (QUIC)
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../:/srv/hydralisk:ro # Static Hydralisk web root
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - relay
+
+  relay:
+    build:
+      context: ../relay
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - PORT=8080
+      - ALLOWED_ORIGIN=https://hydralisk.sphynx.cloud,http://localhost:1984,http://127.0.0.1:1984
+    expose:
+      - "8080"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 128M
+
+volumes:
+  caddy_data:
+  caddy_config:
