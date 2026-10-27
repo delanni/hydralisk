@@ -12,7 +12,52 @@ export default function MetadataEditor({ metadata, newField, onFieldChange, onRe
     return (
         <div>
             <div className="metadata-fields-title">Metadata</div>
-            {Object.entries(metadata).map(([key, value]) => (
+
+            {/* Quality Rating (1-5) Control */}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12, padding: '8px 10px', background: '#11111b', borderRadius: 8, border: '1px solid #313244', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: '#cdd6f4' }}>
+                    Quality Rating:
+                </span>
+                <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                    {[1, 2, 3, 4, 5].map((star) => {
+                        const currentQ = Number(metadata.quality) || 0;
+                        const isFilled = star <= currentQ;
+                        return (
+                            <button
+                                key={star}
+                                type="button"
+                                onClick={() => onFieldChange('quality', star)}
+                                title={`Set quality to ${star}`}
+                                style={{
+                                    background: isFilled ? '#f59e0b' : '#313244',
+                                    color: isFilled ? '#11111b' : '#a6adc8',
+                                    border: isFilled ? '1px solid #fbbf24' : '1px solid #45475a',
+                                    borderRadius: 6,
+                                    padding: '3px 8px',
+                                    cursor: 'pointer',
+                                    fontSize: 12,
+                                    fontWeight: 700,
+                                    transition: 'all 0.15s ease'
+                                }}
+                            >
+                                ★ {star}
+                            </button>
+                        );
+                    })}
+                    {metadata.quality !== undefined && (
+                        <button
+                            type="button"
+                            onClick={() => onRemove('quality')}
+                            style={{ background: 'none', border: 'none', color: '#f38ba8', fontSize: 11, cursor: 'pointer', marginLeft: 4 }}
+                            title="Clear quality rating"
+                        >
+                            Clear
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {Object.entries(metadata).filter(([k]) => k !== 'quality').map(([key, value]) => (
                 <div key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
                     <input
                         type="text"
