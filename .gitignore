@@ -1,4 +1,9 @@
 node_modules/
-
 .env
+
+# Build artifacts
+*.dist.js
+*.dist.js.map
+_site/
+
 relay/hydralisk-relay
