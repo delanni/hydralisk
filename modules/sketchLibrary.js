@@ -43,10 +43,10 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         return (app.state && app.state.editor && app.state.editor.editor) || window.cm || null;
       };
 
-      const evalCode = (code, cb) => {
+      const evalCode = (code, cb, options) => {
         const editor = getEditor();
         if (window.evalCode) {
-          window.evalCode(code, cb);
+          window.evalCode(code, cb, options);
         } else if (editor && typeof editor.eval === "function") {
           editor.eval(code, cb);
         }
@@ -75,11 +75,23 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
 
       const initStartupSketch = () => {
         if (initialSketchLoaded) return;
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("code")) {
+          if (!getEditor()) return;
+          initialSketchLoaded = true;
+          try {
+            const code = decodeURIComponent(atob(urlParams.get("code")));
+            setEditorText(code);
+            evalCode(code, undefined, { initial: true });
+          } catch (e) {
+            console.error("[sketchLibrary] Failed to load shared code:", e);
+          }
+          return;
+        }
         if (!mySketches || mySketches.length === 0) return;
 
         // Check if explicit query param ?sketch=Name was passed
         try {
-          const urlParams = new URLSearchParams(window.location.search);
           const targetName = urlParams.get("sketch");
           if (targetName) {
             const foundIdx = mySketches.findIndex(
@@ -87,7 +99,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
             );
             if (foundIdx >= 0) {
               initialSketchLoaded = true;
-              loadSketch(app, foundIdx, { sketches: mySketches, currentIndex: foundIdx });
+              loadSketch(app, foundIdx, { sketches: mySketches, currentIndex: foundIdx, initial: true });
               return;
             }
           }
@@ -96,7 +108,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         // Otherwise load a random sketch and set sketchIdx to that random sketch's number
         const randomIdx = Math.floor(Math.random() * mySketches.length);
         initialSketchLoaded = true;
-        loadSketch(app, randomIdx, { sketches: mySketches, currentIndex: randomIdx });
+        loadSketch(app, randomIdx, { sketches: mySketches, currentIndex: randomIdx, initial: true });
       };
 
       app.initStartupSketch = initStartupSketch;
@@ -104,10 +116,9 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
 
       if (localSketches.length === 0) {
         setTimeout(() => app.emit("gallery:import-remote"), 100);
-      } else {
-        setTimeout(() => initStartupSketch(), 150);
-        setTimeout(() => initStartupSketch(), 600);
       }
+      setTimeout(() => initStartupSketch(), 150);
+      setTimeout(() => initStartupSketch(), 600);
 
       const getActiveIndex = () => {
         if (typeof sketchIdx === "number" && !isNaN(sketchIdx)) return sketchIdx;
