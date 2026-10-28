@@ -46,13 +46,16 @@ test("Gallery: shared code takes precedence over sketch IDs, including empty cod
   }
 });
 
-test("REPL: initial evaluation preserves URL; later evaluations replace the query with shared code", () => {
+test("REPL: unchanged evaluations preserve URL; edits replace the query with shared code", () => {
   const window = browser("?sketchId=old&sketch_id=old&sketch=Old&other=value");
   const original = window.location.href;
   const repl = bundledModule(270, { "./log.js": { log() {} } }, {
     window, URL, URLSearchParams, btoa,
   });
   repl.eval("1 + 1", undefined, { initial: true });
+  assert.equal(window.location.href, original);
+  assert.equal(window.replacements.length, 0);
+  repl.eval("1 + 1");
   assert.equal(window.location.href, original);
   assert.equal(window.replacements.length, 0);
 
@@ -152,17 +155,30 @@ test("startup: named and random library sketches still load as initial evaluatio
   assert.equal(random.evaluations[0].options.initial, true);
 });
 
-test("sketch loader does not append sketch names after evaluation produces a code URL", async (t) => {
+test("sketch navigation keeps named URLs until editor contents change", async (t) => {
   const { loadSketch } = await import("../modules/sketchLoader.js");
-  const state = startup(t, "", []);
-  state.window.evalCode = (code) => {
-    const url = new URL(state.window.location);
-    url.search = new URLSearchParams({ code: encode(code) }).toString();
-    state.window.history.replaceState({}, "", url.href);
-  };
-  const result = loadSketch(state.app, 0, {
-    sketches: [{ name: "Selected", code: "1 + 1" }],
+  const state = startup(t, `?sketchId=old&sketch_id=old&code=${encode("0")}`, []);
+  state.window.cm = state.app.state.editor.editor;
+  const repl = bundledModule(270, { "./log.js": { log() {} } }, {
+    window: state.window, URL, URLSearchParams, btoa,
   });
-  assert.deepEqual([...state.window.location.searchParams.keys()], ["code"]);
-  assert.equal(decode(state.window.location.searchParams.get("code")), result.formattedCode);
+  state.window.evalCode = repl.eval;
+  const sketches = [{ name: "First", code: "1 + 1" }, { name: "Next", code: "2 + 2" }];
+
+  for (let index = 0; index < sketches.length; index++) {
+    const result = loadSketch(state.app, index, { sketches });
+    assert.deepEqual([...state.window.location.searchParams.keys()], ["sketch"]);
+    assert.equal(state.window.location.searchParams.get("sketch"), sketches[index].name);
+    const replacements = state.window.replacements.length;
+    repl.eval(result.formattedCode);
+    repl.eval(sketches[index].code);
+    assert.equal(state.window.replacements.length, replacements);
+
+    const editedCode = `${result.formattedCode}\n// edited café + & = #`;
+    state.window.cm.setValue(editedCode);
+    repl.eval(sketches[index].code);
+    assert.deepEqual([...state.window.location.searchParams.keys()], ["code"]);
+    assert.equal(decode(state.window.location.searchParams.get("code")), editedCode);
+    assert.equal(state.window.location.hash, "#settings");
+  }
 });

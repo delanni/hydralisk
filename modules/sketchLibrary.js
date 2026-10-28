@@ -99,7 +99,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
             );
             if (foundIdx >= 0) {
               initialSketchLoaded = true;
-              loadSketch(app, foundIdx, { sketches: mySketches, currentIndex: foundIdx, initial: true });
+              loadSketch(app, foundIdx, { sketches: mySketches, currentIndex: foundIdx });
               return;
             }
           }
@@ -108,7 +108,7 @@ if (typeof window !== "undefined" && window.HydraliskPlugins) {
         // Otherwise load a random sketch and set sketchIdx to that random sketch's number
         const randomIdx = Math.floor(Math.random() * mySketches.length);
         initialSketchLoaded = true;
-        loadSketch(app, randomIdx, { sketches: mySketches, currentIndex: randomIdx, initial: true });
+        loadSketch(app, randomIdx, { sketches: mySketches, currentIndex: randomIdx });
       };
 
       app.initStartupSketch = initStartupSketch;
