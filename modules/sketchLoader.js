@@ -255,12 +255,12 @@ export function setEditorCode(app, code) {
 /**
  * Executes/evaluates code in the Hydra sandbox.
  */
-export function evalEditorCode(app, code, cb) {
+export function evalEditorCode(app, code, cb, options) {
   const editor = getEditor(app);
   if (typeof window !== "undefined" && typeof window.evalCode === "function") {
-    window.evalCode(code, cb);
+    window.evalCode(code, cb, options);
   } else if (editor && typeof editor.eval === "function") {
-    editor.eval(code, cb);
+    editor.eval(code, cb, options);
   }
 }
 
@@ -292,7 +292,7 @@ export function loadSketch(app, targetSketchOrIndex, options = {}) {
 
   // 4. Update editor and evaluate
   setEditorCode(app, formattedCode);
-  evalEditorCode(app, formattedCode);
+  evalEditorCode(app, formattedCode, undefined, { initial: true });
 
   // 5. Update window title
   if (typeof document !== "undefined") {
@@ -323,6 +323,9 @@ export function loadSketch(app, targetSketchOrIndex, options = {}) {
       localStorage.setItem("lastSelectedSketchName", sketch.name);
       if (options.syncUrl !== false && typeof window !== "undefined" && window.history?.replaceState) {
         const url = new URL(window.location);
+        url.searchParams.delete("code");
+        url.searchParams.delete("sketchId");
+        url.searchParams.delete("sketch_id");
         url.searchParams.set("sketch", sketch.name);
         window.history.replaceState({}, "", url.toString());
       }
